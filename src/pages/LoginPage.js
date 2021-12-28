@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { admin_login } from '../modules/admin';
 import * as auth from '../controller/auth';
 import styled from 'styled-components';
 import logo from '../images/cetus-logo.svg';
@@ -42,7 +43,7 @@ const LoginPage = () => {
 			const Data = { username, password };
 			auth.login(Data).then((res) => {
 				if (res.data.success) {
-					// dispatch(admin_login(true))
+					dispatch(admin_login());
 					alert('로그인 되었습니다.');
 					history.push('/');
 				} else {
@@ -84,7 +85,6 @@ export default withRouter(LoginPage);
 const Login = styled.div`
 	width: 83.9rem;
 	height: 52.2rem;
-	margin-top: 27.9rem;
 	background: #fcfcfc 0% 0% no-repeat padding-box;
 	box-shadow: 2px 6px 30px #00000033;
 	border-radius: 4px;

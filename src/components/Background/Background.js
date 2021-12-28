@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import Logo from '../../images/cetus-logo.svg';
 const Background = () => {
 	const admin = useSelector((state) => state.admin);
-	let active;
+	const active = admin.login;
 
 	return (
 		<All>
@@ -51,7 +51,7 @@ const Left = styled.div`
 		props.active &&
 		`
 		border-radius:0 50px 50px 0;
-		transform:translateX(-357px);
+		transform:translateX(-46.7rem);
 		transform-origin:100% 0;
 		transition: all 0.8s;
 		

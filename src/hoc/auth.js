@@ -9,7 +9,6 @@ const Auth = (SpecificComponent, option, adminRoute = null) => {
 	const AuthenticationCheck = ({ history }) => {
 		useEffect(() => {
 			auth.authCheck().then((res) => {
-				console.log('AA', res.data);
 				if (res.data.success) {
 					return dispatch(admin_login());
 				} else {
