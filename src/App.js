@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Background from './components/Background/Background';
+import Background from './components/Background';
 import Auth from './hoc/auth';
-import HomePage from './pages/HomePage';
+import BannerPage from './pages/BannerPage';
 import LoginPage from './pages/LoginPage';
 
 const App = () => {
@@ -11,7 +11,7 @@ const App = () => {
 			<div id='App'>
 				<Background />
 				<Switch>
-					<Route exact path='/' component={Auth(HomePage, true)} />
+					<Route exact path='/' component={Auth(BannerPage, true)} />
 					<Route exact path='/login' component={Auth(LoginPage, false)} />
 				</Switch>
 			</div>

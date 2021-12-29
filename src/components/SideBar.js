@@ -57,7 +57,8 @@ const SideBarContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	position: relative;
+	position: absolute;
+	left: 0;
 `;
 const SlideMenu = styled.ul`
 	width: 13.8rem;
@@ -69,11 +70,10 @@ const SlideMenu = styled.ul`
 	box-shadow: -3px 4px 30px #0000001a;
 	${(props) =>
 		props.active
-			? `
-		transform:translateY(6rem);
-		transition:all 0.5s;
-	`
-			: `transform:translateY(0rem); transition:all 0.5s`}
+			? `transform:translateY(5.5rem);
+				transition:all 0.5s;`
+			: `transform:translateY(0rem); 
+				transition:all 0.5s`}
 `;
 const SlideMenuItem = styled.li`
 	width: 100%;

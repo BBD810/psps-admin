@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import Logo from '../../images/cetus-logo.svg';
+import Logo from '../images/cetus-logo.svg';
 const Background = () => {
 	const admin = useSelector((state) => state.admin);
 	const active = admin.login;
