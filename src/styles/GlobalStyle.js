@@ -45,6 +45,7 @@ ul,
 li {
 	list-style: none;
 	padding-left: 0;
+	margin:0;
 }
 p {
 	margin: 0;

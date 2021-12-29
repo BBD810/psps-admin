@@ -34,7 +34,6 @@ const LoginPage = () => {
 		}
 	};
 	const onSubmit = () => {
-		console.log(username, password);
 		if (username.length === 0) {
 			return alert('아이디를 입력해주세요.');
 		} else if (password.length === 0) {

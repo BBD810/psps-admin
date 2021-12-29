@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
+import ListTemplate from '../components/Contents/ListTemplate';
+import CreateTemplate from '../components/Contents/CreateTemplate';
 
 const BannerPage = () => {
 	const [menu, setMenu] = useState('배너');
@@ -23,7 +25,13 @@ const BannerPage = () => {
 					category={category}
 					menu={menu}
 				/>
-
+				{category === '메인 배너' && (
+					<ListTemplate img_height={{ height: '16.9rem' }} />
+				)}
+				{category === '광고 배너' && (
+					<ListTemplate img_height={{ height: '11.3rem' }} />
+				)}
+				{category === '배너 추가' && <CreateTemplate />}
 				<Footer />
 			</Container>
 		</div>
@@ -39,6 +47,7 @@ const Container = styled.div`
 	padding-right: 8.09rem;
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	position: relative;
 	background-color: #fff;
 	box-shadow: 2px 6px 30px #00000033;
