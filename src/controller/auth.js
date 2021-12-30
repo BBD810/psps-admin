@@ -22,7 +22,5 @@ export const logout = async () => {
 };
 
 export const authCheck = async () => {
-	return await instance.get('/').catch(() => {
-		return { data: { success: false } };
-	});
+	return await instance.get('/').catch(errorMessage);
 };

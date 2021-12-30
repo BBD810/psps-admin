@@ -26,12 +26,14 @@ const BannerPage = () => {
 					menu={menu}
 				/>
 				{category === '메인 배너' && (
-					<ListTemplate img_height={{ height: '16.9rem' }} />
+					<ListTemplate imgHeight={{ height: '16.9rem' }} />
 				)}
 				{category === '광고 배너' && (
-					<ListTemplate img_height={{ height: '11.3rem' }} />
+					<ListTemplate imgHeight={{ height: '11.3rem' }} />
 				)}
-				{category === '배너 추가' && <CreateTemplate />}
+				{category === '배너 추가' && (
+					<CreateTemplate getCategory={getCategory} category={category} />
+				)}
 				<Footer />
 			</Container>
 		</div>
@@ -52,5 +54,4 @@ const Container = styled.div`
 	background-color: #fff;
 	box-shadow: 2px 6px 30px #00000033;
 	border-radius: 4px;
-	border: 2px solid blue;
 `;

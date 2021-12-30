@@ -51,7 +51,7 @@ const ListTemplate = (props) => {
 			<Wrap>
 				{list.map((el, idx) => (
 					<List key={idx}>
-						<ListImgWrap display={el.display} style={props.img_height}>
+						<ListImgWrap display={el.display} style={props.imgHeight}>
 							{el.display === 1 && (
 								<ListState className='display'>DISPLAY1</ListState>
 							)}
