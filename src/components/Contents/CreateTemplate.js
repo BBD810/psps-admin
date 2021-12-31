@@ -124,7 +124,6 @@ const CreateTemplate = (props) => {
 				formData.append('product_id', product_id);
 			}
 			banner.create(formData).then((res) => {
-				console.log(res.data);
 				if (res.data.success) {
 					alert('배너가 추가되었습니다.');
 					if (type === '메인') {
@@ -279,6 +278,7 @@ const Container = styled.div`
 const Left = styled.div`
 	width: 50%;
 	height: 100%;
+	/* position: relative; */
 `;
 const Title = styled.h4`
 	height: 1.9rem;
@@ -320,6 +320,7 @@ const TypeSelect = styled.li`
 	font-family: 'kr-r';
 	color: #5e667b;
 	border-radius: 4px;
+	cursor: pointer;
 	${(props) =>
 		props.select &&
 		`border: 2px solid #5887FF; font-family:'kr-b';color:#111A31;`}
@@ -342,7 +343,6 @@ const Item = styled.div`
 	padding-bottom: 3.1rem;
 	margin-bottom: 1rem;
 	position: relative;
-	/* border: 1px solid red; */
 	${(props) => (props.active ? `opacity:1` : `opacity:0.4`)};
 `;
 const ItemSelected = styled.div`
@@ -357,6 +357,7 @@ const ItemSelected = styled.div`
 	background-color: #f4f4f4;
 	border: 2px solid #e5e6ed;
 	border-radius: 4px;
+	cursor: pointer;
 `;
 const ItemText = styled.p`
 	width: 100%;
@@ -374,18 +375,29 @@ const ItemSelectWrap = styled.ul`
 	width: 20rem;
 	height: 16rem;
 	line-height: 3.2rem;
-	overflow-y: scroll;
 	position: absolute;
 	z-index: 3;
 	background-color: #fff;
 	box-shadow: 0px 3px 6px #00000029;
 	border: 2px solid #2a3349;
 	border-radius: 4px;
+	overflow-y: scroll;
+	::-webkit-scrollbar {
+		width: 3px;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: #5e667b;
+		border-radius: 10px;
+	}
+	::-webkit-scrollbar-track {
+		background-color: #fff;
+	}
 `;
 const ItemSelectList = styled.li`
 	height: 3.2rem;
 	line-height: 3.2rem;
 	padding: 0 0.8rem;
+	cursor: pointer;
 	:nth-child(1) {
 		border-bottom: 1px solid #e5e6ed;
 	}
@@ -438,4 +450,5 @@ const FileInput = styled.input`
 	border: none;
 	background-color: #2a3349;
 	border-radius: 4px;
+	cursor: pointer;
 `;

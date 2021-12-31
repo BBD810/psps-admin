@@ -10,7 +10,15 @@ const SideBar = (props) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const [pull, setPull] = useState(false);
-	const menus = ['배너', '회원', '상품', '결제'];
+	const menus = [
+		'배너',
+		'공급원',
+		'상품',
+		'상품 이미지',
+		'결제',
+		'회원',
+		'통계',
+	];
 
 	const slideController = () => {
 		setPull(!pull);
@@ -83,16 +91,18 @@ const SlideMenuItem = styled.li`
 	font-size: 1.2rem;
 	font-family: 'kr-b';
 	color: #2a3349;
+	cursor: pointer;
 `;
 const LogoImg = styled.img`
 	width: 5.8rem;
 	height: 5.8rem;
 	margin-top: 5.8rem;
 	margin-bottom: 3rem;
+	cursor: pointer;
 `;
 const MainMenu = styled.ul`
 	width: 13.8rem;
-	height: 28.8rem;
+	height: 47rem;
 	padding: 1.9rem 0;
 	background-color: #ffffff;
 	box-shadow: -3px 4px 30px #0000001a;
@@ -106,5 +116,6 @@ const MainMenuItem = styled.li`
 	font-size: 1.6rem;
 	font-family: 'kr-b';
 	color: #2a3349;
+	cursor: pointer;
 	${(props) => props.select && `color:#A8B0C3 `}
 `;

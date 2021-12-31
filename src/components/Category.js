@@ -4,7 +4,7 @@ import * as data from '../data/arr';
 
 const Category = (props) => {
 	const [arr, setArr] = useState(data.bannerCategory);
-	const [detail, setDetail] = useState({});
+	const [info, setInfo] = useState({});
 
 	useEffect(() => {
 		if (props.menu === '배너') {
@@ -19,13 +19,13 @@ const Category = (props) => {
 	}, [props.menu]);
 
 	useEffect(() => {
-		props.getCategory(arr[0].title);
+		props.getCategory(arr[0].item);
 	}, [arr]);
 
 	useEffect(() => {
 		for (let i = 0; i < arr.length; i++) {
-			if (props.category === arr[i].title) {
-				return setDetail(arr[i]);
+			if (props.category === arr[i].item) {
+				return setInfo(arr[i]);
 			}
 		}
 	}, [props.category]);
@@ -33,6 +33,7 @@ const Category = (props) => {
 	const categoryController = (e) => {
 		props.getCategory(e.target.innerText);
 	};
+	console.log(props);
 
 	return (
 		<CategoryContainer>
@@ -41,9 +42,9 @@ const Category = (props) => {
 					{arr.map((el, idx) => (
 						<CategoryItem
 							key={idx}
-							select={props.category === el.title}
+							select={props.category === el.item}
 							onClick={categoryController}>
-							{el.title}
+							{el.item}
 						</CategoryItem>
 					))}
 				</CategoryWrap>
@@ -52,8 +53,8 @@ const Category = (props) => {
 				</CurrentCategory>
 			</TitleBox>
 			<SubtitleBox>
-				<Subtitle>{detail.subtitle}</Subtitle>
-				<Desc>{detail.desc}</Desc>
+				<Subtitle>{props.title}</Subtitle>
+				<Desc>{props.desc}</Desc>
 			</SubtitleBox>
 		</CategoryContainer>
 	);
@@ -85,6 +86,7 @@ const CategoryItem = styled.li`
 	font-family: 'kr-b';
 	color: #5e667b;
 	padding: 0 2.9rem;
+	cursor: pointer;
 	${(props) =>
 		props.select && `color:#5887FF; border-bottom:4px solid #5887FF`}
 `;

@@ -1,30 +1,75 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { withRouter, useHistory } from 'react-router-dom';
+import * as banner from '../../controller/banner';
+import { IMG_ADDRESS } from '../../config';
 import styled from 'styled-components';
 import left from '../../images/left.svg';
 import right from '../../images/right.svg';
 import toggle from '../../images/toggle.svg';
-import banner1 from '../../images/banner1.png';
-import banner2 from '../../images/banner2.png';
-import banner3 from '../../images/banner3.png';
-import banner4 from '../../images/banner4.png';
-import banner5 from '../../images/banner5.png';
 
 const ListTemplate = (props) => {
-	const toggleMenu = ['수정하기', '노출취소', '삭제하기', '링크확인'];
+	const history = useHistory();
+	const toggleMenu = ['수정하기', '노출변경', '삭제하기', '링크확인'];
 	const menuSelect = useRef();
 	const [menuOpen, setMenuOpen] = useState('close');
-	// const [list, setList] = [];
+	const [imgHeight, setImgHeight] = useState({});
+	const [list, setList] = useState([]);
+
 	useEffect(() => {
-		// 리스트 받아와서 설정해주기
-	}, []);
+		let isSubscribed = true;
+		let type;
+		if (props.category === '메인 배너') {
+			type = '메인';
+		} else if (props.category === '광고 배너') {
+			type = '광고';
+		}
+		banner.get_list(type).then((res) => {
+			if (isSubscribed && res.data.success) {
+				setList(res.data.banner_list);
+				if (type === '메인') {
+					return setImgHeight({ height: '16.9rem' });
+				} else if (type === '광고') {
+					return setImgHeight({ height: '11.3rem' });
+				}
+			}
+		});
+		return () => {
+			isSubscribed = false;
+		};
+	}, [props.category]);
+
+	const goDetail = (el) => {
+		history.push({ state: el });
+		props.changeMode('detail');
+	};
+	const goEdit = (el) => {
+		history.push({ state: el });
+		props.changeMode('edit');
+	};
 
 	const menuOpenController = (idx) => {
 		setMenuOpen(idx);
 	};
-	const selectMenuController = (e) => {
-		alert(e.target.innerText);
+	const selectMenuController = (item, el) => {
+		if (item === '수정하기') {
+			selectEdit(item, el);
+		} else if (item === '노출변경') {
+			selectDisplay(item, el);
+		} else if (item === '삭제하기') {
+			selectDelete(item, el);
+		} else if (item === '링크확인') {
+			selectLink(item, el);
+		}
 		setMenuOpen('close');
 	};
+	const selectEdit = (item, el) => {
+		history.push({ state: el });
+		props.changeMode('edit');
+	};
+	const selectDisplay = (item, el) => {};
+	const selectDelete = (item, el) => {};
+	const selectLink = (item, el) => {};
+
 	const onMouseDown = (e) => {
 		if (
 			menuOpen !== 'close' &&
@@ -34,31 +79,27 @@ const ListTemplate = (props) => {
 		}
 	};
 
-	const list = [
-		{ title: '품생품사 회사소개 배너', img: banner1, display: 1 },
-		{ title: '품생품사 회사소개 배너', img: banner2, display: 1 },
-		{ title: '품생품사 회사소개 배너', img: banner3, display: 1 },
-		{ title: '품생품사 회사소개 배너', img: banner4, display: 0 },
-		{ title: '품생품사 회사소개 배너', img: banner5, display: 0 },
-		{ title: '품생품사 회사소개 배너', img: banner1, display: 0 },
-		{ title: '품생품사 회사소개 배너', img: banner2, display: 0 },
-		{ title: '품생품사 회사소개 배너', img: banner3, display: 0 },
-		{ title: '품생품사 회사소개 배너', img: banner4, display: 0 },
-	];
-
 	return (
 		<Container onMouseDown={onMouseDown}>
 			<Wrap>
 				{list.map((el, idx) => (
 					<List key={idx}>
-						<ListImgWrap display={el.display} style={props.imgHeight}>
+						<ListImgWrap display={el.display} style={imgHeight}>
 							{el.display === 1 && (
 								<ListState className='display'>DISPLAY1</ListState>
 							)}
-							<ListImg alt='banner img' src={el.img} />
+							<ListImg
+								alt='banner img'
+								src={`${IMG_ADDRESS}/${el.image}`}
+							/>
 						</ListImgWrap>
 						<ListBottom>
-							<ListTitle>{el.title}</ListTitle>
+							<ListTitle
+								onClick={() => {
+									goDetail(el);
+								}}>
+								{el.title}
+							</ListTitle>
 							<ListButtons>
 								<ListButton alt='button' src={left} />
 								<ListButton alt='button' src={right} />
@@ -71,13 +112,13 @@ const ListTemplate = (props) => {
 								/>
 								{menuOpen === idx && (
 									<ToggleMenus ref={menuSelect}>
-										{toggleMenu.map((el, idx) => (
+										{toggleMenu.map((item, idx) => (
 											<ToggleMenu
 												key={idx}
-												onClick={(e) => {
-													selectMenuController(e);
+												onClick={() => {
+													selectMenuController(item, el);
 												}}>
-												{el}
+												{item}
 											</ToggleMenu>
 										))}
 									</ToggleMenus>
@@ -94,7 +135,7 @@ const ListTemplate = (props) => {
 export default ListTemplate;
 
 const Container = styled.div`
-	width: 118.4rem;
+	width: 119rem;
 	height: 71.15rem;
 	overflow-y: scroll;
 `;
@@ -126,6 +167,7 @@ const ListImgWrap = styled.div`
 	&:hover .display {
 		background-color: #5887ff;
 	}
+	${(props) => (props.main ? `height:16.9rem` : `height:11.3rem`)}
 	${(props) => props.display && `background-color:#2A3349`}
 `;
 const ListState = styled.p`
@@ -144,6 +186,7 @@ const ListState = styled.p`
 const ListImg = styled.img`
 	width: 100%;
 	height: 100%;
+	cursor: pointer;
 `;
 const ListBottom = styled.div`
 	display: flex;
@@ -154,6 +197,10 @@ const ListTitle = styled.p`
 	font-size: 1.2rem;
 	font-family: 'kr-b';
 	color: #5e667b;
+	cursor: pointer;
+	:hover {
+		text-decoration: underline;
+	}
 `;
 const ListButtons = styled.div`
 	display: flex;
@@ -163,6 +210,7 @@ const ListButton = styled.img`
 	width: 0.9rem;
 	height: 1.3rem;
 	margin-left: 0.6rem;
+	cursor: pointer;
 	:nth-child(1) {
 		margin: 0;
 	}
@@ -183,6 +231,7 @@ const ToggleMenu = styled.li`
 	font-family: 'kr-r';
 	color: #5e667b;
 	text-align: center;
+	cursor: pointer;
 	:hover {
 		background-color: #e5e6ed;
 	}

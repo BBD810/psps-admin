@@ -16,3 +16,7 @@ const errorMessage = () => {
 export const create = async (data) => {
 	return await instance.post('/', data).catch(errorMessage);
 };
+
+export const get_list = async (type) => {
+	return await instance.get(`/?type=${type}`).catch(errorMessage);
+};
