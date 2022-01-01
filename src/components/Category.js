@@ -9,12 +9,19 @@ const Category = (props) => {
 	useEffect(() => {
 		if (props.menu === '배너') {
 			setArr(data.bannerCategory);
-		} else if (props.menu === '회원') {
-			setArr(data.memberCategory);
+		} else if (props.menu === '공급원') {
+			setArr(data.supplierCategory);
 		} else if (props.menu === '상품') {
 			setArr(data.productCategory);
-		} else if (props.menu === '결제') {
+		}
+		// else if (props.menu === '상품 이미지') {
+		// }
+		else if (props.menu === '결제') {
 			setArr(data.paymentCategory);
+		} else if (props.menu === '회원') {
+			setArr(data.memberCategory);
+		} else if (props.menu === '통계') {
+			setArr(data.statisticsCategory);
 		}
 	}, [props.menu]);
 

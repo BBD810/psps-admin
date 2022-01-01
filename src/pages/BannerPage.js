@@ -62,11 +62,7 @@ const BannerPage = () => {
 					desc={desc}
 				/>
 				{!createMode && mode === 'list' && (
-					<ListTemplate
-						category={category}
-						changeMode={changeMode}
-						mode={mode}
-					/>
+					<ListTemplate category={category} changeMode={changeMode} />
 				)}
 				{!createMode && mode === 'detail' && (
 					<DetailTemplate
