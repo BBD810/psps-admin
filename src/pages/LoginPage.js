@@ -102,7 +102,6 @@ const LogoImg = styled.img`
 const Input = styled.input`
 	width: 46rem;
 	height: 5.6rem;
-	font-family: 'kr-r';
 	font-size: 2rem;
 	margin-bottom: 1.6rem;
 	padding: 0 1.5rem;
@@ -111,7 +110,6 @@ const Input = styled.input`
 const Button = styled.button`
 	width: 46rem;
 	height: 5.6rem;
-	font-family: 'kr-r';
 	font-size: 2.5rem;
 	color: #fff;
 	background: var(--unnamed-color-111a31) 0% 0% no-repeat padding-box;
@@ -122,7 +120,6 @@ const Button = styled.button`
 `;
 const Text = styled.p`
 	font-size: 2rem;
-	font-family: 'kr-r';
 	color: #e5e6ed;
 	position: absolute;
 	top: 32rem;

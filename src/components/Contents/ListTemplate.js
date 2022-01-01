@@ -42,11 +42,6 @@ const ListTemplate = (props) => {
 		history.push({ state: el });
 		props.changeMode('detail');
 	};
-	const goEdit = (el) => {
-		history.push({ state: el });
-		props.changeMode('edit');
-	};
-
 	const menuOpenController = (idx) => {
 		setMenuOpen(idx);
 	};
@@ -228,7 +223,6 @@ const ToggleMenu = styled.li`
 	height: 2.8rem;
 	line-height: 2.8rem;
 	font-size: 1.2rem;
-	font-family: 'kr-r';
 	color: #5e667b;
 	text-align: center;
 	cursor: pointer;

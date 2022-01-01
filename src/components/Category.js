@@ -94,7 +94,6 @@ const CurrentCategory = styled.p`
 	height: 1.9rem;
 	line-height: 1.9rem;
 	font-size: 1.3rem;
-	font-family: 'kr-r';
 	color: #5e667b;
 `;
 const SubtitleBox = styled.div`
@@ -115,6 +114,5 @@ const Desc = styled.p`
 	height: 3.2rem;
 	line-height: 1.6rem;
 	font-size: 1.2rem;
-	font-family: 'kr-r';
 	color: #5e667b;
 `;

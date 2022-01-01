@@ -292,14 +292,12 @@ const Subtitle = styled.p`
 	height: 1.6rem;
 	line-height: 1.6rem;
 	font-size: 1.1rem;
-	font-family: 'kr-r';
 	color: #5e667b;
 	${(props) => (props.active ? `opacity:1` : `opacity:0.4`)}
 `;
 const Desc = styled.p`
 	margin-bottom: 1.2rem;
 	font-size: 1rem;
-	font-family: 'kr-r';
 	color: #848ca2;
 `;
 const TypeSelectBox = styled.ul`
@@ -317,7 +315,6 @@ const TypeSelect = styled.li`
 	width: 50%;
 	height: 100%;
 	font-size: 1.4rem;
-	font-family: 'kr-r';
 	color: #5e667b;
 	border-radius: 4px;
 	cursor: pointer;
@@ -332,7 +329,6 @@ const Input = styled.input`
 	height: 3.1rem;
 	line-height: 3.1rem;
 	font-size: 1.2rem;
-	font-family: 'kr-r';
 	color: #7f8697;
 	padding: 0 1rem;
 	background-color: #f4f4f4;
@@ -362,7 +358,6 @@ const ItemSelected = styled.div`
 const ItemText = styled.p`
 	width: 100%;
 	font-size: 1.2rem;
-	font-family: 'kr-r';
 	color: #7f8697;
 `;
 const ItemSelectImg = styled.img`

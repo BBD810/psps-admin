@@ -26,7 +26,6 @@ const FooterText = styled.p`
 	height: 1.7rem;
 	line-height: 1.7rem;
 	font-size: 1.2rem;
-	font-family: 'kr-r';
 	color: #a8b0c3;
 	letter-spacing: -0.24px;
 	text-align: center;
