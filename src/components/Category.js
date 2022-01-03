@@ -4,7 +4,9 @@ import * as data from '../data/arr';
 
 const Category = (props) => {
 	const [arr, setArr] = useState(data.bannerCategory);
-	const [info, setInfo] = useState({});
+	const [info, setInfo] = useState(false);
+	const [title, setTitle] = useState(false);
+	const [desc, setDesc] = useState(false);
 
 	useEffect(() => {
 		if (props.menu === '배너') {
@@ -23,19 +25,34 @@ const Category = (props) => {
 		} else if (props.menu === '통계') {
 			setArr(data.statisticsCategory);
 		}
-	}, [props.menu]);
+		for (let i = 0; i < arr.length; i++) {
+			if (props.category === arr[i].item) {
+				setInfo(arr[i]);
+				break;
+			}
+		}
+	}, [props.menu, props.category]);
 
 	useEffect(() => {
 		props.getCategory(arr[0].item);
 	}, [arr]);
 
 	useEffect(() => {
-		for (let i = 0; i < arr.length; i++) {
-			if (props.category === arr[i].item) {
-				return setInfo(arr[i]);
-			}
+		let _title;
+		let _desc;
+		if (props.mode === 'list') {
+			_title = info.list_title;
+			_desc = info.list_desc;
+		} else if (props.mode === 'detail') {
+			_title = info.detail_title;
+			_desc = info.detail_title;
+		} else if (props.menu === 'edit') {
+			_title = info.edit_title;
+			_desc = info.edit_desc;
 		}
-	}, [props.category]);
+		setTitle(_title);
+		setDesc(_desc);
+	}, [props.mode, props.category, info]);
 
 	const categoryController = (e) => {
 		props.getCategory(e.target.innerText);
@@ -59,8 +76,8 @@ const Category = (props) => {
 				</CurrentCategory>
 			</TitleBox>
 			<SubtitleBox>
-				<Subtitle>{props.title}</Subtitle>
-				<Desc>{props.desc}</Desc>
+				<Subtitle>{title && title}</Subtitle>
+				<Desc>{desc && desc}</Desc>
 			</SubtitleBox>
 		</CategoryContainer>
 	);

@@ -3,7 +3,7 @@ export const bannerCategory = [
 		item: '메인 배너',
 		list_title: '메인 배너 목록',
 		list_desc: `메인 배너를 조회 및 수정합니다.\n첫번째부터 세번째 이미지는 홈페이지에 노출됩니다.`,
-		detail_title: 'detail',
+		detail_title: '메인 배너 상세조회',
 		detail_desc: '해당 배너의 정보를 조회, 수정 및 삭제합니다.',
 		edit_title: '수정하기',
 		edit_desc: '배너의 제목과 이미지를 수정합니다',
@@ -12,7 +12,7 @@ export const bannerCategory = [
 		item: '광고 배너',
 		list_title: '광고 배너 목록',
 		list_desc: `광고 배너를 조회 및 수정합니다.\n첫번째 이미지는 홈페이지에 노출됩니다.`,
-		detail_title: '',
+		detail_title: '광고 배너 상세조회',
 		detail_desc: '해당 배너의 정보를 조회, 수정 및 삭제합니다.',
 		edit_title: '수정하기',
 		edit_desc: '배너의 제목과 이미지를 수정합니다',
@@ -25,19 +25,9 @@ export const bannerCategory = [
 ];
 export const supplierCategory = [
 	{
-		title: '메인 공급원',
+		item: '공급원 목록',
 		subtitle: '메인 배너 목록',
 		desc: `메인 배너를 조회 및 수정합니다.\n첫번째부터 세번째 이미지는 홈페이지에 노출됩니다.`,
-	},
-	{
-		title: '광고 공급원',
-		subtitle: '광고 배너 목록',
-		desc: `광고 배너를 조회 및 수정합니다.\n첫번째 이미지는 홈페이지에 노출됩니다.`,
-	},
-	{
-		title: '공급원 추가',
-		subtitle: '새 배너 추가하기',
-		desc: `메인 배너 혹은 광고 배너를 새로 등록합니다.`,
 	},
 ];
 export const productCategory = [

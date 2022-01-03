@@ -25,8 +25,16 @@ export const get_list = async (type) => {
 	return await instance.get(`/?type=${type}`).catch(errorMessage);
 };
 
-export const get_display_list = async (boolean) => {
-	// return await instance.delete
+export const get_display_list = async (type, boolean) => {
+	return await instance
+		.get(`/?type=${type}&display=${boolean}`)
+		.catch(errorMessage);
+};
+
+export const change_display = async (banner_id) => {
+	return await instance
+		.get(`/display/?banner_id=${banner_id}`)
+		.catch(errorMessage);
 };
 
 export const get_detail = async (banner_id) => {

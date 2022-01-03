@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { IMG_ADDRESS } from '../../config';
+import { transformNumToStr } from '../../functions/TransformNumToStr';
 import * as banner from '../../controller/banner';
 import styled from 'styled-components';
 
@@ -8,13 +9,13 @@ const DetailTemplate = (props) => {
 	const history = useHistory();
 	const [banner_id, setBanner_id] = useState('');
 	const [imgHeight, setImgHeight] = useState({});
-	const [detail, setDetail] = useState({});
 	const [displayList, setDisplayList] = useState(false);
+	const [detail, setDetail] = useState({});
+	const [displayState, setDisplayState] = useState('');
 
 	useEffect(() => {
 		let isSubscribed = true;
-		let type;
-		console.log(history.location.state);
+		let type = props.category.substr(0, 2);
 		if (props.category === '메인 배너') {
 			setImgHeight({ height: '52.3rem' });
 		} else if (props.category === '광고 배너') {
@@ -26,23 +27,62 @@ const DetailTemplate = (props) => {
 				setBanner_id(history.location.state);
 			}
 		});
+		banner.get_display_list(type, true).then((res) => {
+			if (isSubscribed && res.data.success) {
+				setDisplayList(res.data.banner_list);
+			}
+		});
+
 		return () => {
 			isSubscribed = false;
 		};
 	}, []);
 
+	useEffect(() => {
+		if (displayList) {
+			for (let i = 0; i < displayList.length; i++) {
+				if (displayList[i].banner_id === detail.banner_id) {
+					return setDisplayState(
+						transformNumToStr(i + 1) + '번째로 노출 중'
+					);
+				} else {
+					setDisplayState('노출되지 않음');
+				}
+			}
+		}
+	}, [displayList]);
+
 	const selectEdit = () => {
-		console.log(banner_id);
+		// console.log(banner_id);
 	};
 	const selectDisplay = () => {
-		console.log(detail);
-		if (detail.display === 1) {
+		if (detail.display === 1 && displayList.length === 1) {
+			return alert('최소 한 개의 배너는 노출중이어야 합니다.');
+		} else if (detail.display === 0 && displayList.length === 3) {
+			return alert(
+				'배너는 최대 세 개만 노출이 가능합니다.\n교환할 배너를 선택해주세요.'
+			);
+		} else {
+			goDisplay();
 		}
-
-		alert('노출여부 변경 버튼');
 	};
+	const goDisplay = () => {
+		if (window.confirm('해당 배너의 노출상태를 변경하시겠습니까?')) {
+			banner.change_display(banner_id).then((res) => {
+				if (res.data.success) {
+					alert('변경되었습니다.');
+					props.changeMode('list');
+				}
+			});
+		}
+	};
+
+	console.log('aaa', displayState);
+
 	const selectDelete = () => {
-		if (window.confirm('삭제하시겠습니까?')) {
+		if (detail.display === 1 && displayList.length < 2) {
+			alert('최소 한 개의 배너는 노출중이어야 합니다. ');
+		} else if (window.confirm('삭제하시겠습니까?')) {
 			banner.remove(banner_id).then((res) => {
 				if (res.data.success) {
 					alert('삭제되었습니다.');
@@ -73,7 +113,7 @@ const DetailTemplate = (props) => {
 				</DetailContents>
 				<DetailContents>
 					<DetailTitle>노출상태</DetailTitle>
-					<DetailDesc>{detail.title}</DetailDesc>
+					<DetailDesc>{displayState && displayState}</DetailDesc>
 				</DetailContents>
 			</DetailContentsBox>
 			<Buttons>

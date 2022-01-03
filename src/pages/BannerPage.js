@@ -56,6 +56,7 @@ const BannerPage = () => {
 				<Category
 					getCategory={getCategory}
 					category={category}
+					mode={mode}
 					menu={menu}
 					title={title}
 					desc={desc}

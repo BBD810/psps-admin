@@ -33,10 +33,13 @@ const ListTemplate = (props) => {
 				}
 			}
 		});
+
 		return () => {
 			isSubscribed = false;
 		};
 	}, [props.category]);
+
+	console.log('list', list);
 
 	const goDetail = (el) => {
 		history.push({ state: el.banner_id });
