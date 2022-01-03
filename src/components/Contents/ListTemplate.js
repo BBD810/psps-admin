@@ -39,7 +39,7 @@ const ListTemplate = (props) => {
 	}, [props.category]);
 
 	const goDetail = (el) => {
-		history.push({ state: el });
+		history.push({ state: el.banner_id });
 		props.changeMode('detail');
 	};
 	const menuOpenController = (idx) => {
@@ -127,7 +127,7 @@ const ListTemplate = (props) => {
 	);
 };
 
-export default ListTemplate;
+export default withRouter(ListTemplate);
 
 const Container = styled.div`
 	width: 119rem;

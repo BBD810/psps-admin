@@ -18,7 +18,6 @@ const BannerPage = () => {
 	const [desc, setDesc] = useState('');
 
 	useEffect(() => {
-		console.log(mode);
 		for (let i = 0; i < bannerCategory.length; i++) {
 			if (bannerCategory[i].item === category) {
 				setInfo(bannerCategory[i]);

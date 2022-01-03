@@ -40,7 +40,6 @@ const Category = (props) => {
 	const categoryController = (e) => {
 		props.getCategory(e.target.innerText);
 	};
-	console.log(props);
 
 	return (
 		<CategoryContainer>

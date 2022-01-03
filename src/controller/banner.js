@@ -17,6 +17,20 @@ export const create = async (data) => {
 	return await instance.post('/', data).catch(errorMessage);
 };
 
+export const remove = async (banner_id) => {
+	return await instance.delete(`/?banner_id=${banner_id}`).catch(errorMessage);
+};
+
 export const get_list = async (type) => {
 	return await instance.get(`/?type=${type}`).catch(errorMessage);
+};
+
+export const get_display_list = async (boolean) => {
+	// return await instance.delete
+};
+
+export const get_detail = async (banner_id) => {
+	return await instance
+		.get(`/detail/?banner_id=${banner_id}`)
+		.catch(errorMessage);
 };
