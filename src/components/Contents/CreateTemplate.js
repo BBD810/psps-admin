@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { transformToLink } from '../../functions/TransformToLink';
 import { extension } from '../../data/extension';
+import { IMG_ADDRESS } from '../../config';
 import * as link from '../../data/link';
 import * as banner from '../../controller/banner';
 import styled from 'styled-components';
@@ -8,49 +8,63 @@ import down from '../../images/angle-down.svg';
 
 const CreateTemplate = (props) => {
 	const pageSelect = useRef();
-	const partitionSelect = useRef();
-	const subPartitionSelect = useRef();
-	const pageInit = '페이지를 선택해주세요.';
-	const partitionInit = '대분류를 선택해주세요.';
-	const subPartitionInit = '소분류를 선택해주세요.';
+	const partSelect = useRef();
+	const subPartSelect = useRef();
 	const types = ['메인', '광고'];
 	const [type, setType] = useState('메인');
-	const [title, setTitle] = useState('');
-	const [page, setPage] = useState(pageInit);
-	const [partition, setPartition] = useState(partitionInit);
-	const [subPartition, setSubPartition] = useState(subPartitionInit);
-	const [product_id, setProduct_id] = useState('');
+	const [title, setTitle] = useState(false);
+	const [page, setPage] = useState(false);
+	const [part, setPart] = useState(false);
+	const [subPart, setSubPart] = useState(false);
+	const [product_id, setProduct_id] = useState(false);
 	const [img, setImg] = useState(false);
 	const [prevImg, setPrevImg] = useState(false);
-	const [openSelect, setOpenSelect] = useState(0);
+	const [openSelect, setOpenSelect] = useState(false);
 	const [check, setCheck] = useState(false);
-	const [subPartitionList, setSubPartitionList] = useState(
-		link.partition[0].arr
-	);
+	const [subPartList, setSubPartList] = useState(link.part[0].arr);
+	const editMode = props.mode === 'edit';
 
 	useEffect(() => {
-		setPartition(partitionInit);
-		setProduct_id('');
-	}, [page]);
-
-	useEffect(() => {
-		setSubPartition(subPartitionInit);
-		for (let i = 0; i < link.partition.length; i++) {
-			if (link.partition[i].title === partition) {
-				return setSubPartitionList(link.partition[i].arr);
+		if (props.mode === 'edit') {
+			setType(props.input.type);
+			setTitle(props.input.title);
+			setPage(props.input.page);
+			if (props.input.page === '상품 카테고리') {
+				setPart(props.input.part);
+				setSubPart(props.input.subPart);
+			}
+			if (props.input.page === '상품 상세보기') {
+				setProduct_id(props.input.product_id);
 			}
 		}
-	}, [partition]);
+	}, [props.mode, props.input]);
+
+	// useEffect(() => {
+	// 	setPart(false);
+	// 	setProduct_id(false);
+	// }, [page]);
+
 	useEffect(() => {
-		if (title && img && page !== pageInit) {
+		setSubPart(false);
+		for (let i = 0; i < link.part.length; i++) {
+			if (link.part[i].title === part) {
+				return setSubPartList(link.part[i].arr);
+			}
+		}
+	}, [part]);
+
+	console.log('aaaaa', subPart);
+
+	useEffect(() => {
+		if (title && img && page !== false) {
 			if (page === '상품 카테고리') {
-				if (subPartition !== subPartitionInit) {
+				if (subPart !== false) {
 					setCheck(true);
 				} else {
 					setCheck(false);
 				}
 			} else if (page === '상품 상세보기') {
-				if (product_id !== '') {
+				if (product_id !== false) {
 					setCheck(true);
 				} else {
 					setCheck(false);
@@ -61,7 +75,7 @@ const CreateTemplate = (props) => {
 		} else {
 			setCheck(false);
 		}
-	}, [title, img, page, subPartition, product_id]);
+	}, [title, img, page, subPart, product_id]);
 
 	const typeController = (e) => {
 		setType(e.target.innerText);
@@ -73,12 +87,12 @@ const CreateTemplate = (props) => {
 		setPage(e.target.innerText);
 		setOpenSelect(0);
 	};
-	const partitionController = (e) => {
-		setPartition(e.target.innerText);
+	const partController = (e) => {
+		setPart(e.target.innerText);
 		setOpenSelect(0);
 	};
-	const subPartitionController = (e) => {
-		setSubPartition(e.target.innerText);
+	const subPartController = (e) => {
+		setSubPart(e.target.innerText);
 		setOpenSelect(0);
 	};
 	const ProductIdController = (e) => {
@@ -95,16 +109,23 @@ const CreateTemplate = (props) => {
 			setImg(file[0]);
 		}
 	};
+
 	const onMouseDown = (e) => {
 		if (
 			openSelect !== 0 &&
 			(!pageSelect.current || !pageSelect.current.contains(e.target)) &&
-			(!partitionSelect.current ||
-				!partitionSelect.current.contains(e.target)) &&
-			(!subPartitionSelect.current ||
-				!subPartitionSelect.current.contains(e.target))
+			(!partSelect.current || !partSelect.current.contains(e.target)) &&
+			(!subPartSelect.current || !subPartSelect.current.contains(e.target))
 		) {
 			setOpenSelect(0);
+		}
+	};
+	const onSubmit = (e) => {
+		const innerText = e.target.innerText;
+		if (innerText === '추가하기') {
+			onCreate();
+		} else if (innerText === '저장하기') {
+			onEdit();
 		}
 	};
 	const onCreate = () => {
@@ -115,14 +136,10 @@ const CreateTemplate = (props) => {
 			formData.append('image', img);
 			formData.append('type', type);
 			formData.append('title', title);
-			formData.append('page', transformToLink(page));
-			if (page === '상품 카테고리') {
-				formData.append('partition', partition);
-				formData.append('subPartition', subPartition);
-			}
-			if (page === '상품 상세보기') {
-				formData.append('product_id', product_id);
-			}
+			formData.append('page', page);
+			formData.append('part', part);
+			formData.append('subPart', subPart);
+			formData.append('product_id', product_id);
 			banner.create(formData).then((res) => {
 				if (res.data.success) {
 					alert('배너가 추가되었습니다.');
@@ -136,8 +153,45 @@ const CreateTemplate = (props) => {
 		}
 	};
 
-	const partitionActive = page === '상품 카테고리';
-	const subPartitionActive = partition !== '대분류를 선택해주세요.';
+	const onEdit = () => {
+		if (!check) {
+			return alert('빠진 내용을 입력해주세요.');
+		} else {
+			if (img) {
+				const formData = new FormData();
+				formData.append('image', img);
+				formData.append('type', type);
+				formData.append('title', title);
+				formData.append('page', page);
+				formData.append('part', part);
+				formData.append('subPart', subPart);
+				formData.append('product_id', product_id);
+				banner.edit(formData, props.input.banner_id, true).then((res) => {
+					if (res.data.success) {
+						successEdit();
+					}
+				});
+			} else {
+				const data = { type, title, page, part, subPart, product_id };
+				banner.edit(data, props.input.banner_id, false).then((res) => {
+					if (res.data.success) {
+						successEdit();
+					}
+				});
+			}
+		}
+		const successEdit = () => {
+			alert('수정되었습니다.');
+			props.changeMode('list');
+		};
+	};
+
+	const pageInit = '페이지를 선택해주세요.';
+	const partInit = '대분류를 선택해주세요.';
+	const subPartInit = '소분류를 선택해주세요.';
+
+	const partActive = page === '상품 카테고리';
+	const subPartActive = part !== false;
 	const detailActive = page === '상품 상세보기';
 
 	return (
@@ -150,14 +204,14 @@ const CreateTemplate = (props) => {
 						<TypeSelect
 							key={idx}
 							select={type === el}
-							onClick={typeController}>
+							onClick={editMode ? null : typeController}>
 							{el}
 						</TypeSelect>
 					))}
 				</TypeSelectBox>
 				<Title>제목</Title>
 				<Input
-					value={title}
+					defaultValue={title ? title : null}
 					placeholder='제목을 입력해주세요.(최대 45자)'
 					onChange={titleController}
 				/>
@@ -170,12 +224,14 @@ const CreateTemplate = (props) => {
 							onClick={() => {
 								setOpenSelect(1);
 							}}>
-							<ItemText>{page}</ItemText>
+							<ItemText>{page ? page : pageInit}</ItemText>
 							<ItemSelectImg alt='select button' src={down} />
 						</ItemSelected>
 					) : (
 						<ItemSelectWrap ref={pageSelect}>
-							<ItemSelectList onClick={onClick}>{page}</ItemSelectList>
+							<ItemSelectList onClick={onClick}>
+								{page ? page : pageInit}
+							</ItemSelectList>
 							{link.page.map((el, idx) => (
 								<ItemSelectList key={idx} onClick={pageController}>
 									{el}
@@ -184,48 +240,46 @@ const CreateTemplate = (props) => {
 						</ItemSelectWrap>
 					)}
 				</Item>
-				<Item active={partitionActive}>
+				<Item active={partActive}>
 					<Subtitle>카테고리 - 대분류</Subtitle>
 					{openSelect !== 2 ? (
 						<ItemSelected
 							onClick={() => {
 								page === '상품 카테고리' && setOpenSelect(2);
 							}}>
-							<ItemText>{partition}</ItemText>
+							<ItemText>{part ? part : partInit}</ItemText>
 							<ItemSelectImg alt='select button' src={down} />
 						</ItemSelected>
 					) : (
-						<ItemSelectWrap ref={partitionSelect}>
+						<ItemSelectWrap ref={partSelect}>
 							<ItemSelectList onClick={onClick}>
-								{partition}
+								{part ? part : partInit}
 							</ItemSelectList>
-							{link.partition.map((el, idx) => (
-								<ItemSelectList key={idx} onClick={partitionController}>
+							{link.part.map((el, idx) => (
+								<ItemSelectList key={idx} onClick={partController}>
 									{el.title}
 								</ItemSelectList>
 							))}
 						</ItemSelectWrap>
 					)}
 				</Item>
-				<Item active={subPartitionActive}>
+				<Item active={subPartActive}>
 					<Subtitle>카테고리 - 소분류</Subtitle>
 					{openSelect !== 3 ? (
 						<ItemSelected
 							onClick={() => {
-								partition !== partitionInit && setOpenSelect(3);
+								part !== false && setOpenSelect(3);
 							}}>
-							<ItemText>{subPartition}</ItemText>
+							<ItemText>{subPart ? subPart : subPartInit}</ItemText>
 							<ItemSelectImg alt='select button' src={down} />
 						</ItemSelected>
 					) : (
-						<ItemSelectWrap ref={subPartitionSelect}>
+						<ItemSelectWrap ref={subPartSelect}>
 							<ItemSelectList onClick={onClick}>
-								{subPartition}
+								{subPart ? subPart : subPartInit}
 							</ItemSelectList>
-							{subPartitionList.map((el, idx) => (
-								<ItemSelectList
-									key={idx}
-									onClick={subPartitionController}>
+							{subPartList.map((el, idx) => (
+								<ItemSelectList key={idx} onClick={subPartController}>
 									{el}
 								</ItemSelectList>
 							))}
@@ -235,7 +289,7 @@ const CreateTemplate = (props) => {
 				<Item active={detailActive}>
 					<Subtitle>상품</Subtitle>
 					<Input
-						value={product_id}
+						defaultValue={product_id ? product_id : null}
 						disabled={page !== '상품 상세보기'}
 						placeholder='상품의 코드를 입력해주세요.'
 						onChange={ProductIdController}
@@ -246,7 +300,15 @@ const CreateTemplate = (props) => {
 				<Title>이미지</Title>
 				<Desc>{`메인 배너 사이즈 : 1920px ✕ 850px\n광고 배너 사이즈 : 1200px ✕ 350px`}</Desc>
 				<UploadImgBox>
-					{prevImg && <UploadImg alt='이미지 업로드' src={prevImg} />}
+					{!editMode && prevImg && (
+						<UploadImg alt='img upload' src={prevImg} />
+					)}
+					{editMode && (
+						<UploadImg
+							alt='img upload'
+							src={`${IMG_ADDRESS}/${props.input.image}`}
+						/>
+					)}
 				</UploadImgBox>
 				<UploadButtonBox>
 					<Button>업로드</Button>
@@ -259,8 +321,8 @@ const CreateTemplate = (props) => {
 				<Button
 					add
 					style={check ? { opacity: '1' } : { opacity: '0.4' }}
-					onClick={onCreate}>
-					추가하기
+					onClick={onSubmit}>
+					{props.mode === 'edit' ? '저장하기' : '추가하기'}
 				</Button>
 			</Right>
 		</Container>

@@ -39,8 +39,6 @@ const ListTemplate = (props) => {
 		};
 	}, [props.category]);
 
-	console.log('list', list);
-
 	const goDetail = (el) => {
 		history.push({ state: el.banner_id });
 		props.changeMode('detail');
@@ -61,7 +59,7 @@ const ListTemplate = (props) => {
 		setMenuOpen('close');
 	};
 	const selectEdit = (item, el) => {
-		history.push({ state: el });
+		history.push({ state: el.banner_id });
 		props.changeMode('edit');
 	};
 	const selectDisplay = (item, el) => {};
@@ -82,7 +80,10 @@ const ListTemplate = (props) => {
 			<Wrap>
 				{list.map((el, idx) => (
 					<List key={idx}>
-						<ListImgWrap display={el.display} style={imgHeight}>
+						<ListImgWrap
+							display={el.display}
+							style={imgHeight}
+							onClick={() => goDetail(el)}>
 							{el.display === 1 && (
 								<ListState className='display'>DISPLAY1</ListState>
 							)}

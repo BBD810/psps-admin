@@ -53,7 +53,8 @@ const DetailTemplate = (props) => {
 	}, [displayList]);
 
 	const selectEdit = () => {
-		// console.log(banner_id);
+		history.push({ state: banner_id });
+		props.changeMode('edit');
 	};
 	const selectDisplay = () => {
 		if (detail.display === 1 && displayList.length === 1) {
@@ -76,8 +77,6 @@ const DetailTemplate = (props) => {
 			});
 		}
 	};
-
-	console.log('aaa', displayState);
 
 	const selectDelete = () => {
 		if (detail.display === 1 && displayList.length < 2) {

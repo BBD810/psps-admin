@@ -7,7 +7,7 @@ export const page = [
 	'회원가입',
 	'로그인',
 ];
-export const partition = [
+export const part = [
 	{
 		title: '농산',
 		arr: [

@@ -77,9 +77,10 @@ const BannerPage = () => {
 					<EditTemplate
 						category={category}
 						changeMode={changeMode}
-						mode={mode}>
-						수정하기
-					</EditTemplate>
+						mode={mode}
+						title={title}
+						desc={desc}
+					/>
 				)}
 				{createMode && (
 					<CreateTemplate getCategory={getCategory} category={category} />

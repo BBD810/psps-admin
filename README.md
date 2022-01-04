@@ -1,5 +1,14 @@
 ## Progress & Update
 
+> 2021.01.04
+
+-  배너 수정하기 기능 추가
+
+**기존에 배너 추가 시 배너 클릭 링크 위해서 서버-DB에서 'link=/product/product_id' 의 형태로 보관하던 방식에서 partition, product_id 등 항목별로 나눠서 보관하는 방식으로 변경**
+**partition은 DB 예약어 이므로 part로 변경**
+
+---
+
 > 2022.01.03
 
 -  배너 상세조회, 삭제하기 기능 추가
