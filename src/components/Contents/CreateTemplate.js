@@ -22,6 +22,7 @@ const CreateTemplate = (props) => {
 	const [openSelect, setOpenSelect] = useState(false);
 	const [check, setCheck] = useState(false);
 	const [subPartList, setSubPartList] = useState(link.part[0].arr);
+
 	const editMode = props.mode === 'edit';
 
 	useEffect(() => {
@@ -120,7 +121,7 @@ const CreateTemplate = (props) => {
 	};
 	const onCreate = () => {
 		if (!check) {
-			return alert('부족한 내용을 확인해주세요.');
+			alert('부족한 내용을 확인해주세요.');
 		} else {
 			const formData = new FormData();
 			formData.append('image', img);
@@ -326,11 +327,11 @@ const Container = styled.div`
 	height: 71.15rem;
 	padding: 3.05rem 0 0 0;
 	display: flex;
+	position: relative;
 `;
 const Left = styled.div`
 	width: 50%;
 	height: 100%;
-	/* position: relative; */
 `;
 const Title = styled.h4`
 	height: 1.9rem;

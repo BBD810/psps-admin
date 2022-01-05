@@ -4,6 +4,8 @@ import { IMG_ADDRESS } from '../../config';
 import { transformNumToStr } from '../../functions/TransformNumToStr';
 import * as banner from '../../controller/banner';
 import styled from 'styled-components';
+import ConfirmModal from '../Modal/ConfirmModal';
+import SelectModal from '../Modal/SelectModal';
 
 const DetailTemplate = (props) => {
 	const history = useHistory();
@@ -12,6 +14,7 @@ const DetailTemplate = (props) => {
 	const [displayList, setDisplayList] = useState(false);
 	const [detail, setDetail] = useState({});
 	const [displayState, setDisplayState] = useState('');
+	const [modal, setModal] = useState({ confirm: true, select: false });
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -58,9 +61,9 @@ const DetailTemplate = (props) => {
 	};
 	const selectDisplay = () => {
 		if (detail.display === 1 && displayList.length === 1) {
-			return alert('최소 한 개의 배너는 노출중이어야 합니다.');
+			alert('최소 한 개의 배너는 노출중이어야 합니다.');
 		} else if (detail.display === 0 && displayList.length === 3) {
-			return alert(
+			alert(
 				'배너는 최대 세 개만 노출이 가능합니다.\n교환할 배너를 선택해주세요.'
 			);
 		} else {
@@ -120,6 +123,8 @@ const DetailTemplate = (props) => {
 				<Button onClick={selectDisplay}>노출변경</Button>
 				<Button onClick={selectEdit}>수정하기</Button>
 			</Buttons>
+			{modal.confirm && <ConfirmModal />}
+			{modal.select && <SelectModal />}
 		</Container>
 	);
 };

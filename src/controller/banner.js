@@ -49,6 +49,10 @@ export const change_display = async (banner_id) => {
 		.catch(errorMessage);
 };
 
+export const replace_display = async (arr) => {
+	return await instance.patch('/display', arr).catch(errorMessage);
+};
+
 export const get_detail = async (banner_id) => {
 	return await instance
 		.get(`/detail/?banner_id=${banner_id}`)
