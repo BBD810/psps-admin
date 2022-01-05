@@ -15,7 +15,13 @@ const EditTemplate = (props) => {
 		});
 	}, []);
 
-	return <CreateTemplate mode={props.mode} input={input} />;
+	return (
+		<CreateTemplate
+			changeMode={props.changeMode}
+			mode={props.mode}
+			input={input}
+		/>
+	);
 };
 
 export default withRouter(EditTemplate);

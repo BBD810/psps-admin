@@ -25,6 +25,15 @@ const CreateTemplate = (props) => {
 	const editMode = props.mode === 'edit';
 
 	useEffect(() => {
+		if (part) {
+			for (let i = 0; i < link.part.length; i++) {
+				if (link.part[i].title === part) {
+					return setSubPartList(link.part[i].arr);
+				}
+			}
+		}
+	}, [part]);
+	useEffect(() => {
 		if (props.mode === 'edit') {
 			setType(props.input.type);
 			setTitle(props.input.title);
@@ -32,43 +41,21 @@ const CreateTemplate = (props) => {
 			if (props.input.page === '상품 카테고리') {
 				setPart(props.input.part);
 				setSubPart(props.input.subPart);
-			}
-			if (props.input.page === '상품 상세보기') {
+			} else if (props.input.page === '상품 상세보기') {
 				setProduct_id(props.input.product_id);
 			}
 		}
 	}, [props.mode, props.input]);
 
-	// useEffect(() => {
-	// 	setPart(false);
-	// 	setProduct_id(false);
-	// }, [page]);
-
 	useEffect(() => {
-		setSubPart(false);
-		for (let i = 0; i < link.part.length; i++) {
-			if (link.part[i].title === part) {
-				return setSubPartList(link.part[i].arr);
-			}
-		}
-	}, [part]);
-
-	console.log('aaaaa', subPart);
-
-	useEffect(() => {
-		if (title && img && page !== false) {
+		if (
+			(!editMode && title && img && page !== false) ||
+			(editMode && title && page !== false)
+		) {
 			if (page === '상품 카테고리') {
-				if (subPart !== false) {
-					setCheck(true);
-				} else {
-					setCheck(false);
-				}
+				subPart ? setCheck(true) : setCheck(false);
 			} else if (page === '상품 상세보기') {
-				if (product_id !== false) {
-					setCheck(true);
-				} else {
-					setCheck(false);
-				}
+				product_id ? setCheck(true) : setCheck(false);
 			} else {
 				setCheck(true);
 			}
@@ -88,7 +75,10 @@ const CreateTemplate = (props) => {
 		setOpenSelect(0);
 	};
 	const partController = (e) => {
-		setPart(e.target.innerText);
+		if (part !== e.target.innerText) {
+			setPart(e.target.innerText);
+			setSubPart(false);
+		}
 		setOpenSelect(0);
 	};
 	const subPartController = (e) => {
@@ -130,7 +120,7 @@ const CreateTemplate = (props) => {
 	};
 	const onCreate = () => {
 		if (!check) {
-			return alert('빠진 내용을 입력해주세요.');
+			return alert('부족한 내용을 확인해주세요.');
 		} else {
 			const formData = new FormData();
 			formData.append('image', img);
@@ -152,10 +142,9 @@ const CreateTemplate = (props) => {
 			});
 		}
 	};
-
 	const onEdit = () => {
 		if (!check) {
-			return alert('빠진 내용을 입력해주세요.');
+			return alert('부족한 내용을 확인해주세요.');
 		} else {
 			if (img) {
 				const formData = new FormData();
@@ -191,7 +180,6 @@ const CreateTemplate = (props) => {
 	const subPartInit = '소분류를 선택해주세요.';
 
 	const partActive = page === '상품 카테고리';
-	const subPartActive = part !== false;
 	const detailActive = page === '상품 상세보기';
 
 	return (
@@ -263,12 +251,14 @@ const CreateTemplate = (props) => {
 						</ItemSelectWrap>
 					)}
 				</Item>
-				<Item active={subPartActive}>
+				<Item active={partActive}>
 					<Subtitle>카테고리 - 소분류</Subtitle>
 					{openSelect !== 3 ? (
 						<ItemSelected
 							onClick={() => {
-								part !== false && setOpenSelect(3);
+								!part
+									? alert('대분류를 먼저 선택해주세요.')
+									: setOpenSelect(3);
 							}}>
 							<ItemText>{subPart ? subPart : subPartInit}</ItemText>
 							<ItemSelectImg alt='select button' src={down} />
@@ -303,7 +293,7 @@ const CreateTemplate = (props) => {
 					{!editMode && prevImg && (
 						<UploadImg alt='img upload' src={prevImg} />
 					)}
-					{editMode && (
+					{editMode && props.input.image && (
 						<UploadImg
 							alt='img upload'
 							src={`${IMG_ADDRESS}/${props.input.image}`}
