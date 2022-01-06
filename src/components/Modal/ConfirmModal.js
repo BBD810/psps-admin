@@ -2,23 +2,18 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const ConfirmModal = (props) => {
-	const [show, setShow] = useState(false);
-
 	useEffect(() => {
-		setShow(true);
-		return () => {
-			setShow(false);
-		};
+		return () => {};
 	}, []);
+
+	const onClick = () => {
+		props.modalController('');
+	};
+
 	return (
-		<Container show={show}>
-			<Text>{`최소\n한개의 배너`}</Text>
-			<Button
-				onClick={() => {
-					setShow(!show);
-				}}>
-				확인
-			</Button>
+		<Container>
+			<Text>{props.modal.text}</Text>
+			<Button onClick={onClick}>확인</Button>
 		</Container>
 	);
 };
@@ -33,17 +28,13 @@ const Container = styled.div`
 	flex-direction: column;
 	align-items: center;
 	position: fixed;
-	top: -41.1rem;
+	top: 10vh;
 	left: 50%;
-	transition: all 0.3s;
+	transform: translate(-50%, 50%);
 	z-index: 10;
 	border-radius: 4px;
 	background-color: #fff;
 	box-shadow: 0px 4px 30px #0000004d;
-	${(props) =>
-		props.show
-			? `transform:translate(-50%, -41.1rem)`
-			: `transform:translate(-50%, 50vh)`}
 `;
 const Text = styled.p`
 	height: 5.6rem;
