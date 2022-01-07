@@ -1,10 +1,20 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-const ConfirmModal = (props) => {
+const ListModal = (props) => {
 	const modalBox = useRef();
-	const onClick = () => {
-		props.modalController('');
+	const [list, setList] = useState([]);
+	const [selected, setSelected] = useState(false);
+
+	useEffect(() => {
+		setList(props.modal.list);
+	}, []);
+
+	const selectItem = (e) => {
+		setSelected(e);
+	};
+	const onSubmit = () => {
+		props.modalController({ type: '', act: 'replace', return: selected });
 	};
 	const onMouseDown = (e) => {
 		if (
@@ -14,17 +24,30 @@ const ConfirmModal = (props) => {
 			props.modalController({ type: '' });
 		}
 	};
+
 	return (
 		<Container onMouseDown={onMouseDown}>
 			<Wrap ref={modalBox}>
 				<Text>{props.modal.text}</Text>
-				<Button onClick={onClick}>확인</Button>
+				<Items>
+					{list.map((el, idx) => (
+						<Item
+							key={idx}
+							selected={selected === idx}
+							onClick={() => {
+								selectItem(idx);
+							}}>
+							{el.title}
+						</Item>
+					))}
+				</Items>
+				<Button onClick={onSubmit}>확인</Button>
 			</Wrap>
 		</Container>
 	);
 };
 
-export default ConfirmModal;
+export default ListModal;
 
 const Container = styled.div`
 	width: 100vw;
@@ -35,7 +58,7 @@ const Container = styled.div`
 `;
 const Wrap = styled.div`
 	width: 41.1rem;
-	height: 21.6rem;
+	height: 39rem;
 	padding: 3rem 0;
 	display: flex;
 	flex-direction: column;
@@ -56,12 +79,27 @@ const Text = styled.p`
 	font-family: 'kr-b';
 	color: #2a3349;
 	text-align: center;
+`;
+const Items = styled.ul`
+	width: 100%;
+	height: 13.2rem;
+	margin-top: 4.1rem;
 	margin-bottom: 5rem;
+`;
+const Item = styled.li`
+	width: 100%;
+	height: 4.4rem;
+	line-height: 4.4rem;
+	font-size: 1.6rem;
+	font-family: 'kr-r';
+	text-align: center;
+	cursor: pointer;
+	${(props) =>
+		props.selected ? `font-family:'kr-b'; color:#5887FF; ` : `color:#848CA2`}
 `;
 const Button = styled.button`
 	width: 10.6rem;
 	height: 3.1rem;
-	line-height: 3.1rem;
 	font-size: 1.2rem;
 	font-family: 'kr-b';
 	color: #fff;

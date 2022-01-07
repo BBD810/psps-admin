@@ -4,8 +4,6 @@ import { IMG_ADDRESS } from '../../config';
 import { transformNumToStr } from '../../functions/TransformNumToStr';
 import * as banner from '../../controller/banner';
 import styled from 'styled-components';
-import ConfirmModal from '../Modal/ConfirmModal';
-import SelectModal from '../Modal/SelectModal';
 
 const DetailTemplate = (props) => {
 	const history = useHistory();
@@ -14,18 +12,58 @@ const DetailTemplate = (props) => {
 	const [displayList, setDisplayList] = useState(false);
 	const [detail, setDetail] = useState({});
 	const [displayState, setDisplayState] = useState('');
-	const [modal, setModal] = useState({ type: '', text: '', return: '' });
-	const modalController = (res) => {
-		if (res === '') {
-			setModal({ ...modal, type: '' });
-		} else if (res === true || res === false) {
-			res
-				? setModal({ ...modal, type: '', return: true })
-				: setModal({ ...modal, type: '', return: false });
+
+	const selectEdit = () => {
+		history.push({ state: banner_id });
+		props.changeMode('edit');
+	};
+	const selectDisplay = () => {
+		if (detail.display === 1 && displayList.length === 1) {
+			return props.modalController({
+				type: 'confirm',
+				text: '최소 한 개의 배너는\n노출중이어야 합니다.',
+			});
+		} else if (detail.display === 0 && displayList.length === 3) {
+			return props.modalController({
+				type: 'list',
+				text: '배너는 최대 세 개만 노출이 가능합니다.\n교환할 배너를 선택해주세요.',
+				list: displayList,
+			});
+		} else {
+			goDisplay();
 		}
 	};
+	const goDisplay = () => {
+		props.modalController({
+			type: 'select',
+			text: '해당 배너의\n노출상태를 변경하시겠습니까?',
+			act: 'display',
+		});
+	};
 
-	console.log(modal);
+	const selectDelete = () => {
+		if (detail.display === 1) {
+			return props.modalController({
+				type: 'confirm',
+				text: '전시중인 배너는\n삭제할 수 없습니다.',
+			});
+		} else if (detail.display === 1 && displayList.length < 2) {
+			return props.modalController({
+				...props.modal,
+				type: 'confirm',
+				text: '최소 한 개의 배너는\n노출중이어야 합니다.',
+			});
+		} else {
+			goDelete();
+		}
+	};
+	const goDelete = () => {
+		props.modalController({
+			type: 'select',
+			text: '해당 배너를\n삭제하시겠습니까?',
+			act: 'delete',
+		});
+	};
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -66,74 +104,33 @@ const DetailTemplate = (props) => {
 		}
 	}, [displayList]);
 
-	const selectEdit = () => {
-		history.push({ state: banner_id });
-		props.changeMode('edit');
-	};
-	const selectDisplay = () => {
-		if (detail.display === 1 && displayList.length === 1) {
-			setModal({
-				...modal,
-				type: 'confirm',
-				text: '최소 한 개의 배너는\n노출중이어야 합니다.',
+	useEffect(() => {
+		let isSubscribed = true;
+		if (props.modal.act === 'display' && props.modal.return) {
+			banner.change_display(banner_id).then((res) => {
+				if (isSubscribed && res.data.success) {
+					props.changeMode('list');
+				}
 			});
-		} else if (detail.display === 0 && displayList.length === 3) {
-			// setModal({
-			// 	...modal,
-
-			// })
-			alert(
-				'배너는 최대 세 개만 노출이 가능합니다.\n교환할 배너를 선택해주세요.'
-			);
-		} else {
-			goDisplay();
-		}
-	};
-	const goDisplay = () => {
-		setModal({
-			...modal,
-			type: 'select',
-			text: '해당 배너의 노출상태를 변경하시겠습니까?',
-		});
-		// if(modal.type==='select' && modal.return){
-
-		// }
-		// if (window.confirm('해당 배너의 노출상태를 변경하시겠습니까?')) {
-		// 	banner.change_display(banner_id).then((res) => {
-		// 		if (res.data.success) {
-		// 			alert('변경되었습니다.');
-		// 			props.changeMode('list');
-		// 		}
-		// 	});
-		// }
-	};
-
-	const selectDelete = () => {
-		if (detail.display === 1 && displayList.length < 2) {
-			setModal({
-				...modal,
-				type: 'confirm',
-				text: '최소 한 개의 배너는\n노출중이어야 합니다.',
+		} else if (props.modal.act === 'delete' && props.modal.return) {
+			banner.remove(banner_id).then((res) => {
+				if (isSubscribed && res.data.success) {
+					props.changeMode('list');
+				}
 			});
-		} else {
-			setModal({ ...modal, type: 'select', text: '삭제하시겠습니까?' });
-			if (modal.return) {
-				console.log('삭제');
-				// banner.remove(banner_id).then((res) => {
-				// 	if (res.data.success) {
-				// 		setModal({
-				// 			...modal,
-				// 			type: 'confirm',
-				// 			text: '삭제되었습니다.',
-				// 		});
-				// 		props.changeMode('list');
-				// 	}
-				// });
-			} else if (!modal.return) {
-				console.log('삭제 안함');
-			}
+		} else if (props.modal.act === 'replace' && props.modal.return) {
+			const arr = [detail, displayList[props.modal.return]];
+			banner.replace_display(arr).then((res) => {
+				if (isSubscribed && res.data.success) {
+					props.changeMode('list');
+					props.modalController({ type: '' });
+				}
+			});
 		}
-	};
+		return () => {
+			isSubscribed = false;
+		};
+	}, [props.modal.type]);
 
 	return (
 		<Container>
@@ -162,12 +159,6 @@ const DetailTemplate = (props) => {
 				<Button onClick={selectDisplay}>노출변경</Button>
 				<Button onClick={selectEdit}>수정하기</Button>
 			</Buttons>
-			{modal.type === 'confirm' && (
-				<ConfirmModal modal={modal} modalController={modalController} />
-			)}
-			{modal.type === 'select' && (
-				<SelectModal modal={modal} modalController={modalController} />
-			)}
 		</Container>
 	);
 };

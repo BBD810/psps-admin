@@ -8,6 +8,9 @@ import ListTemplate from '../components/Contents/ListTemplate';
 import CreateTemplate from '../components/Contents/CreateTemplate';
 import DetailTemplate from '../components/Contents/DetailTemplate';
 import EditTemplate from '../components/Contents/EditTemplate';
+import ConfirmModal from '../components/Modal/ConfirmModal';
+import SelectModal from '../components/Modal/SelectModal';
+import ListModal from '../components/Modal/ListModal';
 
 const BannerPage = () => {
 	const [mode, setMode] = useState('list');
@@ -16,6 +19,11 @@ const BannerPage = () => {
 	const [info, setInfo] = useState({});
 	const [title, setTitle] = useState('');
 	const [desc, setDesc] = useState('');
+	const [modal, setModal] = useState({ type: '', text: '', return: '' });
+
+	const modalController = (data) => {
+		setModal(data);
+	};
 
 	useEffect(() => {
 		for (let i = 0; i < bannerCategory.length; i++) {
@@ -51,7 +59,7 @@ const BannerPage = () => {
 
 	return (
 		<div id='container'>
-			<Container>
+			<Container id='hello'>
 				<SideBar getMenu={getMenu} menu={menu} />
 				<Category
 					getCategory={getCategory}
@@ -60,6 +68,8 @@ const BannerPage = () => {
 					menu={menu}
 					title={title}
 					desc={desc}
+					modal={modal}
+					modalController={modalController}
 				/>
 				{!createMode && mode === 'list' && (
 					<ListTemplate category={category} changeMode={changeMode} />
@@ -71,6 +81,8 @@ const BannerPage = () => {
 						mode={mode}
 						title={title}
 						desc={desc}
+						modal={modal}
+						modalController={modalController}
 					/>
 				)}
 				{!createMode && mode === 'edit' && (
@@ -80,10 +92,26 @@ const BannerPage = () => {
 						mode={mode}
 						title={title}
 						desc={desc}
+						modal={modal}
+						modalController={modalController}
 					/>
 				)}
 				{createMode && (
-					<CreateTemplate getCategory={getCategory} category={category} />
+					<CreateTemplate
+						getCategory={getCategory}
+						category={category}
+						modal={modal}
+						modalController={modalController}
+					/>
+				)}
+				{modal.type === 'confirm' && (
+					<ConfirmModal modal={modal} modalController={modalController} />
+				)}
+				{modal.type === 'select' && (
+					<SelectModal modal={modal} modalController={modalController} />
+				)}
+				{modal.type === 'list' && (
+					<ListModal modal={modal} modalController={modalController} />
 				)}
 				<Footer />
 			</Container>

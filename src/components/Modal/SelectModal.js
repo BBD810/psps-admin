@@ -1,29 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 
 const SelectModal = (props) => {
-	useEffect(() => {
-		return () => {};
-	}, []);
+	const modalBox = useRef();
 
 	const selectYes = () => {
-		props.modalController(true);
+		props.modalController({ ...props.modal, type: '', return: true });
 	};
 	const selectNo = () => {
-		props.modalController(false);
+		props.modalController({ ...props.modal, type: '', return: false });
+	};
+	const onMouseDown = (e) => {
+		if (
+			props.modal.type !== '' &&
+			(!modalBox.current || !modalBox.current.contains(e.target))
+		) {
+			props.modalController({ type: '' });
+		}
 	};
 
 	return (
-		<Container>
-			<Text>{props.modal.text}</Text>
-			<Buttons>
-				<Button border onClick={selectNo}>
-					아니요
-				</Button>
-				<Button filled onClick={selectYes}>
-					예
-				</Button>
-			</Buttons>
+		<Container onMouseDown={onMouseDown}>
+			<Wrap ref={modalBox}>
+				<Text>{props.modal.text}</Text>
+				<Buttons>
+					<Button border onClick={selectNo}>
+						아니요
+					</Button>
+					<Button filled onClick={selectYes}>
+						예
+					</Button>
+				</Buttons>
+			</Wrap>
 		</Container>
 	);
 };
@@ -31,6 +39,13 @@ const SelectModal = (props) => {
 export default SelectModal;
 
 const Container = styled.div`
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+`;
+const Wrap = styled.div`
 	width: 41.1rem;
 	height: 21.6rem;
 	padding: 3rem 0;
