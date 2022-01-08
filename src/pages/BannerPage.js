@@ -4,10 +4,10 @@ import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
-import ListTemplate from '../components/Contents/ListTemplate';
-import CreateTemplate from '../components/Contents/CreateTemplate';
-import DetailTemplate from '../components/Contents/DetailTemplate';
-import EditTemplate from '../components/Contents/EditTemplate';
+import ListTemplate from '../components/Banner/ListTemplate';
+import CreateTemplate from '../components/Banner/CreateTemplate';
+import DetailTemplate from '../components/Banner/DetailTemplate';
+import EditTemplate from '../components/Banner/EditTemplate';
 import ConfirmModal from '../components/Modal/ConfirmModal';
 import SelectModal from '../components/Modal/SelectModal';
 import ListModal from '../components/Modal/ListModal';
@@ -72,7 +72,13 @@ const BannerPage = () => {
 					modalController={modalController}
 				/>
 				{!createMode && mode === 'list' && (
-					<ListTemplate category={category} changeMode={changeMode} />
+					<ListTemplate
+						category={category}
+						changeMode={changeMode}
+						mode={mode}
+						modal={modal}
+						modalController={modalController}
+					/>
 				)}
 				{!createMode && mode === 'detail' && (
 					<DetailTemplate

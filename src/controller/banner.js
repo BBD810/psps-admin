@@ -49,6 +49,10 @@ export const change_display = async (banner_id) => {
 		.catch(errorMessage);
 };
 
+export const change_order = async (arr) => {
+	return await instance.patch('/order', arr).catch(errorMessage);
+};
+
 export const replace_display = async (arr) => {
 	return await instance.patch('/display', arr).catch(errorMessage);
 };

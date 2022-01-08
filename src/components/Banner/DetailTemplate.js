@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { IMG_ADDRESS } from '../../config';
 import { transformNumToStr } from '../../functions/TransformNumToStr';
+import { getLinkKr } from '../../functions/GetLink';
 import * as banner from '../../controller/banner';
 import styled from 'styled-components';
 
@@ -45,7 +46,7 @@ const DetailTemplate = (props) => {
 		if (detail.display === 1) {
 			return props.modalController({
 				type: 'confirm',
-				text: '전시중인 배너는\n삭제할 수 없습니다.',
+				text: '노출중인 배너는\n삭제할 수 없습니다.',
 			});
 		} else if (detail.display === 1 && displayList.length < 2) {
 			return props.modalController({
@@ -110,12 +111,14 @@ const DetailTemplate = (props) => {
 			banner.change_display(banner_id).then((res) => {
 				if (isSubscribed && res.data.success) {
 					props.changeMode('list');
+					props.modalController({ type: '' });
 				}
 			});
 		} else if (props.modal.act === 'delete' && props.modal.return) {
 			banner.remove(banner_id).then((res) => {
 				if (isSubscribed && res.data.success) {
 					props.changeMode('list');
+					props.modalCOntroller({ type: '' });
 				}
 			});
 		} else if (props.modal.act === 'replace' && props.modal.return) {
@@ -147,7 +150,14 @@ const DetailTemplate = (props) => {
 				</DetailContents>
 				<DetailContents>
 					<DetailTitle>링크</DetailTitle>
-					<DetailDesc>{detail.title}</DetailDesc>
+					<DetailDesc>
+						{getLinkKr(
+							detail.page,
+							detail.part,
+							detail.subPart,
+							detail.product_id
+						)}
+					</DetailDesc>
 				</DetailContents>
 				<DetailContents>
 					<DetailTitle>노출상태</DetailTitle>

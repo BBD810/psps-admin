@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
+import { IMG_ADDRESS, CLIENT_ADDRESS } from '../../config';
+import { getLink } from '../../functions/GetLink';
 import * as banner from '../../controller/banner';
-import { IMG_ADDRESS } from '../../config';
 import styled from 'styled-components';
 import left from '../../images/left.svg';
 import right from '../../images/right.svg';
@@ -13,16 +14,16 @@ const ListTemplate = (props) => {
 	const menuSelect = useRef();
 	const [menuOpen, setMenuOpen] = useState('close');
 	const [imgHeight, setImgHeight] = useState({});
+	const [banner_id, setBanner_id] = useState('');
+	const [detail, setDetail] = useState({});
 	const [list, setList] = useState([]);
+	const [displayList, setDisplayList] = useState([]);
+	let type;
 
 	useEffect(() => {
 		let isSubscribed = true;
-		let type;
-		if (props.category === '메인 배너') {
-			type = '메인';
-		} else if (props.category === '광고 배너') {
-			type = '광고';
-		}
+		type = props.category.substr(0, 2);
+
 		banner.get_list(type).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setList(res.data.banner_list);
@@ -39,6 +40,20 @@ const ListTemplate = (props) => {
 		};
 	}, [props.category]);
 
+	useEffect(() => {
+		let isSubscribed = true;
+		type = props.category.substr(0, 2);
+		banner.get_display_list(type, true).then((res) => {
+			if (isSubscribed && res.data.success) {
+				setDisplayList(res.data.banner_list);
+			}
+		});
+
+		return () => {
+			isSubscribed = false;
+		};
+	}, [list]);
+
 	const goDetail = (el) => {
 		history.push({ state: el.banner_id });
 		props.changeMode('detail');
@@ -46,26 +61,76 @@ const ListTemplate = (props) => {
 	const menuOpenController = (idx) => {
 		setMenuOpen(idx);
 	};
-	const selectMenuController = (item, el) => {
-		if (item === '수정하기') {
-			selectEdit(item, el);
-		} else if (item === '노출변경') {
-			selectDisplay(item, el);
-		} else if (item === '삭제하기') {
-			selectDelete(item, el);
-		} else if (item === '링크확인') {
-			selectLink(item, el);
+
+	const selectMenuController = (menu, el) => {
+		if (menu === '수정하기') {
+			selectEdit(el);
+		} else if (menu === '노출변경') {
+			selectDisplay(el);
+		} else if (menu === '삭제하기') {
+			selectDelete(el);
+		} else if (menu === '링크확인') {
+			selectLink(el);
 		}
+		setBanner_id(el.banner_id);
+		setDetail(el);
 		setMenuOpen('close');
 	};
-	const selectEdit = (item, el) => {
+	const selectEdit = (el) => {
 		history.push({ state: el.banner_id });
 		props.changeMode('edit');
 	};
-	const selectDisplay = (item, el) => {};
-	const selectDelete = (item, el) => {};
-	const selectLink = (item, el) => {};
-
+	const selectDisplay = (detail) => {
+		if (detail.display === 1 && displayList.length === 1) {
+			return props.modalController({
+				type: 'confirm',
+				text: '최소 한 개의 배너는\n노출중이어야 합니다.',
+			});
+		} else if (detail.display === 0 && displayList.length === 3) {
+			return props.modalController({
+				type: 'list',
+				text: '배너는 최대 세 개만 노출이 가능합니다.\n교환할 배너를 선택해주세요.',
+				list: displayList,
+			});
+		} else {
+			goDisplay();
+		}
+	};
+	const goDisplay = () => {
+		props.modalController({
+			type: 'select',
+			text: '해당 배너의\n노출상태를 변경하시겠습니까?',
+			act: 'display',
+		});
+	};
+	const selectDelete = (detail) => {
+		console.log('detail', detail);
+		if (detail.display === 1) {
+			return props.modalController({
+				type: 'confirm',
+				text: '노출중인 배너는\n삭제할 수 없습니다.',
+			});
+		} else if (detail.display === 1 && displayList.length < 2) {
+			return props.modalController({
+				...props.modal,
+				type: 'confirm',
+				text: '최소 한 개의 배너는\n노출중이어야 합니다.',
+			});
+		} else {
+			goDelete();
+		}
+	};
+	const goDelete = () => {
+		props.modalController({
+			type: 'select',
+			text: '해당 배너를\n삭제하시겠습니까?',
+			act: 'delete',
+		});
+	};
+	const selectLink = (el) => {
+		let link = getLink(el.page, el.part, el.subPart, el.product_id);
+		window.open(`${CLIENT_ADDRESS}${link}`, '_blank');
+	};
 	const onMouseDown = (e) => {
 		if (
 			menuOpen !== 'close' &&
@@ -73,6 +138,83 @@ const ListTemplate = (props) => {
 		) {
 			setMenuOpen('close');
 		}
+	};
+
+	const leftClick = (e) => {
+		let arr = [];
+		for (let i = 0; i < list.length; i++) {
+			if (list[i] === e) {
+				if (list[i - 1]) {
+					arr.push(list[i - 1], list[i]);
+					break;
+				} else {
+					return;
+				}
+			}
+		}
+		changeOrder(arr);
+	};
+	const rightClick = (e) => {
+		let arr = [];
+		for (let i = 0; i < list.length; i++) {
+			if (list[i] === e) {
+				if (list[i + 1]) {
+					arr.push(list[i], list[i + 1]);
+					break;
+				} else {
+					return;
+				}
+			}
+		}
+		changeOrder(arr);
+	};
+
+	const changeOrder = (arr) => {
+		if (arr[0].display !== arr[1].display) {
+			props.modalController({
+				type: 'confirm',
+				text: '노출 상태가 같은 배너만\n순서 변경이 가능합니다.',
+			});
+		} else {
+			banner.change_order(arr).then((res) => {
+				if (res.data.success) {
+					success(res.data.banner_list);
+				}
+			});
+		}
+	};
+
+	useEffect(() => {
+		let isSubscribed = true;
+		if (props.modal.act === 'display' && props.modal.return) {
+			banner.change_display(banner_id).then((res) => {
+				if (isSubscribed && res.data.success) {
+					success(res.data.banner_list);
+				}
+			});
+		} else if (props.modal.act === 'delete' && props.modal.return) {
+			banner.remove(banner_id).then((res) => {
+				if (isSubscribed && res.data.success) {
+					success(res.data.banner_list);
+				}
+			});
+		} else if (props.modal.act === 'replace' && props.modal.return) {
+			const arr = [detail, displayList[props.modal.return]];
+			banner.replace_display(arr).then((res) => {
+				if (isSubscribed && res.data.success) {
+					success(res.data.banner_list);
+				}
+			});
+		}
+
+		return () => {
+			isSubscribed = false;
+		};
+	}, [props.modal.type]);
+
+	const success = (list) => {
+		setList(list);
+		props.modalController({ type: '' });
 	};
 
 	return (
@@ -100,8 +242,20 @@ const ListTemplate = (props) => {
 								{el.title}
 							</ListTitle>
 							<ListButtons>
-								<ListButton alt='button' src={left} />
-								<ListButton alt='button' src={right} />
+								<ListButton
+									alt='button'
+									src={left}
+									onClick={() => {
+										leftClick(el);
+									}}
+								/>
+								<ListButton
+									alt='button'
+									src={right}
+									onClick={() => {
+										rightClick(el);
+									}}
+								/>
 								<ListButton
 									alt='button'
 									src={toggle}
