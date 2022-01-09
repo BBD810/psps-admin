@@ -26,8 +26,8 @@ export const bannerCategory = [
 export const supplierCategory = [
 	{
 		item: '공급원 목록',
-		subtitle: '메인 배너 목록',
-		desc: `메인 배너를 조회 및 수정합니다.\n첫번째부터 세번째 이미지는 홈페이지에 노출됩니다.`,
+		list_title: '공급원 목록',
+		list_desc: `공급원 정보를 조회 및 수정합니다.\n기존 정보를 수정하여 다른 공급원으로 활용하는 것은 권장하지 않습니다.`,
 	},
 ];
 export const productCategory = [

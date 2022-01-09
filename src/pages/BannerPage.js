@@ -59,7 +59,7 @@ const BannerPage = () => {
 
 	return (
 		<div id='container'>
-			<Container id='hello'>
+			<Container>
 				<SideBar getMenu={getMenu} menu={menu} />
 				<Category
 					getCategory={getCategory}

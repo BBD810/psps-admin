@@ -24,7 +24,13 @@ const SideBar = (props) => {
 		setPull(!pull);
 	};
 	const menuController = (e) => {
-		props.getMenu(e.target.innerText);
+		const innerText = e.target.innerText;
+		props.getMenu(innerText);
+		if (innerText === '배너') {
+			history.push('/');
+		} else if (innerText === '공급원') {
+			history.push('/supplier');
+		}
 	};
 	const goLogout = () => {
 		request.logout().then((res) => {

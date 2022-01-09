@@ -4,6 +4,7 @@ import Background from './components/Background';
 import Auth from './hoc/auth';
 import BannerPage from './pages/BannerPage';
 import LoginPage from './pages/LoginPage';
+import SupplierPage from './pages/SupplierPage';
 
 const App = () => {
 	return (
@@ -13,6 +14,11 @@ const App = () => {
 				<Switch>
 					<Route exact path='/' component={Auth(BannerPage, true)} />
 					<Route exact path='/login' component={Auth(LoginPage, false)} />
+					<Route
+						exact
+						path='/supplier'
+						component={Auth(SupplierPage, true)}
+					/>
 				</Switch>
 			</div>
 		</Router>
