@@ -26,8 +26,6 @@ const PageSelector = ({ page, total, onClickPage, style }) => {
 		setPages(update);
 	}, [total, page]);
 
-	console.log(Math.ceil(total / 12));
-
 	return (
 		<PageList style={style}>
 			<PageItem onClick={page === 1 ? null : () => onClickPage(page - 1)}>
@@ -52,7 +50,7 @@ const PageSelector = ({ page, total, onClickPage, style }) => {
 export default PageSelector;
 
 const PageList = styled.ul`
-	width: 50%;
+	width: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;

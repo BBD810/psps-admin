@@ -5,6 +5,8 @@ import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
 import ListTemplate from '../components/Supplier/ListTemplate';
+import ConfirmModal from '../components/Modal/ConfirmModal';
+import SelectModal from '../components/Modal/SelectModal';
 
 const SupplierPage = () => {
 	const [mode, setMode] = useState('list');
@@ -48,7 +50,13 @@ const SupplierPage = () => {
 					modal={modal}
 					modalController={modalController}
 				/>
-				<ListTemplate />
+				<ListTemplate modal={modal} modalController={modalController} />
+				{modal.type === 'confirm' && (
+					<ConfirmModal modal={modal} modalController={modalController} />
+				)}
+				{modal.type === 'select' && (
+					<SelectModal modal={modal} modalController={modalController} />
+				)}
 				<Footer />
 			</Container>
 		</div>

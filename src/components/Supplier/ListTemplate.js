@@ -1,19 +1,35 @@
 import React, { useEffect, useRef, useState } from 'react';
+import * as supplier from '../../controller/supplier';
 import styled from 'styled-components';
 import PageSelector from '../PageSelector';
 
-const ListTemplate = () => {
+const ListTemplate = (props) => {
+	const header = useRef();
 	const body = useRef();
 	const [page, setPage] = useState(1);
-	const [editNumber, setEditNumber] = useState(false);
+	const [total, setTotal] = useState(0);
+	const [createMode, setCreateMode] = useState(false);
+	const [editMode, setEditMode] = useState(false);
+	const [input, setInput] = useState({});
 	const [detail, setDetail] = useState({});
-	const [name, setName] = useState('');
-	const [owner, setOwner] = useState('');
-	const [business_number, setBusiness_number] = useState('');
-	const [address, setAddress] = useState('');
-	const [tel, setTel] = useState('');
-	const [email, setEmail] = useState('');
-	const [manager_tel, setManager_tel] = useState('');
+	const [list, setList] = useState([]);
+
+	const onClickPage = (e) => {
+		setPage(e);
+	};
+
+	useEffect(() => {
+		let isSubscribed = true;
+		supplier.get_list(page).then((res) => {
+			if (isSubscribed && res.data.success) {
+				setTotal(res.data.total);
+				setList(res.data.supplier_list);
+			}
+		});
+		return () => {
+			isSubscribed = false;
+		};
+	}, [page]);
 
 	const headerArr = [
 		'상호명',
@@ -24,105 +40,232 @@ const ListTemplate = () => {
 		'이메일',
 		'담당자 연락처',
 	];
-	const list = new Array(12).fill({
-		name: '플레이삼육오(주)',
-		owner: '강석봉',
-		business_number: '139-81-46152',
-		address: '서울특별시 강서구 공항대로 213 3층 302-12호',
-		tel: '010-1234-1234',
-		email: 'abc@gmail.com',
-		manager_tel: '010-9876-9876',
-	});
-	const editController = (el, idx) => {
-		setDetail(el);
-		setEditNumber(idx);
-	};
 
-	const onMouseDown = (e) => {
-		if (editNumber && (!body.current || !body.current.contains(e.target))) {
-			setEditNumber(false);
+	const createController = () => {
+		if (editMode) {
+			return;
+		} else {
+			setCreateMode(!createMode);
+		}
+	};
+	const inputController = (e, idx) => {
+		const value = e.target.value;
+		if (idx === 0) {
+			setInput({ ...input, name: value });
+		} else if (idx === 1) {
+			setInput({ ...input, owner: value });
+		} else if (idx === 2) {
+			setInput({ ...input, business_number: value });
+		} else if (idx === 3) {
+			setInput({ ...input, address: value });
+		} else if (idx === 4) {
+			setInput({ ...input, tel: value });
+		} else if (idx === 5) {
+			setInput({ ...input, email: value });
+		} else if (idx === 6) {
+			setInput({ ...input, manager_tel: value });
+		}
+	};
+	const onCreate = () => {
+		if (
+			!input.name ||
+			!input.owner ||
+			!input.business_number ||
+			!input.address ||
+			!input.tel ||
+			!input.email
+		) {
+			return props.modalController({
+				type: 'confirm',
+				text: '담당자 정보를 제외한\n모든 정보를 입력해주셔야 합니다.',
+			});
+		} else {
+			supplier.create(input, page).then((res) => {
+				if (res.data.success) {
+					props.modalController({
+						type: 'confirm',
+						text: '추가되었습니다.',
+					});
+					setCreateMode(false);
+					setTotal(res.data.total);
+					setList(res.data.supplier_list);
+				}
+			});
 		}
 	};
 
+	const editController = (innerText, el, idx) => {
+		if (createMode) {
+			return;
+		} else if (editMode !== false && detail !== el) {
+			return;
+		} else if (innerText === '수정') {
+			setDetail(el);
+			setEditMode(idx);
+		} else if (innerText === '저장') {
+			supplier.edit(detail, detail.supplier_id, page).then((res) => {
+				console.log(res.data);
+			});
+		}
+	};
+
+	const deleteController = (innerText, el) => {
+		if (createMode) {
+			return;
+		} else if (editMode !== false && detail !== el) {
+			return;
+		} else if (innerText === '취소') {
+			setEditMode(false);
+		} else if (innerText === '삭제') {
+			props.modalController({
+				type: 'select',
+				text: '삭제하시겠습니까?',
+				act: 'delete',
+			});
+		}
+	};
+
+	useEffect(() => {
+		let isSubscribed = true;
+		if (props.modal.act === 'delete' && props.modal.return) {
+			supplier.remove(detail, detail.supplier_id, page).then((res) => {
+				if (isSubscribed && res.data.success) {
+					console.log(res.data);
+				}
+			});
+		}
+		return () => {
+			isSubscribed = false;
+		};
+	}, [props.modal.type]);
+
 	return (
-		<Container onMouseDown={onMouseDown}>
+		<Container>
 			<Wrap>
-				<Header>
+				<Header ref={header} blind={editMode !== false}>
 					{headerArr.map((el, idx) => (
-						<HeaderList key={idx}>{el}</HeaderList>
+						<HeaderList key={idx}>
+							{!createMode ? (
+								<HeaderItem>{el}</HeaderItem>
+							) : (
+								<HeaderInput
+									placeholder={el}
+									onChange={(e) => {
+										inputController(e, idx);
+									}}
+								/>
+							)}
+						</HeaderList>
 					))}
-					<HeaderButton>추가하기</HeaderButton>
+					{!createMode ? (
+						<HeaderButton onClick={createController}>
+							추가하기
+						</HeaderButton>
+					) : (
+						<Buttons>
+							<Button filled onClick={onCreate}>
+								저장
+							</Button>
+							<Button
+								border
+								onClick={() => {
+									setCreateMode(false);
+								}}>
+								취소
+							</Button>
+						</Buttons>
+					)}
 				</Header>
+
 				<Body ref={body}>
 					{list.map((el, idx) => (
-						<BodyList key={idx} edit={idx === editNumber}>
-							{idx !== editNumber ? (
+						<BodyList
+							key={idx}
+							blind={
+								createMode || (editMode !== false && idx !== editMode)
+							}>
+							{idx !== editMode ? (
 								<BodyItem>{el.name}</BodyItem>
 							) : (
 								<EditInput
 									defaultValue={el.name}
 									onChange={(e) => {
-										setName(e.target.value);
+										setDetail({ ...detail, name: e.target.value });
 									}}
 								/>
 							)}
-							{idx !== editNumber ? (
+							{idx !== editMode ? (
 								<BodyItem>{el.owner}</BodyItem>
 							) : (
 								<EditInput
 									defaultValue={el.owner}
 									onChange={(e) => {
-										setOwner(e.target.value);
+										setDetail({
+											...detail,
+											owner: e.target.value,
+										});
 									}}
 								/>
 							)}
-							{idx !== editNumber ? (
+							{idx !== editMode ? (
 								<BodyItem>{el.business_number}</BodyItem>
 							) : (
 								<EditInput
 									defaultValue={el.business_number}
 									onChange={(e) => {
-										setBusiness_number(e.target.value);
+										setDetail({
+											...detail,
+											business_number: e.target.value,
+										});
 									}}
 								/>
 							)}
-							{idx !== editNumber ? (
+							{idx !== editMode ? (
 								<BodyItem>{el.address}</BodyItem>
 							) : (
 								<EditInput
 									defaultValue={el.address}
 									onChange={(e) => {
-										setAddress(e.target.value);
+										setDetail({
+											...detail,
+											address: e.target.value,
+										});
 									}}
 								/>
 							)}
-							{idx !== editNumber ? (
+							{idx !== editMode ? (
 								<BodyItem>{el.tel}</BodyItem>
 							) : (
 								<EditInput
 									defaultValue={el.tel}
 									onChange={(e) => {
-										setTel(e.target.value);
+										setDetail({ ...detail, tel: e.target.value });
 									}}
 								/>
 							)}
-							{idx !== editNumber ? (
+							{idx !== editMode ? (
 								<BodyItem>{el.email}</BodyItem>
 							) : (
 								<EditInput
 									defaultValue={el.email}
 									onChange={(e) => {
-										setEmail(e.target.value);
+										setDetail({
+											...detail,
+											email: e.target.value,
+										});
 									}}
 								/>
 							)}
-							{idx !== editNumber ? (
+							{idx !== editMode ? (
 								<BodyItem>{el.manager_tel}</BodyItem>
 							) : (
 								<EditInput
 									defaultValue={el.manager_tel}
 									onChange={(e) => {
-										setManager_tel(e.target.value);
+										setDetail({
+											...detail,
+											manager_tel: e.target.value,
+										});
 									}}
 								/>
 							)}
@@ -131,19 +274,25 @@ const ListTemplate = () => {
 								<Buttons>
 									<Button
 										filled
-										onClick={() => {
-											editController(el, idx);
+										onClick={(e) => {
+											editController(e.target.innerText, el, idx);
 										}}>
-										수정
+										{idx === editMode ? '저장' : '수정'}
 									</Button>
-									<Button border>삭제</Button>
+									<Button
+										border
+										onClick={(e) => {
+											deleteController(e.target.innerText, el);
+										}}>
+										{idx === editMode ? '취소' : '삭제'}
+									</Button>
 								</Buttons>
 							</BodyItem>
 						</BodyList>
 					))}
 				</Body>
-				{/* <PageSelector /> */}
 			</Wrap>
+			<PageSelector page={page} total={total} onClickPage={onClickPage} />
 		</Container>
 	);
 };
@@ -154,7 +303,9 @@ const Container = styled.div`
 	width: 119rem;
 	height: 71.15rem;
 `;
-const Wrap = styled.div``;
+const Wrap = styled.div`
+	margin-bottom: 4.7rem;
+`;
 const Header = styled.ul`
 	width: 100%;
 	height: 4.8rem;
@@ -164,6 +315,7 @@ const Header = styled.ul`
 	justify-content: flex-start;
 	align-items: center;
 	border-bottom: 1px solid #e5e6ed;
+	${(props) => props.blind && `opacity:0.3`}
 `;
 const HeaderList = styled.li`
 	font-size: 1.2rem;
@@ -196,10 +348,16 @@ const HeaderList = styled.li`
 		width: 13%;
 	}
 `;
+const HeaderItem = styled.div``;
+const HeaderInput = styled.input`
+	width: 100%;
+	font-size: 1.2rem;
+	color: #7f8697;
+	text-align: center;
+`;
 const Body = styled.div`
 	width: 100%;
 	height: 51.6rem;
-	padding: 0.95rem 0;
 	overflow-y: hidden;
 `;
 const BodyList = styled.ul`
@@ -210,6 +368,7 @@ const BodyList = styled.ul`
 	color: #2a3349;
 	display: flex;
 	align-items: center;
+	${(props) => props.blind && `opacity:0.3`}
 `;
 const BodyItem = styled.li`
 	height: 4.3rem;
@@ -260,7 +419,9 @@ const HeaderButton = styled.button`
 	margin: 0 0.5rem;
 `;
 const EditInput = styled.input`
+	width: 100%;
 	height: 2.5rem;
+	font-size: 1.2rem;
 	/* line-height: 4.3rem; */
 	text-align: center;
 	display: -webkit-box;
@@ -299,6 +460,7 @@ const EditInput = styled.input`
 
 const Buttons = styled.div`
 	width: 14.8rem;
+	margin: auto;
 `;
 const Button = styled.button`
 	width: 7rem;

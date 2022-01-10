@@ -110,23 +110,20 @@ const DetailTemplate = (props) => {
 		if (props.modal.act === 'display' && props.modal.return) {
 			banner.change_display(banner_id).then((res) => {
 				if (isSubscribed && res.data.success) {
-					props.changeMode('list');
-					props.modalController({ type: '' });
+					success();
 				}
 			});
 		} else if (props.modal.act === 'delete' && props.modal.return) {
 			banner.remove(banner_id).then((res) => {
 				if (isSubscribed && res.data.success) {
-					props.changeMode('list');
-					props.modalCOntroller({ type: '' });
+					success();
 				}
 			});
 		} else if (props.modal.act === 'replace' && props.modal.return) {
 			const arr = [detail, displayList[props.modal.return]];
 			banner.replace_display(arr).then((res) => {
 				if (isSubscribed && res.data.success) {
-					props.changeMode('list');
-					props.modalController({ type: '' });
+					success();
 				}
 			});
 		}
@@ -134,6 +131,11 @@ const DetailTemplate = (props) => {
 			isSubscribed = false;
 		};
 	}, [props.modal.type]);
+
+	const success = () => {
+		props.modalController({ type: '' });
+		props.changeMode('list');
+	};
 
 	return (
 		<Container>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { IMG_ADDRESS, CLIENT_ADDRESS } from '../../config';
 import { getLink } from '../../functions/GetLink';
@@ -23,7 +23,6 @@ const ListTemplate = (props) => {
 	useEffect(() => {
 		let isSubscribed = true;
 		type = props.category.substr(0, 2);
-
 		banner.get_list(type).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setList(res.data.banner_list);
@@ -104,7 +103,6 @@ const ListTemplate = (props) => {
 		});
 	};
 	const selectDelete = (detail) => {
-		console.log('detail', detail);
 		if (detail.display === 1) {
 			return props.modalController({
 				type: 'confirm',

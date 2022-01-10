@@ -13,9 +13,18 @@ const ListModal = (props) => {
 	const selectItem = (e) => {
 		setSelected(e);
 	};
-	const onSubmit = () => {
-		props.modalController({ type: '', act: 'replace', return: selected });
+	const selectYes = () => {
+		props.modalController({
+			...props.modal,
+			type: '',
+			act: 'replace',
+			return: selected,
+		});
 	};
+	const selectNo = () => {
+		props.modalController({ ...props.modal, type: '' });
+	};
+
 	const onMouseDown = (e) => {
 		if (
 			props.modal.type !== '' &&
@@ -41,7 +50,15 @@ const ListModal = (props) => {
 						</Item>
 					))}
 				</Items>
-				<Button onClick={onSubmit}>확인</Button>
+				<Buttons>
+					<Button border onClick={selectNo}>
+						취소
+					</Button>
+					<Button filled onClick={selectYes}>
+						확인
+					</Button>
+				</Buttons>
+				{/* <Button onClick={onSubmit}>확인</Button> */}
 			</Wrap>
 		</Container>
 	);
@@ -97,6 +114,10 @@ const Item = styled.li`
 	${(props) =>
 		props.selected ? `font-family:'kr-b'; color:#5887FF; ` : `color:#848CA2`}
 `;
+const Buttons = styled.div`
+	display: flex;
+	align-items: center;
+`;
 const Button = styled.button`
 	width: 10.6rem;
 	height: 3.1rem;
@@ -106,4 +127,7 @@ const Button = styled.button`
 	border: none;
 	border-radius: 4px;
 	background-color: #2a3349;
+	${(props) =>
+		props.border &&
+		`margin-right:0.8rem; border:2px solid #2A3349; background-color:#fff; color:#2A3349`}
 `;
