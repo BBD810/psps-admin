@@ -32,36 +32,35 @@ export const supplierCategory = [
 ];
 export const productCategory = [
 	{
-		title: '메인 배너',
-		subtitle: '메인 배너 목록',
-		desc: `메인 배너를 조회 및 수정합니다.\n첫번째부터 세번째 이미지는 홈페이지에 노출됩니다.`,
+		item: '상품 목록',
+		list_title: '상품 목록',
+		list_desc: `각 카테고리별 상품의 정보를 조회, 수정합니다.`,
 	},
 	{
-		title: '광고 배너',
-		subtitle: '광고 배너 목록',
-		desc: `광고 배너를 조회 및 수정합니다.\n첫번째 이미지는 홈페이지에 노출됩니다.`,
+		item: '추천 상품 목록',
+		list_title: '광고 배너 목록',
+		list_desc: `광고 배너를 조회 및 수정합니다.\n첫번째 이미지는 홈페이지에 노출됩니다.`,
 	},
 	{
-		title: '배너 추가',
-		subtitle: '새 배너 추가하기',
-		desc: `메인 배너 혹은 광고 배너를 새로 등록합니다.`,
+		item: '상품 추가',
+		list_title: '상품 추가하기',
+		list_desc: `새로운 상품을 등록합니다.`,
 	},
 ];
-export const productImageCategory = [
+export const productImgCategory = [
 	{
-		title: '메인 회원',
-		subtitle: '메인 배너 목록',
-		desc: `메인 배너를 조회 및 수정합니다.\n첫번째부터 세번째 이미지는 홈페이지에 노출됩니다.`,
+		item: '이미지 목록',
+		list_title: '이미지 목록',
+		list_desc: `상품 상세보기 페이지에 제공할 이미지를 저장, 조회, 수정합니다.`,
+		detail_title: '이미지 상세조회',
+		detail_desc: '상품 상세 이미지를 수정, 삭제합니다.',
+		edit_title: '이미지 수정하기',
+		edit_desc: '상품 상세 이미지의 정보를 수정합니다.',
 	},
 	{
-		title: '광고 회원',
-		subtitle: '광고 배너 목록',
-		desc: `광고 배너를 조회 및 수정합니다.\n첫번째 이미지는 홈페이지에 노출됩니다.`,
-	},
-	{
-		title: '배너 추가',
-		subtitle: '새 배너 추가하기',
-		desc: `메인 배너 혹은 광고 배너를 새로 등록합니다.`,
+		item: '이미지 추가',
+		list_title: '이미지 추가하기',
+		list_desc: `새로운 상품 상세 이미지의 정보를 저장합니다.`,
 	},
 ];
 export const paymentCategory = [
@@ -81,7 +80,7 @@ export const paymentCategory = [
 		desc: `메인 배너 혹은 광고 배너를 새로 등록합니다.`,
 	},
 ];
-export const memberCategory = [
+export const userCategory = [
 	{
 		title: '메인 회원',
 		subtitle: '메인 배너 목록',

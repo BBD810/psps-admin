@@ -1,34 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { bannerCategory } from '../data/category';
+import { productImgCategory } from '../data/category';
+import { toggleMenu } from '../data/toggle';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
-import ListTemplate from '../components/Banner/ListTemplate';
-import CreateTemplate from '../components/Banner/CreateTemplate';
-import DetailTemplate from '../components/Banner/DetailTemplate';
-import EditTemplate from '../components/Banner/EditTemplate';
-import ConfirmModal from '../components/Modal/ConfirmModal';
-import SelectModal from '../components/Modal/SelectModal';
-import ListModal from '../components/Modal/ListModal';
+import ListTemplate from '../components/ProductImgPage/ListTemplate';
+import CreateTemplate from '../components/ProductImgPage/CreateTemplate';
+import DetailTemplate from '../components/ProductImgPage/DetailTemplate';
+import EditTemplate from '../components/ProductImgPage/EditTemplate';
 
-const BannerPage = () => {
+const ProductImgPage = () => {
 	const [mode, setMode] = useState('list');
-	const [menu, setMenu] = useState('배너');
-	const [category, setCategory] = useState('메인 배너');
+	const [menu, setMenu] = useState('상품 이미지');
+	const [category, setCategory] = useState('이미지 목록');
 	const [info, setInfo] = useState({});
 	const [title, setTitle] = useState('');
 	const [desc, setDesc] = useState('');
-	const [modal, setModal] = useState({ type: '', text: '', return: '' });
+	const [modal, setModal] = useState({ type: '', test: '', return: '' });
 
 	const modalController = (data) => {
 		setModal(data);
 	};
 
 	useEffect(() => {
-		for (let i = 0; i < bannerCategory.length; i++) {
-			if (bannerCategory[i].item === category) {
-				setInfo(bannerCategory[i]);
+		for (let i = 0; i < productImgCategory.length; i++) {
+			if (productImgCategory[i].item === category) {
+				return setInfo(productImgCategory[i]);
 			}
 		}
 	}, [mode]);
@@ -55,7 +53,7 @@ const BannerPage = () => {
 		setCategory(category);
 		setMode('list');
 	};
-	const createMode = category !== '메인 배너' && category !== '광고 배너';
+	const createMode = category === '이미지 추가';
 
 	return (
 		<div id='container'>
@@ -83,8 +81,6 @@ const BannerPage = () => {
 						category={category}
 						changeMode={changeMode}
 						mode={mode}
-						title={title}
-						desc={desc}
 						modal={modal}
 						modalController={modalController}
 					/>
@@ -94,8 +90,6 @@ const BannerPage = () => {
 						category={category}
 						changeMode={changeMode}
 						mode={mode}
-						title={title}
-						desc={desc}
 						modal={modal}
 						modalController={modalController}
 					/>
@@ -108,22 +102,13 @@ const BannerPage = () => {
 						modalController={modalController}
 					/>
 				)}
-				{modal.type === 'confirm' && (
-					<ConfirmModal modal={modal} modalController={modalController} />
-				)}
-				{modal.type === 'select' && (
-					<SelectModal modal={modal} modalController={modalController} />
-				)}
-				{modal.type === 'list' && (
-					<ListModal modal={modal} modalController={modalController} />
-				)}
 				<Footer />
 			</Container>
 		</div>
 	);
 };
 
-export default BannerPage;
+export default ProductImgPage;
 
 const Container = styled.div`
 	width: 160rem;

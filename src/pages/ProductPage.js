@@ -1,30 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { supplierCategory } from '../data/category';
+import { productCategory } from '../data/category';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
-import ListTemplate from '../components/Supplier/ListTemplate';
-import ConfirmModal from '../components/Modal/ConfirmModal';
-import SelectModal from '../components/Modal/SelectModal';
 
-const SupplierPage = () => {
+const ProductPage = () => {
 	const [mode, setMode] = useState('list');
-	const [menu, setMenu] = useState('공급원');
-	const [category, setCategory] = useState('공급원 목록');
+	const [menu, setMenu] = useState('상품');
+	const [category, setCategory] = useState('상품 목록');
 	const [info, setInfo] = useState({});
 	const [title, setTitle] = useState('');
 	const [desc, setDesc] = useState('');
-	const [modal, setModal] = useState({ type: '' });
+	const [modal, setModal] = useState({ type: '', test: '', return: '' });
 
 	const modalController = (data) => {
 		setModal(data);
 	};
 
 	useEffect(() => {
-		for (let i = 0; i < supplierCategory.length; i++) {
-			if (supplierCategory[i].item === category) {
-				setInfo(supplierCategory[i]);
+		for (let i = 0; i < productCategory.length; i++) {
+			if (productCategory[i].item === category) {
+				setInfo(productCategory[i]);
 			}
 		}
 	}, []);
@@ -34,6 +31,7 @@ const SupplierPage = () => {
 	};
 	const getCategory = (category) => {
 		setCategory(category);
+		setMode('list');
 	};
 
 	return (
@@ -50,20 +48,13 @@ const SupplierPage = () => {
 					modal={modal}
 					modalController={modalController}
 				/>
-				<ListTemplate modal={modal} modalController={modalController} />
-				{modal.type === 'confirm' && (
-					<ConfirmModal modal={modal} modalController={modalController} />
-				)}
-				{modal.type === 'select' && (
-					<SelectModal modal={modal} modalController={modalController} />
-				)}
 				<Footer />
 			</Container>
 		</div>
 	);
 };
 
-export default SupplierPage;
+export default ProductPage;
 
 const Container = styled.div`
 	width: 160rem;

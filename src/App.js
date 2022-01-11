@@ -2,9 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Background from './components/Background';
 import Auth from './hoc/auth';
-import BannerPage from './pages/BannerPage';
 import LoginPage from './pages/LoginPage';
+import BannerPage from './pages/BannerPage';
 import SupplierPage from './pages/SupplierPage';
+import ProductPage from './pages/ProductPage';
+import ProductImgPage from './pages/ProductImgPage';
+import PaymentPage from './pages/PaymentPage';
+import UserPage from './pages/UserPage';
 
 const App = () => {
 	return (
@@ -19,6 +23,22 @@ const App = () => {
 						path='/supplier'
 						component={Auth(SupplierPage, true)}
 					/>
+					<Route
+						exact
+						path='/product'
+						component={Auth(ProductPage, true)}
+					/>
+					<Route
+						exact
+						path='/product-img'
+						component={Auth(ProductImgPage, true)}
+					/>
+					<Route
+						exact
+						path='/payment'
+						component={Auth(PaymentPage, true)}
+					/>
+					<Route exact path='/user' component={Auth(UserPage, true)} />
 				</Switch>
 			</div>
 		</Router>

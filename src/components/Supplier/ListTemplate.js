@@ -97,14 +97,17 @@ const ListTemplate = (props) => {
 	const editController = (innerText, el, idx) => {
 		if (createMode) {
 			return;
-		} else if (editMode !== false && detail !== el) {
+		} else if (editMode !== false && detail.supplier_id !== el.supplier_id) {
 			return;
 		} else if (innerText === '수정') {
 			setDetail(el);
 			setEditMode(idx);
 		} else if (innerText === '저장') {
 			supplier.edit(detail, detail.supplier_id, page).then((res) => {
-				console.log(res.data);
+				if (res.data.success) {
+					setEditMode(false);
+					setList(res.data.supplier_list);
+				}
 			});
 		}
 	};
@@ -112,11 +115,12 @@ const ListTemplate = (props) => {
 	const deleteController = (innerText, el) => {
 		if (createMode) {
 			return;
-		} else if (editMode !== false && detail !== el) {
+		} else if (editMode !== false && detail.supplier_id !== el.supplier_id) {
 			return;
 		} else if (innerText === '취소') {
 			setEditMode(false);
 		} else if (innerText === '삭제') {
+			setDetail(el);
 			props.modalController({
 				type: 'select',
 				text: '삭제하시겠습니까?',
@@ -128,9 +132,12 @@ const ListTemplate = (props) => {
 	useEffect(() => {
 		let isSubscribed = true;
 		if (props.modal.act === 'delete' && props.modal.return) {
-			supplier.remove(detail, detail.supplier_id, page).then((res) => {
+			supplier.remove(detail.supplier_id, page).then((res) => {
 				if (isSubscribed && res.data.success) {
 					console.log(res.data);
+					props.modalController({ type: '' });
+					setTotal(res.data.total);
+					setList(res.data.supplier_list);
 				}
 			});
 		}

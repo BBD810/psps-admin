@@ -133,7 +133,10 @@ const CreateTemplate = (props) => {
 			formData.append('product_id', product_id);
 			banner.create(formData).then((res) => {
 				if (res.data.success) {
-					alert('배너가 추가되었습니다.');
+					props.modalController({
+						type: 'confirm',
+						text: '배너가 추가되었습니다.',
+					});
 					if (type === '메인') {
 						props.getCategory('메인 배너');
 					} else if (type === '광고') {

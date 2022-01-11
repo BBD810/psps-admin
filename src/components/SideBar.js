@@ -30,7 +30,16 @@ const SideBar = (props) => {
 			history.push('/');
 		} else if (innerText === '공급원') {
 			history.push('/supplier');
+		} else if (innerText === '상품') {
+			history.push('/product');
+		} else if (innerText === '상품 이미지') {
+			history.push('/product-img');
+		} else if (innerText === '결제') {
+			history.push('/payment');
+		} else if (innerText === '회원') {
+			history.push('/user');
 		}
+		// else if (innerText === '통계') {}
 	};
 	const goLogout = () => {
 		request.logout().then((res) => {

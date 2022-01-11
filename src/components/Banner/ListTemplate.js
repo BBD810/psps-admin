@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { IMG_ADDRESS, CLIENT_ADDRESS } from '../../config';
+import { toggleMenu } from '../../data/toggle';
 import { getLink } from '../../functions/GetLink';
 import * as banner from '../../controller/banner';
 import styled from 'styled-components';
@@ -10,7 +11,6 @@ import toggle from '../../images/toggle.svg';
 
 const ListTemplate = (props) => {
 	const history = useHistory();
-	const toggleMenu = ['수정하기', '노출변경', '삭제하기', '링크확인'];
 	const menuSelect = useRef();
 	const [menuOpen, setMenuOpen] = useState('close');
 	const [imgHeight, setImgHeight] = useState({});

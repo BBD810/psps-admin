@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import * as data from '../data/arr';
+import * as data from '../data/category';
 
 const Category = (props) => {
 	const [arr, setArr] = useState(data.bannerCategory);
@@ -15,13 +15,12 @@ const Category = (props) => {
 			setArr(data.supplierCategory);
 		} else if (props.menu === '상품') {
 			setArr(data.productCategory);
-		}
-		// else if (props.menu === '상품 이미지') {
-		// }
-		else if (props.menu === '결제') {
+		} else if (props.menu === '상품 이미지') {
+			setArr(data.productImgCategory);
+		} else if (props.menu === '결제') {
 			setArr(data.paymentCategory);
 		} else if (props.menu === '회원') {
-			setArr(data.memberCategory);
+			setArr(data.userCategory);
 		} else if (props.menu === '통계') {
 			setArr(data.statisticsCategory);
 		}

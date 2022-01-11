@@ -23,9 +23,9 @@ export const edit = async (data, supplier_id, page) => {
 		.catch(errorMessage);
 };
 
-export const remove = async (data, supplier_id, page) => {
+export const remove = async (supplier_id, page) => {
 	return await instance
-		.delete(`/${supplier_id}/?page=${page}`, data)
+		.delete(`/${supplier_id}/?page=${page}`)
 		.catch(errorMessage);
 };
 
