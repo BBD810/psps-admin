@@ -45,7 +45,7 @@ const Category = (props) => {
 		} else if (props.mode === 'detail') {
 			_title = info.detail_main;
 			_desc = info.detail_sub;
-		} else if (props.menu === 'edit') {
+		} else if (props.mode === 'edit') {
 			_title = info.edit_main;
 			_desc = info.edit_sub;
 		}

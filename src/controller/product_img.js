@@ -17,18 +17,28 @@ export const create = async (data) => {
 	return await instance.post('/', data).catch(errorMessage);
 };
 
-export const remove = async (product_image_id) => {
-	return await instance
-		.delete(`/?product_image_id=${product_image_id}`)
-		.catch(errorMessage);
+export const remove = async (id) => {
+	return await instance.delete(`/?product_image_id=${id}`).catch(errorMessage);
+};
+
+export const edit = async (data, id, contain) => {
+	if (contain) {
+		return await instance
+			.put(`/?product_image_id=${id}&containImg=true`, data)
+			.catch(errorMessage);
+	} else {
+		return await instance
+			.put(`/product_image_id=${id}&containImg=false`, data)
+			.catch(errorMessage);
+	}
 };
 
 export const get_list = async () => {
 	return await instance.get('/').catch(errorMessage);
 };
 
-export const get_detail = async (product_image_id) => {
+export const get_detail = async (id) => {
 	return await instance
-		.get(`/detail/?product_image_id=${product_image_id}`)
+		.get(`/detail/?product_image_id=${id}`)
 		.catch(errorMessage);
 };

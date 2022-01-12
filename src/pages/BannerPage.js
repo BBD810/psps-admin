@@ -7,7 +7,6 @@ import Footer from '../components/Footer';
 import ListTemplate from '../components/Banner/ListTemplate';
 import CreateTemplate from '../components/Banner/CreateTemplate';
 import DetailTemplate from '../components/Banner/DetailTemplate';
-import EditTemplate from '../components/Banner/EditTemplate';
 import ConfirmModal from '../components/Modal/ConfirmModal';
 import SelectModal from '../components/Modal/SelectModal';
 import ListModal from '../components/Modal/ListModal';
@@ -31,7 +30,7 @@ const BannerPage = () => {
 			}
 		}
 	}, [mode]);
-	console.log('iiii', info);
+
 	useEffect(() => {
 		if (mode === 'list') {
 			setDesc({ ...desc, main: info.list_main, sub: info.list_sub });
@@ -40,7 +39,7 @@ const BannerPage = () => {
 		} else if (mode === 'edit') {
 			setDesc({ ...desc, main: info.edit_main, sub: info.edit_sub });
 		}
-	}, [info]);
+	}, [info, mode]);
 
 	const changeMode = (mode) => {
 		setMode(mode);
@@ -69,8 +68,8 @@ const BannerPage = () => {
 					{!createMode && mode === 'list' && (
 						<ListTemplate
 							category={category}
-							changeMode={changeMode}
 							mode={mode}
+							changeMode={changeMode}
 							modal={modal}
 							modalController={modalController}
 						/>
@@ -78,17 +77,17 @@ const BannerPage = () => {
 					{!createMode && mode === 'detail' && (
 						<DetailTemplate
 							category={category}
-							changeMode={changeMode}
 							mode={mode}
+							changeMode={changeMode}
 							modal={modal}
 							modalController={modalController}
 						/>
 					)}
 					{!createMode && mode === 'edit' && (
-						<EditTemplate
+						<CreateTemplate
 							category={category}
-							changeMode={changeMode}
 							mode={mode}
+							changeMode={changeMode}
 							desc={desc}
 							modal={modal}
 							modalController={modalController}

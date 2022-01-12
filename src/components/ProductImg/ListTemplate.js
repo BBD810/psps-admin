@@ -18,7 +18,6 @@ const ListTemplate = (props) => {
 	useEffect(() => {
 		let isSubscribed = true;
 		product_img.get_list().then((res) => {
-			console.log(res.data);
 			if (isSubscribed && res.data.success) {
 				setList(res.data.product_image_list);
 			}

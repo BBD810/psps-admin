@@ -5,10 +5,9 @@ import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
-import ListTemplate from '../components/ProductImgPage/ListTemplate';
-import CreateTemplate from '../components/ProductImgPage/CreateTemplate';
-import DetailTemplate from '../components/ProductImgPage/DetailTemplate';
-import EditTemplate from '../components/ProductImgPage/EditTemplate';
+import ListTemplate from '../components/ProductImg/ListTemplate';
+import CreateTemplate from '../components/ProductImg/CreateTemplate';
+import DetailTemplate from '../components/ProductImg/DetailTemplate';
 import ConfirmModal from '../components/Modal/ConfirmModal';
 import SelectModal from '../components/Modal/SelectModal';
 import ListModal from '../components/Modal/ListModal';
@@ -18,7 +17,6 @@ const ProductImgPage = () => {
 	const [menu, setMenu] = useState('상품 이미지');
 	const [category, setCategory] = useState('이미지 목록');
 	const [info, setInfo] = useState({});
-	const [title, setTitle] = useState('');
 	const [desc, setDesc] = useState('');
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
 
@@ -33,18 +31,16 @@ const ProductImgPage = () => {
 			}
 		}
 	}, [mode]);
+
 	useEffect(() => {
 		if (mode === 'list') {
-			setTitle(info.list_title);
-			setDesc(info.list_desc);
+			setDesc({ ...desc, main: info.list_main, sub: info.list_sub });
 		} else if (mode === 'detail') {
-			setTitle(info.detail_title);
-			setDesc(info.detail_desc);
+			setDesc({ ...desc, main: info.detail_main, sub: info.detail_sub });
 		} else if (mode === 'edit') {
-			setTitle(info.edit_title);
-			setDesc(info.edit_desc);
+			setDesc({ ...desc, main: info.edit_main, sub: info.edit_sub });
 		}
-	}, [info]);
+	}, [info, mode]);
 
 	const changeMode = (mode) => {
 		setMode(mode);
@@ -68,7 +64,6 @@ const ProductImgPage = () => {
 						category={category}
 						mode={mode}
 						menu={menu}
-						title={title}
 						desc={desc}
 					/>
 					{!createMode && mode === 'list' && (
@@ -85,18 +80,16 @@ const ProductImgPage = () => {
 							category={category}
 							changeMode={changeMode}
 							mode={mode}
-							title={title}
 							desc={desc}
 							modal={modal}
 							modalController={modalController}
 						/>
 					)}
 					{!createMode && mode === 'edit' && (
-						<EditTemplate
+						<CreateTemplate
 							category={category}
 							changeMode={changeMode}
 							mode={mode}
-							title={title}
 							desc={desc}
 							modal={modal}
 							modalController={modalController}
@@ -106,7 +99,6 @@ const ProductImgPage = () => {
 						<CreateTemplate
 							getCategory={getCategory}
 							category={category}
-							title={title}
 							desc={desc}
 							modal={modal}
 							modalController={modalController}

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { withRouter, useHistory } from 'react-router-dom';
 import { extension } from '../../data/extension';
 import { IMG_ADDRESS } from '../../config';
 import * as link from '../../data/link';
@@ -7,16 +8,18 @@ import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
 
 const CreateTemplate = (props) => {
+	const history = useHistory();
 	const pageSelect = useRef();
 	const partSelect = useRef();
 	const subPartSelect = useRef();
 	const types = ['메인', '광고'];
 	const [type, setType] = useState('메인');
-	const [title, setTitle] = useState(false);
-	const [page, setPage] = useState(false);
-	const [part, setPart] = useState(false);
-	const [subPart, setSubPart] = useState(false);
-	const [product_id, setProduct_id] = useState(false);
+	const [banner_id, setBanner_id] = useState('');
+	const [title, setTitle] = useState('');
+	const [page, setPage] = useState('');
+	const [part, setPart] = useState('');
+	const [subPart, setSubPart] = useState('');
+	const [product_id, setProduct_id] = useState('');
 	const [img, setImg] = useState(false);
 	const [prevImg, setPrevImg] = useState(false);
 	const [openSelect, setOpenSelect] = useState(false);
@@ -34,18 +37,31 @@ const CreateTemplate = (props) => {
 			}
 		}
 	}, [part]);
+
 	useEffect(() => {
-		if (props.mode === 'edit') {
-			setType(props.input.type);
-			setTitle(props.input.title);
-			setPage(props.input.page);
-			if (props.input.page === '상품 카테고리') {
-				setPart(props.input.part);
-				setSubPart(props.input.subPart);
-			} else if (props.input.page === '상품 상세보기') {
-				setProduct_id(props.input.product_id);
-			}
+		let isSubscribed = true;
+		if (editMode) {
+			banner.get_detail(history.location.state).then((res) => {
+				if (isSubscribed && res.data.success) {
+					let banner = res.data.banner;
+					console.log(banner);
+					setBanner_id(banner.banner_id);
+					setType(banner.type);
+					setTitle(banner.title);
+					setPage(banner.page);
+					setPrevImg(banner.image);
+					if (banner.page === '상품 카테고리') {
+						setPart(banner.part);
+						setSubPart(banner.subPart);
+					} else if (banner.page === '상품 상세보기') {
+						setProduct_id(banner.product_id);
+					}
+				}
+			});
 		}
+		return () => {
+			isSubscribed = false;
+		};
 	}, [props.mode, props.input]);
 
 	useEffect(() => {
@@ -159,14 +175,14 @@ const CreateTemplate = (props) => {
 				formData.append('part', part);
 				formData.append('subPart', subPart);
 				formData.append('product_id', product_id);
-				banner.edit(formData, props.input.banner_id, true).then((res) => {
+				banner.edit(formData, banner_id, true).then((res) => {
 					if (res.data.success) {
 						successEdit();
 					}
 				});
 			} else {
 				const data = { type, title, page, part, subPart, product_id };
-				banner.edit(data, props.input.banner_id, false).then((res) => {
+				banner.edit(data, banner_id, false).then((res) => {
 					if (res.data.success) {
 						successEdit();
 					}
@@ -297,10 +313,10 @@ const CreateTemplate = (props) => {
 					{!editMode && prevImg && (
 						<UploadImg alt='img upload' src={prevImg} />
 					)}
-					{editMode && props.input.image && (
+					{editMode && prevImg && (
 						<UploadImg
 							alt='img upload'
-							src={`${IMG_ADDRESS}/${props.input.image}`}
+							src={`${IMG_ADDRESS}/${prevImg}`}
 						/>
 					)}
 				</UploadImgBox>

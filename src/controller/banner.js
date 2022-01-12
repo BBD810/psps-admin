@@ -17,18 +17,18 @@ export const create = async (data) => {
 	return await instance.post('/', data).catch(errorMessage);
 };
 
-export const remove = async (banner_id) => {
-	return await instance.delete(`/?banner_id=${banner_id}`).catch(errorMessage);
+export const remove = async (id) => {
+	return await instance.delete(`/?banner_id=${id}`).catch(errorMessage);
 };
 
-export const edit = async (data, banner_id, contain) => {
+export const edit = async (data, id, contain) => {
 	if (contain) {
 		return await instance
-			.put(`/?banner_id=${banner_id}&containImg=true`, data)
+			.put(`/?banner_id=${id}&containImg=true`, data)
 			.catch(errorMessage);
 	} else {
 		return await instance
-			.put(`/?banner_id=${banner_id}&containImg=false`, data)
+			.put(`/?banner_id=${id}&containImg=false`, data)
 			.catch(errorMessage);
 	}
 };
@@ -43,10 +43,8 @@ export const get_display_list = async (type, boolean) => {
 		.catch(errorMessage);
 };
 
-export const change_display = async (banner_id) => {
-	return await instance
-		.get(`/display/?banner_id=${banner_id}`)
-		.catch(errorMessage);
+export const change_display = async (id) => {
+	return await instance.get(`/display/?banner_id=${id}`).catch(errorMessage);
 };
 
 export const change_order = async (arr) => {
@@ -57,8 +55,6 @@ export const replace_display = async (arr) => {
 	return await instance.patch('/display', arr).catch(errorMessage);
 };
 
-export const get_detail = async (banner_id) => {
-	return await instance
-		.get(`/detail/?banner_id=${banner_id}`)
-		.catch(errorMessage);
+export const get_detail = async (id) => {
+	return await instance.get(`/detail/?banner_id=${id}`).catch(errorMessage);
 };

@@ -1,17 +1,36 @@
 import React, { useEffect, useState } from 'react';
+import { withRouter, useHistory } from 'react-router-dom';
 import { extension } from '../../data/extension';
+import { IMG_ADDRESS } from '../../config';
 import * as product_img from '../../controller/product_img';
 import styled from 'styled-components';
 
 const CreateTemplate = (props) => {
-	const [title, setTitle] = useState(false);
+	const history = useHistory();
 	const shareItems = ['단일', '공유'];
+	const [product_image_id, setProduct_image_id] = useState('');
+	const [title, setTitle] = useState('');
 	const [share, setShare] = useState(0);
 	const [img, setImg] = useState(false);
 	const [prevImg, setPrevImg] = useState(false);
 	const [check, setCheck] = useState(false);
 
 	const editMode = props.mode === 'edit';
+
+	useEffect(() => {
+		if (editMode) {
+			product_img.get_detail(history.location.state).then((res) => {
+				if (res.data.success) {
+					console.log(res.data);
+					let product_image = res.data.product_image;
+					setProduct_image_id(product_image.product_image_id);
+					setTitle(product_image.title);
+					setShare(product_image.share);
+					setPrevImg(product_image.image);
+				}
+			});
+		}
+	}, []);
 
 	const titleController = (e) => {
 		setTitle(e.target.value);
@@ -55,9 +74,35 @@ const CreateTemplate = (props) => {
 			});
 		}
 	};
+	const onEdit = () => {
+		if (!check) {
+			return props.modalController({
+				type: 'confirm',
+				text: '부족한 내용을 확인해주세요.',
+			});
+		} else {
+			if (img) {
+				const formData = new FormData();
+				formData.append('image', img);
+				formData.append('title', title);
+				formData.append('share', share);
+				product_img.edit(formData, product_image_id, true).then((res) => {
+					console.log(res.data);
+					if (res.data.success) {
+					}
+				});
+			} else {
+				// const data = {title, share};
+			}
+		}
+	};
 
 	useEffect(() => {
-		title && img ? setCheck(true) : setCheck(false);
+		if (editMode) {
+			title ? setCheck(true) : setCheck(false);
+		} else {
+			title && img ? setCheck(true) : setCheck(false);
+		}
 	}, [title, share, img]);
 
 	return (
@@ -67,6 +112,7 @@ const CreateTemplate = (props) => {
 					<Title>제목</Title>
 					<Desc>명확한 제목으로 등록해주세요.</Desc>
 					<Input
+						defaultValue={title ? title : null}
 						placeholder='제목을 입력해주세요. (최대 45자)'
 						onChange={titleController}
 					/>
@@ -100,7 +146,15 @@ const CreateTemplate = (props) => {
 				<UploadButton>업로드</UploadButton>
 				<FileInput type='file' accept={extension} onChange={fileUpload} />
 				<ImgWrap>
-					{prevImg && <UploadImg alt='product detail img' src={prevImg} />}
+					{!editMode && prevImg && (
+						<UploadImg alt='product detail img' src={prevImg} />
+					)}
+					{editMode && prevImg && (
+						<UploadImg
+							alt='product detail img'
+							src={`${IMG_ADDRESS}/${prevImg}`}
+						/>
+					)}
 				</ImgWrap>
 			</BottomWrap>
 			<SaveButton active={check} onClick={onCreate}>
@@ -193,7 +247,6 @@ const SaveButton = styled.button`
 `;
 const BottomWrap = styled.div`
 	width: 100%;
-	height: 38rem;
 	position: relative;
 `;
 const FileInput = styled.input`

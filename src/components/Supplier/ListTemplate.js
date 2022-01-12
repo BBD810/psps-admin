@@ -134,7 +134,6 @@ const ListTemplate = (props) => {
 		if (props.modal.act === 'delete' && props.modal.return) {
 			supplier.remove(detail.supplier_id, page).then((res) => {
 				if (isSubscribed && res.data.success) {
-					console.log(res.data);
 					props.modalController({ type: '' });
 					setTotal(res.data.total);
 					setList(res.data.supplier_list);
