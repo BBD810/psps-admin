@@ -17,9 +17,16 @@ export const create = async (data) => {
 	return await instance.post('/', data).catch(errorMessage);
 };
 
+export const remove = async (product_image_id) => {
+	return await instance
+		.delete(`/?product_image_id=${product_image_id}`)
+		.catch(errorMessage);
+};
+
 export const get_list = async () => {
 	return await instance.get('/').catch(errorMessage);
 };
+
 export const get_detail = async (product_image_id) => {
 	return await instance
 		.get(`/detail/?product_image_id=${product_image_id}`)

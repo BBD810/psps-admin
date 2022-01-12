@@ -225,7 +225,7 @@ const ListTemplate = (props) => {
 							style={imgHeight}
 							onClick={() => goDetail(el)}>
 							{el.display === 1 && (
-								<ListState className='display'>DISPLAY1</ListState>
+								<ListState className='display'>DISPLAY</ListState>
 							)}
 							<ListImg
 								alt='banner img'
@@ -287,8 +287,6 @@ export default withRouter(ListTemplate);
 
 const Container = styled.div`
 	width: 119rem;
-	height: 71.15rem;
-	overflow-y: scroll;
 `;
 const Wrap = styled.ul`
 	margin-top: 4.85rem;

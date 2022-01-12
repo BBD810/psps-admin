@@ -22,18 +22,17 @@ body {
 }
 #App {
 	width: 1920px;
-	height: 1080px;
+	height:995px;
 	display: flex;
 	justify-content: center;
+	position:relative;
 }
 #container {
 	width: 100%;
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	justify-content:center;
 	align-items: center;
-	overflow-x:hidden;
 }
 h1,
 h2,

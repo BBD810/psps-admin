@@ -34,7 +34,7 @@ const SideBar = (props) => {
 			history.push('/product');
 		} else if (innerText === '상품 이미지') {
 			history.push('/product-img');
-		} else if (innerText === '결제') {
+		} else if (innerText === '주문') {
 			history.push('/payment');
 		} else if (innerText === '회원') {
 			history.push('/user');
@@ -76,11 +76,13 @@ export default withRouter(SideBar);
 
 const SideBarContainer = styled.div`
 	width: 19.8rem;
-	height: 100%;
+	height: 62rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	position: absolute;
+	position: --webkit-sticky;
+	position: sticky;
+	top: 5rem;
 	left: 0;
 `;
 const SlideMenu = styled.ul`
@@ -91,12 +93,11 @@ const SlideMenu = styled.ul`
 	z-index: 3;
 	background-color: #fff;
 	box-shadow: -3px 4px 30px #0000001a;
+	transition: all 0.5s;
 	${(props) =>
 		props.active
-			? `transform:translateY(5.5rem);
-				transition:all 0.5s;`
-			: `transform:translateY(0rem); 
-				transition:all 0.5s`}
+			? `transform:translateY(6.2rem);`
+			: `transform:translateY(0rem);`}
 `;
 const SlideMenuItem = styled.li`
 	width: 100%;

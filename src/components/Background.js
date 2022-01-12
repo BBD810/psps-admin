@@ -22,12 +22,10 @@ const Background = () => {
 export default Background;
 
 const All = styled.div`
-	/* width: 100%;
-	height: 100%; */
 	width: 1920px;
-	height: 1080px;
+	height: 995px;
 	max-width: 1920px;
-	max-height: 1080px;
+	max-height: 995px;
 	display: flex;
 	position: fixed;
 	top: 50%;
@@ -54,7 +52,6 @@ const Left = styled.div`
 		transform:translateX(-46.7rem);
 		transform-origin:100% 0;
 		transition: all 0.8s;
-		
 	`}
 `;
 const Right = styled.div`

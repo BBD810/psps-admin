@@ -308,7 +308,6 @@ export default ListTemplate;
 
 const Container = styled.div`
 	width: 119rem;
-	height: 71.15rem;
 `;
 const Wrap = styled.div`
 	margin-bottom: 4.7rem;

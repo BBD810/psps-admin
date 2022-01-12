@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import * as banner from '../../controller/banner';
 import CreateTemplate from './CreateTemplate';
@@ -15,11 +15,14 @@ const EditTemplate = (props) => {
 		});
 	}, []);
 
+	console.log(props.desc);
+
 	return (
 		<CreateTemplate
 			changeMode={props.changeMode}
 			mode={props.mode}
 			input={input}
+			desc={props.desc}
 		/>
 	);
 };

@@ -14,11 +14,9 @@ const Footer = () => {
 export default Footer;
 
 const FooterWrap = styled.div`
-	margin: 0 3rem;
+	margin-top: 3rem;
 	width: 120rem;
 	height: 7.8rem;
-	position: absolute;
-	bottom: 0;
 	border-top: 2px solid #e5e6ed;
 `;
 const FooterText = styled.p`

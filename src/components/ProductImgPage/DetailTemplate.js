@@ -1,11 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
+import { IMG_ADDRESS } from '../../config';
 import * as product_img from '../../controller/product_img';
 import styled from 'styled-components';
 
-const DetailTemplate = () => {
+const DetailTemplate = (props) => {
 	const history = useHistory();
 	const [detail, setDetail] = useState({});
+	const [title, setTitle] = useState(false);
+	const [share, setShare] = useState(false);
+	const [img, setImg] = useState(false);
+	const [prevImg, setPrevImg] = useState(false);
+	const [shareList, setShareList] = useState([
+		'풀 이파리 더블팩',
+		'파릇파릇 횡성 양상추',
+		'베타카로딘이 풍부한 녹색 채소 신품급',
+		'베타카로틴이 풍부한 녹색 채소 민트급',
+	]);
+
+	const selectEdit = () => {
+		history.push({ state: detail.product_image_id });
+		props.changeMode('edit');
+	};
+	const selectDisplay = () => {};
+	const goDisplay = () => {};
+
+	const selectDelete = () => {
+		if (detail.share === 1) {
+			return props.modalController({
+				type: 'confirm',
+				text: '공유되어있는 이미지는\n삭제할 수 없습니다.',
+			});
+		} else {
+			goDelete();
+		}
+	};
+	const goDelete = () => {
+		props.modalController({
+			type: 'select',
+			text: '해당 이미지를\n삭제하시겠습니까?',
+			act: 'delete',
+		});
+	};
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -14,12 +50,30 @@ const DetailTemplate = () => {
 				setDetail(res.data.product_image);
 			}
 		});
+
 		return () => {
 			isSubscribed = false;
 		};
 	}, []);
 
-	console.log(detail);
+	useEffect(() => {
+		let isSubscribed = true;
+		if (props.modal.act === 'delete' && props.modal.return) {
+			product_img.remove(detail.product_image_id).then((res) => {
+				if (isSubscribed && res.data.success) {
+					success();
+				}
+			});
+		}
+		return () => {
+			isSubscribed = false;
+		};
+	}, [props.modal.type]);
+
+	const success = () => {
+		props.modalController({ type: '' });
+		props.changeMode('list');
+	};
 
 	return (
 		<Container>
@@ -30,20 +84,16 @@ const DetailTemplate = () => {
 				</Section>
 				<Section>
 					<Title>타입</Title>
-					<Desc>{/* {`${detail.}`} */}</Desc>
-					{/* <ShareBox>
-						{shareItems.map((el, idx) => (
-							<ShareItem
-								key={idx}
-								// selected={share === idx}
-								// onClick={() => {
-								// 	shareController(idx);
-								// }}
-							>
-								{el}
-							</ShareItem>
+					<Desc>{detail.share === 1 ? '공유 이미지' : '단독 이미지'}</Desc>
+				</Section>
+				<Section>
+					<Title>상품 목록</Title>
+					<Subtitle>해당 이미지를 사용중인 상품의 목록입니다.</Subtitle>
+					<ShareList>
+						{shareList.map((el, idx) => (
+							<ShareItem key={idx}>{`${idx + 1} - ${el}`}</ShareItem>
 						))}
-					</ShareBox> */}
+					</ShareList>
 				</Section>
 			</TopWrap>
 			<BottomWrap>
@@ -54,32 +104,40 @@ const DetailTemplate = () => {
 				</Desc>
 
 				<ImgWrap>
-					{/* {prevImg && <UploadImg alt='product detail img' src={prevImg} />} */}
+					{detail.image && (
+						<UploadImg
+							alt='product detail img'
+							src={`${IMG_ADDRESS}/${detail.image}`}
+						/>
+					)}
 				</ImgWrap>
 			</BottomWrap>
-			<SaveButton
-			// active={check} onClick={onCreate}
-			>
-				저장하기
-			</SaveButton>
+			<Buttons>
+				<Button onClick={selectDelete}>삭제하기</Button>
+				<Button onClick={selectDisplay}>목록이전</Button>
+				<Button onClick={selectEdit}>수정하기</Button>
+			</Buttons>
 		</Container>
 	);
 };
 
-export default DetailTemplate;
+export default withRouter(DetailTemplate);
 
 const Container = styled.div`
 	width: 119rem;
-	height: 71.15rem;
+	padding-top: 3.05rem;
+	position: relative;
 `;
 const TopWrap = styled.div`
 	display: flex;
 	align-items: center;
-	margin-bottom: 21.6rem;
+	margin-bottom: 7.4rem;
 `;
 const Section = styled.div`
-	:nth-child(1) {
-		margin-right: 11.1rem;
+	width: 30%;
+	height: 24.6rem;
+	:nth-last-child(1) {
+		margin-left: 10rem;
 	}
 `;
 const Title = styled.h4`
@@ -87,32 +145,28 @@ const Title = styled.h4`
 	font-family: 'kr-b';
 	color: #5e667b;
 `;
+const Subtitle = styled.p`
+	font-size: 1rem;
+	color: #848ca2;
+	margin-bottom: 1.2rem;
+`;
 const Desc = styled.p`
 	font-size: 1.2rem;
 	color: #2a3349;
 	margin-bottom: 1.2rem;
 `;
-
-const ShareBox = styled.div`
-	width: 40rem;
-	height: 3.1rem;
-	display: flex;
-	align-items: center;
-	border-radius: 4px;
-	border: 1px solid #a8b0c3;
+const ShareList = styled.ul`
+	width: 100%;
+	height: 20rem;
+	padding: 0.7rem 0;
+	border-top: 2px solid #e5e6ed;
+	border-bottom: 2px solid #e5e6ed;
 `;
-const ShareItem = styled.div`
-	width: 50%;
-	height: 3.1rem;
-	line-height: 3.1rem;
-	text-align: center;
-	font-size: 1.4rem;
-	border-radius: 4px;
-	${(props) =>
-		props.selected
-			? `color:#2A3349; font-family:'kr-b'; 
-				border:2px solid #5887FF;`
-			: `color: #5E667B;  `}
+const ShareItem = styled.li`
+	margin-bottom: 0.8rem;
+	:nth-last-child(1) {
+		margin: 0;
+	}
 `;
 const UploadButton = styled.button`
 	width: 10.6rem;
@@ -140,9 +194,7 @@ const SaveButton = styled.button`
 `;
 const BottomWrap = styled.div`
 	width: 100%;
-	height: 38rem;
 	position: relative;
-	overflow-y: scroll;
 `;
 const FileInput = styled.input`
 	width: 10.6rem;
@@ -158,10 +210,35 @@ const FileInput = styled.input`
 const ImgWrap = styled.div`
 	margin-top: 2rem;
 	width: 100%;
-	height: 500rem;
 	border: 1px solid #a8b0c3;
 `;
 const UploadImg = styled.img`
 	width: 100%;
 	height: 100%;
+`;
+const Buttons = styled.div`
+	width: 33.4rem;
+	height: 3.1rem;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	position: absolute;
+	top: -5.75rem;
+	right: 0;
+`;
+const Button = styled.button`
+	width: 10.6rem;
+	height: 100%;
+	font-size: 1.2rem;
+	font-family: 'kr-b';
+	border: none;
+	border-radius: 4px;
+	background-color: #2a3349;
+	color: #fff;
+	margin-left: 8px;
+	&:nth-child(1) {
+		color: #2a3349;
+		background-color: unset;
+		border: 2px solid #2a3349;
+	}
 `;

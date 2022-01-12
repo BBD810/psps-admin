@@ -55,8 +55,8 @@ const ListTemplate = (props) => {
 						<ListImgWrap
 							display={el.display}
 							onClick={() => goDetail(el)}>
-							{el.display === 1 && (
-								<ListState className='share'>DISPLAY1</ListState>
+							{el.share === 1 && (
+								<ListState className='share'>Share Image</ListState>
 							)}
 							<ListImg
 								alt='product img'
@@ -118,8 +118,6 @@ export default ListTemplate;
 
 const Container = styled.div`
 	width: 119rem;
-	height: 71.15rem;
-	overflow-y: scroll;
 `;
 const Wrap = styled.ul`
 	margin-top: 4.85rem;

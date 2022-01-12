@@ -11,7 +11,7 @@ const CreateTemplate = (props) => {
 	const [prevImg, setPrevImg] = useState(false);
 	const [check, setCheck] = useState(false);
 
-	// const editMode = props.mode === 'edit';
+	const editMode = props.mode === 'edit';
 
 	const titleController = (e) => {
 		setTitle(e.target.value);
@@ -45,7 +45,6 @@ const CreateTemplate = (props) => {
 			formData.append('title', title);
 			formData.append('share', share);
 			product_img.create(formData).then((res) => {
-				console.log(res.data);
 				if (res.data.success) {
 					props.modalController({
 						type: 'confirm',
@@ -115,8 +114,7 @@ export default CreateTemplate;
 
 const Container = styled.div`
 	width: 119rem;
-	height: 71.15rem;
-	padding: 3.05rem 0 0 0;
+	padding-top: 3.05rem;
 	position: relative;
 `;
 const TopWrap = styled.div`
@@ -197,7 +195,6 @@ const BottomWrap = styled.div`
 	width: 100%;
 	height: 38rem;
 	position: relative;
-	overflow-y: scroll;
 `;
 const FileInput = styled.input`
 	width: 10.6rem;
