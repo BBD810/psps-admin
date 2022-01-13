@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { withRouter, useHistory } from 'react-router-dom';
 import { productCategory } from '../data/category';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
@@ -6,6 +7,7 @@ import Category from '../components/Category';
 import Footer from '../components/Footer';
 
 const ProductPage = () => {
+	const history = useHistory();
 	const [mode, setMode] = useState('list');
 	const [menu, setMenu] = useState('상품');
 	const [category, setCategory] = useState('상품 목록');
@@ -13,6 +15,11 @@ const ProductPage = () => {
 	const [title, setTitle] = useState('');
 	const [desc, setDesc] = useState('');
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
+
+	if (history.location.state) {
+		// changeMode('detail')
+		console.log('cc', history.location.state);
+	}
 
 	const modalController = (data) => {
 		setModal(data);

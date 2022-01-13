@@ -42,3 +42,9 @@ export const get_detail = async (id) => {
 		.get(`/detail/?product_image_id=${id}`)
 		.catch(errorMessage);
 };
+
+export const change_share = async (id) => {
+	return await instance
+		.patch(`/share/?product_image_id=${id}`)
+		.catch(errorMessage);
+};

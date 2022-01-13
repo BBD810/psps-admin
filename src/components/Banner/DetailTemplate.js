@@ -14,6 +14,31 @@ const DetailTemplate = (props) => {
 	const [detail, setDetail] = useState({});
 	const [displayState, setDisplayState] = useState('');
 
+	useEffect(() => {
+		let isSubscribed = true;
+		let type = props.category.substr(0, 2);
+		if (props.category === '메인 배너') {
+			setImgHeight({ height: '52.3rem' });
+		} else if (props.category === '광고 배너') {
+			setImgHeight({ height: '34.9rem' });
+		}
+		banner.get_detail(history.location.state).then((res) => {
+			if (isSubscribed && res.data.success) {
+				setDetail(res.data.banner);
+				setBanner_id(history.location.state);
+			}
+		});
+		banner.get_display_list(type, true).then((res) => {
+			if (isSubscribed && res.data.success) {
+				setDisplayList(res.data.banner_list);
+			}
+		});
+
+		return () => {
+			isSubscribed = false;
+		};
+	}, []);
+
 	const selectEdit = () => {
 		history.push({ state: banner_id });
 		props.changeMode('edit');
@@ -44,12 +69,12 @@ const DetailTemplate = (props) => {
 
 	const selectDelete = () => {
 		if (detail.display === 1) {
-			return props.modalController({
+			props.modalController({
 				type: 'confirm',
 				text: '노출중인 배너는\n삭제할 수 없습니다.',
 			});
 		} else if (detail.display === 1 && displayList.length < 2) {
-			return props.modalController({
+			props.modalController({
 				...props.modal,
 				type: 'confirm',
 				text: '최소 한 개의 배너는\n노출중이어야 합니다.',
@@ -68,31 +93,6 @@ const DetailTemplate = (props) => {
 	const selectList = () => {
 		props.changeMode('list');
 	};
-
-	useEffect(() => {
-		let isSubscribed = true;
-		let type = props.category.substr(0, 2);
-		if (props.category === '메인 배너') {
-			setImgHeight({ height: '52.3rem' });
-		} else if (props.category === '광고 배너') {
-			setImgHeight({ height: '34.9rem' });
-		}
-		banner.get_detail(history.location.state).then((res) => {
-			if (isSubscribed && res.data.success) {
-				setDetail(res.data.banner);
-				setBanner_id(history.location.state);
-			}
-		});
-		banner.get_display_list(type, true).then((res) => {
-			if (isSubscribed && res.data.success) {
-				setDisplayList(res.data.banner_list);
-			}
-		});
-
-		return () => {
-			isSubscribed = false;
-		};
-	}, []);
 
 	useEffect(() => {
 		if (displayList) {
@@ -225,7 +225,7 @@ const DetailDesc = styled.p`
 const Buttons = styled.div`
 	height: 3.1rem;
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-end;
 	align-items: center;
 	position: absolute;
 	top: -5.75rem;

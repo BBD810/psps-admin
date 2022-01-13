@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { IMG_ADDRESS, CLIENT_ADDRESS } from '../../config';
-import { toggleMenu } from '../../data/toggle';
 import { getLink } from '../../functions/GetLink';
+import * as toggleMenu from '../../data/toggle';
 import * as banner from '../../controller/banner';
 import styled from 'styled-components';
 import left from '../../images/left.svg';
@@ -263,7 +263,7 @@ const ListTemplate = (props) => {
 								/>
 								{menuOpen === idx && (
 									<ToggleMenus ref={menuSelect}>
-										{toggleMenu.map((item, idx) => (
+										{toggleMenu.banner.map((item, idx) => (
 											<ToggleMenu
 												key={idx}
 												onClick={() => {

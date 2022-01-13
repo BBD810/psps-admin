@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { IMG_ADDRESS, ADDRESS } from '../../config';
-import { toggleMenu } from '../../data/toggle';
+import * as toggleMenu from '../../data/toggle';
 import * as product_img from '../../controller/product_img';
 import styled from 'styled-components';
 import left from '../../images/left.svg';
@@ -12,6 +12,7 @@ const ListTemplate = (props) => {
 	const history = useHistory();
 	const menuSelect = useRef();
 	const [menuOpen, setMenuOpen] = useState('close');
+	const [product_image_id, setProduct_image_id] = useState('');
 	const [detail, setDetail] = useState({});
 	const [list, setList] = useState([]);
 
@@ -19,6 +20,7 @@ const ListTemplate = (props) => {
 		let isSubscribed = true;
 		product_img.get_list().then((res) => {
 			if (isSubscribed && res.data.success) {
+				console.log(res.data);
 				setList(res.data.product_image_list);
 			}
 		});
@@ -35,7 +37,24 @@ const ListTemplate = (props) => {
 	const menuOpenController = (idx) => {
 		setMenuOpen(idx);
 	};
-	const selectMenuController = () => {};
+	const selectMenuController = (menu, el) => {
+		if (menu === '수정하기') {
+			selectEdit(el);
+		} else if (menu === '타입변경') {
+			selectShare(el);
+		} else if (menu === '삭제하기') {
+			selectDelete(el);
+		}
+		setProduct_image_id(el.product_image_id);
+		setDetail(el);
+		setMenuOpen('close');
+	};
+	const selectEdit = (el) => {
+		history.push({ state: el.product_image_id });
+		props.changeMode('edit');
+	};
+	const selectShare = (detail) => {};
+	const selectDelete = (el) => {};
 
 	const onMouseDown = (e) => {
 		if (
@@ -93,7 +112,7 @@ const ListTemplate = (props) => {
 								/>
 								{menuOpen === idx && (
 									<ToggleMenus ref={menuSelect}>
-										{toggleMenu.map((item, idx) => (
+										{toggleMenu.product_img.map((item, idx) => (
 											<ToggleMenu
 												key={idx}
 												onClick={() => {
@@ -196,7 +215,7 @@ const ListButton = styled.img`
 `;
 const ToggleMenus = styled.ul`
 	width: 8.9rem;
-	height: 11.2rem;
+	/* height: 11.2rem; */
 	position: absolute;
 	right: 0;
 	background-color: #fff;

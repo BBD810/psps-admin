@@ -1,30 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
-import { IMG_ADDRESS } from '../../config';
+import { IMG_ADDRESS, CLIENT_ADDRESS } from '../../config';
 import * as product_img from '../../controller/product_img';
 import styled from 'styled-components';
 
 const DetailTemplate = (props) => {
 	const history = useHistory();
+	const typeItems = ['단일', '공유'];
 	const [detail, setDetail] = useState({});
-	const [title, setTitle] = useState(false);
-	const [share, setShare] = useState(false);
-	const [img, setImg] = useState(false);
-	const [prevImg, setPrevImg] = useState(false);
-	const [shareList, setShareList] = useState([
-		'풀 이파리 더블팩',
-		'파릇파릇 횡성 양상추',
-		'베타카로딘이 풍부한 녹색 채소 신품급',
-		'베타카로틴이 풍부한 녹색 채소 민트급',
-	]);
+	const [shareList, setShareList] = useState([]);
 
-	const selectEdit = () => {
-		history.push({ state: detail.product_image_id });
-		props.changeMode('edit');
+	useEffect(() => {
+		let isSubscribed = true;
+		product_img.get_detail(history.location.state).then((res) => {
+			if (isSubscribed && res.data.success) {
+				setDetail(res.data.product_image);
+				setShareList(res.data.product_list);
+			}
+		});
+		return () => {
+			isSubscribed = false;
+		};
+	}, []);
+
+	const selectList = () => {
+		props.changeMode('list');
 	};
-	const selectDisplay = () => {};
-	const goDisplay = () => {};
-
 	const selectDelete = () => {
 		if (detail.share === 1) {
 			return props.modalController({
@@ -42,25 +43,44 @@ const DetailTemplate = (props) => {
 			act: 'delete',
 		});
 	};
-
-	useEffect(() => {
-		let isSubscribed = true;
-		product_img.get_detail(history.location.state).then((res) => {
-			if (isSubscribed && res.data.success) {
-				setDetail(res.data.product_image);
-			}
+	const selectShare = () => {
+		if (detail.share === 1 && detail.used > 1) {
+			props.modalController({
+				type: 'confirm',
+				text: '공유여부 변경하기',
+				//  선택하기로 수정해야함
+			});
+		} else {
+			goShare();
+		}
+	};
+	const goShare = () => {
+		props.modalController({
+			type: 'select',
+			text: '타입(공유여부)을 변경하시겠습니까?',
+			act: 'share',
 		});
-
-		return () => {
-			isSubscribed = false;
-		};
-	}, []);
+	};
+	const selectReplace = () => {};
+	const selectEdit = () => {
+		history.push({ state: detail.product_image_id });
+		props.changeMode('edit');
+	};
+	const checkLink = (product_id) => {
+		history.push({ pathname: '/product', state: product_id });
+	};
 
 	useEffect(() => {
 		let isSubscribed = true;
 		if (props.modal.act === 'delete' && props.modal.return) {
 			product_img.remove(detail.product_image_id).then((res) => {
 				if (isSubscribed && res.data.success) {
+					success();
+				}
+			});
+		} else if (props.modal.act === 'share' && props.modal.return) {
+			product_img.change_share(detail.product_image_id).then((res) => {
+				if (res.data.success) {
 					success();
 				}
 			});
@@ -84,15 +104,36 @@ const DetailTemplate = (props) => {
 				</Section>
 				<Section>
 					<Title>타입</Title>
-					<Desc>{detail.share === 1 ? '공유 이미지' : '단독 이미지'}</Desc>
+					<Desc>
+						단일 이미지는 하나의 상품에, 공유 이미지는 여러 상품에 등록할
+						수 있습니다.
+					</Desc>
+					<TypeBox>
+						{typeItems.map((el, idx) => (
+							<TypeItem key={idx} selected={detail.share === idx}>
+								{el}
+							</TypeItem>
+						))}
+					</TypeBox>
 				</Section>
 				<Section>
 					<Title>상품 목록</Title>
-					<Subtitle>해당 이미지를 사용중인 상품의 목록입니다.</Subtitle>
+					<Subtitle>
+						{`해당 이미지를 사용중인 상품의 목록입니다.\n공유중인 상품이 있을 경우 타입변경이 불가능합니다.`}
+					</Subtitle>
 					<ShareList>
-						{shareList.map((el, idx) => (
-							<ShareItem key={idx}>{`${idx + 1} - ${el}`}</ShareItem>
-						))}
+						{shareList &&
+							shareList
+								.map((el, idx) => (
+									<ShareItem
+										key={idx}
+										onClick={() => {
+											checkLink(el.product_id);
+										}}>
+										{`${idx + 1} - ${el.title}`}
+									</ShareItem>
+								))
+								.reverse()}
 					</ShareList>
 				</Section>
 			</TopWrap>
@@ -102,7 +143,6 @@ const DetailTemplate = (props) => {
 					사이즈 : 가로 1200px, 세로 5000px 권장 / 용량 : 10MB 이하 권장 /
 					해상도 : 72dpi
 				</Desc>
-
 				<ImgWrap>
 					{detail.image && (
 						<UploadImg
@@ -113,8 +153,14 @@ const DetailTemplate = (props) => {
 				</ImgWrap>
 			</BottomWrap>
 			<Buttons>
-				<Button onClick={selectDelete}>삭제하기</Button>
-				<Button onClick={selectDisplay}>목록이전</Button>
+				<Button border onClick={selectList}>
+					목록으로
+				</Button>
+				<Button border onClick={selectDelete}>
+					삭제하기
+				</Button>
+				<Button onClick={selectShare}>타입변경</Button>
+				<Button onClick={selectReplace}>상품이전</Button>
 				<Button onClick={selectEdit}>수정하기</Button>
 			</Buttons>
 		</Container>
@@ -130,14 +176,22 @@ const Container = styled.div`
 `;
 const TopWrap = styled.div`
 	display: flex;
+	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 7.4rem;
 `;
 const Section = styled.div`
-	width: 30%;
-	height: 24.6rem;
+	height: 26.1rem;
+	:nth-child(1) {
+		width: 20rem;
+		margin-right: 11.1rem;
+	}
+	:nth-child(2) {
+		width: 40rem;
+		margin-right: 11.1rem;
+	}
 	:nth-last-child(1) {
-		margin-left: 10rem;
+		width: 36.7rem;
 	}
 `;
 const Title = styled.h4`
@@ -155,15 +209,48 @@ const Desc = styled.p`
 	color: #2a3349;
 	margin-bottom: 1.2rem;
 `;
+const TypeBox = styled.div`
+	width: 40rem;
+	height: 3.1rem;
+	display: flex;
+	align-items: center;
+	border-radius: 4px;
+	border: 1px solid #a8b0c3;
+`;
+const TypeItem = styled.div`
+	width: 50%;
+	height: 3.1rem;
+	line-height: 3.1rem;
+	text-align: center;
+	font-size: 1.4rem;
+	border-radius: 4px;
+	${(props) =>
+		props.selected
+			? `color:#2A3349; font-family:'kr-b'; 
+				border:2px solid #848CA2;`
+			: `color: #5E667B;  `}
+`;
 const ShareList = styled.ul`
 	width: 100%;
 	height: 20rem;
 	padding: 0.7rem 0;
 	border-top: 2px solid #e5e6ed;
 	border-bottom: 2px solid #e5e6ed;
+	overflow-y: auto;
+	::-webkit-scrollbar {
+		width: 3px;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: #5e667b;
+		border-radius: 10px;
+	}
+	::-webkit-scrollbar-track {
+		background-color: #fff;
+	}
 `;
 const ShareItem = styled.li`
 	margin-bottom: 0.8rem;
+	cursor: pointer;
 	:nth-last-child(1) {
 		margin: 0;
 	}
@@ -217,7 +304,6 @@ const UploadImg = styled.img`
 	height: 100%;
 `;
 const Buttons = styled.div`
-	width: 33.4rem;
 	height: 3.1rem;
 	display: flex;
 	justify-content: flex-end;
@@ -235,10 +321,13 @@ const Button = styled.button`
 	border-radius: 4px;
 	background-color: #2a3349;
 	color: #fff;
-	margin-left: 8px;
-	&:nth-child(1) {
-		color: #2a3349;
-		background-color: unset;
-		border: 2px solid #2a3349;
+	margin-left: 0.8rem;
+	:nth-child(1) {
+		margin: 0;
 	}
+	${(props) =>
+		props.border &&
+		`	color: #2a3349;
+		background-color: unset;
+		border: 2px solid #2a3349;`}
 `;

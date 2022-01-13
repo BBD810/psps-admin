@@ -43,6 +43,10 @@ export const get_display_list = async (type, boolean) => {
 		.catch(errorMessage);
 };
 
+export const get_detail = async (id) => {
+	return await instance.get(`/detail/?banner_id=${id}`).catch(errorMessage);
+};
+
 export const change_display = async (id) => {
 	return await instance.get(`/display/?banner_id=${id}`).catch(errorMessage);
 };
@@ -53,8 +57,4 @@ export const change_order = async (arr) => {
 
 export const replace_display = async (arr) => {
 	return await instance.patch('/display', arr).catch(errorMessage);
-};
-
-export const get_detail = async (id) => {
-	return await instance.get(`/detail/?banner_id=${id}`).catch(errorMessage);
 };

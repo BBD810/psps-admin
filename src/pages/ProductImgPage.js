@@ -77,6 +77,7 @@ const ProductImgPage = () => {
 					)}
 					{!createMode && mode === 'detail' && (
 						<DetailTemplate
+							getMenu={getMenu}
 							category={category}
 							changeMode={changeMode}
 							mode={mode}

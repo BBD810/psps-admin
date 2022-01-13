@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 const CreateTemplate = (props) => {
 	const history = useHistory();
-	const shareItems = ['단일', '공유'];
+	const typeItems = ['단일', '공유'];
 	const [product_image_id, setProduct_image_id] = useState('');
 	const [title, setTitle] = useState('');
 	const [share, setShare] = useState(0);
@@ -36,7 +36,7 @@ const CreateTemplate = (props) => {
 		setTitle(e.target.value);
 	};
 	const shareController = (idx) => {
-		setShare(idx);
+		editMode || setShare(idx);
 	};
 
 	const fileUpload = (e) => {
@@ -85,14 +85,13 @@ const CreateTemplate = (props) => {
 				const formData = new FormData();
 				formData.append('image', img);
 				formData.append('title', title);
-				formData.append('share', share);
 				product_img.edit(formData, product_image_id, true).then((res) => {
 					console.log(res.data);
 					if (res.data.success) {
 					}
 				});
 			} else {
-				// const data = {title, share};
+				// const data = {title, };
 			}
 		}
 	};
@@ -123,18 +122,19 @@ const CreateTemplate = (props) => {
 						단일 이미지는 하나의 상품에, 공유 이미지는 여러 상품에 등록할
 						수 있습니다.
 					</Desc>
-					<ShareBox>
-						{shareItems.map((el, idx) => (
-							<ShareItem
+					<TypeBox>
+						{typeItems.map((el, idx) => (
+							<TypeItem
 								key={idx}
+								edit={editMode}
 								selected={share === idx}
 								onClick={() => {
 									shareController(idx);
 								}}>
 								{el}
-							</ShareItem>
+							</TypeItem>
 						))}
-					</ShareBox>
+					</TypeBox>
 				</Section>
 			</TopWrap>
 			<BottomWrap>
@@ -200,7 +200,7 @@ const Input = styled.input`
 	padding: 0 1rem;
 `;
 
-const ShareBox = styled.div`
+const TypeBox = styled.div`
 	width: 40rem;
 	height: 3.1rem;
 	display: flex;
@@ -208,7 +208,7 @@ const ShareBox = styled.div`
 	border-radius: 4px;
 	border: 1px solid #a8b0c3;
 `;
-const ShareItem = styled.div`
+const TypeItem = styled.div`
 	width: 50%;
 	height: 3.1rem;
 	line-height: 3.1rem;
@@ -220,6 +220,13 @@ const ShareItem = styled.div`
 			? `color:#2A3349; font-family:'kr-b'; 
 				border:2px solid #5887FF;`
 			: `color: #5E667B;  `}
+	${({ edit, selected }) => {
+		return edit && selected
+			? `border:2px solid #848CA2`
+			: edit && !selected
+			? `border:none`
+			: null;
+	}}
 `;
 const UploadButton = styled.button`
 	width: 10.6rem;
@@ -263,7 +270,7 @@ const FileInput = styled.input`
 const ImgWrap = styled.div`
 	margin-top: 2rem;
 	width: 100%;
-	height: 500rem;
+	min-height: 50rem;
 	border: 1px solid #a8b0c3;
 `;
 const UploadImg = styled.img`
