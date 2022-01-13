@@ -30,7 +30,7 @@ const CreateTemplate = (props) => {
 				}
 			});
 		}
-	}, []);
+	}, [props.mode]);
 
 	const titleController = (e) => {
 		setTitle(e.target.value);

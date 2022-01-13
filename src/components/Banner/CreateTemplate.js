@@ -65,10 +65,7 @@ const CreateTemplate = (props) => {
 	}, [props.mode, props.input]);
 
 	useEffect(() => {
-		if (
-			(!editMode && title && img && page !== false) ||
-			(editMode && title && page !== false)
-		) {
+		if ((!editMode && title && img && page) || (editMode && title && page)) {
 			if (page === '상품 카테고리') {
 				subPart ? setCheck(true) : setCheck(false);
 			} else if (page === '상품 상세보기') {
@@ -129,7 +126,9 @@ const CreateTemplate = (props) => {
 	};
 	const onSubmit = (e) => {
 		const innerText = e.target.innerText;
-		if (innerText === '추가하기') {
+		if (innerText === '취소하기') {
+			props.changeMode('detail');
+		} else if (innerText === '추가하기') {
 			onCreate();
 		} else if (innerText === '저장하기') {
 			onEdit();
@@ -328,12 +327,22 @@ const CreateTemplate = (props) => {
 						onChange={fileUpload}
 					/>
 				</UploadButtonBox>
-				<Button
-					add
-					style={check ? { opacity: '1' } : { opacity: '0.4' }}
-					onClick={onSubmit}>
-					{props.mode === 'edit' ? '저장하기' : '추가하기'}
-				</Button>
+				{editMode && (
+					<Buttons>
+						<Button border onClick={onSubmit}>
+							취소하기
+						</Button>
+						<Button onClick={onSubmit}>저장하기</Button>
+					</Buttons>
+				)}
+				{editMode || (
+					<Button
+						add
+						style={check ? { opacity: '1' } : { opacity: '0.4' }}
+						onClick={onSubmit}>
+						추가하기
+					</Button>
+				)}
 			</Right>
 		</Container>
 	);
@@ -495,18 +504,7 @@ const UploadButtonBox = styled.div`
 	align-items: center;
 	position: relative;
 `;
-const Button = styled.button`
-	width: 10.6rem;
-	height: 3.1rem;
-	line-height: 3.1rem;
-	font-size: 1.2rem;
-	font-family: 'kr-b';
-	color: #fff;
-	border: none;
-	background-color: #2a3349;
-	border-radius: 4px;
-	${(props) => props.add && `position:absolute; right:0; top:-8.8rem;`}
-`;
+
 const FileInput = styled.input`
 	width: 10.6rem;
 	height: 3.1rem;
@@ -518,4 +516,32 @@ const FileInput = styled.input`
 	background-color: #2a3349;
 	border-radius: 4px;
 	cursor: pointer;
+`;
+const Buttons = styled.div`
+	height: 3.1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: absolute;
+	top: -8.8rem;
+	right: 0;
+`;
+const Button = styled.button`
+	width: 10.6rem;
+	height: 3.1rem;
+	font-size: 1.2rem;
+	font-family: 'kr-b';
+	border: none;
+	border-radius: 4px;
+	background-color: #2a3349;
+	color: #fff;
+	margin-left: 0.8rem;
+	:nth-child(1) {
+		margin: 0;
+	}
+	${(props) =>
+		props.border &&
+		`	color: #2a3349; background-color: unset;
+		border: 2px solid #2a3349;`}
+	${(props) => props.add && `position:absolute; top:-8.8rem; right:0;`}
 `;

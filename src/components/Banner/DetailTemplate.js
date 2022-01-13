@@ -65,6 +65,9 @@ const DetailTemplate = (props) => {
 			act: 'delete',
 		});
 	};
+	const selectList = () => {
+		props.changeMode('list');
+	};
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -167,7 +170,12 @@ const DetailTemplate = (props) => {
 				</DetailContents>
 			</DetailContentsBox>
 			<Buttons>
-				<Button onClick={selectDelete}>삭제하기</Button>
+				<Button border onClick={selectList}>
+					목록으로
+				</Button>
+				<Button border onClick={selectDelete}>
+					삭제하기
+				</Button>
 				<Button onClick={selectDisplay}>노출변경</Button>
 				<Button onClick={selectEdit}>수정하기</Button>
 			</Buttons>
@@ -215,7 +223,6 @@ const DetailDesc = styled.p`
 	color: #2a3349;
 `;
 const Buttons = styled.div`
-	width: 33.4rem;
 	height: 3.1rem;
 	display: flex;
 	justify-content: space-between;
@@ -233,9 +240,13 @@ const Button = styled.button`
 	border-radius: 4px;
 	background-color: #2a3349;
 	color: #fff;
-	&:nth-child(1) {
-		color: #2a3349;
-		background-color: unset;
-		border: 2px solid #2a3349;
+	margin-left: 0.8rem;
+	:nth-child(1) {
+		margin: 0;
 	}
+	${(props) =>
+		props.border &&
+		`	color: #2a3349;
+		background-color: unset;
+		border: 2px solid #2a3349;`}
 `;
