@@ -43,8 +43,16 @@ export const get_detail = async (id) => {
 		.catch(errorMessage);
 };
 
+export const get_share_list = async (boolean) => {
+	return await instance.get(`/?share=${boolean}`).catch(errorMessage);
+};
+
 export const change_share = async (id) => {
 	return await instance
 		.patch(`/share/?product_image_id=${id}`)
 		.catch(errorMessage);
+};
+
+export const replace_share = async (arr) => {
+	return await instance.post(`/replace`, arr).catch(errorMessage);
 };

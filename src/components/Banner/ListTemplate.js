@@ -33,7 +33,6 @@ const ListTemplate = (props) => {
 				}
 			}
 		});
-
 		return () => {
 			isSubscribed = false;
 		};
@@ -47,7 +46,6 @@ const ListTemplate = (props) => {
 				setDisplayList(res.data.banner_list);
 			}
 		});
-
 		return () => {
 			isSubscribed = false;
 		};
@@ -81,12 +79,12 @@ const ListTemplate = (props) => {
 	};
 	const selectDisplay = (detail) => {
 		if (detail.display === 1 && displayList.length === 1) {
-			return props.modalController({
+			props.modalController({
 				type: 'confirm',
 				text: '최소 한 개의 배너는\n노출중이어야 합니다.',
 			});
 		} else if (detail.display === 0 && displayList.length === 3) {
-			return props.modalController({
+			props.modalController({
 				type: 'list',
 				text: '배너는 최대 세 개만 노출이 가능합니다.\n교환할 배너를 선택해주세요.',
 				list: displayList,
@@ -104,12 +102,12 @@ const ListTemplate = (props) => {
 	};
 	const selectDelete = (detail) => {
 		if (detail.display === 1) {
-			return props.modalController({
+			props.modalController({
 				type: 'confirm',
 				text: '노출중인 배너는\n삭제할 수 없습니다.',
 			});
 		} else if (detail.display === 1 && displayList.length < 2) {
-			return props.modalController({
+			props.modalController({
 				...props.modal,
 				type: 'confirm',
 				text: '최소 한 개의 배너는\n노출중이어야 합니다.',
@@ -184,27 +182,27 @@ const ListTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		if (props.modal.act === 'display' && props.modal.return) {
+		let _modal = props.modal;
+		if (_modal.act === 'display' && _modal.return) {
 			banner.change_display(banner_id).then((res) => {
 				if (isSubscribed && res.data.success) {
 					success(res.data.banner_list);
 				}
 			});
-		} else if (props.modal.act === 'delete' && props.modal.return) {
+		} else if (_modal.act === 'delete' && _modal.return) {
 			banner.remove(banner_id).then((res) => {
 				if (isSubscribed && res.data.success) {
 					success(res.data.banner_list);
 				}
 			});
-		} else if (props.modal.act === 'replace' && props.modal.return) {
-			const arr = [detail, displayList[props.modal.return]];
+		} else if (_modal.act === 'replace' && _modal.return) {
+			const arr = [detail, displayList[_modal.return]];
 			banner.replace_display(arr).then((res) => {
 				if (isSubscribed && res.data.success) {
 					success(res.data.banner_list);
 				}
 			});
 		}
-
 		return () => {
 			isSubscribed = false;
 		};

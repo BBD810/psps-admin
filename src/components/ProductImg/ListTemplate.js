@@ -15,6 +15,7 @@ const ListTemplate = (props) => {
 	const [product_image_id, setProduct_image_id] = useState('');
 	const [detail, setDetail] = useState({});
 	const [list, setList] = useState([]);
+	const [shareList, setShareList] = useState([]);
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -24,11 +25,19 @@ const ListTemplate = (props) => {
 				setList(res.data.product_image_list);
 			}
 		});
-
 		return () => {
 			isSubscribed = false;
 		};
 	}, []);
+	useEffect(() => {
+		let isSubscribed = true;
+		product_img.get_share_list(true).then((res) => {
+			setShareList(res.data.product_image_list);
+		});
+		return () => {
+			isSubscribed = false;
+		};
+	}, [list]);
 
 	const goDetail = (el) => {
 		history.push({ state: el.product_image_id });
@@ -53,8 +62,34 @@ const ListTemplate = (props) => {
 		history.push({ state: el.product_image_id });
 		props.changeMode('edit');
 	};
-	const selectShare = (detail) => {};
-	const selectDelete = (el) => {};
+	const selectShare = (detail) => {
+		if (detail.share === 1 && detail.used > 1) {
+			props.modalController({
+				type: 'confirm',
+				text: '해당 상세이미지는\n공유된 상품이 2개 이상입니다.\n목록이전을 먼저 해주세요.',
+			});
+		} else {
+			props.modalController({
+				type: 'select',
+				text: '타입(공유여부)을\n변경하시겠습니까?',
+				act: 'share',
+			});
+		}
+	};
+	const selectDelete = (detail) => {
+		if (detail.share === 1) {
+			props.modalController({
+				type: 'confirm',
+				text: '공유된 이미지는\n삭제할 수 없습니다.',
+			});
+		} else {
+			props.modalController({
+				type: 'select',
+				text: '해당 이미지를\n삭제하시겠습니까?',
+				act: 'delete',
+			});
+		}
+	};
 
 	const onMouseDown = (e) => {
 		if (
@@ -63,6 +98,32 @@ const ListTemplate = (props) => {
 		) {
 			setMenuOpen('close');
 		}
+	};
+
+	useEffect(() => {
+		let isSubscribed = true;
+		let _modal = props.modal;
+		if (_modal.act === 'share' && _modal.return) {
+			product_img.change_share(detail.product_image_id).then((res) => {
+				if (isSubscribed && res.data.success) {
+					success(res.data.product_image_list);
+				}
+			});
+		} else if (_modal.act === 'delete' && _modal.return) {
+			product_img.remove(detail.product_image_id).then((res) => {
+				if (isSubscribed && res.data.success) {
+					success(res.data.product_image_list);
+				}
+			});
+		}
+		return () => {
+			isSubscribed = false;
+		};
+	}, [props.modal.type]);
+
+	const success = (list) => {
+		setList(list);
+		props.modalController({ type: '' });
 	};
 
 	return (
@@ -152,6 +213,7 @@ const List = styled.li`
 const ListImgWrap = styled.div`
 	width: 37.4rem;
 	height: 16.9rem;
+	overflow-y: hidden;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -183,7 +245,6 @@ const ListState = styled.p`
 `;
 const ListImg = styled.img`
 	width: 100%;
-	height: 100%;
 	cursor: pointer;
 `;
 const ListBottom = styled.div`

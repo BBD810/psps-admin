@@ -8,6 +8,7 @@ const DetailTemplate = (props) => {
 	const history = useHistory();
 	const typeItems = ['단일', '공유'];
 	const [detail, setDetail] = useState({});
+	const [shareImgList, setShareImgList] = useState([]);
 	const [shareList, setShareList] = useState([]);
 
 	useEffect(() => {
@@ -16,6 +17,18 @@ const DetailTemplate = (props) => {
 			if (isSubscribed && res.data.success) {
 				setDetail(res.data.product_image);
 				setShareList(res.data.product_list);
+			}
+		});
+		product_img.get_share_list(true).then((res) => {
+			if (isSubscribed && res.data.success) {
+				let list = res.data.product_image_list;
+				for (let i = 0; i < list.length; i++) {
+					if (list[i].product_image_id === detail.product_image_id) {
+						list.splice(i, 1);
+						break;
+					}
+				}
+				setShareImgList(list);
 			}
 		});
 		return () => {
@@ -28,40 +41,53 @@ const DetailTemplate = (props) => {
 	};
 	const selectDelete = () => {
 		if (detail.share === 1) {
-			return props.modalController({
+			props.modalController({
 				type: 'confirm',
-				text: '공유되어있는 이미지는\n삭제할 수 없습니다.',
+				text: '공유된 이미지는\n삭제할 수 없습니다.',
 			});
 		} else {
-			goDelete();
+			props.modalController({
+				type: 'select',
+				text: '해당 이미지를\n삭제하시겠습니까?',
+				act: 'delete',
+			});
 		}
-	};
-	const goDelete = () => {
-		props.modalController({
-			type: 'select',
-			text: '해당 이미지를\n삭제하시겠습니까?',
-			act: 'delete',
-		});
 	};
 	const selectShare = () => {
 		if (detail.share === 1 && detail.used > 1) {
 			props.modalController({
 				type: 'confirm',
-				text: '공유여부 변경하기',
-				//  선택하기로 수정해야함
+				text: '해당 상세이미지는\n공유된 상품이 2개 이상입니다.\n목록이전을 먼저 해주세요.',
 			});
 		} else {
-			goShare();
+			props.modalController({
+				type: 'select',
+				text: '타입(공유여부)을\n변경하시겠습니까?',
+				act: 'share',
+			});
 		}
 	};
-	const goShare = () => {
-		props.modalController({
-			type: 'select',
-			text: '타입(공유여부)을 변경하시겠습니까?',
-			act: 'share',
-		});
+	const selectReplace = () => {
+		if (detail.share === 0) {
+			props.modalController({
+				type: 'confirm',
+				text: '공유된 상세이미지만\n상품목록 이전이 가능합니다.',
+			});
+		} else if (detail.share === 1 && detail.used === 0) {
+			props.modalController({
+				type: 'confirm',
+				text: '해당 이미지가 공유된 상품이 없어서\n상품목록 이전이 불가능합니다.',
+			});
+		} else if (detail.share === 1 && detail.used > 0) {
+			props.modalController({
+				type: 'list',
+				text: '상품의 목록을 어떤 상세이미지로\n이전하시겠습니까?',
+				desc: '타입을 공유로 설정한 이미지만 선택이 가능합니다.',
+				act: 'replace',
+				list: shareImgList,
+			});
+		}
 	};
-	const selectReplace = () => {};
 	const selectEdit = () => {
 		history.push({ state: detail.product_image_id });
 		props.changeMode('edit');
@@ -72,15 +98,24 @@ const DetailTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		if (props.modal.act === 'delete' && props.modal.return) {
+		let _modal = props.modal;
+		if (_modal.act === 'delete' && _modal.return) {
 			product_img.remove(detail.product_image_id).then((res) => {
 				if (isSubscribed && res.data.success) {
 					success();
 				}
 			});
-		} else if (props.modal.act === 'share' && props.modal.return) {
+		} else if (_modal.act === 'share' && _modal.return) {
 			product_img.change_share(detail.product_image_id).then((res) => {
-				if (res.data.success) {
+				if (isSubscribed && res.data.success) {
+					success();
+				}
+			});
+		} else if (_modal.act === 'replace' && _modal.return) {
+			let arr = [detail, shareImgList[_modal.return]];
+			product_img.replace_share(arr).then((res) => {
+				console.log(res.data);
+				if (isSubscribed && res.data.success) {
 					success();
 				}
 			});

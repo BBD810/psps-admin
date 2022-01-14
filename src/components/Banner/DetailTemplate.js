@@ -110,19 +110,20 @@ const DetailTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		if (props.modal.act === 'display' && props.modal.return) {
+		let _modal = props.modal;
+		if (_modal.act === 'display' && _modal.return) {
 			banner.change_display(banner_id).then((res) => {
 				if (isSubscribed && res.data.success) {
 					success();
 				}
 			});
-		} else if (props.modal.act === 'delete' && props.modal.return) {
+		} else if (_modal.act === 'delete' && _modal.return) {
 			banner.remove(banner_id).then((res) => {
 				if (isSubscribed && res.data.success) {
 					success();
 				}
 			});
-		} else if (props.modal.act === 'replace' && props.modal.return) {
+		} else if (_modal.act === 'replace' && _modal.return) {
 			const arr = [detail, displayList[props.modal.return]];
 			banner.replace_display(arr).then((res) => {
 				if (isSubscribed && res.data.success) {

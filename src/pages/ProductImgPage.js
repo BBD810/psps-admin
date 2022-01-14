@@ -10,7 +10,7 @@ import CreateTemplate from '../components/ProductImg/CreateTemplate';
 import DetailTemplate from '../components/ProductImg/DetailTemplate';
 import ConfirmModal from '../components/Modal/ConfirmModal';
 import SelectModal from '../components/Modal/SelectModal';
-import ListModal from '../components/Modal/ListModal';
+import ListModal2 from '../components/Modal/ListModal2';
 
 const ProductImgPage = () => {
 	const [mode, setMode] = useState('list');
@@ -118,7 +118,7 @@ const ProductImgPage = () => {
 						/>
 					)}
 					{modal.type === 'list' && (
-						<ListModal modal={modal} modalController={modalController} />
+						<ListModal2 modal={modal} modalController={modalController} />
 					)}
 					<Footer />
 				</Contents>
