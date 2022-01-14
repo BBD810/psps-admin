@@ -135,6 +135,7 @@ const Item = styled.div`
 	width: 100%;
 	padding-bottom: 3.1rem;
 	margin-bottom: 1rem;
+	margin-bottom: 6rem;
 	display: flex;
 	justify-content: center;
 	position: relative;

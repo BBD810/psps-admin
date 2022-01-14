@@ -56,3 +56,9 @@ export const change_share = async (id) => {
 export const replace_share = async (arr) => {
 	return await instance.post(`/replace`, arr).catch(errorMessage);
 };
+
+export const change_order = async (arr, view) => {
+	return await instance
+		.patch(`/order/?share=${view}`, arr)
+		.catch(errorMessage);
+};

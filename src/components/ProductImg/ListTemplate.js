@@ -4,6 +4,7 @@ import { IMG_ADDRESS, ADDRESS } from '../../config';
 import * as toggleMenu from '../../data/toggle';
 import * as product_img from '../../controller/product_img';
 import styled from 'styled-components';
+import down from '../../images/angle-down.svg';
 import left from '../../images/left.svg';
 import right from '../../images/right.svg';
 import toggle from '../../images/toggle.svg';
@@ -11,17 +12,18 @@ import toggle from '../../images/toggle.svg';
 const ListTemplate = (props) => {
 	const history = useHistory();
 	const menuSelect = useRef();
+	const viewListBox = useRef();
+	const viewList = ['전체보기', '단일 이미지', '공유 이미지'];
+	const [view, setView] = useState('전체보기');
+	const [viewOpen, setViewOpen] = useState(false);
 	const [menuOpen, setMenuOpen] = useState('close');
-	const [product_image_id, setProduct_image_id] = useState('');
 	const [detail, setDetail] = useState({});
 	const [list, setList] = useState([]);
-	const [shareList, setShareList] = useState([]);
 
 	useEffect(() => {
 		let isSubscribed = true;
 		product_img.get_list().then((res) => {
 			if (isSubscribed && res.data.success) {
-				console.log(res.data);
 				setList(res.data.product_image_list);
 			}
 		});
@@ -29,15 +31,43 @@ const ListTemplate = (props) => {
 			isSubscribed = false;
 		};
 	}, []);
+
+	const viewSelectController = (e) => {
+		const innerText = e.target.innerText;
+		if (innerText === view) {
+			return setViewOpen(false);
+		} else {
+			setView(innerText);
+			setViewOpen(false);
+		}
+	};
+
 	useEffect(() => {
 		let isSubscribed = true;
-		product_img.get_share_list(true).then((res) => {
-			setShareList(res.data.product_image_list);
-		});
+		if (view === '전체보기') {
+			product_img.get_list().then((res) => {
+				if (isSubscribed && res.data.success) {
+					setList(res.data.product_image_list);
+				}
+			});
+		} else if (view === '단일 이미지') {
+			product_img.get_share_list(false).then((res) => {
+				if (isSubscribed && res.data.success) {
+					setList(res.data.product_image_list);
+				}
+			});
+		} else if (view === '공유 이미지') {
+			product_img.get_share_list(true).then((res) => {
+				if (isSubscribed && res.data.success) {
+					setList(res.data.product_image_list);
+				}
+			});
+		}
+
 		return () => {
 			isSubscribed = false;
 		};
-	}, [list]);
+	}, [view]);
 
 	const goDetail = (el) => {
 		history.push({ state: el.product_image_id });
@@ -54,7 +84,6 @@ const ListTemplate = (props) => {
 		} else if (menu === '삭제하기') {
 			selectDelete(el);
 		}
-		setProduct_image_id(el.product_image_id);
 		setDetail(el);
 		setMenuOpen('close');
 	};
@@ -94,9 +123,51 @@ const ListTemplate = (props) => {
 	const onMouseDown = (e) => {
 		if (
 			menuOpen !== 'close' &&
-			(!menuSelect.current || !menuSelect.current.contains(e.target))
+			(!menuSelect.current || !menuSelect.current.contains(e.target)) &&
+			(!viewListBox.current || !viewListBox.current.contains(e.target))
 		) {
 			setMenuOpen('close');
+		}
+	};
+
+	const leftClick = (e) => {
+		let arr = [];
+		for (let i = 0; i < list.length; i++) {
+			if (list[i] === e) {
+				if (list[i - 1]) {
+					arr = [list[i - 1], list[i]];
+					break;
+				}
+			}
+		}
+		changeOrder(arr);
+	};
+	const rightClick = (e) => {
+		let arr = [];
+		for (let i = 0; i < list.length; i++) {
+			if (list[i] === e) {
+				arr = [list[i], list[i + 1]];
+				break;
+			}
+		}
+		changeOrder(arr);
+	};
+
+	const changeOrder = (arr) => {
+		if (arr[0] && arr[1]) {
+			let _view = viewChange(view);
+			product_img.change_order(arr, _view).then((res) => {
+				setList(res.data.product_image_list);
+			});
+		}
+	};
+	const viewChange = (view) => {
+		if (view === '전체보기') {
+			return 2;
+		} else if (view === '단일 이미지') {
+			return 0;
+		} else if (view === '공유 이미지') {
+			return 1;
 		}
 	};
 
@@ -153,16 +224,16 @@ const ListTemplate = (props) => {
 								<ListButton
 									alt='button'
 									src={left}
-									// onClick={() => {
-									// 	leftClick(el);
-									// }}
+									onClick={() => {
+										leftClick(el);
+									}}
 								/>
 								<ListButton
 									alt='button'
 									src={right}
-									// onClick={() => {
-									// 	rightClick(el);
-									// }}
+									onClick={() => {
+										rightClick(el);
+									}}
 								/>
 								<ListButton
 									alt='button'
@@ -189,6 +260,31 @@ const ListTemplate = (props) => {
 					</List>
 				))}
 			</Wrap>
+			<Item>
+				{viewOpen === false ? (
+					<ItemSelected
+						onClick={() => {
+							setViewOpen(true);
+						}}>
+						<ItemText>{view}</ItemText>
+						<ItemSelectImg alt='select button' src={down} />
+					</ItemSelected>
+				) : (
+					<ItemSelectWrap ref={viewListBox}>
+						<ItemSelectList
+							onClick={() => {
+								setViewOpen(false);
+							}}>
+							{view}
+						</ItemSelectList>
+						{viewList.map((el, idx) => (
+							<ItemSelectList key={idx} onClick={viewSelectController}>
+								{el}
+							</ItemSelectList>
+						))}
+					</ItemSelectWrap>
+				)}
+			</Item>
 		</Container>
 	);
 };
@@ -197,12 +293,14 @@ export default ListTemplate;
 
 const Container = styled.div`
 	width: 119rem;
+	position: relative;
 `;
 const Wrap = styled.ul`
 	margin-top: 4.85rem;
 	width: 100%;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
+	position: relative;
 `;
 const List = styled.li`
 	width: 37.4rem;
@@ -290,6 +388,74 @@ const ToggleMenu = styled.li`
 	color: #5e667b;
 	text-align: center;
 	cursor: pointer;
+	:hover {
+		background-color: #e5e6ed;
+	}
+`;
+const Item = styled.div`
+	width: 16rem;
+	padding-bottom: 3.1rem;
+	display: flex;
+	justify-content: center;
+	position: absolute;
+	top: -5.75rem;
+	right: 0;
+`;
+const ItemSelected = styled.div`
+	margin-bottom: 1rem;
+	width: 16rem;
+	height: 3.1rem;
+	line-height: 3.1rem;
+	display: flex;
+	align-items: center;
+	position: absolute;
+	padding: 0 1rem;
+	background-color: #f4f4f4;
+	border: 2px solid #e5e6ed;
+	border-radius: 4px;
+	cursor: pointer;
+`;
+const ItemText = styled.p`
+	width: 100%;
+	font-size: 1.2rem;
+	color: #7f8697;
+`;
+const ItemSelectImg = styled.img`
+	width: 0.7rem;
+	height: 0.6rem;
+	position: absolute;
+	right: 1rem;
+`;
+const ItemSelectWrap = styled.ul`
+	width: 16rem;
+	height: 12.4rem;
+	line-height: 3.2rem;
+	position: absolute;
+	z-index: 3;
+	background-color: #fff;
+	box-shadow: 0px 3px 6px #00000029;
+	border: 2px solid #2a3349;
+	border-radius: 4px;
+	overflow-y: auto;
+	::-webkit-scrollbar {
+		width: 3px;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: #5e667b;
+		border-radius: 10px;
+	}
+	::-webkit-scrollbar-track {
+		background-color: #fff;
+	}
+`;
+const ItemSelectList = styled.li`
+	height: 3.2rem;
+	line-height: 3.2rem;
+	padding: 0 0.8rem;
+	cursor: pointer;
+	:nth-child(1) {
+		border-bottom: 1px solid #e5e6ed;
+	}
 	:hover {
 		background-color: #e5e6ed;
 	}

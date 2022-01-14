@@ -141,10 +141,8 @@ const ListTemplate = (props) => {
 		for (let i = 0; i < list.length; i++) {
 			if (list[i] === e) {
 				if (list[i - 1]) {
-					arr.push(list[i - 1], list[i]);
+					arr = [list[i - 1], list[i]];
 					break;
-				} else {
-					return;
 				}
 			}
 		}
@@ -157,8 +155,6 @@ const ListTemplate = (props) => {
 				if (list[i + 1]) {
 					arr.push(list[i], list[i + 1]);
 					break;
-				} else {
-					return;
 				}
 			}
 		}

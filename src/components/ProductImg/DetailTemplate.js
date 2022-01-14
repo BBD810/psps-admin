@@ -19,6 +19,12 @@ const DetailTemplate = (props) => {
 				setShareList(res.data.product_list);
 			}
 		});
+		return () => {
+			isSubscribed = false;
+		};
+	}, []);
+	useEffect(() => {
+		let isSubscribed = true;
 		product_img.get_share_list(true).then((res) => {
 			if (isSubscribed && res.data.success) {
 				let list = res.data.product_image_list;
@@ -34,7 +40,7 @@ const DetailTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
-	}, []);
+	}, [detail]);
 
 	const selectList = () => {
 		props.changeMode('list');
@@ -84,6 +90,7 @@ const DetailTemplate = (props) => {
 				text: '상품의 목록을 어떤 상세이미지로\n이전하시겠습니까?',
 				desc: '타입을 공유로 설정한 이미지만 선택이 가능합니다.',
 				act: 'replace',
+				// list: shareImgList,
 				list: shareImgList,
 			});
 		}
