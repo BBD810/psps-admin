@@ -34,7 +34,11 @@ export const productCategory = [
 	{
 		item: '상품 목록',
 		list_main: '상품 목록',
-		list_sub: `각 카테고리별 상품의 정보를 조회, 수정합니다.`,
+		list_sub: `각 카테고리별 상품의 정보를 조회, 수정합니다.\n노출중이 아닌 품목의 경우 회색 배경의 반투명한 이미지로 보입니다.`,
+		detail_main: '상품 목록',
+		detail_sub: `각 카테고리별 상품의 정보를 조회, 수정합니다.\n노출중이 아닌 품목의 경우 회색 배경의 반투명한 이미지로 보입니다.`,
+		edit_main: '상품 목록',
+		edit_sub: `각 카테고리별 상품의 정보를 조회, 수정합니다.\n노출중이 아닌 품목의 경우 회색 배경의 반투명한 이미지로 보입니다.`,
 	},
 	{
 		item: '추천 상품 목록',
@@ -44,7 +48,7 @@ export const productCategory = [
 	{
 		item: '상품 추가',
 		list_main: '상품 추가하기',
-		list_sub: `새로운 상품을 등록합니다.`,
+		list_sub: `새로운 상품을 등록합니다.\n상태 정보는 상품 추가 후 변경이 가능합니다.`,
 	},
 ];
 export const productImgCategory = [

@@ -157,7 +157,9 @@ const ListTemplate = (props) => {
 		if (arr[0] && arr[1]) {
 			let _view = viewChange(view);
 			product_img.change_order(arr, _view).then((res) => {
-				setList(res.data.product_image_list);
+				if (res.data.success) {
+					setList(res.data.product_image_list);
+				}
 			});
 		}
 	};
@@ -193,6 +195,7 @@ const ListTemplate = (props) => {
 	}, [props.modal.type]);
 
 	const success = (list) => {
+		setView('전체보기');
 		setList(list);
 		props.modalController({ type: '' });
 	};

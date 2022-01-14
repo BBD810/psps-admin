@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
+import ListTemplate from '../components/Product/ListTemplate';
 
 const ProductPage = () => {
 	const history = useHistory();
@@ -18,7 +19,7 @@ const ProductPage = () => {
 
 	if (history.location.state) {
 		// changeMode('detail')
-		console.log('cc', history.location.state);
+		// console.log('cc', history.location.state);
 	}
 
 	const modalController = (data) => {
@@ -33,6 +34,10 @@ const ProductPage = () => {
 		}
 	}, []);
 
+	const changeMode = (mode) => {
+		setMode(mode);
+	};
+
 	const getMenu = (menu) => {
 		setMenu(menu);
 	};
@@ -40,6 +45,8 @@ const ProductPage = () => {
 		setCategory(category);
 		setMode('list');
 	};
+
+	const createMode = category === '상품 추가';
 
 	return (
 		<div id='container'>
@@ -56,6 +63,9 @@ const ProductPage = () => {
 						modal={modal}
 						modalController={modalController}
 					/>
+					{/* {!createMode && mode === 'list' && */}
+					<ListTemplate />
+					{/* } */}
 					<Footer />
 				</Contents>
 			</Container>
