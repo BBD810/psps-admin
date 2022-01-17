@@ -366,6 +366,7 @@ const ToggleMenus = styled.ul`
 	background-color: #fff;
 	box-shadow: 0px 3px 15px #00000040;
 	border-radius: 4px;
+	z-index: 3;
 `;
 const ToggleMenu = styled.li`
 	height: 2.8rem;
