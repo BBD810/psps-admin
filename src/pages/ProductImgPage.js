@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { productImgCategory } from '../data/category';
-import { toggleMenu } from '../data/toggle';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
@@ -10,7 +9,7 @@ import CreateTemplate from '../components/ProductImg/CreateTemplate';
 import DetailTemplate from '../components/ProductImg/DetailTemplate';
 import ConfirmModal from '../components/Modal/ConfirmModal';
 import SelectModal from '../components/Modal/SelectModal';
-import ListModal2 from '../components/Modal/ListModal2';
+import ReplaceModal from '../components/Modal/ReplaceModal';
 
 const ProductImgPage = () => {
 	const [mode, setMode] = useState('list');
@@ -118,7 +117,10 @@ const ProductImgPage = () => {
 						/>
 					)}
 					{modal.type === 'list' && (
-						<ListModal2 modal={modal} modalController={modalController} />
+						<ReplaceModal
+							modal={modal}
+							modalController={modalController}
+						/>
 					)}
 					<Footer />
 				</Contents>

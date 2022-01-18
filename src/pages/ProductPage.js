@@ -6,6 +6,8 @@ import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
 import ListTemplate from '../components/Product/ListTemplate';
+import CreateTemplate from '../components/Product/CreateTemplate';
+import DetailTemplate from '../components/Product/DetailTemplate';
 
 const ProductPage = () => {
 	const history = useHistory();
@@ -63,9 +65,9 @@ const ProductPage = () => {
 						modal={modal}
 						modalController={modalController}
 					/>
-					{/* {!createMode && mode === 'list' && */}
-					<ListTemplate />
-					{/* } */}
+					{!createMode && mode === 'list' && <ListTemplate />}
+					{!createMode && mode === 'detail' && <DetailTemplate />}
+					{createMode && <CreateTemplate />}
 					<Footer />
 				</Contents>
 			</Container>

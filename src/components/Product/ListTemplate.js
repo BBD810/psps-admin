@@ -315,6 +315,7 @@ const Items = styled.div`
 	right: 0;
 `;
 const Item = styled.div`
+	width: 100%;
 	position: relative;
 	:nth-child(1) {
 		margin-right: 1rem;
@@ -345,7 +346,7 @@ const ItemSelectImg = styled.img`
 `;
 const ItemSelectWrap = styled.ul`
 	width: 16rem;
-	height: 16rem;
+	max-height: 16rem;
 	line-height: 3.1rem;
 	position: absolute;
 	top: -1.6rem;

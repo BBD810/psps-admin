@@ -164,7 +164,7 @@ const CreateTemplate = (props) => {
 	);
 };
 
-export default CreateTemplate;
+export default withRouter(CreateTemplate);
 
 const Container = styled.div`
 	width: 119rem;

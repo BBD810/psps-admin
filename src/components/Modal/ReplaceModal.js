@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
 
-const ListModal2 = (props) => {
+const ReplaceModal = (props) => {
 	const modalBox = useRef();
 	const listBox = useRef();
 	const [list, setList] = useState([]);
@@ -92,7 +92,7 @@ const ListModal2 = (props) => {
 	);
 };
 
-export default ListModal2;
+export default ReplaceModal;
 
 const Container = styled.div`
 	width: 100vw;
