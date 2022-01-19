@@ -11,7 +11,12 @@ const CreateTemplate = (props) => {
 	return (
 		<Container>
 			<StateInfo />
-			<BasicInfo />
+			<BasicInfo
+				mode={props.mode}
+				changeMode={props.changeMode}
+				modal={props.modal}
+				modalController={props.modalController}
+			/>
 			<SaveButton
 				active={check}
 				// onClick={onCreate}

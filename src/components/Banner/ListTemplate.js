@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { IMG_ADDRESS, CLIENT_ADDRESS } from '../../config';
 import { getLink } from '../../functions/GetLink';

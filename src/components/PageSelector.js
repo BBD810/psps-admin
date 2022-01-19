@@ -6,6 +6,7 @@ import Right from '../images/page_right.svg';
 const PageSelector = ({ page, total, onClickPage, style }) => {
 	const [pages, setPages] = useState([]);
 	const totalPage = Math.ceil(total / 12);
+
 	useEffect(() => {
 		const update = [];
 		for (let i = 1; i <= totalPage; i++) {

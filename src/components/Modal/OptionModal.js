@@ -1,14 +1,105 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { priceToString } from '../../functions/PriceToString';
 import styled from 'styled-components';
 
-const OptionModal = () => {
+const OptionModal = (props) => {
+	const [title, setTitle] = useState(null);
 	const [name, setName] = useState('');
+	const [weight, setWeight] = useState(null);
 	const [price, setPrice] = useState('');
 	const [discount, setDiscount] = useState('');
+	const [check, setCheck] = useState(false);
+
+	const text = '옵션명과 개당 가격을 입력해주세요.';
+
+	const titleController = (e) => {
+		setTitle(e.target.value);
+	};
+	const priceController = (e) => {
+		setPrice(e.target.value);
+	};
+	const discountController = (e) => {
+		setDiscount(e.target.value);
+	};
+	const nameController = (e) => {
+		setName(e.target.value);
+	};
+	const weightController = (e) => {
+		setWeight(e.target.value);
+	};
+
+	const selectYes = () => {
+		if (title && price && discount) {
+			props.modalController({
+				...props.modal,
+				type: '',
+				return: { title, price, discount, name, weight },
+			});
+		}
+	};
+	const selectNo = () => {
+		props.modalController({ ...props.modal, type: '' });
+	};
+
+	useEffect(() => {
+		title && price && discount ? setCheck(true) : setCheck(false);
+	}, [title, price, discount]);
 
 	return (
 		<Container>
-			<Wrap></Wrap>
+			<Wrap>
+				{/* <Text>{props.modal.text}</Text> */}
+				<Text>{text}</Text>
+				<Item>
+					<Title>옵션명</Title>
+					<Input
+						placeholder='(필수) 옵션명을 입력해주세요.'
+						onChange={titleController}
+					/>
+				</Item>
+				<Item>
+					<Title>가격/개</Title>
+					<Input
+						type='number'
+						placeholder='(필수) 숫자로 입력해주세요.'
+						onChange={priceController}
+					/>
+				</Item>
+				<Item>
+					<Title>할인 금액</Title>
+					<Input
+						type='number'
+						placeholder='(필수) 없을 경우 "0"을 입력해주세요.'
+						onChange={discountController}
+					/>
+				</Item>
+				<Item>
+					<Title>품목 명칭</Title>
+					<Input
+						placeholder='빈 값일 경우 "상세이미지 참조" 노출'
+						onChange={nameController}
+					/>
+				</Item>
+				<Item>
+					<Title>중량</Title>
+					<Input
+						placeholder='빈 값일 경우 "상세이미지 참조" 노출'
+						onChange={weightController}
+					/>
+				</Item>
+
+				<Result>{`할인이 적용된 가격은 ${
+					price - discount
+				}원입니다.`}</Result>
+				<Buttons>
+					<Button border onClick={selectNo}>
+						취소
+					</Button>
+					<Button filled active={check} onClick={selectYes}>
+						저장
+					</Button>
+				</Buttons>
+			</Wrap>
 		</Container>
 	);
 };
@@ -24,7 +115,6 @@ const Container = styled.div`
 `;
 const Wrap = styled.div`
 	width: 41.1rem;
-	height: 39rem;
 	padding: 3rem 0;
 	display: flex;
 	flex-direction: column;
@@ -37,4 +127,62 @@ const Wrap = styled.div`
 	border-radius: 4px;
 	background-color: #fff;
 	box-shadow: 0px 4px 30px #0000004d;
+`;
+const Text = styled.p`
+	height: 5.6rem;
+	line-height: 2.8rem;
+	font-size: 2rem;
+	font-family: 'kr-b';
+	color: #2a3349;
+	text-align: center;
+`;
+const Item = styled.div`
+	display: flex;
+	align-items: center;
+	margin-bottom: 1.6rem;
+	:nth-last-child(1) {
+		margin: 0;
+	}
+`;
+const Title = styled.div`
+	width: 6.7rem;
+	height: 1.7rem;
+	line-height: 1.7rem;
+	text-align: left;
+	font-size: 1.2rem;
+	font-family: 'kr-b';
+	color: #5e667b;
+`;
+const Input = styled.input`
+	width: 22rem;
+	height: 3.1rem;
+	line-height: 3.1rem;
+	padding: 0 1rem;
+	border: 2px solid #e5e6ed;
+	font-size: 1.2rem;
+	letter-spacing: -0.24px;
+`;
+const Result = styled.p`
+	margin-top: 2.3rem;
+	margin-bottom: 5rem;
+	font-size: 1.2rem;
+	color: #7f8697;
+`;
+const Buttons = styled.div`
+	display: flex;
+	align-items: center;
+`;
+const Button = styled.button`
+	width: 10.6rem;
+	height: 3.1rem;
+	font-size: 1.2rem;
+	font-family: 'kr-b';
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	background-color: #2a3349;
+	${(props) => props.filled && !props.active && `opacity:0.4`}
+	${(props) =>
+		props.border &&
+		`margin-right:0.8rem; border:2px solid #2A3349; background-color:#fff; color:#2A3349`}
 `;

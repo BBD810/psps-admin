@@ -8,6 +8,7 @@ import Footer from '../components/Footer';
 import ListTemplate from '../components/Product/ListTemplate';
 import CreateTemplate from '../components/Product/CreateTemplate';
 import DetailTemplate from '../components/Product/DetailTemplate';
+import OptionModal from '../components/Modal/OptionModal';
 
 const ProductPage = () => {
 	const history = useHistory();
@@ -39,7 +40,6 @@ const ProductPage = () => {
 	const changeMode = (mode) => {
 		setMode(mode);
 	};
-
 	const getMenu = (menu) => {
 		setMenu(menu);
 	};
@@ -67,7 +67,18 @@ const ProductPage = () => {
 					/>
 					{!createMode && mode === 'list' && <ListTemplate />}
 					{!createMode && mode === 'detail' && <DetailTemplate />}
-					{createMode && <CreateTemplate />}
+					{createMode && (
+						<CreateTemplate
+							modal={modal}
+							modalController={modalController}
+						/>
+					)}
+					{createMode && modal.type === 'option' && (
+						<OptionModal
+							modal={modal}
+							modalController={modalController}
+						/>
+					)}
 					<Footer />
 				</Contents>
 			</Container>
@@ -75,7 +86,7 @@ const ProductPage = () => {
 	);
 };
 
-export default ProductPage;
+export default withRouter(ProductPage);
 
 const Container = styled.div`
 	width: 160rem;

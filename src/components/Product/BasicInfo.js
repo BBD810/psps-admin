@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import * as supplier from '../../controller/supplier';
 import * as category from '../../data/link';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
@@ -9,7 +10,7 @@ import delete_icon from '../../images/delete_icon.svg';
 import add_detail from '../../images/add_detail.svg';
 import add_thumbnail from '../../images/add_thumbnail.svg';
 
-const BasicInfo = () => {
+const BasicInfo = (props) => {
 	const [title, setTitle] = useState('');
 	const partBox = useRef();
 	const subPartBox = useRef();
@@ -27,11 +28,23 @@ const BasicInfo = () => {
 	const [detailPrevImg, setDetailPrevImg] = useState(false);
 
 	const [supplier_id, setSupplier_id] = useState('');
-	const [supplierList, setSupplierList] = useState([]);
+	const [supplierOpen, setSupplierOpen] = useState(false);
 
 	const titleController = (e) => {
 		setTitle(e.target.value);
 	};
+
+	useEffect(() => {
+		let isSubscribed = true;
+		supplier.get_list(0).then((res) => {
+			if (isSubscribed && res.data.success) {
+				setSupplierList(res.data.supplier_list);
+			}
+		});
+		return () => {
+			isSubscribed = false;
+		};
+	}, []);
 
 	const optionHeaderList = [
 		'옵션명',
@@ -59,10 +72,14 @@ const BasicInfo = () => {
 		for (let i = 0; i < category.part.length; i++) {
 			if (part === category.part[i].title) {
 				setSubPart(category.part[i].arr[0]);
-				return setSubPartList(category.part[i].arr);
+				setSubPartList(category.part[i].arr);
 			}
 		}
 	}, [part]);
+
+	const addOption = () => {
+		props.modalController({ type: 'option', act: 'add' });
+	};
 
 	const thumbnailUpload = (e) => {
 		const file = e.target.files;
@@ -78,6 +95,13 @@ const BasicInfo = () => {
 			setDetailImg(file[0]);
 		}
 	};
+
+	useEffect(() => {
+		if (props.modal.act === 'add' && props.modal.return) {
+			setOptionList([...optionList, props.modal.return]);
+			props.modalController({ type: '' });
+		}
+	}, [props.modal.type]);
 
 	return (
 		<Container>
@@ -189,11 +213,32 @@ const BasicInfo = () => {
 										</OptionHeaderItem>
 									))}
 								</OptionHeader>
-								<OptionBody></OptionBody>
+								<OptionBody>
+									{optionList.map((el, idx) => (
+										<OptionList key={idx}>
+											<OptionItem>{el.title}</OptionItem>
+											<OptionItem>{el.price}</OptionItem>
+											<OptionItem>
+												{el.price - el.discount}
+											</OptionItem>
+											<OptionItem>
+												<OptionIcon alt='icon' src={edit_icon} />
+											</OptionItem>
+											<OptionItem>
+												<OptionIcon alt='icon' src={check_icon} />
+											</OptionItem>
+											<OptionItem>
+												<OptionIcon alt='icon' src={delete_icon} />
+											</OptionItem>
+										</OptionList>
+									))}
+								</OptionBody>
 							</Option>
 
 							<Buttons>
-								<Button filled>추가하기</Button>
+								<Button filled onClick={addOption}>
+									추가하기
+								</Button>
 								<Button border>일괄품절</Button>
 							</Buttons>
 						</RightInner>
@@ -245,7 +290,7 @@ const BasicInfo = () => {
 					<Right>
 						<RightInner>
 							<Item>
-								{partOpen === 2 ? (
+								{supplierOpen ? (
 									<ItemSelectWrap sub={true} ref={subPartBox}>
 										<ItemSelectList>
 											{subPart && `${subPart}`}
@@ -262,7 +307,7 @@ const BasicInfo = () => {
 									<ItemSelected
 										sub={true}
 										onClick={() => {
-											setPartOpen(2);
+											setSupplierOpen(false);
 										}}>
 										<ItemText>
 											{subPart && `소분류 · ${subPart}`}
@@ -394,6 +439,7 @@ const Option = styled.div`
 const OptionHeader = styled.div`
 	width: 100%;
 	display: flex;
+	${(props) => props.scroll}
 `;
 const OptionHeaderItem = styled.div`
 	:nth-child(1) {
@@ -415,11 +461,52 @@ const OptionHeaderItem = styled.div`
 const OptionBody = styled.ul`
 	width: 100%;
 	height: 18.1rem;
+	padding: 0.8rem 0;
 	overflow-y: auto;
 	border-top: 2px solid #e5e6ed;
 	border-bottom: 2px solid #e5e6ed;
+	::-webkit-scrollbar {
+		width: 3px;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: #5e667b;
+		border-radius: 10px;
+	}
+	::-webkit-scrollbar-track {
+		background-color: #fff;
+	}
 `;
-const OptionIcon = styled.img``;
+const OptionList = styled.li`
+	display: flex;
+	align-items: center;
+	margin-bottom: 0.8rem;
+	:nth-last-child(1) {
+		margin: 0;
+	}
+`;
+const OptionItem = styled.div`
+	font-size: 1.2rem;
+	color: #2a3349;
+	:nth-child(1) {
+		width: 40%;
+		padding-left: 1rem;
+	}
+	:nth-child(2),
+	:nth-child(3) {
+		width: 18%;
+		text-align: center;
+	}
+	:nth-child(4),
+	:nth-child(5),
+	:nth-child(6) {
+		width: 8%;
+		text-align: center;
+	}
+`;
+const OptionIcon = styled.img`
+	width: 2.4rem;
+	height: 1.7rem;
+`;
 const Buttons = styled.div`
 	width: 10.6rem;
 	margin-left: 16.6rem;

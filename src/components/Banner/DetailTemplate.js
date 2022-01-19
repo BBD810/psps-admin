@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { IMG_ADDRESS } from '../../config';
-import { transformNumToStr } from '../../functions/TransformNumToStr';
+import { numberToString } from '../../functions/NumberToString';
 import { getLinkKr } from '../../functions/GetLink';
 import * as banner from '../../controller/banner';
 import styled from 'styled-components';
@@ -98,9 +98,7 @@ const DetailTemplate = (props) => {
 		if (displayList) {
 			for (let i = 0; i < displayList.length; i++) {
 				if (displayList[i].banner_id === detail.banner_id) {
-					return setDisplayState(
-						transformNumToStr(i + 1) + '번째로 노출 중'
-					);
+					return setDisplayState(numberToString(i + 1) + '번째로 노출 중');
 				} else {
 					setDisplayState('노출되지 않음');
 				}

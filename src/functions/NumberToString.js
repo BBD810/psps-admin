@@ -1,4 +1,4 @@
-export const transformNumToStr = (number) => {
+export const numberToString = (number) => {
 	let text;
 	if (Number(number) === 1) {
 		text = '첫';
