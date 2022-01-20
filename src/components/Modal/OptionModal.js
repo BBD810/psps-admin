@@ -3,14 +3,25 @@ import { priceToString } from '../../functions/PriceToString';
 import styled from 'styled-components';
 
 const OptionModal = (props) => {
-	const [title, setTitle] = useState(null);
-	const [name, setName] = useState('');
+	const [title, setTitle] = useState('');
+	const [name, setName] = useState(null);
 	const [weight, setWeight] = useState(null);
 	const [price, setPrice] = useState('');
 	const [discount, setDiscount] = useState('');
 	const [check, setCheck] = useState(false);
 
 	const text = '옵션명과 개당 가격을 입력해주세요.';
+
+	useEffect(() => {
+		if (props.modal.act === 'edit') {
+			const data = props.modal.data;
+			setTitle(data.title);
+			setPrice(data.price);
+			setDiscount(data.discount);
+			setName(data.name);
+			setWeight(data.weight);
+		}
+	}, [props.modal.act]);
 
 	const onChangeTitle = (e) => {
 		setTitle(e.target.value);
@@ -29,7 +40,7 @@ const OptionModal = (props) => {
 	};
 
 	const selectYes = () => {
-		if (title && price && discount) {
+		if (title.trim() && price.trim() && discount.trim()) {
 			props.modalController({
 				...props.modal,
 				type: '',
@@ -53,6 +64,7 @@ const OptionModal = (props) => {
 				<Item>
 					<Title>옵션명</Title>
 					<Input
+						defaultValue={title}
 						placeholder='(필수) 옵션명을 입력해주세요.'
 						onChange={onChangeTitle}
 					/>
@@ -61,6 +73,7 @@ const OptionModal = (props) => {
 					<Title>가격/개</Title>
 					<Input
 						type='number'
+						defaultValue={price}
 						placeholder='(필수) 숫자로 입력해주세요.'
 						onChange={onChangePrice}
 					/>
@@ -69,6 +82,7 @@ const OptionModal = (props) => {
 					<Title>할인 금액</Title>
 					<Input
 						type='number'
+						defaultValue={discount}
 						placeholder='(필수) 없을 경우 "0"을 입력해주세요.'
 						onChange={onChangeDiscount}
 					/>
@@ -76,6 +90,7 @@ const OptionModal = (props) => {
 				<Item>
 					<Title>품목 명칭</Title>
 					<Input
+						defaultValue={name}
 						placeholder='빈 값일 경우 "상세이미지 참조" 노출'
 						onChange={onChangeName}
 					/>
@@ -83,14 +98,15 @@ const OptionModal = (props) => {
 				<Item>
 					<Title>중량</Title>
 					<Input
+						defaultValue={weight}
 						placeholder='빈 값일 경우 "상세이미지 참조" 노출'
 						onChange={onChangeWeight}
 					/>
 				</Item>
 
-				<Result>{`할인이 적용된 가격은 ${
+				<Result>{`할인이 적용된 가격은 ${priceToString(
 					price - discount
-				}원입니다.`}</Result>
+				)}원입니다.`}</Result>
 				<Buttons>
 					<Button border onClick={selectNo}>
 						취소

@@ -1,17 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
+import * as category from '../../data/link';
 import styled from 'styled-components';
 import StateInfo from './StateInfo';
 import BasicInfo from './BasicInfo';
 
 const CreateTemplate = (props) => {
 	const history = useHistory();
+	const [title, setTitle] = useState('');
+	const [part, setPart] = useState('농산');
+	const [subPart, setSubPart] = useState('과일/수입청과');
+	const [origin, setOrigin] = useState('');
+	const [storage, setStorage] = useState('');
+
 	const [check, setCheck] = useState(false);
+
+	const onChangeTitle = (e) => {
+		setTitle(e.target.value);
+	};
+	const onChangePart = (e) => {
+		if (part !== e.target.innerText) {
+			setPart(e.target.innerText);
+		}
+	};
+	const onChangeSubPart = (e) => {
+		if (subPart !== e.target.innerText) {
+			setSubPart(e.target.innerText);
+		}
+	};
 
 	return (
 		<Container>
 			<StateInfo />
 			<BasicInfo
+				title={title}
+				part={part}
+				subPart={subPart}
+				// thumbnailImg={thumbnailImg}
+				// detailImg={detailImg}
+				// supplierList={supplierList}
+				onChangeTitle={onChangeTitle}
+				onChangePart={onChangePart}
+				onChangeSubPart={onChangeSubPart}
+				// thumbnailUpload={thumbnailUpload}
+				// detailUpload={detailUpload}
 				mode={props.mode}
 				changeMode={props.changeMode}
 				modal={props.modal}

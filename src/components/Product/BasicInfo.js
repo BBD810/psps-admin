@@ -1,10 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import * as supplier from '../../controller/supplier';
+import React, { useEffect, useRef, useState } from 'react';
+import { priceToString } from '../../functions/PriceToString';
+import * as _supplier from '../../controller/supplier';
 import * as category from '../../data/link';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
 import empty_icon from '../../images/empty_icon.svg';
-import edit_icon from '../../images/edit_icon.svg';
 import check_icon from '../../images/checked_icon.svg';
 import delete_icon from '../../images/delete_icon.svg';
 import add_detail from '../../images/add_detail.svg';
@@ -14,12 +14,14 @@ const BasicInfo = (props) => {
 	const [title, setTitle] = useState('');
 	const partBox = useRef();
 	const subPartBox = useRef();
+	const supplierBox = useRef();
 	const [part, setPart] = useState('농산');
 	const [subPart, setSubPart] = useState('과일/수입청과');
 	const [partList, setPartList] = useState(category.part);
 	const [subPartList, setSubPartList] = useState([]);
 	const [partOpen, setPartOpen] = useState(0);
 
+	const optionHeaderList = ['옵션명', '기존가', '판매가', '품절', '삭제'];
 	const [optionList, setOptionList] = useState([]);
 
 	const [thumbnailImg, setThumbnailImg] = useState(false);
@@ -27,17 +29,16 @@ const BasicInfo = (props) => {
 	const [detailImg, setDetailImg] = useState(false);
 	const [detailPrevImg, setDetailPrevImg] = useState(false);
 
-	const [supplier_id, setSupplier_id] = useState('');
+	const [supplier, setSupplier] = useState('');
 	const [supplierOpen, setSupplierOpen] = useState(false);
 	const [supplierList, setSupplierList] = useState([]);
 
-	const onChangeTitle = (e) => {
-		setTitle(e.target.value);
-	};
+	const [origin, setOrigin] = useState('');
+	const [storage, setStorage] = useState('');
 
 	useEffect(() => {
 		let isSubscribed = true;
-		supplier.get_list(0).then((res) => {
+		_supplier.get_list(0).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setSupplierList(res.data.supplier_list);
 			}
@@ -47,26 +48,28 @@ const BasicInfo = (props) => {
 		};
 	}, []);
 
-	const optionHeaderList = [
-		'옵션명',
-		'기존가',
-		'판매가',
-		'수정',
-		'품절',
-		'삭제',
-	];
-
+	const onChangeTitle = (e) => {
+		setTitle(e.target.value);
+	};
+	const partClose = () => {
+		setPartOpen(0);
+	};
 	const onChangePart = (e) => {
 		if (part !== e.target.innerText) {
 			setPart(e.target.innerText);
 		}
-		setPartOpen(0);
 	};
 	const onChangeSubPart = (e) => {
 		if (subPart !== e.target.innerText) {
 			setSubPart(e.target.innerText);
 		}
 		setPartOpen(0);
+	};
+	const onChangeSupplier = (e) => {
+		if (supplier.supplier_id !== e.supplier_id) {
+			setSupplier(e);
+		}
+		setSupplierOpen(false);
 	};
 
 	useEffect(() => {
@@ -80,6 +83,9 @@ const BasicInfo = (props) => {
 
 	const addOption = () => {
 		props.modalController({ type: 'option', act: 'add' });
+	};
+	const editOption = (data, idx) => {
+		props.modalController({ type: 'option', act: 'edit', data, order: idx });
 	};
 
 	const thumbnailUpload = (e) => {
@@ -97,15 +103,47 @@ const BasicInfo = (props) => {
 		}
 	};
 
+	const onChangeOrigin = (e) => {
+		setOrigin(e.target.value);
+	};
+	const onChangeStorage = (e) => {
+		setStorage(e.target.value);
+	};
+
 	useEffect(() => {
-		if (props.modal.act === 'add' && props.modal.return) {
-			setOptionList([...optionList, props.modal.return]);
-			props.modalController({ type: '' });
+		const modal = props.modal;
+		if (modal.act === 'add' && modal.return) {
+			optionSuccess([...optionList, modal.return]);
+		} else if (modal.act === 'edit' && modal.return) {
+			let _optionList = optionList;
+			_optionList[modal.order] = modal.return;
+			optionSuccess(_optionList);
 		}
 	}, [props.modal.type]);
 
+	const optionSuccess = (list) => {
+		setOptionList(list);
+		props.modalController({ type: '' });
+	};
+
+	const onSubmit = () => {
+		const formData = new FormData();
+	};
+
+	const onMouseDown = (e) => {
+		if (
+			(partOpen !== 0 || supplierOpen) &&
+			(!partBox.current || !partBox.current.contains(e.target)) &&
+			(!subPartBox.current || !subPartBox.current.contains(e.target)) &&
+			(!supplierBox.current || !supplierBox.current.contains(e.target))
+		) {
+			setPartOpen(0);
+			setSupplierOpen(false);
+		}
+	};
+
 	return (
-		<Container>
+		<Container onMouseDown={onMouseDown}>
 			<Head>기본 정보</Head>
 			<Body>
 				<Content style={{ height: '7.1rem' }}>
@@ -216,14 +254,17 @@ const BasicInfo = (props) => {
 								</OptionHeader>
 								<OptionBody>
 									{optionList.map((el, idx) => (
-										<OptionList key={idx}>
+										<OptionList
+											key={idx}
+											onClick={() => {
+												editOption(el, idx);
+											}}>
 											<OptionItem>{el.title}</OptionItem>
-											<OptionItem>{el.price}</OptionItem>
 											<OptionItem>
-												{el.price - el.discount}
+												{priceToString(el.price)}
 											</OptionItem>
 											<OptionItem>
-												<OptionIcon alt='icon' src={edit_icon} />
+												{priceToString(el.price - el.discount)}
 											</OptionItem>
 											<OptionItem>
 												<OptionIcon alt='icon' src={check_icon} />
@@ -292,26 +333,31 @@ const BasicInfo = (props) => {
 						<RightInner>
 							<Item>
 								{supplierOpen ? (
-									<ItemSelectWrap sub={true} ref={subPartBox}>
+									<ItemSelectWrap ref={supplierBox}>
 										<ItemSelectList>
-											{subPart && `${subPart}`}
+											{supplier.name
+												? supplier.name
+												: '공급원을 선택해주세요.'}
 										</ItemSelectList>
-										{subPartList.map((el, idx) => (
+										{supplierList.map((el, idx) => (
 											<ItemSelectList
 												key={idx}
-												onClick={onChangeSubPart}>
-												{el}
+												onClick={() => {
+													onChangeSupplier(el);
+												}}>
+												{el.name}
 											</ItemSelectList>
 										))}
 									</ItemSelectWrap>
 								) : (
 									<ItemSelected
-										sub={true}
 										onClick={() => {
-											setSupplierOpen(false);
+											setSupplierOpen(true);
 										}}>
 										<ItemText>
-											{subPart && `소분류 · ${subPart}`}
+											{supplier.name
+												? supplier.name
+												: '공급원을 선택해주세요.'}
 										</ItemText>
 										<ItemSelectImg alt='select button' src={down} />
 									</ItemSelected>
@@ -320,7 +366,7 @@ const BasicInfo = (props) => {
 						</RightInner>
 					</Right>
 				</Content>
-				<Content style={{ height: '29.6rem' }}>
+				<Content style={{ height: '14.2rem' }}>
 					<Left>
 						<LeftInner>
 							<Title>상품 정보</Title>
@@ -330,28 +376,18 @@ const BasicInfo = (props) => {
 					<Right>
 						<RightInner>
 							<RequireList>
-								<RequireTitle>품목명</RequireTitle>
-								<RequireInput placeholder='품목명을 입력해주세요.' />
-							</RequireList>
-							<RequireList>
-								<RequireTitle>내용량 / 중량</RequireTitle>
-								<RequireInput placeholder='내용량 / 중량을 입력해주세요.' />
-							</RequireList>
-							<RequireList>
 								<RequireTitle>원산지</RequireTitle>
-								<RequireInput placeholder='원산지를 입력해주세요.' />
-							</RequireList>
-							<RequireList>
-								<RequireTitle>유통기한</RequireTitle>
-								<RequireInput placeholder='유통기한을 입력해주세요.' />
+								<RequireInput
+									placeholder='원산지를 입력해주세요.'
+									onChange={onChangeOrigin}
+								/>
 							</RequireList>
 							<RequireList>
 								<RequireTitle>보관방법</RequireTitle>
-								<RequireInput placeholder='보관방법을 입력해주세요.' />
-							</RequireList>
-							<RequireList>
-								<RequireTitle>품목명</RequireTitle>
-								<RequireInput placeholder='품목명을 입력해주세요.' />
+								<RequireInput
+									placeholder='보관방법을 입력해주세요.'
+									onChange={onChangeStorage}
+								/>
 							</RequireList>
 						</RightInner>
 					</Right>
@@ -444,17 +480,16 @@ const OptionHeader = styled.div`
 `;
 const OptionHeaderItem = styled.div`
 	:nth-child(1) {
-		width: 40%;
+		width: 44%;
 		padding-left: 1rem;
 	}
 	:nth-child(2),
 	:nth-child(3) {
-		width: 18%;
+		width: 20%;
 		text-align: center;
 	}
 	:nth-child(4),
-	:nth-child(5),
-	:nth-child(6) {
+	:nth-child(5) {
 		width: 8%;
 		text-align: center;
 	}
@@ -489,17 +524,16 @@ const OptionItem = styled.div`
 	font-size: 1.2rem;
 	color: #2a3349;
 	:nth-child(1) {
-		width: 40%;
+		width: 44%;
 		padding-left: 1rem;
 	}
 	:nth-child(2),
 	:nth-child(3) {
-		width: 18%;
+		width: 20%;
 		text-align: center;
 	}
 	:nth-child(4),
-	:nth-child(5),
-	:nth-child(6) {
+	:nth-child(5) {
 		width: 8%;
 		text-align: center;
 	}
