@@ -12,19 +12,19 @@ const OptionModal = (props) => {
 
 	const text = '옵션명과 개당 가격을 입력해주세요.';
 
-	const titleController = (e) => {
+	const onChangeTitle = (e) => {
 		setTitle(e.target.value);
 	};
-	const priceController = (e) => {
+	const onChangePrice = (e) => {
 		setPrice(e.target.value);
 	};
-	const discountController = (e) => {
+	const onChangeDiscount = (e) => {
 		setDiscount(e.target.value);
 	};
-	const nameController = (e) => {
+	const onChangeName = (e) => {
 		setName(e.target.value);
 	};
-	const weightController = (e) => {
+	const onChangeWeight = (e) => {
 		setWeight(e.target.value);
 	};
 
@@ -54,7 +54,7 @@ const OptionModal = (props) => {
 					<Title>옵션명</Title>
 					<Input
 						placeholder='(필수) 옵션명을 입력해주세요.'
-						onChange={titleController}
+						onChange={onChangeTitle}
 					/>
 				</Item>
 				<Item>
@@ -62,7 +62,7 @@ const OptionModal = (props) => {
 					<Input
 						type='number'
 						placeholder='(필수) 숫자로 입력해주세요.'
-						onChange={priceController}
+						onChange={onChangePrice}
 					/>
 				</Item>
 				<Item>
@@ -70,21 +70,21 @@ const OptionModal = (props) => {
 					<Input
 						type='number'
 						placeholder='(필수) 없을 경우 "0"을 입력해주세요.'
-						onChange={discountController}
+						onChange={onChangeDiscount}
 					/>
 				</Item>
 				<Item>
 					<Title>품목 명칭</Title>
 					<Input
 						placeholder='빈 값일 경우 "상세이미지 참조" 노출'
-						onChange={nameController}
+						onChange={onChangeName}
 					/>
 				</Item>
 				<Item>
 					<Title>중량</Title>
 					<Input
 						placeholder='빈 값일 경우 "상세이미지 참조" 노출'
-						onChange={weightController}
+						onChange={onChangeWeight}
 					/>
 				</Item>
 

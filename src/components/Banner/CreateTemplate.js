@@ -78,28 +78,28 @@ const CreateTemplate = (props) => {
 		}
 	}, [title, img, page, subPart, product_id]);
 
-	const typeController = (e) => {
+	const onChangeType = (e) => {
 		setType(e.target.innerText);
 	};
-	const titleController = (e) => {
+	const onChangeTitle = (e) => {
 		setTitle(e.target.value);
 	};
-	const pageController = (e) => {
+	const onChangePage = (e) => {
 		setPage(e.target.innerText);
 		setOpenSelect(0);
 	};
-	const partController = (e) => {
+	const onChangePart = (e) => {
 		if (part !== e.target.innerText) {
 			setPart(e.target.innerText);
 			setSubPart(false);
 		}
 		setOpenSelect(0);
 	};
-	const subPartController = (e) => {
+	const onChangeSubPart = (e) => {
 		setSubPart(e.target.innerText);
 		setOpenSelect(0);
 	};
-	const ProductIdController = (e) => {
+	const onChangeProductId = (e) => {
 		setProduct_id(e.target.value);
 	};
 	const onClick = () => {
@@ -211,7 +211,7 @@ const CreateTemplate = (props) => {
 						<TypeSelect
 							key={idx}
 							select={type === el}
-							onClick={editMode ? null : typeController}>
+							onClick={editMode ? null : onChangeType}>
 							{el}
 						</TypeSelect>
 					))}
@@ -220,7 +220,7 @@ const CreateTemplate = (props) => {
 				<Input
 					defaultValue={title ? title : null}
 					placeholder='제목을 입력해주세요.(최대 45자)'
-					onChange={titleController}
+					onChange={onChangeTitle}
 				/>
 				<Title>링크</Title>
 				<Desc>{`배너를 클릭할 시 이동할 페이지 경로를 정합니다.\n특정 상품을 지정하실 경우 올바른 경로를 선택 및 입력해주세요.`}</Desc>
@@ -240,7 +240,7 @@ const CreateTemplate = (props) => {
 								{page ? page : pageInit}
 							</ItemSelectList>
 							{link.page.map((el, idx) => (
-								<ItemSelectList key={idx} onClick={pageController}>
+								<ItemSelectList key={idx} onClick={onChangePage}>
 									{el}
 								</ItemSelectList>
 							))}
@@ -263,7 +263,7 @@ const CreateTemplate = (props) => {
 								{part ? part : partInit}
 							</ItemSelectList>
 							{link.part.map((el, idx) => (
-								<ItemSelectList key={idx} onClick={partController}>
+								<ItemSelectList key={idx} onClick={onChangePart}>
 									{el.title}
 								</ItemSelectList>
 							))}
@@ -288,7 +288,7 @@ const CreateTemplate = (props) => {
 								{subPart ? subPart : subPartInit}
 							</ItemSelectList>
 							{subPartList.map((el, idx) => (
-								<ItemSelectList key={idx} onClick={subPartController}>
+								<ItemSelectList key={idx} onClick={onChangeSubPart}>
 									{el}
 								</ItemSelectList>
 							))}
@@ -301,7 +301,7 @@ const CreateTemplate = (props) => {
 						defaultValue={product_id ? product_id : null}
 						disabled={page !== '상품 상세보기'}
 						placeholder='상품의 코드를 입력해주세요.'
-						onChange={ProductIdController}
+						onChange={onChangeProductId}
 					/>
 				</Item>
 			</Left>

@@ -42,11 +42,7 @@ const ListTemplate = (props) => {
 	];
 
 	const createController = () => {
-		if (editMode) {
-			return;
-		} else {
-			setCreateMode(!createMode);
-		}
+		!editMode && setCreateMode(!createMode);
 	};
 	const inputController = (e, idx) => {
 		const value = e.target.value;

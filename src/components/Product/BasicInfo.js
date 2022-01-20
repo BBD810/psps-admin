@@ -29,8 +29,9 @@ const BasicInfo = (props) => {
 
 	const [supplier_id, setSupplier_id] = useState('');
 	const [supplierOpen, setSupplierOpen] = useState(false);
+	const [supplierList, setSupplierList] = useState([]);
 
-	const titleController = (e) => {
+	const onChangeTitle = (e) => {
 		setTitle(e.target.value);
 	};
 
@@ -55,13 +56,13 @@ const BasicInfo = (props) => {
 		'삭제',
 	];
 
-	const partController = (e) => {
+	const onChangePart = (e) => {
 		if (part !== e.target.innerText) {
 			setPart(e.target.innerText);
 		}
 		setPartOpen(0);
 	};
-	const subPartController = (e) => {
+	const onChangeSubPart = (e) => {
 		if (subPart !== e.target.innerText) {
 			setSubPart(e.target.innerText);
 		}
@@ -117,7 +118,7 @@ const BasicInfo = (props) => {
 						<RightInner>
 							<TitleInput
 								placeholder='상품명을 입력해주세요.'
-								onChange={titleController}
+								onChange={onChangeTitle}
 							/>
 						</RightInner>
 					</Right>
@@ -141,7 +142,7 @@ const BasicInfo = (props) => {
 											{partList.map((el, idx) => (
 												<ItemSelectList
 													key={idx}
-													onClick={partController}>
+													onClick={onChangePart}>
 													{el.title}
 												</ItemSelectList>
 											))}
@@ -171,7 +172,7 @@ const BasicInfo = (props) => {
 											{subPartList.map((el, idx) => (
 												<ItemSelectList
 													key={idx}
-													onClick={subPartController}>
+													onClick={onChangeSubPart}>
 													{el}
 												</ItemSelectList>
 											))}
@@ -298,7 +299,7 @@ const BasicInfo = (props) => {
 										{subPartList.map((el, idx) => (
 											<ItemSelectList
 												key={idx}
-												onClick={subPartController}>
+												onClick={onChangeSubPart}>
 												{el}
 											</ItemSelectList>
 										))}
@@ -384,7 +385,7 @@ const Body = styled.div`
 const Content = styled.div`
 	display: flex;
 	margin-bottom: 0.4rem;
-	box-shadow: -3px 4px 30px #e5e6ed80;
+	box-shadow: 0px 0px 10px #e5e6ed80;
 	border-radius: 4px;
 	:nth-last-child(1) {
 		margin: 0;

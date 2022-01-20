@@ -32,10 +32,10 @@ const CreateTemplate = (props) => {
 		}
 	}, [props.mode]);
 
-	const titleController = (e) => {
+	const onChangeTitle = (e) => {
 		setTitle(e.target.value);
 	};
-	const shareController = (idx) => {
+	const onChangeShare = (idx) => {
 		editMode || setShare(idx);
 	};
 
@@ -113,7 +113,7 @@ const CreateTemplate = (props) => {
 					<Input
 						defaultValue={title ? title : null}
 						placeholder='제목을 입력해주세요. (최대 45자)'
-						onChange={titleController}
+						onChange={onChangeTitle}
 					/>
 				</Section>
 				<Section>
@@ -129,7 +129,7 @@ const CreateTemplate = (props) => {
 								edit={editMode}
 								selected={share === idx}
 								onClick={() => {
-									shareController(idx);
+									onChangeShare(idx);
 								}}>
 								{el}
 							</TypeItem>
