@@ -8,6 +8,7 @@ import Footer from '../components/Footer';
 import ListTemplate from '../components/Product/ListTemplate';
 import CreateTemplate from '../components/Product/CreateTemplate';
 import DetailTemplate from '../components/Product/DetailTemplate';
+import ConfirmModal from '../components/Modal/ConfirmModal';
 import OptionModal from '../components/Modal/OptionModal';
 
 const ProductPage = () => {
@@ -73,12 +74,15 @@ const ProductPage = () => {
 							modalController={modalController}
 						/>
 					)}
+					{modal.type === 'confirm' && <ConfirmModal />}
+
 					{createMode && modal.type === 'option' && (
 						<OptionModal
 							modal={modal}
 							modalController={modalController}
 						/>
 					)}
+
 					<Footer />
 				</Contents>
 			</Container>

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { IMG_ADDRESS } from '../../config';
+import * as _product from '../../controller/product';
 import * as category from '../../data/link';
 import * as toggleMenu from '../../data/toggle';
 import styled from 'styled-components';
@@ -18,36 +19,27 @@ const ListTemplate = () => {
 	const partBox = useRef();
 	const subPartBox = useRef();
 	const [part, setPart] = useState('농산');
-	const [subPart, setSubPart] = useState('과일/수입청과');
+	const [subPart, setSubPart] = useState('과일·수입청과');
 	const [partList, setPartList] = useState(category.part);
 	const [subPartList, setSubPartList] = useState([]);
 	const [partOpen, setPartOpen] = useState(0);
-	// const [list, setList] = useState([]);
-	const list = new Array(18).fill({
-		product_id: 1,
-		product_image_id: 1,
-		supplier_id: 1,
-		part: '축산',
-		subPart: '한우',
-		title: '횡성한우',
-		text: '질좋은 횡성한우',
-		storage: '-10℃~2℃ 냉장보관',
-		origin: '대한민국',
-		recommend: false,
-		thumbnail: 'uploads/product/124512512.png',
-		state: 'O',
-		product_image_title: '횡성한우 대표 이미지',
-		detail_image: 'uploads/product/1325412512.png',
-		supplier_name: '대우축산',
-		supplier_owner: '김대우',
-		supplier_business_number: '275-111-1111111',
-		supplier_address: '경기도 시흥시 신천동 12-12',
-		supplier_tel: '010-1212-1212',
-		supplier_manager_name: '박축산',
-		supplier_manager_tel: '010-3333-3333',
-		options: 3,
-	});
+	const [list, setList] = useState([]);
 
+	useEffect(() => {
+		_product.get_list(part, subPart).then((res) => {
+			if (res.data.success) {
+				setList(res.data.product_list);
+			}
+		});
+	}, [part, subPart]);
+	useEffect(() => {
+		for (let i = 0; i < category.part.length; i++) {
+			if (part === category.part[i].title) {
+				setSubPart(category.part[i].arr[0]);
+				return setSubPartList(category.part[i].arr);
+			}
+		}
+	}, [part]);
 	const goDetail = (el) => {
 		console.log(el);
 	};
@@ -70,15 +62,6 @@ const ListTemplate = () => {
 		}
 		setPartOpen(0);
 	};
-
-	useEffect(() => {
-		for (let i = 0; i < category.part.length; i++) {
-			if (part === category.part[i].title) {
-				setSubPart(category.part[i].arr[0]);
-				return setSubPartList(category.part[i].arr);
-			}
-		}
-	}, [part]);
 
 	const onMouseDown = (e) => {
 		if (
@@ -169,7 +152,7 @@ const ListTemplate = () => {
 							onClick={() => {
 								setPartOpen(1);
 							}}>
-							<ItemText>{part && `대분류 · ${part}`}</ItemText>
+							<ItemText>{part && `대분류 - ${part}`}</ItemText>
 							<ItemSelectImg alt='select button' src={down} />
 						</ItemSelected>
 					)}
@@ -189,7 +172,7 @@ const ListTemplate = () => {
 							onClick={() => {
 								setPartOpen(2);
 							}}>
-							<ItemText>{subPart && `소분류 · ${subPart}`}</ItemText>
+							<ItemText>{subPart && `소분류 - ${subPart}`}</ItemText>
 							<ItemSelectImg alt='select button' src={down} />
 						</ItemSelected>
 					)}
