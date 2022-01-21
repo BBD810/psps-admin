@@ -8,8 +8,10 @@ import Footer from '../components/Footer';
 import ListTemplate from '../components/Product/ListTemplate';
 import CreateTemplate from '../components/Product/CreateTemplate';
 import DetailTemplate from '../components/Product/DetailTemplate';
-import ConfirmModal from '../components/Modal/ConfirmModal';
-import OptionModal from '../components/Modal/OptionModal';
+import ConfirmModal from '../components/Modal/Confirm';
+import OptionModal from '../components/Modal/Option';
+import DetailImgListModal from '../components/Modal/DetailImgList';
+import DetailImgCreateModal from '../components/Modal/DetailImgCreate';
 
 const ProductPage = () => {
 	const history = useHistory();
@@ -74,15 +76,30 @@ const ProductPage = () => {
 							modalController={modalController}
 						/>
 					)}
-					{modal.type === 'confirm' && <ConfirmModal />}
-
+					{modal.type === 'confirm' && (
+						<ConfirmModal
+							modal={modal}
+							modalController={modalController}
+						/>
+					)}
 					{createMode && modal.type === 'option' && (
 						<OptionModal
 							modal={modal}
 							modalController={modalController}
 						/>
 					)}
-
+					{createMode && modal.type === 'img_list' && (
+						<DetailImgListModal
+							modal={modal}
+							modalController={modalController}
+						/>
+					)}
+					{createMode && modal.type === 'img_create' && (
+						<DetailImgCreateModal
+							modal={modal}
+							modalController={modalController}
+						/>
+					)}
 					<Footer />
 				</Contents>
 			</Container>

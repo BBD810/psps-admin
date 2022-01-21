@@ -197,7 +197,6 @@ const Input = styled.input`
 	line-height: 3.1rem;
 	font-size: 1.2rem;
 	color: #7f8697;
-	padding: 0 1rem;
 `;
 
 const TypeBox = styled.div`

@@ -173,7 +173,6 @@ const Input = styled.input`
 	width: 22rem;
 	height: 3.1rem;
 	line-height: 3.1rem;
-	padding: 0 1rem;
 	border: 2px solid #e5e6ed;
 	font-size: 1.2rem;
 	letter-spacing: -0.24px;

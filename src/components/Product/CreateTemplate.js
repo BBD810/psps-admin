@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { priceToString } from '../../functions/PriceToString';
+import { IMG_ADDRESS } from '../../config';
 import * as _product_option from '../../controller/product_option';
 import * as _product_img from '../../controller/product_img';
 import * as _product from '../../controller/product';
@@ -31,7 +32,7 @@ const CreateTemplate = (props) => {
 	const [optionList, setOptionList] = useState([]);
 	const [thumbnailImg, setThumbnailImg] = useState(false);
 	const [thumbnailPrevImg, setThumbnailPrevImg] = useState(false);
-	const [detailImg, setDetailImg] = useState(false);
+	const [detailImgId, setDetailImgId] = useState(false);
 	const [detailPrevImg, setDetailPrevImg] = useState(false);
 
 	const [supplier, setSupplier] = useState('');
@@ -90,13 +91,6 @@ const CreateTemplate = (props) => {
 			setThumbnailImg(file[0]);
 		}
 	};
-	const detailUpload = (e) => {
-		const file = e.target.files;
-		if (file[0]) {
-			setDetailPrevImg(URL.createObjectURL(file[0]));
-			setDetailImg(file[0]);
-		}
-	};
 
 	useEffect(() => {
 		for (let i = 0; i < category.part.length; i++) {
@@ -123,7 +117,16 @@ const CreateTemplate = (props) => {
 			_optionList[modal.order] = modal.return;
 			optionSuccess(_optionList);
 		}
+		if (history.location.state) {
+			console.log('detailImgId', history.location.state);
+			setDetailImgId(history.location.state);
+			_product_img.get_detail(history.location.state).then((res) => {
+				setDetailPrevImg(res.data.product_image.image);
+				history.replace();
+			});
+		}
 	}, [props.modal.type]);
+
 	const optionSuccess = (list) => {
 		setOptionList(list);
 		props.modalController({ type: '' });
@@ -131,34 +134,14 @@ const CreateTemplate = (props) => {
 
 	const onSubmit = () => {
 		check
-			? createProductImg()
+			? createProduct()
 			: props.modalController({
 					type: 'confirm',
 					text: '부족한 내용을 확인해주세요.',
 			  });
 	};
-	const createProductImg = () => {
-		console.log('이미지 생섬 함수 시작');
-		if (detailImg) {
-			const formData = new FormData();
-			formData.append('image', detailImg);
-			formData.append('title', '상세이미지1');
-			formData.append('share', 1);
-			_product_img.create(formData).then((res) => {
-				console.log('이미지 생성 요청보냄');
-				if (res.data.success) {
-					console.log('이미지 생성 성공', res.data);
-					createProduct(res.data.product_image_id);
-				} else {
-					props.modalController({
-						type: 'confirm',
-						text: '상품 이미지 등록 중 문제가 발생했습니다.',
-					});
-				}
-			});
-		}
-	};
-	const createProduct = (product_image_id) => {
+
+	const createProduct = () => {
 		console.log('상품 생성 함수 시작');
 		const formData = new FormData();
 		formData.append('image', thumbnailImg);
@@ -168,7 +151,7 @@ const CreateTemplate = (props) => {
 		formData.append('origin', origin);
 		formData.append('storage', storage);
 		formData.append('supplier_id', supplier.supplier_id);
-		formData.append('product_image_id', product_image_id);
+		formData.append('product_image_id', detailImgId);
 		_product.create(formData).then((res) => {
 			console.log('상품 생성 요청보냄');
 			if (res.data.success) {
@@ -180,7 +163,6 @@ const CreateTemplate = (props) => {
 		});
 	};
 	const createProductOption = (product_id) => {
-		console.log('product_id', product_id);
 		console.log('상품옵션 생성 함수 실행');
 		for (let i = 0; i < optionList.length; i++) {
 			_product_option.create(optionList[i], product_id).then((res) => {
@@ -197,14 +179,28 @@ const CreateTemplate = (props) => {
 		}
 	};
 
+	const goList = (part, subPart) => {
+		history.push({ state: { part, subPart } });
+	};
+	const openImgListModal = () => {
+		props.modalController({
+			type: 'img_list',
+			text: '상품 상세 이미지를 선택해주세요.',
+		});
+	};
+
 	const onMouseDown = (e) => {
 		if (
-			(partOpen !== 0 || supplierOpen) &&
+			partOpen !== 0 &&
 			(!partBox.current || !partBox.current.contains(e.target)) &&
-			(!subPartBox.current || !subPartBox.current.contains(e.target)) &&
-			(!supplierBox.current || !supplierBox.current.contains(e.target))
+			(!subPartBox.current || !subPartBox.current.contains(e.target))
 		) {
 			setPartOpen(0);
+		}
+		if (
+			supplierOpen &&
+			(!supplierBox.current || !supplierBox.current.contains(e.target))
+		) {
 			setSupplierOpen(false);
 		}
 	};
@@ -214,7 +210,7 @@ const CreateTemplate = (props) => {
 		part &&
 		subPart &&
 		thumbnailImg &&
-		detailImg &&
+		detailImgId &&
 		supplier &&
 		origin &&
 		storage
@@ -225,7 +221,7 @@ const CreateTemplate = (props) => {
 		part,
 		subPart,
 		thumbnailImg,
-		detailImg,
+		detailImgId,
 		supplier,
 		origin,
 		storage,
@@ -418,9 +414,13 @@ const CreateTemplate = (props) => {
 							<RightInner>
 								<DetailImg
 									alt=''
-									src={detailPrevImg ? detailPrevImg : add_detail}
+									src={
+										detailPrevImg
+											? `${IMG_ADDRESS}/${detailPrevImg}`
+											: add_detail
+									}
+									onClick={openImgListModal}
 								/>
-								<DetailInput type='file' onChange={detailUpload} />
 							</RightInner>
 						</Right>
 					</Content>
@@ -582,7 +582,6 @@ const TitleInput = styled.input`
 	line-height: 3.1rem;
 	font-size: 1.2rem;
 	color: #7f8697;
-	padding: 0 1rem;
 `;
 const Option = styled.div`
 	width: 56rem;
@@ -794,7 +793,6 @@ const RequireTitle = styled.p`
 `;
 const RequireInput = styled.input`
 	margin-left: 6rem;
-	padding: 0 1rem;
 	width: 44rem;
 	height: 3.1rem;
 	font-size: 1.2rem;

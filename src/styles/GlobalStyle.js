@@ -57,6 +57,7 @@ textarea {
 	resize: none;
 }
 input {
+	padding:0 1rem;
 	background: #f4f4f4 0% 0% no-repeat padding-box;
 	border: 2px solid #e5e6ed;
 	border-radius: 4px;

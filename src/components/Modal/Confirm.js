@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const ConfirmModal = (props) => {
 	const modalBox = useRef();
 	const onClick = () => {
-		props.modalController('');
+		props.modalController({ type: '' });
 	};
 	const onMouseDown = (e) => {
 		if (

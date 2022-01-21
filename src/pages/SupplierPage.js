@@ -5,8 +5,8 @@ import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
 import ListTemplate from '../components/Supplier/ListTemplate';
-import ConfirmModal from '../components/Modal/ConfirmModal';
-import SelectModal from '../components/Modal/SelectModal';
+import ConfirmModal from '../components/Modal/Confirm';
+import SelectModal from '../components/Modal/Select';
 
 const SupplierPage = () => {
 	const [mode, setMode] = useState('list');

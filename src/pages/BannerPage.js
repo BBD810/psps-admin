@@ -7,9 +7,9 @@ import Footer from '../components/Footer';
 import ListTemplate from '../components/Banner/ListTemplate';
 import CreateTemplate from '../components/Banner/CreateTemplate';
 import DetailTemplate from '../components/Banner/DetailTemplate';
-import ConfirmModal from '../components/Modal/ConfirmModal';
-import SelectModal from '../components/Modal/SelectModal';
-import ListModal from '../components/Modal/ListModal';
+import ConfirmModal from '../components/Modal/Confirm';
+import SelectModal from '../components/Modal/Select';
+import ListModal from '../components/Modal/List';
 
 const BannerPage = () => {
 	const [mode, setMode] = useState('list');

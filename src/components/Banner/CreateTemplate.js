@@ -411,7 +411,6 @@ const Input = styled.input`
 	line-height: 3.1rem;
 	font-size: 1.2rem;
 	color: #7f8697;
-	padding: 0 1rem;
 	background-color: #f4f4f4;
 	border: 2px solid #e5e6ed;
 	border-radius: 4px;
@@ -430,7 +429,6 @@ const ItemSelected = styled.div`
 	display: flex;
 	align-items: center;
 	position: absolute;
-	padding: 0 1rem;
 	background-color: #f4f4f4;
 	border: 2px solid #e5e6ed;
 	border-radius: 4px;

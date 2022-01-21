@@ -7,9 +7,9 @@ import Footer from '../components/Footer';
 import ListTemplate from '../components/ProductImg/ListTemplate';
 import CreateTemplate from '../components/ProductImg/CreateTemplate';
 import DetailTemplate from '../components/ProductImg/DetailTemplate';
-import ConfirmModal from '../components/Modal/ConfirmModal';
-import SelectModal from '../components/Modal/SelectModal';
-import ReplaceModal from '../components/Modal/ReplaceModal';
+import ConfirmModal from '../components/Modal/Confirm';
+import SelectModal from '../components/Modal/Select';
+import ReplaceModal from '../components/Modal/Replace';
 
 const ProductImgPage = () => {
 	const [mode, setMode] = useState('list');

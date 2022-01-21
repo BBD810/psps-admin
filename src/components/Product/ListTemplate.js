@@ -13,7 +13,7 @@ import example from '../../images/banner1.png';
 
 const ListTemplate = () => {
 	const history = useHistory();
-	const menuSelect = useRef();
+	const menuBox = useRef();
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	const partBox = useRef();
@@ -41,7 +41,7 @@ const ListTemplate = () => {
 		}
 	}, [part]);
 	const goDetail = (el) => {
-		console.log(el);
+		// props.changeMode('detail')
 	};
 	const menuOpenController = (e) => {
 		setMenuOpen(e);
@@ -71,7 +71,15 @@ const ListTemplate = () => {
 		) {
 			setPartOpen(0);
 		}
+		if (
+			menuOpen !== false &&
+			(!menuBox.current || !menuBox.current.contains(e.target))
+		) {
+			setMenuOpen(false);
+		}
 	};
+
+	console.log(list);
 
 	return (
 		<Container onMouseDown={onMouseDown}>
@@ -86,7 +94,7 @@ const ListTemplate = () => {
 							)}
 							<ListImg
 								alt='product img'
-								src={`${IMG_ADDRESS}/${el.image}`}
+								src={`${IMG_ADDRESS}/${el.thumbnail}`}
 							/>
 						</ListImgWrap>
 						<ListBottom>
@@ -119,7 +127,7 @@ const ListTemplate = () => {
 									}}
 								/>
 								{menuOpen === idx && (
-									<ToggleMenus ref={menuSelect}>
+									<ToggleMenus ref={menuBox}>
 										{toggleMenu.product.map((item, idx) => (
 											<ToggleMenu
 												key={idx}
