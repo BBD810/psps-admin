@@ -135,7 +135,10 @@ const CreateTemplate = (props) => {
 	};
 	const onCreate = () => {
 		if (!check) {
-			alert('부족한 내용을 확인해주세요.');
+			props.modalController({
+				type: 'confirm',
+				text: '부족한 내용을 확인해주세요.',
+			});
 		} else {
 			const formData = new FormData();
 			formData.append('image', img);
@@ -162,7 +165,10 @@ const CreateTemplate = (props) => {
 	};
 	const onEdit = () => {
 		if (!check) {
-			return alert('부족한 내용을 확인해주세요.');
+			props.modalController({
+				type: 'confirm',
+				text: '부족한 내용을 확인해주세요.',
+			});
 		} else {
 			if (img) {
 				const formData = new FormData();
@@ -188,7 +194,7 @@ const CreateTemplate = (props) => {
 			}
 		}
 		const successEdit = () => {
-			alert('수정되었습니다.');
+			props.modalController({ type: 'confirm', text: '수정되었습니다.' });
 			props.changeMode('list');
 		};
 	};
@@ -275,7 +281,10 @@ const CreateTemplate = (props) => {
 						<ItemSelected
 							onClick={() => {
 								!part
-									? alert('대분류를 먼저 선택해주세요.')
+									? props.modalController({
+											type: 'confirm',
+											text: '대분류를 먼저 선택해주세요.',
+									  })
 									: setOpenSelect(3);
 							}}>
 							<ItemText>{subPart ? subPart : subPartInit}</ItemText>
@@ -422,6 +431,7 @@ const Item = styled.div`
 `;
 const ItemSelected = styled.div`
 	margin-bottom: 1rem;
+	padding: 0 1rem;
 	width: 20rem;
 	height: 3.1rem;
 	line-height: 3.1rem;

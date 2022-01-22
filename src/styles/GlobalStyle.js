@@ -83,7 +83,6 @@ input[type='number']{
 button:hover {
 	cursor: pointer;
 }
-
 `;
 
 export default GlobalStyle;

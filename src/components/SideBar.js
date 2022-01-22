@@ -45,7 +45,6 @@ const SideBar = (props) => {
 		request.logout().then((res) => {
 			if (res.data.success) {
 				dispatch(admin_logout());
-				alert('로그아웃 되었습니다.');
 				history.push('/login');
 			}
 		});

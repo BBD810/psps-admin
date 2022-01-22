@@ -5,6 +5,7 @@ import { admin_login } from '../modules/admin';
 import * as auth from '../controller/auth';
 import styled from 'styled-components';
 import logo from '../images/cetus-logo.svg';
+import ConfirmModal from '../components/Modal/Confirm';
 
 const LoginPage = () => {
 	const dispatch = useDispatch();
@@ -13,11 +14,16 @@ const LoginPage = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [show, setShow] = useState(false);
+	const [modal, setModal] = useState({ type: '', text: '' });
 
-	const usernameController = (e) => {
+	const modalController = (data) => {
+		setModal(data);
+	};
+
+	const onChangeUsername = (e) => {
 		return setUsername(e.target.value);
 	};
-	const passwordController = (e) => {
+	const onChangePassword = (e) => {
 		return setPassword(e.target.value);
 	};
 	const showController = () => {
@@ -35,18 +41,21 @@ const LoginPage = () => {
 	};
 	const onSubmit = () => {
 		if (username.length === 0) {
-			return alert('아이디를 입력해주세요.');
+			modalController({ type: 'confirm', text: '아이디를 확인해주세요.' });
 		} else if (password.length === 0) {
-			return alert('패스워드를 입력해주세요.');
+			modalController({ type: 'confirm', text: '비밀번호를 확인해주세요.' });
 		} else {
 			const Data = { username, password };
 			auth.login(Data).then((res) => {
 				if (res.data.success) {
 					dispatch(admin_login());
-					alert('로그인 되었습니다.');
+					modalController({ type: 'confirm', text: '로그인 되었습니다.' });
 					history.push('/');
 				} else {
-					alert('아이디 또는 비밀번호를 확인해주세요.');
+					modalController({
+						type: 'confirm',
+						text: '아이디 또는 비밀번호를 확인해주세요.',
+					});
 				}
 			});
 		}
@@ -61,19 +70,22 @@ const LoginPage = () => {
 					value={username}
 					placeholder='ID'
 					onFocus={onNotShow}
-					onChange={usernameController}
+					onChange={onChangeUsername}
 				/>
 				<Input
 					type={show ? 'text' : 'password'}
 					value={password}
 					placeholder='Password'
 					onFocus={onShow}
-					onChange={passwordController}
+					onChange={onChangePassword}
 				/>
 				<Button onClick={onSubmit}>Log in</Button>
 				<Text ref={showButton} onClick={showController}>
 					Show
 				</Text>
+				{modal.type === 'confirm' && (
+					<ConfirmModal modal={modal} modalController={modalController} />
+				)}
 			</Login>
 		</div>
 	);
