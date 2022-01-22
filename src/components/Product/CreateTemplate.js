@@ -142,7 +142,6 @@ const CreateTemplate = (props) => {
 	};
 
 	const createProduct = () => {
-		console.log('상품 생성 함수 시작');
 		const formData = new FormData();
 		formData.append('image', thumbnailImg);
 		formData.append('title', title);
@@ -153,7 +152,6 @@ const CreateTemplate = (props) => {
 		formData.append('supplier_id', supplier.supplier_id);
 		formData.append('product_image_id', detailImgId);
 		_product.create(formData).then((res) => {
-			console.log('상품 생성 요청보냄');
 			if (res.data.success) {
 				console.log('상품 생성 성공', res.data);
 				if (optionList.length > 0) {
@@ -764,17 +762,6 @@ const ThumbnailInput = styled.input`
 const DetailImg = styled.img`
 	width: 56rem;
 	height: 24.8rem;
-`;
-const DetailInput = styled.input`
-	width: 56rem;
-	height: 24.8rem;
-	position: absolute;
-	left: 0;
-	top: 0;
-	opacity: 0;
-	z-index: 3;
-	cursor: pointer;
-	border: 2px solid red;
 `;
 const RequireList = styled.li`
 	height: 3.1rem;

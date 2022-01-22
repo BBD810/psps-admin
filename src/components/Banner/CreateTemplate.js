@@ -44,7 +44,6 @@ const CreateTemplate = (props) => {
 			banner.get_detail(history.location.state).then((res) => {
 				if (isSubscribed && res.data.success) {
 					let banner = res.data.banner;
-					console.log(banner);
 					setBanner_id(banner.banner_id);
 					setType(banner.type);
 					setTitle(banner.title);
