@@ -8,8 +8,10 @@ import down from '../../images/angle-down.svg';
 import left from '../../images/left.svg';
 import right from '../../images/right.svg';
 import toggle from '../../images/toggle.svg';
+import Spinner from '../Spinner';
 
 const ListTemplate = (props) => {
+	const [isLoading, setIsLoading] = useState(false);
 	const history = useHistory();
 	const menuSelect = useRef();
 	const viewListBox = useRef();
@@ -21,9 +23,11 @@ const ListTemplate = (props) => {
 	const [list, setList] = useState([]);
 
 	useEffect(() => {
+		setIsLoading(true);
 		let isSubscribed = true;
 		product_img.get_list().then((res) => {
 			if (isSubscribed && res.data.success) {
+				setIsLoading(false);
 				setList(res.data.product_image_list);
 			}
 		});
@@ -202,6 +206,7 @@ const ListTemplate = (props) => {
 
 	return (
 		<Container onMouseDown={onMouseDown}>
+			{isLoading && <Spinner />}
 			<Wrap>
 				{list.map((el, idx) => (
 					<List key={idx}>

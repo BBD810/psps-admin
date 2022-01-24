@@ -10,8 +10,10 @@ import left from '../../images/left.svg';
 import right from '../../images/right.svg';
 import toggle from '../../images/toggle.svg';
 import example from '../../images/banner1.png';
+import Spinner from '../Spinner';
 
 const ListTemplate = (props) => {
+	const [isLoading, setIsLoading] = useState(false);
 	const history = useHistory();
 	const menuBox = useRef();
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -26,12 +28,15 @@ const ListTemplate = (props) => {
 	const [list, setList] = useState([]);
 
 	useEffect(() => {
+		setIsLoading(true);
 		_product.get_list(part, subPart).then((res) => {
 			if (res.data.success) {
+				setIsLoading(false);
 				setList(res.data.product_list);
 			}
 		});
 	}, [part, subPart]);
+
 	useEffect(() => {
 		for (let i = 0; i < category.part.length; i++) {
 			if (part === category.part[i].title) {
@@ -82,6 +87,7 @@ const ListTemplate = (props) => {
 
 	return (
 		<Container onMouseDown={onMouseDown}>
+			{isLoading && <Spinner />}
 			<Wrap>
 				{list.map((el, idx) => (
 					<List key={idx}>

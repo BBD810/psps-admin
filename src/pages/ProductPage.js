@@ -74,8 +74,8 @@ const ProductPage = () => {
 				<SideBar getMenu={getMenu} menu={menu} />
 				<Contents>
 					<Category
-						getCategory={getCategory}
 						category={category}
+						getCategory={getCategory}
 						mode={mode}
 						menu={menu}
 						title={title}
@@ -106,6 +106,8 @@ const ProductPage = () => {
 					{createMode && (
 						<Suspense fallback={<div>Loading...</div>}>
 							<CreateTemplate
+								category={category}
+								getCategory={getCategory}
 								mode={mode}
 								changeMode={changeMode}
 								modal={modal}

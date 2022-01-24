@@ -8,8 +8,10 @@ import styled from 'styled-components';
 import left from '../../images/left.svg';
 import right from '../../images/right.svg';
 import toggle from '../../images/toggle.svg';
+import Spinner from '../Spinner';
 
 const ListTemplate = (props) => {
+	const [isLoading, setIsLoading] = useState(false);
 	const history = useHistory();
 	const menuSelect = useRef();
 	const [menuOpen, setMenuOpen] = useState('close');
@@ -21,11 +23,14 @@ const ListTemplate = (props) => {
 	let type;
 
 	useEffect(() => {
+		setIsLoading(true);
 		let isSubscribed = true;
 		type = props.category.substr(0, 2);
 		banner.get_list(type).then((res) => {
 			if (isSubscribed && res.data.success) {
+				setIsLoading(false);
 				setList(res.data.banner_list);
+
 				if (type === '메인') {
 					return setImgHeight({ height: '16.9rem' });
 				} else if (type === '광고') {
@@ -180,18 +185,21 @@ const ListTemplate = (props) => {
 		let isSubscribed = true;
 		let _modal = props.modal;
 		if (_modal.act === 'display' && _modal.return) {
+			setIsLoading(true);
 			banner.change_display(banner_id).then((res) => {
 				if (isSubscribed && res.data.success) {
 					success(res.data.banner_list);
 				}
 			});
 		} else if (_modal.act === 'delete' && _modal.return) {
+			setIsLoading(true);
 			banner.remove(banner_id).then((res) => {
 				if (isSubscribed && res.data.success) {
 					success(res.data.banner_list);
 				}
 			});
 		} else if (_modal.act === 'replace' && _modal.return) {
+			setIsLoading(true);
 			const arr = [detail, displayList[_modal.return]];
 			banner.replace_display(arr).then((res) => {
 				if (isSubscribed && res.data.success) {
@@ -205,12 +213,14 @@ const ListTemplate = (props) => {
 	}, [props.modal.type]);
 
 	const success = (list) => {
+		setIsLoading(false);
 		setList(list);
 		props.modalController({ type: '' });
 	};
 
 	return (
 		<Container onMouseDown={onMouseDown}>
+			{isLoading && <Spinner />}
 			<Wrap>
 				{list.map((el, idx) => (
 					<List key={idx}>

@@ -15,8 +15,10 @@ import delete_icon from '../../images/delete_icon.svg';
 import add_detail from '../../images/add_detail.svg';
 import add_thumbnail from '../../images/add_thumbnail.svg';
 import StateInfo from './StateInfo';
+import Spinner from '../Spinner';
 
 const CreateTemplate = (props) => {
+	const [isLoading, setIsLoading] = useState(false);
 	const history = useHistory();
 	const partBox = useRef();
 	const subPartBox = useRef();
@@ -127,7 +129,6 @@ const CreateTemplate = (props) => {
 			optionSuccess(_optionList);
 		}
 		if (history.location.state) {
-			console.log('detailImgId', history.location.state);
 			setDetailImgId(history.location.state);
 			_product_img.get_detail(history.location.state).then((res) => {
 				setDetailPrevImg(res.data.product_image.image);
@@ -151,6 +152,7 @@ const CreateTemplate = (props) => {
 	};
 
 	const createProduct = () => {
+		setIsLoading(true);
 		const formData = new FormData();
 		formData.append('image', thumbnailImg);
 		formData.append('title', title);
@@ -164,43 +166,45 @@ const CreateTemplate = (props) => {
 			.create(formData)
 			.then((res) => {
 				if (res.data.success) {
-					console.log('상품 생성 성공', res.data);
 					if (optionList.length > 0) {
-						createProductOption(res.data.product_id);
+						return res.data.product_id;
 					}
 				}
 			})
-			.then(createProductOption(res.data.product_id));
-	};
-	const createProductOption = (product_id) => {
-		let count = 0;
-		for (let i = 0; i < optionList.length; i++) {
-			_product_option.create(optionList[i], product_id).then((res) => {
-				if (res.data.success) {
-					count++;
-				} else {
-					props.modalController({
-						type: 'confirm',
-						text: `${i + 1}번째 옵션 생성 중 문제가 발생했습니다.`,
-					});
+			.then((product_id) => {
+				if (optionList.length > 0) {
+					createProductOption(product_id);
 				}
 			});
-		}
-		if (count === optionList.length) {
-			createSuccess();
-		}
 	};
-	const createSuccess = () => {
-		props.modalController({
-			type: 'confirm',
-			text: '상품과 상품 옵션이 등록되었습니다.',
+	const createProductOption = async (product_id) => {
+		let count = 0;
+		createOption(count, product_id);
+	};
+	const createOption = async (count, product_id) => {
+		_product_option.create(optionList[count], product_id).then((res) => {
+			if (res.data.success) {
+				if (count + 1 < optionList.length) {
+					count++;
+					createOption(count, product_id);
+				} else {
+					setIsLoading(false);
+					props.modalController({
+						type: 'confirm',
+						text: '상품과 상품 옵션이 등록되었습니다.',
+					});
+					props.getCategory('상품 목록');
+				}
+			} else {
+				setIsLoading(false);
+				props.modalController({
+					type: 'confirm',
+					text: `${count + 1}번째 옵션 생성 중 문제가 발생했습니다.`,
+				});
+			}
 		});
-		props.changeMode('list');
 	};
 
-	const goList = (part, subPart) => {
-		history.push({ state: { part, subPart } });
-	};
 	const openImgListModal = () => {
 		props.modalController({
 			type: 'img_list',
@@ -248,6 +252,7 @@ const CreateTemplate = (props) => {
 
 	return (
 		<Container>
+			{isLoading && <Spinner />}
 			<StateInfo active={false} />
 			<BasicInfo onMouseDown={onMouseDown}>
 				<Head>기본 정보</Head>
