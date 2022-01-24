@@ -20,3 +20,7 @@ export const create = async (data) => {
 export const get_list = async (part, subPart) => {
 	return await instance.get(`/list/${part}/${subPart}`).catch(errorMessage);
 };
+
+export const get_detail = async (id) => {
+	return await instance.get(`/detail/${id}`).catch(errorMessage);
+};

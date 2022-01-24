@@ -1,11 +1,14 @@
-import React, { useRef, useState } from 'react';
+import React, { lazy, Suspense, useRef, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { admin_login } from '../modules/admin';
 import * as auth from '../controller/auth';
 import styled from 'styled-components';
 import logo from '../images/cetus-logo.svg';
-import ConfirmModal from '../components/Modal/Confirm';
+
+const ConfirmModal = lazy(() => {
+	return import('../components/Modal/Confirm');
+});
 
 const LoginPage = () => {
 	const dispatch = useDispatch();
@@ -84,7 +87,12 @@ const LoginPage = () => {
 					Show
 				</Text>
 				{modal.type === 'confirm' && (
-					<ConfirmModal modal={modal} modalController={modalController} />
+					<Suspense fallback={<div>Loading...</div>}>
+						<ConfirmModal
+							modal={modal}
+							modalController={modalController}
+						/>
+					</Suspense>
 				)}
 			</Login>
 		</div>

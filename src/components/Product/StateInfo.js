@@ -10,7 +10,7 @@ const StateInfo = (props) => {
 	const displayController = (e) => {
 		const text = e.target.innerText;
 		if (
-			// props.createMode ||
+			!props.active ||
 			(text === '노출' && display) ||
 			(text === '노출안함' && !display)
 		) {
@@ -23,7 +23,7 @@ const StateInfo = (props) => {
 	const recommendController = (e) => {
 		const text = e.target.innerText;
 		if (
-			// props.createMode ||
+			!props.active ||
 			(text === '추천상품' && recommend) ||
 			(text === '등록안함' && !recommend)
 		) {
@@ -50,7 +50,8 @@ const StateInfo = (props) => {
 								{displayItems.map((el, idx) => (
 									<TypeItem
 										key={idx}
-										active={idx === 0 ? display : !display}
+										active={props.active}
+										selected={idx === 0 ? display : !display}
 										onClick={displayController}>
 										{el}
 									</TypeItem>
@@ -72,7 +73,8 @@ const StateInfo = (props) => {
 								{recommendItems.map((el, idx) => (
 									<TypeItem
 										key={idx}
-										active={idx === 0 ? recommend : !recommend}
+										active={props.active}
+										selected={idx === 0 ? recommend : !recommend}
 										onClick={recommendController}>
 										{el}
 									</TypeItem>
@@ -169,8 +171,14 @@ const TypeItem = styled.div`
 	font-size: 1.4rem;
 	border-radius: 4px;
 	${(props) =>
-		props.active
+		props.selected
 			? `color:#111A31; font-family:'kr-b'; 
 				border:2px solid #A8B0C3;`
 			: `color: #5E667B;  `}
+	${(props) =>
+		props.selected &&
+		props.active &&
+		`
+				border:2px solid #5887FF
+			`}
 `;

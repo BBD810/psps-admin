@@ -11,7 +11,7 @@ import right from '../../images/right.svg';
 import toggle from '../../images/toggle.svg';
 import example from '../../images/banner1.png';
 
-const ListTemplate = () => {
+const ListTemplate = (props) => {
 	const history = useHistory();
 	const menuBox = useRef();
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -41,7 +41,8 @@ const ListTemplate = () => {
 		}
 	}, [part]);
 	const goDetail = (el) => {
-		// props.changeMode('detail')
+		history.push({ state: el.product_id });
+		props.changeMode('detail');
 	};
 	const menuOpenController = (e) => {
 		setMenuOpen(e);
@@ -78,8 +79,6 @@ const ListTemplate = () => {
 			setMenuOpen(false);
 		}
 	};
-
-	console.log(list);
 
 	return (
 		<Container onMouseDown={onMouseDown}>

@@ -1,17 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { productCategory } from '../data/category';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
-import ListTemplate from '../components/Product/ListTemplate';
-import CreateTemplate from '../components/Product/CreateTemplate';
-import DetailTemplate from '../components/Product/DetailTemplate';
-import ConfirmModal from '../components/Modal/Confirm';
-import OptionModal from '../components/Modal/Option';
-import DetailImgListModal from '../components/Modal/DetailImgList';
-import DetailImgCreateModal from '../components/Modal/DetailImgCreate';
+
+const ListTemplate = lazy(() => {
+	return import('../components/Product/ListTemplate');
+});
+const CreateTemplate = lazy(() => {
+	return import('../components/Product/CreateTemplate');
+});
+const DetailTemplate = lazy(() => {
+	return import('../components/Product/DetailTemplate');
+});
+const ConfirmModal = lazy(() => {
+	return import('../components/Modal/Confirm');
+});
+const OptionModal = lazy(() => {
+	return import('../components/Modal/Option');
+});
+const DetailImgListModal = lazy(() => {
+	return import('../components/Modal/DetailImgList');
+});
+const DetailImgCreateModal = lazy(() => {
+	return import('../components/Modal/DetailImgCreate');
+});
 
 const ProductPage = () => {
 	const history = useHistory();
@@ -68,37 +83,67 @@ const ProductPage = () => {
 						modal={modal}
 						modalController={modalController}
 					/>
-					{!createMode && mode === 'list' && <ListTemplate />}
-					{!createMode && mode === 'detail' && <DetailTemplate />}
+					{!createMode && mode === 'list' && (
+						<Suspense fallback={<div>Loading...</div>}>
+							<ListTemplate
+								mode={mode}
+								changeMode={changeMode}
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
+					)}
+					{!createMode && mode === 'detail' && (
+						<Suspense fallback={<div>Loading...</div>}>
+							<DetailTemplate
+								mode={mode}
+								changeMode={changeMode}
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
+					)}
 					{createMode && (
-						<CreateTemplate
-							modal={modal}
-							modalController={modalController}
-						/>
+						<Suspense fallback={<div>Loading...</div>}>
+							<CreateTemplate
+								mode={mode}
+								changeMode={changeMode}
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
 					)}
 					{modal.type === 'confirm' && (
-						<ConfirmModal
-							modal={modal}
-							modalController={modalController}
-						/>
+						<Suspense fallback={<div>Loading...</div>}>
+							<ConfirmModal
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
 					)}
 					{createMode && modal.type === 'option' && (
-						<OptionModal
-							modal={modal}
-							modalController={modalController}
-						/>
+						<Suspense fallback={<div>Loading...</div>}>
+							<OptionModal
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
 					)}
 					{createMode && modal.type === 'img_list' && (
-						<DetailImgListModal
-							modal={modal}
-							modalController={modalController}
-						/>
+						<Suspense fallback={<div>Loading...</div>}>
+							<DetailImgListModal
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
 					)}
 					{createMode && modal.type === 'img_create' && (
-						<DetailImgCreateModal
-							modal={modal}
-							modalController={modalController}
-						/>
+						<Suspense fallback={<div>Loading...</div>}>
+							<DetailImgCreateModal
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
 					)}
 					<Footer />
 				</Contents>

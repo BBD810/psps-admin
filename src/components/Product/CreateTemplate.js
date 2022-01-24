@@ -28,7 +28,6 @@ const CreateTemplate = (props) => {
 	const [subPartList, setSubPartList] = useState([]);
 	const [partOpen, setPartOpen] = useState(0);
 
-	const optionHeaderList = ['옵션명', '기존가', '판매가', '품절', '삭제'];
 	const [optionList, setOptionList] = useState([]);
 	const [thumbnailImg, setThumbnailImg] = useState(false);
 	const [thumbnailPrevImg, setThumbnailPrevImg] = useState(false);
@@ -107,6 +106,16 @@ const CreateTemplate = (props) => {
 	const editOption = (data, idx) => {
 		props.modalController({ type: 'option', act: 'edit', data, order: idx });
 	};
+	const soldOutOption = (idx) => {
+		let _optionList = [...optionList];
+		_optionList[idx].stock = !_optionList[idx].stock;
+		setOptionList(_optionList);
+	};
+	const deleteOption = (idx) => {
+		let _optionList = [...optionList];
+		_optionList.splice(idx, 1);
+		setOptionList(_optionList);
+	};
 
 	useEffect(() => {
 		const modal = props.modal;
@@ -151,22 +160,24 @@ const CreateTemplate = (props) => {
 		formData.append('storage', storage);
 		formData.append('supplier_id', supplier.supplier_id);
 		formData.append('product_image_id', detailImgId);
-		_product.create(formData).then((res) => {
-			if (res.data.success) {
-				console.log('상품 생성 성공', res.data);
-				if (optionList.length > 0) {
-					createProductOption(res.data.product_id);
+		_product
+			.create(formData)
+			.then((res) => {
+				if (res.data.success) {
+					console.log('상품 생성 성공', res.data);
+					if (optionList.length > 0) {
+						createProductOption(res.data.product_id);
+					}
 				}
-			}
-		});
+			})
+			.then(createProductOption(res.data.product_id));
 	};
 	const createProductOption = (product_id) => {
-		console.log('상품옵션 생성 함수 실행');
+		let count = 0;
 		for (let i = 0; i < optionList.length; i++) {
 			_product_option.create(optionList[i], product_id).then((res) => {
-				console.log('상품옵션 생성 요청보냄');
 				if (res.data.success) {
-					console.log(`${i + 1}번째 옵션 생성 완료`);
+					count++;
 				} else {
 					props.modalController({
 						type: 'confirm',
@@ -175,6 +186,16 @@ const CreateTemplate = (props) => {
 				}
 			});
 		}
+		if (count === optionList.length) {
+			createSuccess();
+		}
+	};
+	const createSuccess = () => {
+		props.modalController({
+			type: 'confirm',
+			text: '상품과 상품 옵션이 등록되었습니다.',
+		});
+		props.changeMode('list');
 	};
 
 	const goList = (part, subPart) => {
@@ -227,7 +248,7 @@ const CreateTemplate = (props) => {
 
 	return (
 		<Container>
-			<StateInfo />
+			<StateInfo active={false} />
 			<BasicInfo onMouseDown={onMouseDown}>
 				<Head>기본 정보</Head>
 				<Body>
@@ -331,7 +352,13 @@ const CreateTemplate = (props) => {
 							<RightInner option>
 								<Option>
 									<OptionHeader>
-										{optionHeaderList.map((el, idx) => (
+										{[
+											'옵션명',
+											'기존가',
+											'판매가',
+											'품절',
+											'삭제',
+										].map((el, idx) => (
 											<OptionHeaderItem key={idx}>
 												{el}
 											</OptionHeaderItem>
@@ -339,28 +366,46 @@ const CreateTemplate = (props) => {
 									</OptionHeader>
 									<OptionBody>
 										{optionList.map((el, idx) => (
-											<OptionList
-												key={idx}
-												onClick={() => {
-													editOption(el, idx);
-												}}>
-												<OptionItem>{el.title}</OptionItem>
-												<OptionItem>
+											<OptionList key={idx}>
+												<OptionItem
+													soldOut={!el.stock}
+													onClick={() => {
+														editOption(el, idx);
+													}}>
+													{el.title}
+												</OptionItem>
+												<OptionItem
+													soldOut={!el.stock}
+													onClick={() => {
+														editOption(el, idx);
+													}}>
 													{priceToString(el.price)}
 												</OptionItem>
-												<OptionItem>
+												<OptionItem
+													soldOut={!el.stock}
+													onClick={() => {
+														editOption(el, idx);
+													}}>
 													{priceToString(el.price - el.discount)}
 												</OptionItem>
 												<OptionItem>
 													<OptionIcon
 														alt='icon'
-														src={check_icon}
+														src={
+															el.stock ? empty_icon : check_icon
+														}
+														onClick={() => {
+															soldOutOption(idx);
+														}}
 													/>
 												</OptionItem>
 												<OptionItem>
 													<OptionIcon
 														alt='icon'
 														src={delete_icon}
+														onClick={() => {
+															deleteOption(idx);
+														}}
 													/>
 												</OptionItem>
 											</OptionList>
@@ -610,6 +655,7 @@ const OptionBody = styled.ul`
 	height: 18.1rem;
 	padding: 0.8rem 0;
 	overflow-y: auto;
+	border: 1px solid #e5e6ed;
 	border-top: 2px solid #e5e6ed;
 	border-bottom: 2px solid #e5e6ed;
 	::-webkit-scrollbar {
@@ -632,6 +678,7 @@ const OptionList = styled.li`
 	}
 `;
 const OptionItem = styled.div`
+	height: 2rem;
 	font-size: 1.2rem;
 	color: #2a3349;
 	:nth-child(1) {
@@ -647,7 +694,11 @@ const OptionItem = styled.div`
 	:nth-child(5) {
 		width: 8%;
 		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
+	${(props) => props.soldOut && `text-decoration : line-through`}
 `;
 const OptionIcon = styled.img`
 	width: 2.4rem;

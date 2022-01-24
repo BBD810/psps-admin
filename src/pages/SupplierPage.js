@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { supplierCategory } from '../data/category';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
@@ -53,16 +53,20 @@ const SupplierPage = () => {
 					/>
 					<ListTemplate modal={modal} modalController={modalController} />
 					{modal.type === 'confirm' && (
-						<ConfirmModal
-							modal={modal}
-							modalController={modalController}
-						/>
+						<Suspense fallback={<div>Loading...</div>}>
+							<ConfirmModal
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
 					)}
 					{modal.type === 'select' && (
-						<SelectModal
-							modal={modal}
-							modalController={modalController}
-						/>
+						<Suspense fallback={<div>Loading...</div>}>
+							<SelectModal
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
 					)}
 					<Footer />
 				</Contents>

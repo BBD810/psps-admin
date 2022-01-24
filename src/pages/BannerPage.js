@@ -1,15 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { bannerCategory } from '../data/category';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
-import ListTemplate from '../components/Banner/ListTemplate';
-import CreateTemplate from '../components/Banner/CreateTemplate';
-import DetailTemplate from '../components/Banner/DetailTemplate';
-import ConfirmModal from '../components/Modal/Confirm';
-import SelectModal from '../components/Modal/Select';
-import ListModal from '../components/Modal/List';
+
+const ListTemplate = lazy(() => {
+	return import('../components/Banner/ListTemplate');
+});
+const CreateTemplate = lazy(() => {
+	return import('../components/Banner/CreateTemplate');
+});
+const DetailTemplate = lazy(() => {
+	return import('../components/Banner/DetailTemplate');
+});
+const ConfirmModal = lazy(() => {
+	return import('../components/Modal/Confirm');
+});
+const SelectModal = lazy(() => {
+	return import('../components/Modal/Select');
+});
+const ListModal = lazy(() => {
+	return import('../components/Modal/List');
+});
 
 const BannerPage = () => {
 	const [mode, setMode] = useState('list');
@@ -66,56 +79,73 @@ const BannerPage = () => {
 						desc={desc}
 					/>
 					{!createMode && mode === 'list' && (
-						<ListTemplate
-							category={category}
-							mode={mode}
-							changeMode={changeMode}
-							modal={modal}
-							modalController={modalController}
-						/>
+						<Suspense fallback={<div>Loading...</div>}>
+							<ListTemplate
+								category={category}
+								mode={mode}
+								changeMode={changeMode}
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
 					)}
 					{!createMode && mode === 'detail' && (
-						<DetailTemplate
-							category={category}
-							mode={mode}
-							changeMode={changeMode}
-							modal={modal}
-							modalController={modalController}
-						/>
+						<Suspense fallback={<div>Loading...</div>}>
+							<DetailTemplate
+								category={category}
+								mode={mode}
+								changeMode={changeMode}
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
 					)}
 					{!createMode && mode === 'edit' && (
-						<CreateTemplate
-							category={category}
-							mode={mode}
-							changeMode={changeMode}
-							desc={desc}
-							modal={modal}
-							modalController={modalController}
-						/>
+						<Suspense fallback={<div>Loading...</div>}>
+							<CreateTemplate
+								category={category}
+								mode={mode}
+								changeMode={changeMode}
+								desc={desc}
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
 					)}
 					{createMode && (
-						<CreateTemplate
-							getCategory={getCategory}
-							category={category}
-							desc={desc}
-							modal={modal}
-							modalController={modalController}
-						/>
+						<Suspense fallback={<div>Loading...</div>}>
+							<CreateTemplate
+								getCategory={getCategory}
+								category={category}
+								desc={desc}
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
 					)}
 					{modal.type === 'confirm' && (
-						<ConfirmModal
-							modal={modal}
-							modalController={modalController}
-						/>
+						<Suspense fallback={<div>Loading...</div>}>
+							<ConfirmModal
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
 					)}
 					{modal.type === 'select' && (
-						<SelectModal
-							modal={modal}
-							modalController={modalController}
-						/>
+						<Suspense fallback={<div>Loading...</div>}>
+							<SelectModal
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
 					)}
 					{modal.type === 'list' && (
-						<ListModal modal={modal} modalController={modalController} />
+						<Suspense fallback={<div>Loading...</div>}>
+							<ListModal
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
 					)}
 					<Footer />
 				</Contents>

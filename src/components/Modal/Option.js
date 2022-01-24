@@ -8,6 +8,7 @@ const OptionModal = (props) => {
 	const [weight, setWeight] = useState(null);
 	const [price, setPrice] = useState('');
 	const [discount, setDiscount] = useState('');
+	const [stock, setStock] = useState(true);
 	const [check, setCheck] = useState(false);
 
 	const text = '옵션명과 개당 가격을 입력해주세요.';
@@ -44,7 +45,7 @@ const OptionModal = (props) => {
 			props.modalController({
 				...props.modal,
 				type: '',
-				return: { title, price, discount, name, weight },
+				return: { title, price, discount, name, weight, stock },
 			});
 		}
 	};
