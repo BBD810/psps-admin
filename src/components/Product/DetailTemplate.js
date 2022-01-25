@@ -4,6 +4,8 @@ import { priceToString } from '../../functions/PriceToString';
 import { IMG_ADDRESS } from '../../config';
 import * as _product from '../../controller/product';
 import styled from 'styled-components';
+import check_icon from '../../images/check_icon.svg';
+import empty_icon from '../../images/empty_icon.svg';
 import StateInfo from '../Product/StateInfo';
 
 const DetailTemplate = (props) => {
@@ -26,9 +28,56 @@ const DetailTemplate = (props) => {
 		};
 	}, [history.location.state]);
 
+	const selectList = () => {
+		props.changeMode('list');
+	};
+	const selectDelete = () => {
+		if (detail.recommend) {
+			return props.modalController({
+				type: 'confirm',
+				text: '추천 상품은\n삭제할 수 없습니다.',
+			});
+		} else {
+			props.modalController({
+				type: 'select',
+				text: '삭제하시겠습니까?',
+				act: 'delete',
+			});
+		}
+	};
+	const selectEdit = () => {
+		props.changeMode('edit');
+	};
+
+	useEffect(() => {
+		let isSubscribed = true;
+		const _modal = props.modal;
+		if (_modal.act === 'delete' && _modal.return) {
+			_product.remove(detail.product_id).then((res) => {
+				if (isSubscribed && res.data.success) {
+					success();
+				}
+			});
+		}
+		return () => {
+			isSubscribed = false;
+		};
+	}, [props.modal.type]);
+
+	const success = () => {
+		props.modalController({ type: '' });
+		props.changeMode('list');
+	};
+
 	return (
 		<Container>
-			<StateInfo active={true} />
+			<StateInfo
+				active={true}
+				mode={props.mode}
+				product_id={detail.product_id}
+				modal={props.modal}
+				modalController={props.modalController}
+			/>
 			<BasicInfo>
 				<Head>기본 정보</Head>
 				<Body>
@@ -78,7 +127,13 @@ const DetailTemplate = (props) => {
 							<RightInner option>
 								<Option>
 									<OptionHeader>
-										{['옵션명', '기존가', '판매가'].map((el, idx) => (
+										{[
+											'옵션명',
+											'기존가',
+											'판매가',
+											'노출',
+											'품절',
+										].map((el, idx) => (
 											<OptionHeaderItem key={idx}>
 												{el}
 											</OptionHeaderItem>
@@ -95,6 +150,24 @@ const DetailTemplate = (props) => {
 												</OptionItem>
 												<OptionItem soldOut={!el.stock}>
 													{priceToString(el.price - el.discount)}
+												</OptionItem>
+												<OptionItem>
+													<OptionIcon
+														src={
+															optionList[idx].state === 'O'
+																? check_icon
+																: empty_icon
+														}
+													/>
+												</OptionItem>
+												<OptionItem>
+													<OptionIcon
+														src={
+															optionList[idx].stock
+																? empty_icon
+																: check_icon
+														}
+													/>
 												</OptionItem>
 											</OptionList>
 										))}
@@ -131,13 +204,15 @@ const DetailTemplate = (props) => {
 						</Left>
 						<Right>
 							<RightInner>
-								<DetailImg
-									alt=''
-									src={
-										detail.detail_image &&
-										`${IMG_ADDRESS}/${detail.detail_image}`
-									}
-								/>
+								<DetailImgWrap>
+									<DetailImg
+										alt=''
+										src={
+											detail.detail_image &&
+											`${IMG_ADDRESS}/${detail.detail_image}`
+										}
+									/>
+								</DetailImgWrap>
 							</RightInner>
 						</Right>
 					</Content>
@@ -176,6 +251,17 @@ const DetailTemplate = (props) => {
 					</Content>
 				</Body>
 			</BasicInfo>
+			<Buttons>
+				<Button border onClick={selectList}>
+					목록으로
+				</Button>
+				<Button border onClick={selectDelete}>
+					삭제하기
+				</Button>
+				<Button filled onClick={selectEdit}>
+					수정하기
+				</Button>
+			</Buttons>
 		</Container>
 	);
 };
@@ -269,10 +355,12 @@ const ThumbnailImg = styled.img`
 	width: 17.7rem;
 	height: 16.3rem;
 `;
-const DetailImg = styled.img`
+const DetailImgWrap = styled.div`
 	width: 56rem;
 	height: 24.8rem;
+	overflow-y: auto;
 `;
+const DetailImg = styled.img``;
 const ItemTitle = styled.p`
 	font-size: 1.1rem;
 	color: #5e667b;
@@ -348,7 +436,18 @@ const OptionItem = styled.div`
 		width: 20%;
 		text-align: center;
 	}
-	${(props) => props.soldOut && `text-decoration:line-through`}
+	:nth-child(4),
+	:nth-child(5) {
+		width: 8%;
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+`;
+const OptionIcon = styled.img`
+	width: 2.4rem;
+	height: 1.7rem;
 `;
 const RequireList = styled.li`
 	height: 3.1rem;
@@ -359,7 +458,7 @@ const RequireList = styled.li`
 	}
 `;
 const RequireTitle = styled.p`
-	width: 10rem;
+	width: 6rem;
 	font-size: 1.1rem;
 	font-family: 'kr-b';
 	color: #5e667b;
@@ -369,8 +468,13 @@ const RequireDesc = styled(ItemDesc)`
 	margin-left: 6rem;
 `;
 const Buttons = styled.div`
-	width: 10.6rem;
-	margin-left: 16.6rem;
+	height: 3.1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: absolute;
+	top: -8.8rem;
+	right: 0;
 `;
 const Button = styled.button`
 	width: 10.6rem;
@@ -379,12 +483,15 @@ const Button = styled.button`
 	font-family: 'kr-b';
 	border: none;
 	border-radius: 4px;
-	margin-bottom: 1rem;
-	:nth-last-child(1) {
+	background-color: #2a3349;
+	color: #fff;
+	margin-left: 0.8rem;
+	:nth-child(1) {
 		margin: 0;
 	}
 	${(props) =>
-		props.filled
-			? `background-color:#2A3349; color:#fff;`
-			: `background-color:unset; border: 2px solid #2A3349; color:#2A3349; opacity:0.4;`}
+		props.border &&
+		`	color: #2a3349; background-color: unset;
+		border: 2px solid #2a3349;`}
+	${(props) => props.add && `position:absolute; top:-8.8rem; right:0;`}
 `;

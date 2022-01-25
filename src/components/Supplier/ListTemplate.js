@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as supplier from '../../controller/supplier';
 import styled from 'styled-components';
 import PageSelector from '../PageSelector';
+import Spinner from '../Spinner';
 
 const ListTemplate = (props) => {
 	const header = useRef();

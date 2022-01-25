@@ -1,40 +1,133 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import * as _product from '../../controller/product';
 import styled from 'styled-components';
+import Spinner from '../Spinner';
 
 const StateInfo = (props) => {
-	const [display, setDisplay] = useState(false);
-	const [recommend, setRecommend] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const displayItems = ['노출', '노출안함'];
 	const recommendItems = ['추천상품', '등록안함'];
+	const [detail, setDetail] = useState({ state: 'F', recommend: 0 });
+	const [optionList, setOptionList] = useState([]);
+	const [recommendList, setRecommendList] = useState([]);
 
-	const displayController = (e) => {
+	useEffect(() => {
+		let isSubscribed = true;
+		if (props.mode === 'detail') {
+			setIsLoading(true);
+			_product
+				.get_detail(props.product_id)
+				.then((res) => {
+					if (isSubscribed && res.data.success) {
+						setDetail(res.data.product);
+						setOptionList(res.data.product_option_list);
+					}
+				})
+				.then(() => {
+					_product.get_recommend_list().then((res) => {
+						if (isSubscribed && res.data.success) {
+							setRecommendList(res.data.product_recommend_list);
+							setIsLoading(false);
+						}
+					});
+				});
+		}
+		return () => {
+			isSubscribed = false;
+		};
+	}, [props.product_id]);
+
+	const selectDisplay = (e) => {
+		setIsLoading(true);
 		const text = e.target.innerText;
-		if (
-			!props.active ||
-			(text === '노출' && display) ||
-			(text === '노출안함' && !display)
+		if (!props.active) {
+			setIsLoading(false);
+			return props.modalController({
+				type: 'confirm',
+				text: '노출여부 혹은 추천상품 등록 여부는\n상세조회에서 가능합니다.',
+			});
+		} else if (
+			(text === '노출' && detail.state === 'O') ||
+			(text === '노출안함' && detail.state === 'F')
 		) {
-			return;
+			return setIsLoading(false);
+		} else if (text === '노출안함' && detail.recommend) {
+			setIsLoading(false);
+			return props.modalController({
+				type: 'confirm',
+				text: '추천상품으로 등록된 상품은\n노출 여부 변경이 불가능합니다.',
+			});
 		} else {
-			text === '노출' ? setDisplay(true) : setDisplay(false);
+			let count = 0;
+			for (let i = 0; i < optionList.length; i++) {
+				if (optionList[i].state === 'O') {
+					count++;
+				}
+			}
+			if (text === '노출' && count === 0) {
+				setIsLoading(false);
+				return props.modalController({
+					type: 'confirm',
+					text: '상품을 노출 상태로 변경하려면\n최소 1개 이상의 옵션이 노출 상태여야 합니다.',
+				});
+			} else {
+				_product.change_display(detail.product_id).then((res) => {
+					if (res.data.success) {
+						setDetail({ ...detail, state: res.data.product.state });
+						setIsLoading(false);
+						props.modalController({
+							type: 'confirm',
+							text: '노출여부가 변경되었습니다.',
+						});
+					}
+				});
+			}
 		}
 	};
 
-	const recommendController = (e) => {
+	const selectRecommend = (e) => {
+		setIsLoading(true);
 		const text = e.target.innerText;
-		if (
-			!props.active ||
-			(text === '추천상품' && recommend) ||
-			(text === '등록안함' && !recommend)
+		if (!props.active) {
+			setIsLoading(false);
+			return props.modalController({
+				type: 'confirm',
+				text: '노출여부 혹은 추천상품 등록 여부는\n상세조회에서 가능합니다.',
+			});
+		} else if (
+			(text === '추천상품' && detail.recommend) ||
+			(text === '등록안함' && !detail.recommend)
 		) {
-			return;
+			return setIsLoading(false);
+		} else if (detail.state !== 'O') {
+			return props.modalController({
+				type: 'confirm',
+				text: '노출하지 않은 상품은\n추천 상품으로 등록할 수 없습니다.',
+			});
+		} else if (text === '등록안함' && recommendList.length < 2) {
+			setIsLoading(false);
+			return props.modalController({
+				type: 'confirm',
+				text: '추천 상품은\n최소 1개 이상 있어야 합니다.',
+			});
+		} else if (text === '추천상품' && recommendList.length > 5) {
 		} else {
-			text === '추천상품' ? setRecommend(true) : setRecommend(false);
+			_product.change_recommend(detail.product_id).then((res) => {
+				if (res.data.success) {
+					setDetail({ ...detail, recommend: res.data.product.recommend });
+					setIsLoading(false);
+					props.modalController({
+						type: 'confirm',
+						text: '추천상품 여부가 변경되었습니다.',
+					});
+				}
+			});
 		}
 	};
 
 	return (
 		<Container>
+			{isLoading && <Spinner />}
 			<Head>상태 정보</Head>
 			<Body>
 				<Content>
@@ -51,8 +144,11 @@ const StateInfo = (props) => {
 									<TypeItem
 										key={idx}
 										active={props.active}
-										selected={idx === 0 ? display : !display}
-										onClick={displayController}>
+										selected={
+											(idx === 0 && detail.state === 'O') ||
+											(idx === 1 && detail.state === 'F')
+										}
+										onClick={selectDisplay}>
 										{el}
 									</TypeItem>
 								))}
@@ -74,8 +170,11 @@ const StateInfo = (props) => {
 									<TypeItem
 										key={idx}
 										active={props.active}
-										selected={idx === 0 ? recommend : !recommend}
-										onClick={recommendController}>
+										selected={
+											(idx === 0 && detail.recommend) ||
+											(idx === 1 && !detail.recommend)
+										}
+										onClick={selectRecommend}>
 										{el}
 									</TypeItem>
 								))}
@@ -175,10 +274,5 @@ const TypeItem = styled.div`
 			? `color:#111A31; font-family:'kr-b'; 
 				border:2px solid #A8B0C3;`
 			: `color: #5E667B;  `}
-	${(props) =>
-		props.selected &&
-		props.active &&
-		`
-				border:2px solid #5887FF
-			`}
+	${(props) => props.selected && props.active && `border:2px solid #5887FF`}
 `;

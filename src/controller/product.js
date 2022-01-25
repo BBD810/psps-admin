@@ -17,10 +17,26 @@ export const create = async (data) => {
 	return await instance.post('/', data).catch(errorMessage);
 };
 
+export const remove = async (id) => {
+	return await instance.delete(`/${id}`).catch(errorMessage);
+};
+
 export const get_list = async (part, subPart) => {
 	return await instance.get(`/list/${part}/${subPart}`).catch(errorMessage);
 };
 
+export const get_recommend_list = async () => {
+	return await instance.get(`/recommend`).catch(errorMessage);
+};
+
 export const get_detail = async (id) => {
 	return await instance.get(`/detail/${id}`).catch(errorMessage);
+};
+
+export const change_display = async (id) => {
+	return await instance.patch(`/display/${id}`).catch(errorMessage);
+};
+
+export const change_recommend = async (id) => {
+	return await instance.patch(`/recommend/${id}`).catch(errorMessage);
 };

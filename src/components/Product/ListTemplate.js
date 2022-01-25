@@ -27,6 +27,8 @@ const ListTemplate = (props) => {
 	const [partOpen, setPartOpen] = useState(0);
 	const [list, setList] = useState([]);
 
+	console.log(list);
+
 	useEffect(() => {
 		setIsLoading(true);
 		_product.get_list(part, subPart).then((res) => {
@@ -90,12 +92,10 @@ const ListTemplate = (props) => {
 			{isLoading && <Spinner />}
 			<Wrap>
 				{list.map((el, idx) => (
-					<List key={idx}>
-						<ListImgWrap
-							display={el.display}
-							onClick={() => goDetail(el)}>
-							{el.share === 1 && (
-								<ListState className='share'>Share Image</ListState>
+					<List key={idx} active={el.state === 'O'}>
+						<ListImgWrap onClick={() => goDetail(el)}>
+							{el.stock === 0 && (
+								<ListState className='sold_out'>Sold Out</ListState>
 							)}
 							<ListImg
 								alt='product img'
@@ -213,6 +213,7 @@ const List = styled.li`
 	height: 18.8rem;
 	margin: auto;
 	margin-bottom: 8rem;
+	${(props) => !props.active && `opacity:0.4`}
 `;
 const ListImgWrap = styled.div`
 	width: 100%;
@@ -224,11 +225,11 @@ const ListImgWrap = styled.div`
 	padding: 0.3rem;
 	position: relative;
 	border-radius: 4px;
-	background-color: #e5e6ed;
+	background-color: #2a3349;
 	&:hover {
 		background-color: #5887ff;
 	}
-	&:hover .display {
+	&:hover .sold_out {
 		background-color: #5887ff;
 	}
 	${(props) => (props.main ? `height:16.9rem` : `height:11.3rem`)}
@@ -243,7 +244,7 @@ const ListState = styled.p`
 	color: #fff;
 	text-align: center;
 	position: absolute;
-	top: 0;
+	top: 0.3rem;
 	border-radius: 0px 0px 4px 4px;
 	background-color: #2a3349;
 `;

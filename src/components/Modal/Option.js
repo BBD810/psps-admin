@@ -44,7 +44,15 @@ const OptionModal = (props) => {
 			props.modalController({
 				...props.modal,
 				type: '',
-				return: { title, price, discount, name, weight, stock: true },
+				return: {
+					title,
+					price,
+					discount,
+					name,
+					weight,
+					state: 'O',
+					stock: true,
+				},
 			});
 		}
 	};

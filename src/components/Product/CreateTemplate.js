@@ -10,7 +10,7 @@ import * as category from '../../data/link';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
 import empty_icon from '../../images/empty_icon.svg';
-import check_icon from '../../images/checked_icon.svg';
+import check_icon from '../../images/check_icon.svg';
 import delete_icon from '../../images/delete_icon.svg';
 import add_detail from '../../images/add_detail.svg';
 import add_thumbnail from '../../images/add_thumbnail.svg';
@@ -108,6 +108,15 @@ const CreateTemplate = (props) => {
 	const editOption = (data, idx) => {
 		props.modalController({ type: 'option', act: 'edit', data, order: idx });
 	};
+	const displayOption = (idx) => {
+		let _optionList = [...optionList];
+		if (_optionList[idx].state === 'O') {
+			_optionList[idx].state = 'F';
+		} else {
+			_optionList[idx].state = 'O';
+		}
+		setOptionList(_optionList);
+	};
 	const soldOutOption = (idx) => {
 		let _optionList = [...optionList];
 		_optionList[idx].stock = !_optionList[idx].stock;
@@ -131,8 +140,10 @@ const CreateTemplate = (props) => {
 		if (history.location.state) {
 			setDetailImgId(history.location.state);
 			_product_img.get_detail(history.location.state).then((res) => {
-				setDetailPrevImg(res.data.product_image.image);
-				history.replace();
+				if (res.data.success) {
+					setDetailPrevImg(res.data.product_image.image);
+					history.replace();
+				}
 			});
 		}
 	}, [props.modal.type]);
@@ -147,7 +158,7 @@ const CreateTemplate = (props) => {
 			? createProduct()
 			: props.modalController({
 					type: 'confirm',
-					text: '부족한 내용을 확인해주세요.',
+					text: '부족한 내용을 확인해주세요.\n상품 옵션도 최소 1개 등록해야 합니다.',
 			  });
 	};
 
@@ -166,9 +177,7 @@ const CreateTemplate = (props) => {
 			.create(formData)
 			.then((res) => {
 				if (res.data.success) {
-					if (optionList.length > 0) {
-						return res.data.product_id;
-					}
+					return res.data.product_id;
 				}
 			})
 			.then((product_id) => {
@@ -205,6 +214,8 @@ const CreateTemplate = (props) => {
 		});
 	};
 
+	console.log(optionList);
+
 	const openImgListModal = () => {
 		props.modalController({
 			type: 'img_list',
@@ -232,6 +243,7 @@ const CreateTemplate = (props) => {
 		title &&
 		part &&
 		subPart &&
+		optionList.length > 0 &&
 		thumbnailImg &&
 		detailImgId &&
 		supplier &&
@@ -243,6 +255,7 @@ const CreateTemplate = (props) => {
 		title,
 		part,
 		subPart,
+		optionList,
 		thumbnailImg,
 		detailImgId,
 		supplier,
@@ -253,7 +266,11 @@ const CreateTemplate = (props) => {
 	return (
 		<Container>
 			{isLoading && <Spinner />}
-			<StateInfo active={false} />
+			<StateInfo
+				active={false}
+				modal={props.modal}
+				modalController={props.modalController}
+			/>
 			<BasicInfo onMouseDown={onMouseDown}>
 				<Head>기본 정보</Head>
 				<Body>
@@ -361,6 +378,7 @@ const CreateTemplate = (props) => {
 											'옵션명',
 											'기존가',
 											'판매가',
+											'노출',
 											'품절',
 											'삭제',
 										].map((el, idx) => (
@@ -392,6 +410,19 @@ const CreateTemplate = (props) => {
 														editOption(el, idx);
 													}}>
 													{priceToString(el.price - el.discount)}
+												</OptionItem>
+												<OptionItem>
+													<OptionIcon
+														alt='icon'
+														src={
+															el.state === 'O'
+																? check_icon
+																: empty_icon
+														}
+														onClick={() => {
+															displayOption(idx);
+														}}
+													/>
 												</OptionItem>
 												<OptionItem>
 													<OptionIcon
@@ -460,15 +491,17 @@ const CreateTemplate = (props) => {
 						</Left>
 						<Right>
 							<RightInner>
-								<DetailImg
-									alt=''
-									src={
-										detailPrevImg
-											? `${IMG_ADDRESS}/${detailPrevImg}`
-											: add_detail
-									}
-									onClick={openImgListModal}
-								/>
+								<DetailImgWrap>
+									<DetailImg
+										alt=''
+										src={
+											detailPrevImg
+												? `${IMG_ADDRESS}/${detailPrevImg}`
+												: add_detail
+										}
+										onClick={openImgListModal}
+									/>
+								</DetailImgWrap>
 							</RightInner>
 						</Right>
 					</Content>
@@ -641,16 +674,17 @@ const OptionHeader = styled.div`
 `;
 const OptionHeaderItem = styled.div`
 	:nth-child(1) {
-		width: 44%;
+		width: 40%;
 		padding-left: 1rem;
 	}
 	:nth-child(2),
 	:nth-child(3) {
-		width: 20%;
+		width: 22%;
 		text-align: center;
 	}
 	:nth-child(4),
-	:nth-child(5) {
+	:nth-child(5),
+	:nth-child(6) {
 		width: 8%;
 		text-align: center;
 	}
@@ -687,16 +721,17 @@ const OptionItem = styled.div`
 	font-size: 1.2rem;
 	color: #2a3349;
 	:nth-child(1) {
-		width: 44%;
+		width: 40%;
 		padding-left: 1rem;
 	}
 	:nth-child(2),
 	:nth-child(3) {
-		width: 20%;
+		width: 22%;
 		text-align: center;
 	}
 	:nth-child(4),
-	:nth-child(5) {
+	:nth-child(5),
+	:nth-child(6) {
 		width: 8%;
 		text-align: center;
 		display: flex;
@@ -815,10 +850,12 @@ const ThumbnailInput = styled.input`
 	z-index: 3;
 	cursor: pointer;
 `;
-const DetailImg = styled.img`
+const DetailImgWrap = styled.div`
 	width: 56rem;
 	height: 24.8rem;
+	overflow: auto;
 `;
+const DetailImg = styled.img``;
 const RequireList = styled.li`
 	height: 3.1rem;
 	margin-bottom: 1rem;

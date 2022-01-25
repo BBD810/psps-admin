@@ -18,6 +18,9 @@ const DetailTemplate = lazy(() => {
 const ConfirmModal = lazy(() => {
 	return import('../components/Modal/Confirm');
 });
+const SelectModal = lazy(() => {
+	return import('../components/Modal/Select');
+});
 const OptionModal = lazy(() => {
 	return import('../components/Modal/Option');
 });
@@ -123,6 +126,14 @@ const ProductPage = () => {
 							/>
 						</Suspense>
 					)}
+					{modal.type === 'select' && (
+						<Suspense fallback={<div>Loading...</div>}>
+							<SelectModal
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
+					)}
 					{createMode && modal.type === 'option' && (
 						<Suspense fallback={<div>Loading...</div>}>
 							<OptionModal
@@ -147,6 +158,7 @@ const ProductPage = () => {
 							/>
 						</Suspense>
 					)}
+
 					<Footer />
 				</Contents>
 			</Container>
