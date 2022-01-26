@@ -43,10 +43,7 @@ const SideBar = (props) => {
 	};
 	const goLogout = () => {
 		request.logout().then((res) => {
-			if (res.data.success) {
-				dispatch(admin_logout());
-				history.push('/login');
-			}
+			res.data.success && dispatch(admin_logout()) && history.push('/login');
 		});
 	};
 

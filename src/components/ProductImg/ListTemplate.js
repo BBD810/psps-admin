@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { IMG_ADDRESS, ADDRESS } from '../../config';
 import * as toggleMenu from '../../data/toggle';
-import * as product_img from '../../controller/product_img';
+import * as _product_img from '../../controller/product_img';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
 import left from '../../images/left.svg';
@@ -25,7 +25,7 @@ const ListTemplate = (props) => {
 	useEffect(() => {
 		setIsLoading(true);
 		let isSubscribed = true;
-		product_img.get_list().then((res) => {
+		_product_img.get_list().then((res) => {
 			if (isSubscribed && res.data.success) {
 				setIsLoading(false);
 				setList(res.data.product_image_list);
@@ -49,19 +49,19 @@ const ListTemplate = (props) => {
 	useEffect(() => {
 		let isSubscribed = true;
 		if (view === '전체보기') {
-			product_img.get_list().then((res) => {
+			_product_img.get_list().then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_image_list);
 				}
 			});
 		} else if (view === '단일 이미지') {
-			product_img.get_share_list(false).then((res) => {
+			_product_img.get_share_list(false).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_image_list);
 				}
 			});
 		} else if (view === '공유 이미지') {
-			product_img.get_share_list(true).then((res) => {
+			_product_img.get_share_list(true).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_image_list);
 				}
@@ -125,18 +125,12 @@ const ListTemplate = (props) => {
 	};
 
 	const onMouseDown = (e) => {
-		if (
-			menuOpen !== 'close' &&
-			(!menuSelect.current || !menuSelect.current.contains(e.target))
-		) {
+		menuOpen !== 'close' &&
+			(!menuSelect.current || !menuSelect.current.contains(e.target)) &&
 			setMenuOpen('close');
-		}
-		if (
-			viewOpen &&
-			(!viewListBox.current || !viewListBox.current.contains(e.target))
-		) {
+		viewOpen &&
+			(!viewListBox.current || !viewListBox.current.contains(e.target)) &&
 			setViewOpen(false);
-		}
 	};
 
 	const leftClick = (e) => {
@@ -165,10 +159,8 @@ const ListTemplate = (props) => {
 	const changeOrder = (arr) => {
 		if (arr[0] && arr[1]) {
 			let _view = viewChange(view);
-			product_img.change_order(arr, _view).then((res) => {
-				if (res.data.success) {
-					setList(res.data.product_image_list);
-				}
+			_product_img.change_order(arr, _view).then((res) => {
+				res.data.success && setList(res.data.product_image_list);
 			});
 		}
 	};
@@ -186,16 +178,16 @@ const ListTemplate = (props) => {
 		let isSubscribed = true;
 		let _modal = props.modal;
 		if (_modal.act === 'share' && _modal.return) {
-			product_img.change_share(detail.product_image_id).then((res) => {
-				if (isSubscribed && res.data.success) {
+			_product_img.change_share(detail.product_image_id).then((res) => {
+				isSubscribed &&
+					res.data.success &&
 					success(res.data.product_image_list);
-				}
 			});
 		} else if (_modal.act === 'delete' && _modal.return) {
-			product_img.remove(detail.product_image_id).then((res) => {
-				if (isSubscribed && res.data.success) {
+			_product_img.remove(detail.product_image_id).then((res) => {
+				isSubscribed &&
+					res.data.success &&
 					success(res.data.product_image_list);
-				}
 			});
 		}
 		return () => {
@@ -223,7 +215,7 @@ const ListTemplate = (props) => {
 							)}
 							<ListImg
 								alt='product img'
-								src={`${IMG_ADDRESS}/${el.image}`}
+								src={`${IMG_ADDRESS}/${el.temp_image}`}
 							/>
 						</ListImgWrap>
 						<ListBottom>
@@ -306,6 +298,7 @@ export default ListTemplate;
 
 const Container = styled.div`
 	width: 119rem;
+	min-height: 78.9rem;
 	position: relative;
 `;
 const Wrap = styled.ul`

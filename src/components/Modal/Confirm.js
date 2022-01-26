@@ -6,14 +6,13 @@ const ConfirmModal = (props) => {
 	const onClick = () => {
 		props.modalController({ type: '' });
 	};
+
 	const onMouseDown = (e) => {
-		if (
-			props.modal.type !== '' &&
-			(!modalBox.current || !modalBox.current.contains(e.target))
-		) {
+		props.modal.type !== '' &&
+			(!modalBox.current || !modalBox.current.contains(e.target)) &&
 			props.modalController({ type: '' });
-		}
 	};
+
 	return (
 		<Container onMouseDown={onMouseDown}>
 			<Wrap ref={modalBox}>

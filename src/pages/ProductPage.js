@@ -111,6 +111,16 @@ const ProductPage = () => {
 							/>
 						</Suspense>
 					)}
+					{!createMode && mode === 'edit' && (
+						<Suspense fallback={<div>Loading...</div>}>
+							<CreateTemplate
+								mode={mode}
+								changeMode={changeMode}
+								modal={modal}
+								modalController={modalController}
+							/>
+						</Suspense>
+					)}
 					{createMode && (
 						<Suspense fallback={<div>Loading...</div>}>
 							<CreateTemplate

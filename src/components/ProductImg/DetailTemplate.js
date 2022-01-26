@@ -188,7 +188,7 @@ const DetailTemplate = (props) => {
 					{detail.image && (
 						<UploadImg
 							alt='product detail img'
-							src={`${IMG_ADDRESS}/${detail.image}`}
+							src={`${IMG_ADDRESS}/${detail.temp_image}`}
 						/>
 					)}
 				</ImgWrap>

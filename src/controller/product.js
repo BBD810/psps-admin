@@ -40,3 +40,9 @@ export const change_display = async (id) => {
 export const change_recommend = async (id) => {
 	return await instance.patch(`/recommend/${id}`).catch(errorMessage);
 };
+
+export const change_order = async (arr, boolean) => {
+	return await instance
+		.patch(`/order/?isRecommend=${boolean}`, arr)
+		.catch(errorMessage);
+};

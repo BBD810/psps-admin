@@ -114,14 +114,12 @@ const CreateTemplate = (props) => {
 	};
 
 	const onMouseDown = (e) => {
-		if (
-			openSelect !== 0 &&
+		openSelect !== 0 &&
 			(!pageSelect.current || !pageSelect.current.contains(e.target)) &&
 			(!partSelect.current || !partSelect.current.contains(e.target)) &&
-			(!subPartSelect.current || !subPartSelect.current.contains(e.target))
-		) {
+			(!subPartSelect.current ||
+				!subPartSelect.current.contains(e.target)) &&
 			setOpenSelect(0);
-		}
 	};
 	const onSubmit = (e) => {
 		const innerText = e.target.innerText;
@@ -180,16 +178,12 @@ const CreateTemplate = (props) => {
 				formData.append('subPart', subPart);
 				formData.append('product_id', product_id);
 				banner.edit(formData, banner_id, true).then((res) => {
-					if (res.data.success) {
-						successEdit();
-					}
+					res.data.success && successEdit();
 				});
 			} else {
 				const data = { type, title, page, part, subPart, product_id };
 				banner.edit(data, banner_id, false).then((res) => {
-					if (res.data.success) {
-						successEdit();
-					}
+					res.data.success && successEdit();
 				});
 			}
 		}

@@ -101,10 +101,9 @@ const ListTemplate = (props) => {
 			setEditMode(idx);
 		} else if (innerText === '저장') {
 			supplier.edit(detail, detail.supplier_id, page).then((res) => {
-				if (res.data.success) {
-					setEditMode(false);
+				res.data.success &&
+					setEditMode(false) &&
 					setList(res.data.supplier_list);
-				}
 			});
 		}
 	};

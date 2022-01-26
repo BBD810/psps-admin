@@ -11,6 +11,7 @@ import right from '../../images/right.svg';
 import toggle from '../../images/toggle.svg';
 import example from '../../images/banner1.png';
 import Spinner from '../Spinner';
+import { change_order } from '../../controller/product_img';
 
 const ListTemplate = (props) => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -27,8 +28,6 @@ const ListTemplate = (props) => {
 	const [partOpen, setPartOpen] = useState(0);
 	const [detail, setDetail] = useState({});
 	const [list, setList] = useState([]);
-
-	console.log(list);
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -109,7 +108,6 @@ const ListTemplate = (props) => {
 			});
 		}
 	};
-	const goDisplay = () => {};
 	const selectDelete = (el) => {
 		if (el.recommend) {
 			props.modalController({
@@ -129,36 +127,54 @@ const ListTemplate = (props) => {
 		window.open(`${CLIENT_ADDRESS}${link}`, '_blank');
 	};
 
-	const leftClick = () => {};
-	const rightClick = () => {};
-
-	const partController = (e) => {
-		if (part !== e.target.innerText) {
-			setPart(e.target.innerText);
+	const leftClick = (e) => {
+		let arr = [];
+		for (let i = 0; i < list.length; i++) {
+			if (list[i] === e) {
+				arr = [list[i - 1], list[i]];
+				break;
+			}
 		}
+		changeOrder(arr);
+	};
+	const rightClick = (e) => {
+		let arr = [];
+		for (let i = 0; i < list.length; i++) {
+			if (list[i] === e) {
+				arr = [list[i], list[i + 1]];
+				break;
+			}
+		}
+		changeOrder(arr);
+	};
+	const changeOrder = (arr) => {
+		let type;
+		props.category === '추천 상품 목록' ? (type = true) : (type = false);
+		if (arr[0] && arr[1]) {
+			_product.change_order(arr, type).then((res) => {
+				res.data.success && setList(res.data.product_list);
+			});
+		}
+	};
+	const partController = (e) => {
+		const innerText = e.target.innerText;
+		part !== innerText && setPart(innerText);
 		setPartOpen(0);
 	};
 	const subPartController = (e) => {
-		if (subPart !== e.target.innerText) {
-			setSubPart(e.target.innerText);
-		}
+		const innerText = e.target.innerText;
+		subPart !== innerText && setSubPart(innerText);
 		setPartOpen(0);
 	};
 
 	const onMouseDown = (e) => {
-		if (
-			partOpen &&
+		partOpen &&
 			(!partBox.current || !partBox.current.contains(e.target)) &&
-			(!subPartBox.current || !subPartBox.current.contains(e.target))
-		) {
+			(!subPartBox.current || !subPartBox.current.contains(e.target)) &&
 			setPartOpen(0);
-		}
-		if (
-			menuOpen &&
-			(!menuBox.current || !menuBox.current.contains(e.target))
-		) {
+		menuOpen &&
+			(!menuBox.current || !menuBox.current.contains(e.target)) &&
 			setMenuOpen(false);
-		}
 	};
 
 	useEffect(() => {
@@ -167,15 +183,14 @@ const ListTemplate = (props) => {
 		if (_modal.act === 'display' && _modal.return) {
 		} else if (_modal.act === 'delete' && _modal.return) {
 			_product.remove(detail.product_id).then((res) => {
-				if (isSubscribed && res.data.success) {
-					success(res.data.product_list);
-				}
+				isSubscribed && res.data.success && success(res.data.product_list);
 			});
 		}
 		return () => {
 			isSubscribed = false;
 		};
 	}, [props.modal.type]);
+
 	const success = (list) => {
 		setList(list);
 		props.modalController({ type: '' });
@@ -193,7 +208,7 @@ const ListTemplate = (props) => {
 							)}
 							<ListImg
 								alt='product img'
-								src={`${IMG_ADDRESS}/${el.image}`}
+								src={`${IMG_ADDRESS}/${el.temp_image}`}
 							/>
 						</ListImgWrap>
 						<ListBottom>

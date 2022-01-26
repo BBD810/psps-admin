@@ -23,17 +23,16 @@ const DetailTemplate = (props) => {
 			setImgHeight({ height: '34.9rem' });
 		}
 		banner.get_detail(history.location.state).then((res) => {
-			if (isSubscribed && res.data.success) {
-				setDetail(res.data.banner);
+			isSubscribed &&
+				res.data.success &&
+				setDetail(res.data.banner) &&
 				setBanner_id(history.location.state);
-			}
 		});
 		banner.get_display_list(type, true).then((res) => {
-			if (isSubscribed && res.data.success) {
+			isSubscribed &&
+				res.data.success &&
 				setDisplayList(res.data.banner_list);
-			}
 		});
-
 		return () => {
 			isSubscribed = false;
 		};
@@ -111,22 +110,16 @@ const DetailTemplate = (props) => {
 		let _modal = props.modal;
 		if (_modal.act === 'display' && _modal.return) {
 			banner.change_display(banner_id).then((res) => {
-				if (isSubscribed && res.data.success) {
-					success();
-				}
+				isSubscribed && res.data.success && success();
 			});
 		} else if (_modal.act === 'delete' && _modal.return) {
 			banner.remove(banner_id).then((res) => {
-				if (isSubscribed && res.data.success) {
-					success();
-				}
+				isSubscribed && res.data.success && success();
 			});
 		} else if (_modal.act === 'replace' && _modal.return) {
 			const arr = [detail, displayList[props.modal.return]];
 			banner.replace_display(arr).then((res) => {
-				if (isSubscribed && res.data.success) {
-					success();
-				}
+				isSubscribed && res.data.success && success();
 			});
 		}
 		return () => {
@@ -144,7 +137,7 @@ const DetailTemplate = (props) => {
 			<DetailImgBox style={imgHeight}>
 				<DetailImg
 					alt='banner img'
-					src={detail.image && `${IMG_ADDRESS}/${detail.image}`}
+					src={detail.image && `${IMG_ADDRESS}/${detail.temp_image}`}
 				/>
 			</DetailImgBox>
 			<DetailContentsBox>

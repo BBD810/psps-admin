@@ -8,7 +8,7 @@ const ListModal = (props) => {
 
 	useEffect(() => {
 		setList(props.modal.list);
-	}, []);
+	}, [props.modal.list]);
 
 	const selectItem = (e) => {
 		setSelected(e);
@@ -26,12 +26,9 @@ const ListModal = (props) => {
 	};
 
 	const onMouseDown = (e) => {
-		if (
-			props.modal.type !== '' &&
-			(!modalBox.current || !modalBox.current.contains(e.target))
-		) {
+		props.modal.type !== '' &&
+			(!modalBox.current || !modalBox.current.contains(e.target)) &&
 			props.modalController({ type: '' });
-		}
 	};
 
 	return (

@@ -9,11 +9,7 @@ const Auth = (SpecificComponent, option, adminRoute = null) => {
 	const AuthenticationCheck = ({ history }) => {
 		useEffect(() => {
 			auth.authCheck().then((res) => {
-				if (res.data.success) {
-					return dispatch(admin_login());
-				} else {
-					return history.push('/login');
-				}
+				res.data.success ? dispatch(admin_login()) : history.push('/login');
 			});
 			// eslint-disable-next-line
 		}, []);

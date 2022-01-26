@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { extension } from '../../data/extension';
 import { IMG_ADDRESS } from '../../config';
-import * as product_img from '../../controller/product_img';
+import * as _product_img from '../../controller/product_img';
 import styled from 'styled-components';
 
 const CreateTemplate = (props) => {
@@ -19,7 +19,7 @@ const CreateTemplate = (props) => {
 
 	useEffect(() => {
 		if (editMode) {
-			product_img.get_detail(history.location.state).then((res) => {
+			_product_img.get_detail(history.location.state).then((res) => {
 				if (res.data.success) {
 					let product_image = res.data.product_image;
 					setProduct_image_id(product_image.product_image_id);
@@ -53,16 +53,11 @@ const CreateTemplate = (props) => {
 				text: '부족한 내용을 확인해주세요.',
 			});
 		} else {
-			if (share === '단일') {
-				share = 0;
-			} else if (share === '공유') {
-				share = 1;
-			}
 			const formData = new FormData();
 			formData.append('image', img);
 			formData.append('title', title);
 			formData.append('share', share);
-			product_img.create(formData).then((res) => {
+			_product_img.create(formData).then((res) => {
 				if (res.data.success) {
 					props.modalController({
 						type: 'confirm',
@@ -73,6 +68,9 @@ const CreateTemplate = (props) => {
 			});
 		}
 	};
+
+	console.log(img);
+
 	const onEdit = () => {
 		if (!check) {
 			return props.modalController({
@@ -84,16 +82,26 @@ const CreateTemplate = (props) => {
 				const formData = new FormData();
 				formData.append('image', img);
 				formData.append('title', title);
-				product_img.edit(formData, product_image_id, true).then((res) => {
-					if (res.data.success) {
-					}
+				formData.append('product_image_id', product_image_id);
+				_product_img.edit(formData, product_image_id, true).then((res) => {
+					res.data.success && successEdit();
 				});
 			} else {
-				// const data = {title, };
+				const data = { title, product_image_id };
+				_product_img.edit(data, product_image_id, false).then((res) => {
+					res.data.success && successEdit();
+				});
 			}
 		}
 	};
+	const successEdit = () => {
+		props.modalController({ type: 'confirm', text: '수정되었습니다.' });
+		props.changeMode('list');
+	};
 
+	const goList = () => {
+		props.changeMode('list');
+	};
 	useEffect(() => {
 		if (editMode) {
 			title ? setCheck(true) : setCheck(false);
@@ -155,9 +163,18 @@ const CreateTemplate = (props) => {
 					)}
 				</ImgWrap>
 			</BottomWrap>
-			<SaveButton active={check} onClick={onCreate}>
-				저장하기
-			</SaveButton>
+			{editMode ? (
+				<Buttons>
+					<Button border onClick={goList}>
+						취소하기
+					</Button>
+					<Button onClick={onEdit}>저장하기</Button>
+				</Buttons>
+			) : (
+				<SaveButton active={check} onClick={onCreate}>
+					저장하기
+				</SaveButton>
+			)}
 		</Container>
 	);
 };
@@ -234,6 +251,34 @@ const UploadButton = styled.button`
 	border: none;
 	border-radius: 4px;
 	background-color: #2a3349;
+`;
+const Buttons = styled.div`
+	height: 3.1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: absolute;
+	top: -5.75rem;
+	right: 0;
+`;
+const Button = styled.button`
+	width: 10.6rem;
+	height: 3.1rem;
+	font-size: 1.2rem;
+	font-family: 'kr-b';
+	border: none;
+	border-radius: 4px;
+	background-color: #2a3349;
+	color: #fff;
+	margin-left: 0.8rem;
+	:nth-child(1) {
+		margin: 0;
+	}
+	${(props) =>
+		props.border &&
+		`	color: #2a3349; background-color: unset;
+		border: 2px solid #2a3349;`}
+	${(props) => props.add && `position:absolute; top:-8.8rem; right:0;`}
 `;
 const SaveButton = styled.button`
 	width: 10.6rem;

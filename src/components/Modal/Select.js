@@ -11,12 +11,9 @@ const SelectModal = (props) => {
 		props.modalController({ ...props.modal, type: '', return: false });
 	};
 	const onMouseDown = (e) => {
-		if (
-			props.modal.type !== '' &&
-			(!modalBox.current || !modalBox.current.contains(e.target))
-		) {
+		props.modal.type !== '' &&
+			(!modalBox.current || !modalBox.current.contains(e.target)) &&
 			props.modalController({ type: '' });
-		}
 	};
 
 	return (

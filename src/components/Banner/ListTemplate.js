@@ -133,12 +133,9 @@ const ListTemplate = (props) => {
 		window.open(`${CLIENT_ADDRESS}${link}`, '_blank');
 	};
 	const onMouseDown = (e) => {
-		if (
-			menuOpen !== 'close' &&
-			(!menuSelect.current || !menuSelect.current.contains(e.target))
-		) {
+		menuOpen !== 'close' &&
+			(!menuSelect.current || !menuSelect.current.contains(e.target)) &&
 			setMenuOpen('close');
-		}
 	};
 
 	const leftClick = (e) => {
@@ -174,9 +171,7 @@ const ListTemplate = (props) => {
 			});
 		} else {
 			banner.change_order(arr).then((res) => {
-				if (res.data.success) {
-					success(res.data.banner_list);
-				}
+				res.data.success && success(res.data.banner_list);
 			});
 		}
 	};
@@ -187,24 +182,18 @@ const ListTemplate = (props) => {
 		if (_modal.act === 'display' && _modal.return) {
 			setIsLoading(true);
 			banner.change_display(banner_id).then((res) => {
-				if (isSubscribed && res.data.success) {
-					success(res.data.banner_list);
-				}
+				isSubscribed && res.data.success && success(res.data.banner_list);
 			});
 		} else if (_modal.act === 'delete' && _modal.return) {
 			setIsLoading(true);
 			banner.remove(banner_id).then((res) => {
-				if (isSubscribed && res.data.success) {
-					success(res.data.banner_list);
-				}
+				isSubscribed && res.data.success && success(res.data.banner_list);
 			});
 		} else if (_modal.act === 'replace' && _modal.return) {
 			setIsLoading(true);
 			const arr = [detail, displayList[_modal.return]];
 			banner.replace_display(arr).then((res) => {
-				if (isSubscribed && res.data.success) {
-					success(res.data.banner_list);
-				}
+				isSubscribed && res.data.success && success(res.data.banner_list);
 			});
 		}
 		return () => {
@@ -233,7 +222,7 @@ const ListTemplate = (props) => {
 							)}
 							<ListImg
 								alt='banner img'
-								src={`${IMG_ADDRESS}/${el.image}`}
+								src={`${IMG_ADDRESS}/${el.temp_image}`}
 							/>
 						</ListImgWrap>
 						<ListBottom>
@@ -291,6 +280,7 @@ export default withRouter(ListTemplate);
 
 const Container = styled.div`
 	width: 119rem;
+	min-height: 78.9rem;
 `;
 const Wrap = styled.ul`
 	margin-top: 4.85rem;

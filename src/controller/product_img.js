@@ -28,7 +28,7 @@ export const edit = async (data, id, contain) => {
 			.catch(errorMessage);
 	} else {
 		return await instance
-			.put(`/product_image_id=${id}&containImg=false`, data)
+			.put(`/?product_image_id=${id}&containImg=false`, data)
 			.catch(errorMessage);
 	}
 };

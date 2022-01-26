@@ -19,12 +19,20 @@ const DetailImgListModal = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		_product_img.get_list().then((res) => {
-			if (isSubscribed && res.data.success) {
-				setShareList(res.data.product_image_list);
-				setSingleList(res.data.product_image_list);
-			}
-		});
+		_product_img
+			.get_share_list(true)
+			.then((res) => {
+				isSubscribed &&
+					res.data.success &&
+					setShareList(res.data.product_image_list);
+			})
+			.then(
+				_product_img.get_share_list(false).then((res) => {
+					isSubscribed &&
+						res.data.success &&
+						setSingleList(res.data.product_image_list);
+				})
+			);
 		return () => {
 			isSubscribed = false;
 		};
@@ -60,12 +68,10 @@ const DetailImgListModal = (props) => {
 	};
 
 	const onMouseDown = (e) => {
-		if (
-			props.modal.type !== '' &&
-			(!modalBox.current || !modalBox.current.contains(e.target))
-		) {
-			props.modalController({ type: '' });
-		}
+		listOpen &&
+			(!shareBox.current || !shareBox.current.contains(e.target)) &&
+			(!singleBox.current || !singleBox.current.contains(e.target)) &&
+			setListOpen(false);
 	};
 
 	return (

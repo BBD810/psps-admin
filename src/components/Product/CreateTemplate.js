@@ -57,6 +57,12 @@ const CreateTemplate = (props) => {
 		};
 	}, []);
 
+	useEffect(() => {
+		if (props.mode === 'edit') {
+			console.log(props.mode);
+		}
+	}, [props.mode]);
+
 	const onChangeTitle = (e) => {
 		setTitle(e.target.value);
 	};
@@ -140,10 +146,9 @@ const CreateTemplate = (props) => {
 		if (history.location.state) {
 			setDetailImgId(history.location.state);
 			_product_img.get_detail(history.location.state).then((res) => {
-				if (res.data.success) {
-					setDetailPrevImg(res.data.product_image.image);
+				res.data.success &&
+					setDetailPrevImg(res.data.product_image.image) &&
 					history.replace();
-				}
 			});
 		}
 	}, [props.modal.type]);
@@ -181,9 +186,7 @@ const CreateTemplate = (props) => {
 				}
 			})
 			.then((product_id) => {
-				if (optionList.length > 0) {
-					createProductOption(product_id);
-				}
+				optionList.length > 0 && createProductOption(product_id);
 			});
 	};
 	const createProductOption = async (product_id) => {
@@ -222,19 +225,13 @@ const CreateTemplate = (props) => {
 	};
 
 	const onMouseDown = (e) => {
-		if (
-			partOpen !== 0 &&
+		partOpen !== 0 &&
 			(!partBox.current || !partBox.current.contains(e.target)) &&
-			(!subPartBox.current || !subPartBox.current.contains(e.target))
-		) {
+			(!subPartBox.current || !subPartBox.current.contains(e.target)) &&
 			setPartOpen(0);
-		}
-		if (
-			supplierOpen &&
-			(!supplierBox.current || !supplierBox.current.contains(e.target))
-		) {
+		supplierOpen &&
+			(!supplierBox.current || !supplierBox.current.contains(e.target)) &&
 			setSupplierOpen(false);
-		}
 	};
 
 	useEffect(() => {

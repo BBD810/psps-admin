@@ -26,7 +26,7 @@ const DetailTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
-	}, [history.location.state]);
+	}, [history.location.state, props.modal]);
 
 	const selectList = () => {
 		props.changeMode('list');
@@ -188,7 +188,8 @@ const DetailTemplate = (props) => {
 								<ThumbnailImg
 									alt=''
 									src={
-										detail.image && `${IMG_ADDRESS}/${detail.image}`
+										detail.image &&
+										`${IMG_ADDRESS}/${detail.temp_image}`
 									}
 								/>
 							</RightInner>
@@ -208,7 +209,7 @@ const DetailTemplate = (props) => {
 										alt=''
 										src={
 											detail.detail_image &&
-											`${IMG_ADDRESS}/${detail.detail_image}`
+											`${IMG_ADDRESS}/${detail.temp_detail_image}`
 										}
 									/>
 								</DetailImgWrap>
