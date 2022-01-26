@@ -188,8 +188,7 @@ const DetailTemplate = (props) => {
 								<ThumbnailImg
 									alt=''
 									src={
-										detail.thumbnail &&
-										`${IMG_ADDRESS}/${detail.thumbnail}`
+										detail.image && `${IMG_ADDRESS}/${detail.image}`
 									}
 								/>
 							</RightInner>

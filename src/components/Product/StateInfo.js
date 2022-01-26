@@ -44,7 +44,7 @@ const StateInfo = (props) => {
 			setIsLoading(false);
 			return props.modalController({
 				type: 'confirm',
-				text: '노출여부 혹은 추천상품 등록 여부는\n상세조회에서 가능합니다.',
+				text: '노출 여부 혹은 추천상품등록 여부는\n상세조회에서 가능합니다.',
 			});
 		} else if (
 			(text === '노출' && detail.state === 'O') ||
@@ -111,6 +111,11 @@ const StateInfo = (props) => {
 				text: '추천 상품은\n최소 1개 이상 있어야 합니다.',
 			});
 		} else if (text === '추천상품' && recommendList.length > 5) {
+			setIsLoading(false);
+			props.modalController({
+				type: 'confirm',
+				text: '추천상품은\n최대 6개까지 등록 가능합니다.',
+			});
 		} else {
 			_product.change_recommend(detail.product_id).then((res) => {
 				if (res.data.success) {

@@ -121,7 +121,6 @@ const DetailTemplate = (props) => {
 		} else if (_modal.act === 'replace' && _modal.return) {
 			let arr = [detail, shareImgList[_modal.return]];
 			product_img.replace_share(arr).then((res) => {
-				console.log(res.data);
 				if (isSubscribed && res.data.success) {
 					success();
 				}

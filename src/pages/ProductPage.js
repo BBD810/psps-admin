@@ -51,11 +51,15 @@ const ProductPage = () => {
 	};
 
 	useEffect(() => {
+		let isSubscribed = true;
 		for (let i = 0; i < productCategory.length; i++) {
-			if (productCategory[i].item === category) {
+			if (isSubscribed && productCategory[i].item === category) {
 				setInfo(productCategory[i]);
 			}
 		}
+		return () => {
+			isSubscribed = false;
+		};
 	}, []);
 
 	const changeMode = (mode) => {
@@ -89,6 +93,7 @@ const ProductPage = () => {
 					{!createMode && mode === 'list' && (
 						<Suspense fallback={<div>Loading...</div>}>
 							<ListTemplate
+								category={category}
 								mode={mode}
 								changeMode={changeMode}
 								modal={modal}

@@ -306,6 +306,7 @@ const List = styled.li`
 `;
 const ListImgWrap = styled.div`
 	width: 37.4rem;
+	height: 11.3rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -313,7 +314,7 @@ const ListImgWrap = styled.div`
 	padding: 0.3rem;
 	position: relative;
 	border-radius: 4px;
-	background-color: #e5e6ed;
+	background-color: #2a3349;
 	&:hover {
 		background-color: #5887ff;
 	}
@@ -321,7 +322,8 @@ const ListImgWrap = styled.div`
 		background-color: #5887ff;
 	}
 	${(props) => (props.main ? `height:16.9rem` : `height:11.3rem`)}
-	${(props) => props.display && `background-color:#2A3349`}
+	${(props) =>
+		props.display ? `background-color:#2A3349` : `background-color: #e5e6ed;`}
 `;
 const ListState = styled.p`
 	width: 21rem;

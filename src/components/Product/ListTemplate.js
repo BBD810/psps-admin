@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
-import { IMG_ADDRESS } from '../../config';
+import { IMG_ADDRESS, CLIENT_ADDRESS } from '../../config';
 import * as _product from '../../controller/product';
 import * as category from '../../data/link';
 import * as toggleMenu from '../../data/toggle';
@@ -16,7 +16,7 @@ const ListTemplate = (props) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const history = useHistory();
 	const menuBox = useRef();
-	const [menuOpen, setMenuOpen] = useState(false);
+	const [menuOpen, setMenuOpen] = useState('close');
 
 	const partBox = useRef();
 	const subPartBox = useRef();
@@ -25,19 +25,33 @@ const ListTemplate = (props) => {
 	const [partList, setPartList] = useState(category.part);
 	const [subPartList, setSubPartList] = useState([]);
 	const [partOpen, setPartOpen] = useState(0);
+	const [detail, setDetail] = useState({});
 	const [list, setList] = useState([]);
 
 	console.log(list);
 
 	useEffect(() => {
 		setIsLoading(true);
-		_product.get_list(part, subPart).then((res) => {
-			if (res.data.success) {
-				setIsLoading(false);
-				setList(res.data.product_list);
-			}
-		});
-	}, [part, subPart]);
+		let isSubscribed = true;
+		if (props.category === '상품 목록') {
+			_product.get_list(part, subPart).then((res) => {
+				if (isSubscribed && res.data.success) {
+					setList(res.data.product_list);
+					setIsLoading(false);
+				}
+			});
+		} else if (props.category === '추천 상품 목록') {
+			_product.get_recommend_list().then((res) => {
+				if (isSubscribed && res.data.success) {
+					setList(res.data.product_recommend_list);
+					setIsLoading(false);
+				}
+			});
+		}
+		return () => {
+			isSubscribed = false;
+		};
+	}, [part, subPart, props.category]);
 
 	useEffect(() => {
 		for (let i = 0; i < category.part.length; i++) {
@@ -47,14 +61,74 @@ const ListTemplate = (props) => {
 			}
 		}
 	}, [part]);
+
 	const goDetail = (el) => {
 		history.push({ state: el.product_id });
 		props.changeMode('detail');
 	};
-	const menuOpenController = (e) => {
-		setMenuOpen(e);
+	const menuOpenController = (idx) => {
+		setMenuOpen(idx);
 	};
-	const selectMenuController = () => {};
+	const selectMenuController = (menu, el) => {
+		if (menu === '수정하기') {
+			selectEdit(el);
+		} else if (menu === '노출변경') {
+			selectDisplay(el);
+		} else if (menu === '삭제하기') {
+			selectDelete(el);
+		} else if (menu === '링크확인') {
+			selectLink(el);
+		}
+		setDetail(el);
+		setMenuOpen('close');
+	};
+	const selectEdit = (el) => {
+		history.push({ state: el });
+		props.changeMode('edit');
+	};
+	const selectDisplay = (el) => {
+		if (el.recommend) {
+			props.modalController({
+				type: 'confirm',
+				text: '추천상품은\n노출상태를 변경할 수 없습니다.',
+			});
+		} else {
+			_product.change_display(el.product_id).then((res) => {
+				if (res.data.success) {
+					setList(res.data.product_list);
+					props.modalController({
+						type: 'confirm',
+						text: '변경되었습니다.',
+					});
+				} else {
+					props.modalController({
+						type: 'confirm',
+						text: '상품의 노출상태를 변경하려면\n최소 1개의 옵션이 노출상태여야 합니다.',
+					});
+				}
+			});
+		}
+	};
+	const goDisplay = () => {};
+	const selectDelete = (el) => {
+		if (el.recommend) {
+			props.modalController({
+				type: 'confirm',
+				text: '추천상품은\n삭제할 수 없습니다.',
+			});
+		} else {
+			props.modalController({
+				type: 'select',
+				text: '해당 상품을\n삭제하시겠습니까?',
+				act: 'delete',
+			});
+		}
+	};
+	const selectLink = (el) => {
+		let link = `/detail/${el.product_id}`;
+		window.open(`${CLIENT_ADDRESS}${link}`, '_blank');
+	};
+
 	const leftClick = () => {};
 	const rightClick = () => {};
 
@@ -80,11 +154,31 @@ const ListTemplate = (props) => {
 			setPartOpen(0);
 		}
 		if (
-			menuOpen !== false &&
+			menuOpen &&
 			(!menuBox.current || !menuBox.current.contains(e.target))
 		) {
 			setMenuOpen(false);
 		}
+	};
+
+	useEffect(() => {
+		let isSubscribed = true;
+		let _modal = props.modal;
+		if (_modal.act === 'display' && _modal.return) {
+		} else if (_modal.act === 'delete' && _modal.return) {
+			_product.remove(detail.product_id).then((res) => {
+				if (isSubscribed && res.data.success) {
+					success(res.data.product_list);
+				}
+			});
+		}
+		return () => {
+			isSubscribed = false;
+		};
+	}, [props.modal.type]);
+	const success = (list) => {
+		setList(list);
+		props.modalController({ type: '' });
 	};
 
 	return (
@@ -99,7 +193,7 @@ const ListTemplate = (props) => {
 							)}
 							<ListImg
 								alt='product img'
-								src={`${IMG_ADDRESS}/${el.thumbnail}`}
+								src={`${IMG_ADDRESS}/${el.image}`}
 							/>
 						</ListImgWrap>
 						<ListBottom>
@@ -149,48 +243,54 @@ const ListTemplate = (props) => {
 					</List>
 				))}
 			</Wrap>
-			<Items>
-				<Item>
-					{partOpen === 1 ? (
-						<ItemSelectWrap ref={partBox}>
-							<ItemSelectList>{part && `${part}`}</ItemSelectList>
-							{partList.map((el, idx) => (
-								<ItemSelectList key={idx} onClick={partController}>
-									{el.title}
+			{props.category === '상품 목록' && (
+				<Items>
+					<Item>
+						{partOpen === 1 ? (
+							<ItemSelectWrap ref={partBox}>
+								<ItemSelectList>{part && `${part}`}</ItemSelectList>
+								{partList.map((el, idx) => (
+									<ItemSelectList key={idx} onClick={partController}>
+										{el.title}
+									</ItemSelectList>
+								))}
+							</ItemSelectWrap>
+						) : (
+							<ItemSelected
+								onClick={() => {
+									setPartOpen(1);
+								}}>
+								<ItemText>{part && `대분류 - ${part}`}</ItemText>
+								<ItemSelectImg alt='select button' src={down} />
+							</ItemSelected>
+						)}
+					</Item>
+					<Item>
+						{partOpen === 2 ? (
+							<ItemSelectWrap ref={subPartBox}>
+								<ItemSelectList>
+									{subPart && `${subPart}`}
 								</ItemSelectList>
-							))}
-						</ItemSelectWrap>
-					) : (
-						<ItemSelected
-							onClick={() => {
-								setPartOpen(1);
-							}}>
-							<ItemText>{part && `대분류 - ${part}`}</ItemText>
-							<ItemSelectImg alt='select button' src={down} />
-						</ItemSelected>
-					)}
-				</Item>
-				<Item>
-					{partOpen === 2 ? (
-						<ItemSelectWrap ref={subPartBox}>
-							<ItemSelectList>{subPart && `${subPart}`}</ItemSelectList>
-							{subPartList.map((el, idx) => (
-								<ItemSelectList key={idx} onClick={subPartController}>
-									{el}
-								</ItemSelectList>
-							))}
-						</ItemSelectWrap>
-					) : (
-						<ItemSelected
-							onClick={() => {
-								setPartOpen(2);
-							}}>
-							<ItemText>{subPart && `소분류 - ${subPart}`}</ItemText>
-							<ItemSelectImg alt='select button' src={down} />
-						</ItemSelected>
-					)}
-				</Item>
-			</Items>
+								{subPartList.map((el, idx) => (
+									<ItemSelectList
+										key={idx}
+										onClick={subPartController}>
+										{el}
+									</ItemSelectList>
+								))}
+							</ItemSelectWrap>
+						) : (
+							<ItemSelected
+								onClick={() => {
+									setPartOpen(2);
+								}}>
+								<ItemText>{subPart && `소분류 - ${subPart}`}</ItemText>
+								<ItemSelectImg alt='select button' src={down} />
+							</ItemSelected>
+						)}
+					</Item>
+				</Items>
+			)}
 		</Container>
 	);
 };

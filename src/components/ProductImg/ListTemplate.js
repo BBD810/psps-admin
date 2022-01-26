@@ -127,10 +127,15 @@ const ListTemplate = (props) => {
 	const onMouseDown = (e) => {
 		if (
 			menuOpen !== 'close' &&
-			(!menuSelect.current || !menuSelect.current.contains(e.target)) &&
-			(!viewListBox.current || !viewListBox.current.contains(e.target))
+			(!menuSelect.current || !menuSelect.current.contains(e.target))
 		) {
 			setMenuOpen('close');
+		}
+		if (
+			viewOpen &&
+			(!viewListBox.current || !viewListBox.current.contains(e.target))
+		) {
+			setViewOpen(false);
 		}
 	};
 
@@ -327,7 +332,7 @@ const ListImgWrap = styled.div`
 	padding: 0.3rem;
 	position: relative;
 	border-radius: 4px;
-	background-color: #e5e6ed;
+	background-color: #2a3349;
 	&:hover {
 		background-color: #5887ff;
 	}

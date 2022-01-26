@@ -21,7 +21,6 @@ const CreateTemplate = (props) => {
 		if (editMode) {
 			product_img.get_detail(history.location.state).then((res) => {
 				if (res.data.success) {
-					console.log(res.data);
 					let product_image = res.data.product_image;
 					setProduct_image_id(product_image.product_image_id);
 					setTitle(product_image.title);
@@ -86,7 +85,6 @@ const CreateTemplate = (props) => {
 				formData.append('image', img);
 				formData.append('title', title);
 				product_img.edit(formData, product_image_id, true).then((res) => {
-					console.log(res.data);
 					if (res.data.success) {
 					}
 				});

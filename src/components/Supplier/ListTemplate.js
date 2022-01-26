@@ -16,7 +16,7 @@ const ListTemplate = (props) => {
 	const [list, setList] = useState([]);
 
 	const onClickPage = (e) => {
-		setPage(e);
+		e !== page && setPage(e);
 	};
 
 	useEffect(() => {

@@ -214,8 +214,6 @@ const CreateTemplate = (props) => {
 		});
 	};
 
-	console.log(optionList);
-
 	const openImgListModal = () => {
 		props.modalController({
 			type: 'img_list',
@@ -853,7 +851,7 @@ const ThumbnailInput = styled.input`
 const DetailImgWrap = styled.div`
 	width: 56rem;
 	height: 24.8rem;
-	overflow: auto;
+	overflow: hidden;
 `;
 const DetailImg = styled.img``;
 const RequireList = styled.li`
