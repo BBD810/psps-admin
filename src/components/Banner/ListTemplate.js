@@ -30,12 +30,9 @@ const ListTemplate = (props) => {
 			if (isSubscribed && res.data.success) {
 				setIsLoading(false);
 				setList(res.data.banner_list);
-
-				if (type === '메인') {
-					return setImgHeight({ height: '16.9rem' });
-				} else if (type === '광고') {
-					return setImgHeight({ height: '11.3rem' });
-				}
+				type === '메인'
+					? setImgHeight({ height: '16.9rem' })
+					: setImgHeight({ height: '11.3rem' });
 			}
 		});
 		return () => {

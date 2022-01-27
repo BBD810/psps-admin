@@ -3,7 +3,7 @@ import { withRouter, useHistory } from 'react-router-dom';
 import { extension } from '../../data/extension';
 import { IMG_ADDRESS } from '../../config';
 import * as link from '../../data/link';
-import * as banner from '../../controller/banner';
+import * as _banner from '../../controller/banner';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
 
@@ -22,6 +22,7 @@ const CreateTemplate = (props) => {
 	const [product_id, setProduct_id] = useState('');
 	const [img, setImg] = useState(false);
 	const [prevImg, setPrevImg] = useState(false);
+	// const [newPrevImg, setNewPrevImg] = useState(false);
 	const [openSelect, setOpenSelect] = useState(false);
 	const [check, setCheck] = useState(false);
 	const [subPartList, setSubPartList] = useState(link.part[0].arr);
@@ -40,8 +41,8 @@ const CreateTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		if (editMode) {
-			banner.get_detail(history.location.state).then((res) => {
+		if (editMode && history.location.state) {
+			_banner.get_detail(history.location.state).then((res) => {
 				if (isSubscribed && res.data.success) {
 					let banner = res.data.banner;
 					setBanner_id(banner.banner_id);
@@ -146,7 +147,7 @@ const CreateTemplate = (props) => {
 			formData.append('part', part);
 			formData.append('subPart', subPart);
 			formData.append('product_id', product_id);
-			banner.create(formData).then((res) => {
+			_banner.create(formData).then((res) => {
 				if (res.data.success) {
 					props.modalController({
 						type: 'confirm',
@@ -177,12 +178,12 @@ const CreateTemplate = (props) => {
 				formData.append('part', part);
 				formData.append('subPart', subPart);
 				formData.append('product_id', product_id);
-				banner.edit(formData, banner_id, true).then((res) => {
+				_banner.edit(formData, banner_id, true).then((res) => {
 					res.data.success && successEdit();
 				});
 			} else {
 				const data = { type, title, page, part, subPart, product_id };
-				banner.edit(data, banner_id, false).then((res) => {
+				_banner.edit(data, banner_id, false).then((res) => {
 					res.data.success && successEdit();
 				});
 			}
@@ -317,7 +318,8 @@ const CreateTemplate = (props) => {
 					{editMode && prevImg && (
 						<UploadImg
 							alt='img upload'
-							src={`${IMG_ADDRESS}/${prevImg}`}
+							src={img ? img : `${IMG_ADDRESS}/${prevImg}`}
+							// src={`${IMG_ADDRESS}/${prevImg}`}
 						/>
 					)}
 				</UploadImgBox>

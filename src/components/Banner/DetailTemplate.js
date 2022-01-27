@@ -23,15 +23,15 @@ const DetailTemplate = (props) => {
 			setImgHeight({ height: '34.9rem' });
 		}
 		banner.get_detail(history.location.state).then((res) => {
-			isSubscribed &&
-				res.data.success &&
-				setDetail(res.data.banner) &&
+			if (isSubscribed && res.data.success) {
+				setDetail(res.data.banner);
 				setBanner_id(history.location.state);
+			}
 		});
 		banner.get_display_list(type, true).then((res) => {
-			isSubscribed &&
-				res.data.success &&
+			if (isSubscribed && res.data.success) {
 				setDisplayList(res.data.banner_list);
+			}
 		});
 		return () => {
 			isSubscribed = false;

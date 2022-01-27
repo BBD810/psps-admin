@@ -18,7 +18,7 @@ import add_thumbnail from '../../images/add_thumbnail.svg';
 import StateInfo from './StateInfo';
 import Spinner from '../Spinner';
 
-const CreateTemplate = (props) => {
+const EditTemplate = (props) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const history = useHistory();
 	const partBox = useRef();
@@ -43,6 +43,7 @@ const CreateTemplate = (props) => {
 
 	const [origin, setOrigin] = useState('');
 	const [storage, setStorage] = useState('');
+	const [product_id, setProduct_id] = useState('');
 
 	const [check, setCheck] = useState(false);
 
@@ -60,6 +61,33 @@ const CreateTemplate = (props) => {
 			isSubscribed = false;
 		};
 	}, []);
+
+	useEffect(() => {
+		setIsLoading(true);
+		let isSubscribed = true;
+		if (editMode && history.location.state) {
+			_product.get_detail(history.location.state).then((res) => {
+				if (isSubscribed && res.data.success) {
+					let product = res.data.product;
+					setProduct_id(product.product_id);
+					setTitle(product.title);
+					setPart(product.part);
+					setSubPart(product.subPart);
+					setOrigin(product.origin);
+					setStorage(product.storage);
+					setThumbnailPrevImg(product.temp_image);
+					setDetailImgId(product.product_image_id);
+					setDetailPrevImg(product.temp_detail_image);
+					setSupplier(res.data.supplier);
+					setOptionList(res.data.product_option_list);
+				}
+			});
+		}
+		setIsLoading(false);
+		return () => {
+			isSubscribed = false;
+		};
+	}, [props.mode]);
 
 	const onChangeTitle = (e) => {
 		setTitle(e.target.value);
@@ -127,17 +155,10 @@ const CreateTemplate = (props) => {
 		_optionList.splice(idx, 1);
 		setOptionList(_optionList);
 	};
-	const optionOrderInCreate = (idx) => {
-		console.log('기존=', optionList);
-		let _optionList;
-		if (idx + 1 !== optionList.length) {
-			_optionList = [...optionList];
-			let _new = _optionList[idx + 1];
-			_optionList[idx + 1] = _optionList[idx];
-			_optionList[idx] = _new;
-			setOptionList(_optionList);
-		}
-		console.log('변경후=', _optionList);
+
+	const optionOrderInEdit = (idx) => {
+		console.log('edit');
+		console.log(optionList);
 	};
 
 	useEffect(() => {
@@ -149,20 +170,77 @@ const CreateTemplate = (props) => {
 			_optionList[modal.order] = modal.return;
 			optionSuccess(_optionList);
 		}
-		if (history.location.state) {
-			setDetailImgId(history.location.state);
-			_product_img.get_detail(history.location.state).then((res) => {
-				if (res.data.success) {
-					setDetailPrevImg(res.data.product_image.image);
-					history.replace();
-				}
-			});
-		}
-	}, [props.modal.type, history.location.state]);
+		// if (!editMode && history.location.state) {
+		// 	setDetailImgId(history.location.state);
+		// 	_product_img.get_detail(history.location.state).then((res) => {
+		// 		if (res.data.success) {
+		// 			setDetailPrevImg(res.data.product_image.image);
+		// 			history.replace();
+		// 		}
+		// 	});
+		// }
+	}, [props.modal.type]);
 
 	const optionSuccess = (list) => {
 		setOptionList(list);
 		props.modalController({ type: '' });
+	};
+
+	const goList = () => {
+		props.changeMode('list');
+	};
+
+	const onEdit = () => {
+		console.log('onEdit');
+		// setIsLoading(true);
+		if (
+			!title ||
+			!part ||
+			!subPart ||
+			optionList.length < 1 ||
+			!supplier.supplier_id
+		) {
+			setIsLoading(false);
+			return props.modalController({
+				type: 'confirm',
+				text: '부족한 내용을 확인해주세요.',
+			});
+		} else if (thumbnailImg) {
+			console.log('이미지O 시도');
+			const formData = new FormData();
+			formData.append('product_id', product_id);
+			formData.append('image', thumbnailImg);
+			formData.append('title', title);
+			formData.append('part', part);
+			formData.append('subPart', subPart);
+			formData.append('origin', origin);
+			formData.append('storage', storage);
+			formData.append('supplier_id', supplier.supplier_id);
+			formData.append('product_image_id', detailImgId);
+			_product.edit(product_id, formData).then((res) => {
+				if (res.data.success) {
+					console.log('이미지O 성공', res.data);
+				}
+			});
+		} else if (!thumbnailImg) {
+			console.log('이미지X 시도');
+			const data = {
+				product_id,
+				part,
+				subPart,
+				title,
+				storage,
+				origin,
+				supplier_id: supplier.supplier_id,
+				product_image_id: detailImgId,
+			};
+			_product.edit(product_id, data).then((res) => {
+				console.log(res.data);
+				if (res.data.success) {
+					console.log('이미지X 성공', res.data);
+				}
+			});
+		}
 	};
 
 	const onCreate = () => {
@@ -285,6 +363,7 @@ const CreateTemplate = (props) => {
 						<Right>
 							<RightInner>
 								<TitleInput
+									value={title ? title : ''}
 									placeholder='상품명을 입력해주세요.'
 									onChange={onChangeTitle}
 								/>
@@ -452,7 +531,7 @@ const CreateTemplate = (props) => {
 														alt='icon'
 														src={order_icon}
 														onClick={() => {
-															optionOrderInCreate(idx);
+															optionOrderInEdit(idx);
 														}}
 													/>
 												</OptionItem>
@@ -483,7 +562,7 @@ const CreateTemplate = (props) => {
 									alt=''
 									src={
 										thumbnailPrevImg
-											? `${thumbnailPrevImg}`
+											? `${IMG_ADDRESS}/${thumbnailPrevImg}`
 											: add_thumbnail
 									}
 								/>
@@ -576,6 +655,7 @@ const CreateTemplate = (props) => {
 								<RequireList>
 									<RequireTitle>원산지</RequireTitle>
 									<RequireInput
+										value={origin ? origin : ''}
 										placeholder='원산지를 입력해주세요.'
 										onChange={onChangeOrigin}
 									/>
@@ -583,6 +663,7 @@ const CreateTemplate = (props) => {
 								<RequireList>
 									<RequireTitle>보관방법</RequireTitle>
 									<RequireInput
+										value={storage ? storage : ''}
 										placeholder='보관방법을 입력해주세요.'
 										onChange={onChangeStorage}
 									/>
@@ -592,15 +673,26 @@ const CreateTemplate = (props) => {
 					</Content>
 				</Body>
 			</BasicInfo>
-
-			<SaveButton active={check} onClick={onCreate}>
-				저장하기
-			</SaveButton>
+			{editMode && (
+				<Buttons>
+					<Button border onClick={goList}>
+						취소하기
+					</Button>
+					<Button filled onClick={onEdit}>
+						저장하기
+					</Button>
+				</Buttons>
+			)}
+			{editMode || (
+				<SaveButton active={check} onClick={onCreate}>
+					저장하기
+				</SaveButton>
+			)}
 		</Container>
 	);
 };
 
-export default withRouter(CreateTemplate);
+export default withRouter(EditTemplate);
 
 const Container = styled.div`
 	width: 119rem;
@@ -908,4 +1000,24 @@ const SaveButton = styled.button`
 	top: -5.75rem;
 	right: 0;
 	${(props) => !props.active && `opacity:0.4`}
+`;
+const Buttons = styled.div`
+	display: flex;
+	align-items: center;
+	position: absolute;
+	top: -5.75rem;
+	right: 0;
+`;
+const Button = styled.button`
+	width: 10.6rem;
+	height: 3.1rem;
+	font-size: 1.2rem;
+	font-family: 'kr-b';
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	background-color: #2a3349;
+	${(props) =>
+		props.border &&
+		`margin-right:0.8rem; border:2px solid #2A3349; background-color:#fff; color:#2A3349`}
 `;

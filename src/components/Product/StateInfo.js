@@ -18,20 +18,20 @@ const StateInfo = (props) => {
 			_product
 				.get_detail(props.product_id)
 				.then((res) => {
-					isSubscribed &&
-						res.data.success &&
-						setDetail(res.data.product) &&
+					if (isSubscribed && res.data.success) {
+						setDetail(res.data.product);
 						setOptionList(res.data.product_option_list);
+					}
 				})
 				.then(() => {
 					_product.get_recommend_list().then((res) => {
-						isSubscribed &&
-							res.data.success &&
-							setRecommendList(res.data.product_recommend_list) &&
-							setIsLoading(false);
+						if (isSubscribed && res.data.success) {
+							setRecommendList(res.data.product_recommend_list);
+						}
 					});
 				});
 		}
+		setIsLoading(false);
 		return () => {
 			isSubscribed = false;
 		};

@@ -21,6 +21,10 @@ export const remove = async (id) => {
 	return await instance.delete(`/${id}`).catch(errorMessage);
 };
 
+export const edit = async (id, data) => {
+	return await instance.put(`/${id}`, data).catch(errorMessage);
+};
+
 export const get_list = async (part, subPart) => {
 	return await instance.get(`/list/${part}/${subPart}`).catch(errorMessage);
 };

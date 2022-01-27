@@ -113,7 +113,7 @@ const ListTemplate = (props) => {
 		if (detail.share === 1) {
 			props.modalController({
 				type: 'confirm',
-				text: '공유된 이미지는\n삭제할 수 없습니다.',
+				text: '공유이미지는\n삭제할 수 없습니다.',
 			});
 		} else {
 			props.modalController({

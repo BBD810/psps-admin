@@ -10,8 +10,6 @@ const OptionModal = (props) => {
 	const [discount, setDiscount] = useState('');
 	const [check, setCheck] = useState(false);
 
-	const text = '옵션명과 개당 가격을 입력해주세요.';
-
 	useEffect(() => {
 		if (props.modal.act === 'edit') {
 			const data = props.modal.data;
@@ -67,8 +65,7 @@ const OptionModal = (props) => {
 	return (
 		<Container>
 			<Wrap>
-				{/* <Text>{props.modal.text}</Text> */}
-				<Text>{text}</Text>
+				<Text>{`옵션에 대한 정보를 입력해주세요.`}</Text>
 				<Item>
 					<Title>옵션명</Title>
 					<Input

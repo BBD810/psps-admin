@@ -31,12 +31,13 @@ const DetailImgCreate = (props) => {
 		formData.append('title', title);
 		formData.append('share', share);
 		_product_img.create(formData).then((res) => {
-			res.data.success &&
-				history.push({ state: res.data.product_image_id }) &&
+			if (res.data.success) {
+				history.push({ state: res.data.product_image_id });
 				props.modalController({
 					type: 'confirm',
 					text: '이미지가 생성되었습니다.',
 				});
+			}
 		});
 	};
 	const selectNo = () => {

@@ -18,8 +18,8 @@ const DetailTemplate = (props) => {
 		if (history.location.state) {
 			_product.get_detail(history.location.state).then((res) => {
 				if (isSubscribed && res.data.success) {
-					setDetail(res.data.product);
 					setOptionList(res.data.product_option_list);
+					setDetail(res.data.product);
 				}
 			});
 		}
@@ -46,6 +46,7 @@ const DetailTemplate = (props) => {
 		}
 	};
 	const selectEdit = () => {
+		history.push({ state: detail.product_id });
 		props.changeMode('edit');
 	};
 
@@ -54,9 +55,7 @@ const DetailTemplate = (props) => {
 		const _modal = props.modal;
 		if (_modal.act === 'delete' && _modal.return) {
 			_product.remove(detail.product_id).then((res) => {
-				if (isSubscribed && res.data.success) {
-					success();
-				}
+				isSubscribed && res.data.success && success();
 			});
 		}
 		return () => {
@@ -140,37 +139,40 @@ const DetailTemplate = (props) => {
 										))}
 									</OptionHeader>
 									<OptionBody>
-										{optionList.map((el, idx) => (
-											<OptionList key={idx}>
-												<OptionItem soldOut={!el.stock}>
-													{el.title}
-												</OptionItem>
-												<OptionItem soldOut={!el.stock}>
-													{priceToString(el.price)}
-												</OptionItem>
-												<OptionItem soldOut={!el.stock}>
-													{priceToString(el.price - el.discount)}
-												</OptionItem>
-												<OptionItem>
-													<OptionIcon
-														src={
-															optionList[idx].state === 'O'
-																? check_icon
-																: empty_icon
-														}
-													/>
-												</OptionItem>
-												<OptionItem>
-													<OptionIcon
-														src={
-															optionList[idx].stock
-																? empty_icon
-																: check_icon
-														}
-													/>
-												</OptionItem>
-											</OptionList>
-										))}
+										{optionList &&
+											optionList.map((el, idx) => (
+												<OptionList key={idx}>
+													<OptionItem soldOut={!el.stock}>
+														{el.title}
+													</OptionItem>
+													<OptionItem soldOut={!el.stock}>
+														{priceToString(el.price)}
+													</OptionItem>
+													<OptionItem soldOut={!el.stock}>
+														{priceToString(
+															el.price - el.discount
+														)}
+													</OptionItem>
+													<OptionItem>
+														<OptionIcon
+															src={
+																optionList[idx].state === 'O'
+																	? check_icon
+																	: empty_icon
+															}
+														/>
+													</OptionItem>
+													<OptionItem>
+														<OptionIcon
+															src={
+																optionList[idx].stock
+																	? empty_icon
+																	: check_icon
+															}
+														/>
+													</OptionItem>
+												</OptionList>
+											))}
 									</OptionBody>
 								</Option>
 							</RightInner>
@@ -473,7 +475,7 @@ const Buttons = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	position: absolute;
-	top: -8.8rem;
+	top: -5.75rem;
 	right: 0;
 `;
 const Button = styled.button`

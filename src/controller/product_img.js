@@ -47,6 +47,11 @@ export const get_share_list = async (boolean) => {
 	return await instance.get(`/?share=${boolean}`).catch(errorMessage);
 };
 
+// 단일이미지이고 상품에 아직 사용되지 않은 이미지 리스트
+export const get_unused_single_list = async () => {
+	return await instance.get(`/unused`).catch(errorMessage);
+};
+
 export const change_share = async (id) => {
 	return await instance
 		.patch(`/share/?product_image_id=${id}`)

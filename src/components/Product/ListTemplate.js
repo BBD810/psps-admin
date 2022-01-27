@@ -11,7 +11,6 @@ import right from '../../images/right.svg';
 import toggle from '../../images/toggle.svg';
 import example from '../../images/banner1.png';
 import Spinner from '../Spinner';
-import { change_order } from '../../controller/product_img';
 
 const ListTemplate = (props) => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -82,7 +81,7 @@ const ListTemplate = (props) => {
 		setMenuOpen('close');
 	};
 	const selectEdit = (el) => {
-		history.push({ state: el });
+		history.push({ state: el.product_id });
 		props.changeMode('edit');
 	};
 	const selectDisplay = (el) => {
@@ -172,7 +171,7 @@ const ListTemplate = (props) => {
 			(!partBox.current || !partBox.current.contains(e.target)) &&
 			(!subPartBox.current || !subPartBox.current.contains(e.target)) &&
 			setPartOpen(0);
-		menuOpen &&
+		menuOpen !== 'close' &&
 			(!menuBox.current || !menuBox.current.contains(e.target)) &&
 			setMenuOpen(false);
 	};

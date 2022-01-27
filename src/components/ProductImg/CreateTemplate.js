@@ -69,8 +69,6 @@ const CreateTemplate = (props) => {
 		}
 	};
 
-	console.log(img);
-
 	const onEdit = () => {
 		if (!check) {
 			return props.modalController({

@@ -49,7 +49,7 @@ const DetailTemplate = (props) => {
 		if (detail.share === 1) {
 			props.modalController({
 				type: 'confirm',
-				text: '공유된 이미지는\n삭제할 수 없습니다.',
+				text: '공유이미지는\n삭제할 수 없습니다.',
 			});
 		} else {
 			props.modalController({
@@ -108,22 +108,16 @@ const DetailTemplate = (props) => {
 		let _modal = props.modal;
 		if (_modal.act === 'delete' && _modal.return) {
 			product_img.remove(detail.product_image_id).then((res) => {
-				if (isSubscribed && res.data.success) {
-					success();
-				}
+				isSubscribed && res.data.success && success();
 			});
 		} else if (_modal.act === 'share' && _modal.return) {
 			product_img.change_share(detail.product_image_id).then((res) => {
-				if (isSubscribed && res.data.success) {
-					success();
-				}
+				isSubscribed && res.data.success && success();
 			});
 		} else if (_modal.act === 'replace' && _modal.return) {
 			let arr = [detail, shareImgList[_modal.return]];
 			product_img.replace_share(arr).then((res) => {
-				if (isSubscribed && res.data.success) {
-					success();
-				}
+				isSubscribed && res.data.success && success();
 			});
 		}
 		return () => {

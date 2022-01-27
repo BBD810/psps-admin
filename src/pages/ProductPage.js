@@ -15,6 +15,9 @@ const CreateTemplate = lazy(() => {
 const DetailTemplate = lazy(() => {
 	return import('../components/Product/DetailTemplate');
 });
+const EditTemplate = lazy(() => {
+	return import('../components/Product/EditTemplate');
+});
 const ConfirmModal = lazy(() => {
 	return import('../components/Modal/Confirm');
 });
@@ -113,7 +116,7 @@ const ProductPage = () => {
 					)}
 					{!createMode && mode === 'edit' && (
 						<Suspense fallback={<div>Loading...</div>}>
-							<CreateTemplate
+							<EditTemplate
 								mode={mode}
 								changeMode={changeMode}
 								modal={modal}
