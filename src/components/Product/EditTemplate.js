@@ -45,9 +45,10 @@ const EditTemplate = (props) => {
 	const [storage, setStorage] = useState('');
 	const [product_id, setProduct_id] = useState('');
 
-	const [check, setCheck] = useState(false);
+	const [state, setState] = useState('F');
+	const [recommend, setRecommend] = useState(0);
 
-	const editMode = props.mode === 'edit';
+	const [check, setCheck] = useState(false);
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -65,7 +66,7 @@ const EditTemplate = (props) => {
 	useEffect(() => {
 		setIsLoading(true);
 		let isSubscribed = true;
-		if (editMode && history.location.state) {
+		if (history.location.state) {
 			_product.get_detail(history.location.state).then((res) => {
 				if (isSubscribed && res.data.success) {
 					let product = res.data.product;
@@ -80,6 +81,8 @@ const EditTemplate = (props) => {
 					setDetailPrevImg(product.temp_detail_image);
 					setSupplier(res.data.supplier);
 					setOptionList(res.data.product_option_list);
+					setState(product.state);
+					setRecommend(product.recommend);
 				}
 			});
 		}
@@ -136,50 +139,106 @@ const EditTemplate = (props) => {
 	const editOption = (data, idx) => {
 		props.modalController({ type: 'option', act: 'edit', data, order: idx });
 	};
-	const displayOption = (idx) => {
-		let _optionList = [...optionList];
-		if (_optionList[idx].state === 'O') {
-			_optionList[idx].state = 'F';
-		} else {
-			_optionList[idx].state = 'O';
-		}
-		setOptionList(_optionList);
+	const displayOption = (e) => {
+		setIsLoading(true);
+		const id = e.product_option_id;
+		_product_option.change_display(id).then((res) => {
+			if (res.data.success) {
+				setOptionList(res.data.product_option_list);
+			}
+		});
+		setIsLoading(false);
 	};
-	const soldOutOption = (idx) => {
-		let _optionList = [...optionList];
-		_optionList[idx].stock = !_optionList[idx].stock;
-		setOptionList(_optionList);
+	const soldOutOption = (e) => {
+		setIsLoading(true);
+		const id = e.product_option_id;
+		_product_option.change_stock(id).then((res) => {
+			console.log(res.data);
+			if (res.data.success) {
+				setOptionList(res.data.product_option_list);
+			}
+		});
+		setIsLoading(false);
 	};
-	const deleteOption = (idx) => {
-		let _optionList = [...optionList];
-		_optionList.splice(idx, 1);
-		setOptionList(_optionList);
+	const allSoldOutOption = () => {
+		_product.change_all_sold_out(product_id).then((res) => {
+			if (res.data.success) {
+				setOptionList(res.data.product_option_list);
+			}
+		});
+	};
+	const deleteOption = (e) => {
+		props.modalController({
+			type: 'select',
+			text: '상품 옵션을 삭제하시겠습니까?',
+			act: 'delete',
+			target: e.product_option_id,
+		});
 	};
 
 	const optionOrderInEdit = (idx) => {
-		console.log('edit');
-		console.log(optionList);
+		setIsLoading(true);
+		if (idx + 1 !== optionList.length) {
+			let arr = [optionList[idx], optionList[idx + 1]];
+			_product_option.change_order(arr).then((res) => {
+				if (res.data.success) {
+					setOptionList(res.data.product_option_list);
+				}
+			});
+		}
+		setIsLoading(false);
 	};
 
 	useEffect(() => {
-		const modal = props.modal;
-		if (modal.act === 'add' && modal.return) {
-			optionSuccess([...optionList, modal.return]);
-		} else if (modal.act === 'edit' && modal.return) {
-			let _optionList = optionList;
-			_optionList[modal.order] = modal.return;
-			optionSuccess(_optionList);
+		const _modal = props.modal;
+		if (_modal.act === 'add' && _modal.return) {
+			_product_option.create(_modal.return, product_id).then((res) => {
+				if (res.data.success) {
+					setOptionList(res.data.product_option_list);
+					props.modalController({
+						type: 'confirm',
+						text: '옵션이 추가되었습니다.',
+					});
+				}
+			});
+		} else if (_modal.act === 'delete' && _modal.return) {
+			_product_option.remove(_modal.target).then((res) => {
+				console.log(res.data);
+				if (res.data.success) {
+					setOptionList(res.data.product_option_list);
+					props.modalController({
+						type: 'confirm',
+						text: '삭제되었습니다.',
+					});
+				} else {
+					props.modalController({
+						type: 'confirm',
+						text: '노출중이거나 추천중인 상품은\n최소 1개 이상의 노출중인 옵션이 있어야합니다.',
+					});
+				}
+			});
 		}
-		// if (!editMode && history.location.state) {
-		// 	setDetailImgId(history.location.state);
-		// 	_product_img.get_detail(history.location.state).then((res) => {
-		// 		if (res.data.success) {
-		// 			setDetailPrevImg(res.data.product_image.image);
-		// 			history.replace();
-		// 		}
-		// 	});
-		// }
 	}, [props.modal.type]);
+
+	// useEffect(() => {
+	// 	const modal = props.modal;
+	// 	if (modal.act === 'add' && modal.return) {
+	// 		optionSuccess([...optionList, modal.return]);
+	// 	} else if (modal.act === 'edit' && modal.return) {
+	// 		let _optionList = optionList;
+	// 		_optionList[modal.order] = modal.return;
+	// 		optionSuccess(_optionList);
+	// 	}
+	// 	if (!editMode && history.location.state) {
+	// 		setDetailImgId(history.location.state);
+	// 		_product_img.get_detail(history.location.state).then((res) => {
+	// 			if (res.data.success) {
+	// 				setDetailPrevImg(res.data.product_image.image);
+	// 				history.replace();
+	// 			}
+	// 		});
+	// 	}
+	// }, [props.modal.type]);
 
 	const optionSuccess = (list) => {
 		setOptionList(list);
@@ -191,115 +250,61 @@ const EditTemplate = (props) => {
 	};
 
 	const onEdit = () => {
-		console.log('onEdit');
-		// setIsLoading(true);
-		if (
-			!title ||
-			!part ||
-			!subPart ||
-			optionList.length < 1 ||
-			!supplier.supplier_id
-		) {
-			setIsLoading(false);
-			return props.modalController({
+		if (!check) {
+			props.modalController({
 				type: 'confirm',
-				text: '부족한 내용을 확인해주세요.',
-			});
-		} else if (thumbnailImg) {
-			console.log('이미지O 시도');
-			const formData = new FormData();
-			formData.append('product_id', product_id);
-			formData.append('image', thumbnailImg);
-			formData.append('title', title);
-			formData.append('part', part);
-			formData.append('subPart', subPart);
-			formData.append('origin', origin);
-			formData.append('storage', storage);
-			formData.append('supplier_id', supplier.supplier_id);
-			formData.append('product_image_id', detailImgId);
-			_product.edit(product_id, formData).then((res) => {
-				if (res.data.success) {
-					console.log('이미지O 성공', res.data);
-				}
-			});
-		} else if (!thumbnailImg) {
-			console.log('이미지X 시도');
-			const data = {
-				product_id,
-				part,
-				subPart,
-				title,
-				storage,
-				origin,
-				supplier_id: supplier.supplier_id,
-				product_image_id: detailImgId,
-			};
-			_product.edit(product_id, data).then((res) => {
-				console.log(res.data);
-				if (res.data.success) {
-					console.log('이미지X 성공', res.data);
-				}
+				text: '부족한 내용을 확인해주세요.\n상품 옵션도 최소 1개 등록해야 합니다.',
 			});
 		}
-	};
-
-	const onCreate = () => {
-		check
-			? createProduct()
-			: props.modalController({
-					type: 'confirm',
-					text: '부족한 내용을 확인해주세요.\n상품 옵션도 최소 1개 등록해야 합니다.',
-			  });
-	};
-
-	const createProduct = () => {
-		setIsLoading(true);
-		const formData = new FormData();
-		formData.append('image', thumbnailImg);
-		formData.append('title', title);
-		formData.append('part', part);
-		formData.append('subPart', subPart);
-		formData.append('origin', origin);
-		formData.append('storage', storage);
-		formData.append('supplier_id', supplier.supplier_id);
-		formData.append('product_image_id', detailImgId);
-		_product
-			.create(formData)
-			.then((res) => {
-				if (res.data.success) {
-					return res.data.product_id;
-				}
-			})
-			.then((product_id) => {
-				optionList.length > 0 && createProductOption(product_id);
-			});
-	};
-	const createProductOption = async (product_id) => {
-		let count = 0;
-		createOption(count, product_id);
-	};
-	const createOption = async (count, product_id) => {
-		_product_option.create(optionList[count], product_id).then((res) => {
-			if (res.data.success) {
-				if (count + 1 < optionList.length) {
-					count++;
-					createOption(count, product_id);
-				} else {
-					setIsLoading(false);
-					props.modalController({
-						type: 'confirm',
-						text: '상품과 상품 옵션이 등록되었습니다.',
-					});
-					props.getCategory('상품 목록');
-				}
-			} else {
-				setIsLoading(false);
-				props.modalController({
-					type: 'confirm',
-					text: `${count + 1}번째 옵션 생성 중 문제가 발생했습니다.`,
-				});
-			}
-		});
+		// setIsLoading(true);
+		// if (
+		// 	!title ||
+		// 	!part ||
+		// 	!subPart ||
+		// 	optionList.length < 1 ||
+		// 	!supplier.supplier_id
+		// ) {
+		// 	setIsLoading(false);
+		// 	return props.modalController({
+		// 		type: 'confirm',
+		// 		text: '부족한 내용을 확인해주세요.',
+		// 	});
+		// } else if (thumbnailImg) {
+		// 	console.log('이미지O 시도');
+		// 	const formData = new FormData();
+		// 	formData.append('product_id', product_id);
+		// 	formData.append('image', thumbnailImg);
+		// 	formData.append('title', title);
+		// 	formData.append('part', part);
+		// 	formData.append('subPart', subPart);
+		// 	formData.append('origin', origin);
+		// 	formData.append('storage', storage);
+		// 	formData.append('supplier_id', supplier.supplier_id);
+		// 	formData.append('product_image_id', detailImgId);
+		// 	_product.edit(product_id, formData).then((res) => {
+		// 		if (res.data.success) {
+		// 			console.log('이미지O 성공', res.data);
+		// 		}
+		// 	});
+		// } else if (!thumbnailImg) {
+		// 	console.log('이미지X 시도');
+		// 	const data = {
+		// 		product_id,
+		// 		part,
+		// 		subPart,
+		// 		title,
+		// 		storage,
+		// 		origin,
+		// 		supplier_id: supplier.supplier_id,
+		// 		product_image_id: detailImgId,
+		// 	};
+		// 	_product.edit(product_id, data).then((res) => {
+		// 		console.log(res.data);
+		// 		if (res.data.success) {
+		// 			console.log('이미지X 성공', res.data);
+		// 		}
+		// 	});
+		// }
 	};
 
 	const openImgListModal = () => {
@@ -324,7 +329,6 @@ const EditTemplate = (props) => {
 		part &&
 		subPart &&
 		optionList.length > 0 &&
-		thumbnailImg &&
 		detailImgId &&
 		supplier &&
 		origin &&
@@ -336,7 +340,6 @@ const EditTemplate = (props) => {
 		part,
 		subPart,
 		optionList,
-		thumbnailImg,
 		detailImgId,
 		supplier,
 		origin,
@@ -348,6 +351,9 @@ const EditTemplate = (props) => {
 			{isLoading && <Spinner />}
 			<StateInfo
 				active={false}
+				mode={props.mode}
+				state={state}
+				recommend={recommend}
 				modal={props.modal}
 				modalController={props.modalController}
 			/>
@@ -502,7 +508,7 @@ const EditTemplate = (props) => {
 																: empty_icon
 														}
 														onClick={() => {
-															displayOption(idx);
+															displayOption(el);
 														}}
 													/>
 												</OptionItem>
@@ -513,7 +519,7 @@ const EditTemplate = (props) => {
 															el.stock ? empty_icon : check_icon
 														}
 														onClick={() => {
-															soldOutOption(idx);
+															soldOutOption(el);
 														}}
 													/>
 												</OptionItem>
@@ -522,7 +528,7 @@ const EditTemplate = (props) => {
 														alt='icon'
 														src={delete_icon}
 														onClick={() => {
-															deleteOption(idx);
+															deleteOption(el);
 														}}
 													/>
 												</OptionItem>
@@ -544,7 +550,9 @@ const EditTemplate = (props) => {
 									<OptionButton filled onClick={addOption}>
 										추가하기
 									</OptionButton>
-									<OptionButton border>일괄품절</OptionButton>
+									<OptionButton border onClick={allSoldOutOption}>
+										일괄품절
+									</OptionButton>
 								</OptionButtons>
 							</RightInner>
 						</Right>
@@ -673,21 +681,14 @@ const EditTemplate = (props) => {
 					</Content>
 				</Body>
 			</BasicInfo>
-			{editMode && (
-				<Buttons>
-					<Button border onClick={goList}>
-						취소하기
-					</Button>
-					<Button filled onClick={onEdit}>
-						저장하기
-					</Button>
-				</Buttons>
-			)}
-			{editMode || (
-				<SaveButton active={check} onClick={onCreate}>
+			<Buttons>
+				<Button border onClick={goList}>
+					취소하기
+				</Button>
+				<Button active={check} filled onClick={onEdit}>
 					저장하기
-				</SaveButton>
-			)}
+				</Button>
+			</Buttons>
 		</Container>
 	);
 };
@@ -1020,4 +1021,5 @@ const Button = styled.button`
 	${(props) =>
 		props.border &&
 		`margin-right:0.8rem; border:2px solid #2A3349; background-color:#fff; color:#2A3349`}
+	${(props) => props.filled && !props.active && `opacity:0.4`}
 `;

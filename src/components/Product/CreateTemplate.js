@@ -122,22 +122,26 @@ const CreateTemplate = (props) => {
 		_optionList[idx].stock = !_optionList[idx].stock;
 		setOptionList(_optionList);
 	};
+	const allSoldOutOption = () => {
+		let _optionList = [...optionList];
+		for (let i = 0; i < _optionList.length; i++) {
+			_optionList[i].stock = false;
+		}
+		setOptionList(_optionList);
+	};
 	const deleteOption = (idx) => {
 		let _optionList = [...optionList];
 		_optionList.splice(idx, 1);
 		setOptionList(_optionList);
 	};
 	const optionOrderInCreate = (idx) => {
-		console.log('기존=', optionList);
-		let _optionList;
 		if (idx + 1 !== optionList.length) {
-			_optionList = [...optionList];
+			let _optionList = [...optionList];
 			let _new = _optionList[idx + 1];
 			_optionList[idx + 1] = _optionList[idx];
 			_optionList[idx] = _new;
 			setOptionList(_optionList);
 		}
-		console.log('변경후=', _optionList);
 	};
 
 	useEffect(() => {
@@ -465,7 +469,9 @@ const CreateTemplate = (props) => {
 									<OptionButton filled onClick={addOption}>
 										추가하기
 									</OptionButton>
-									<OptionButton border>일괄품절</OptionButton>
+									<OptionButton border onClick={allSoldOutOption}>
+										일괄품절
+									</OptionButton>
 								</OptionButtons>
 							</RightInner>
 						</Right>

@@ -50,3 +50,7 @@ export const change_order = async (arr, boolean) => {
 		.patch(`/order/?isRecommend=${boolean}`, arr)
 		.catch(errorMessage);
 };
+
+export const change_all_sold_out = async (product_id) => {
+	return await instance.patch(`/stock/${product_id}`).catch(errorMessage);
+};

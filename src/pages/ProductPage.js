@@ -152,7 +152,7 @@ const ProductPage = () => {
 							/>
 						</Suspense>
 					)}
-					{createMode && modal.type === 'option' && (
+					{modal.type === 'option' && (
 						<Suspense fallback={<div>Loading...</div>}>
 							<OptionModal
 								modal={modal}
@@ -160,7 +160,7 @@ const ProductPage = () => {
 							/>
 						</Suspense>
 					)}
-					{createMode && modal.type === 'img_list' && (
+					{modal.type === 'img_list' && (
 						<Suspense fallback={<div>Loading...</div>}>
 							<DetailImgListModal
 								modal={modal}
@@ -168,7 +168,7 @@ const ProductPage = () => {
 							/>
 						</Suspense>
 					)}
-					{createMode && modal.type === 'img_create' && (
+					{modal.type === 'img_create' && (
 						<Suspense fallback={<div>Loading...</div>}>
 							<DetailImgCreateModal
 								modal={modal}

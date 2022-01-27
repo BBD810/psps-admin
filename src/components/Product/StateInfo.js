@@ -13,7 +13,13 @@ const StateInfo = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		if (props.mode === 'detail') {
+		if (props.mode === 'edit') {
+			setDetail({
+				...detail,
+				state: props.state,
+				recommend: props.recommend,
+			});
+		} else if (props.mode === 'detail') {
 			setIsLoading(true);
 			_product
 				.get_detail(props.product_id)
@@ -31,11 +37,12 @@ const StateInfo = (props) => {
 					});
 				});
 		}
+
 		setIsLoading(false);
 		return () => {
 			isSubscribed = false;
 		};
-	}, [props.product_id]);
+	}, [props.mode, props.product_id]);
 
 	const selectDisplay = (e) => {
 		setIsLoading(true);
