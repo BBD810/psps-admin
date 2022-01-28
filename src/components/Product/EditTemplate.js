@@ -66,6 +66,7 @@ const EditTemplate = (props) => {
 		if (history.location.state) {
 			_product.get_detail(history.location.state).then((res) => {
 				if (isSubscribed && res.data.success) {
+					console.log(res.data);
 					let product = res.data.product;
 					setProduct_id(product.product_id);
 					setTitle(product.title);
@@ -213,25 +214,18 @@ const EditTemplate = (props) => {
 		}
 	}, [props.modal.type]);
 
-	// useEffect(() => {
-	// 	const modal = props.modal;
-	// 	if (modal.act === 'add' && modal.return) {
-	// 		optionSuccess([...optionList, modal.return]);
-	// 	} else if (modal.act === 'edit' && modal.return) {
-	// 		let _optionList = optionList;
-	// 		_optionList[modal.order] = modal.return;
-	// 		optionSuccess(_optionList);
-	// 	}
-	// 	if (!editMode && history.location.state) {
-	// 		setDetailImgId(history.location.state);
-	// 		_product_img.get_detail(history.location.state).then((res) => {
-	// 			if (res.data.success) {
-	// 				setDetailPrevImg(res.data.product_image.image);
-	// 				history.replace();
-	// 			}
-	// 		});
-	// 	}
-	// }, [props.modal.type]);
+	useEffect(() => {
+		// 모달을 통한 상세이미지 변경
+		if (history.location.state) {
+			setDetailImgId(history.location.state);
+			_product_img.get_detail(history.location.state).then((res) => {
+				if (res.data.success) {
+					setDetailPrevImg(res.data.product_image.image);
+					history.replace();
+				}
+			});
+		}
+	}, [history.location.state]);
 
 	const optionSuccess = (list) => {
 		setOptionList(list);
@@ -243,27 +237,24 @@ const EditTemplate = (props) => {
 	};
 
 	const onEdit = () => {
+		setIsLoading(true);
 		if (!check) {
 			props.modalController({
 				type: 'confirm',
 				text: '부족한 내용을 확인해주세요.\n상품 옵션도 최소 1개 등록해야 합니다.',
 			});
-		}
-		setIsLoading(true);
-		if (
+		} else if (
 			!title ||
 			!part ||
 			!subPart ||
 			optionList.length < 1 ||
 			!supplier.supplier_id
 		) {
-			setIsLoading(false);
-			return props.modalController({
+			props.modalController({
 				type: 'confirm',
 				text: '부족한 내용을 확인해주세요.',
 			});
 		} else if (thumbnailImg) {
-			console.log('이미지O 시도');
 			const formData = new FormData();
 			formData.append('product_id', product_id);
 			formData.append('image', thumbnailImg);
@@ -276,11 +267,10 @@ const EditTemplate = (props) => {
 			formData.append('product_image_id', detailImgId);
 			_product.edit(product_id, formData).then((res) => {
 				if (res.data.success) {
-					console.log('이미지O 성공', res.data);
+					editSuccess();
 				}
 			});
 		} else if (!thumbnailImg) {
-			console.log('이미지X 시도');
 			const data = {
 				product_id,
 				part,
@@ -292,12 +282,19 @@ const EditTemplate = (props) => {
 				product_image_id: detailImgId,
 			};
 			_product.edit(product_id, data).then((res) => {
-				console.log(res.data);
 				if (res.data.success) {
-					console.log('이미지X 성공', res.data);
+					editSuccess();
 				}
 			});
 		}
+		setIsLoading(false);
+	};
+	const editSuccess = () => {
+		props.changeMode('list');
+		props.modalController({
+			type: 'confirm',
+			text: '수정되었습니다.',
+		});
 	};
 
 	const openImgListModal = () => {
@@ -558,14 +555,16 @@ const EditTemplate = (props) => {
 						</Left>
 						<Right>
 							<RightInner>
-								<ThumbnailImg
-									alt=''
-									src={
-										thumbnailPrevImg
-											? `${IMG_ADDRESS}/${thumbnailPrevImg}`
-											: add_thumbnail
-									}
-								/>
+								{thumbnailPrevImg && (
+									<ThumbnailImg
+										alt=''
+										src={
+											thumbnailImg
+												? thumbnailPrevImg
+												: `${IMG_ADDRESS}/${thumbnailPrevImg}`
+										}
+									/>
+								)}
 								<ThumbnailInput
 									type='file'
 									onChange={thumbnailUpload}

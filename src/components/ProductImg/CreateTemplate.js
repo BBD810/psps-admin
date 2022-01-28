@@ -25,7 +25,9 @@ const CreateTemplate = (props) => {
 					setProduct_image_id(product_image.product_image_id);
 					setTitle(product_image.title);
 					setShare(product_image.share);
-					setPrevImg(product_image.image);
+					if (product_image.image) {
+						setPrevImg(product_image.image);
+					}
 				}
 			});
 		}
@@ -156,7 +158,9 @@ const CreateTemplate = (props) => {
 					{editMode && prevImg && (
 						<UploadImg
 							alt='product detail img'
-							src={`${IMG_ADDRESS}/${prevImg}`}
+							src={
+								img && prevImg ? prevImg : `${IMG_ADDRESS}/${prevImg}`
+							}
 						/>
 					)}
 				</ImgWrap>

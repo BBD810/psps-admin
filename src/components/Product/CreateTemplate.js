@@ -151,6 +151,10 @@ const CreateTemplate = (props) => {
 			_optionList[modal.order] = modal.return;
 			optionSuccess(_optionList);
 		}
+	}, [props.modal.type]);
+
+	useEffect(() => {
+		// 모달을 통한 상세이미지 변경
 		if (history.location.state) {
 			setDetailImgId(history.location.state);
 			_product_img.get_detail(history.location.state).then((res) => {
@@ -160,7 +164,7 @@ const CreateTemplate = (props) => {
 				}
 			});
 		}
-	}, [props.modal.type, history.location.state]);
+	}, [history.location.state]);
 
 	const optionSuccess = (list) => {
 		setOptionList(list);

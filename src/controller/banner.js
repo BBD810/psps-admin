@@ -21,16 +21,8 @@ export const remove = async (id) => {
 	return await instance.delete(`/?banner_id=${id}`).catch(errorMessage);
 };
 
-export const edit = async (data, id, contain) => {
-	if (contain) {
-		return await instance
-			.put(`/?banner_id=${id}&containImg=true`, data)
-			.catch(errorMessage);
-	} else {
-		return await instance
-			.put(`/?banner_id=${id}&containImg=false`, data)
-			.catch(errorMessage);
-	}
+export const edit = async (data, id) => {
+	return await instance.put(`/?banner_id=${id}`, data).catch(errorMessage);
 };
 
 export const get_list = async (type) => {

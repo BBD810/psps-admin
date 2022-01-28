@@ -49,7 +49,9 @@ const CreateTemplate = (props) => {
 					setType(banner.type);
 					setTitle(banner.title);
 					setPage(banner.page);
-					setPrevImg(banner.image);
+					if (banner.image) {
+						setPrevImg(banner.image);
+					}
 					if (banner.page === '상품 카테고리') {
 						setPart(banner.part);
 						setSubPart(banner.subPart);
@@ -178,12 +180,12 @@ const CreateTemplate = (props) => {
 				formData.append('part', part);
 				formData.append('subPart', subPart);
 				formData.append('product_id', product_id);
-				_banner.edit(formData, banner_id, true).then((res) => {
+				_banner.edit(formData, banner_id).then((res) => {
 					res.data.success && successEdit();
 				});
 			} else {
 				const data = { type, title, page, part, subPart, product_id };
-				_banner.edit(data, banner_id, false).then((res) => {
+				_banner.edit(data, banner_id).then((res) => {
 					res.data.success && successEdit();
 				});
 			}
@@ -318,8 +320,10 @@ const CreateTemplate = (props) => {
 					{editMode && prevImg && (
 						<UploadImg
 							alt='img upload'
-							src={img ? img : `${IMG_ADDRESS}/${prevImg}`}
-							// src={`${IMG_ADDRESS}/${prevImg}`}
+							w
+							src={
+								img && prevImg ? prevImg : `${IMG_ADDRESS}/${prevImg}`
+							}
 						/>
 					)}
 				</UploadImgBox>
