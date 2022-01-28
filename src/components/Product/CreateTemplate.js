@@ -46,8 +46,6 @@ const CreateTemplate = (props) => {
 
 	const [check, setCheck] = useState(false);
 
-	const editMode = props.mode === 'edit';
-
 	useEffect(() => {
 		let isSubscribed = true;
 		_supplier.get_list(0).then((res) => {

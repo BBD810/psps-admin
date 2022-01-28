@@ -45,9 +45,6 @@ const EditTemplate = (props) => {
 	const [storage, setStorage] = useState('');
 	const [product_id, setProduct_id] = useState('');
 
-	const [state, setState] = useState('F');
-	const [recommend, setRecommend] = useState(0);
-
 	const [check, setCheck] = useState(false);
 
 	useEffect(() => {
@@ -81,8 +78,6 @@ const EditTemplate = (props) => {
 					setDetailPrevImg(product.temp_detail_image);
 					setSupplier(res.data.supplier);
 					setOptionList(res.data.product_option_list);
-					setState(product.state);
-					setRecommend(product.recommend);
 				}
 			});
 		}
@@ -153,7 +148,6 @@ const EditTemplate = (props) => {
 		setIsLoading(true);
 		const id = e.product_option_id;
 		_product_option.change_stock(id).then((res) => {
-			console.log(res.data);
 			if (res.data.success) {
 				setOptionList(res.data.product_option_list);
 			}
@@ -203,7 +197,6 @@ const EditTemplate = (props) => {
 			});
 		} else if (_modal.act === 'delete' && _modal.return) {
 			_product_option.remove(_modal.target).then((res) => {
-				console.log(res.data);
 				if (res.data.success) {
 					setOptionList(res.data.product_option_list);
 					props.modalController({
@@ -256,55 +249,55 @@ const EditTemplate = (props) => {
 				text: '부족한 내용을 확인해주세요.\n상품 옵션도 최소 1개 등록해야 합니다.',
 			});
 		}
-		// setIsLoading(true);
-		// if (
-		// 	!title ||
-		// 	!part ||
-		// 	!subPart ||
-		// 	optionList.length < 1 ||
-		// 	!supplier.supplier_id
-		// ) {
-		// 	setIsLoading(false);
-		// 	return props.modalController({
-		// 		type: 'confirm',
-		// 		text: '부족한 내용을 확인해주세요.',
-		// 	});
-		// } else if (thumbnailImg) {
-		// 	console.log('이미지O 시도');
-		// 	const formData = new FormData();
-		// 	formData.append('product_id', product_id);
-		// 	formData.append('image', thumbnailImg);
-		// 	formData.append('title', title);
-		// 	formData.append('part', part);
-		// 	formData.append('subPart', subPart);
-		// 	formData.append('origin', origin);
-		// 	formData.append('storage', storage);
-		// 	formData.append('supplier_id', supplier.supplier_id);
-		// 	formData.append('product_image_id', detailImgId);
-		// 	_product.edit(product_id, formData).then((res) => {
-		// 		if (res.data.success) {
-		// 			console.log('이미지O 성공', res.data);
-		// 		}
-		// 	});
-		// } else if (!thumbnailImg) {
-		// 	console.log('이미지X 시도');
-		// 	const data = {
-		// 		product_id,
-		// 		part,
-		// 		subPart,
-		// 		title,
-		// 		storage,
-		// 		origin,
-		// 		supplier_id: supplier.supplier_id,
-		// 		product_image_id: detailImgId,
-		// 	};
-		// 	_product.edit(product_id, data).then((res) => {
-		// 		console.log(res.data);
-		// 		if (res.data.success) {
-		// 			console.log('이미지X 성공', res.data);
-		// 		}
-		// 	});
-		// }
+		setIsLoading(true);
+		if (
+			!title ||
+			!part ||
+			!subPart ||
+			optionList.length < 1 ||
+			!supplier.supplier_id
+		) {
+			setIsLoading(false);
+			return props.modalController({
+				type: 'confirm',
+				text: '부족한 내용을 확인해주세요.',
+			});
+		} else if (thumbnailImg) {
+			console.log('이미지O 시도');
+			const formData = new FormData();
+			formData.append('product_id', product_id);
+			formData.append('image', thumbnailImg);
+			formData.append('title', title);
+			formData.append('part', part);
+			formData.append('subPart', subPart);
+			formData.append('origin', origin);
+			formData.append('storage', storage);
+			formData.append('supplier_id', supplier.supplier_id);
+			formData.append('product_image_id', detailImgId);
+			_product.edit(product_id, formData).then((res) => {
+				if (res.data.success) {
+					console.log('이미지O 성공', res.data);
+				}
+			});
+		} else if (!thumbnailImg) {
+			console.log('이미지X 시도');
+			const data = {
+				product_id,
+				part,
+				subPart,
+				title,
+				storage,
+				origin,
+				supplier_id: supplier.supplier_id,
+				product_image_id: detailImgId,
+			};
+			_product.edit(product_id, data).then((res) => {
+				console.log(res.data);
+				if (res.data.success) {
+					console.log('이미지X 성공', res.data);
+				}
+			});
+		}
 	};
 
 	const openImgListModal = () => {
@@ -352,8 +345,7 @@ const EditTemplate = (props) => {
 			<StateInfo
 				active={false}
 				mode={props.mode}
-				state={state}
-				recommend={recommend}
+				product_id={product_id}
 				modal={props.modal}
 				modalController={props.modalController}
 			/>

@@ -5,21 +5,29 @@ import Spinner from '../Spinner';
 
 const StateInfo = (props) => {
 	const [isLoading, setIsLoading] = useState(false);
-	const displayItems = ['노출', '노출안함'];
-	const recommendItems = ['추천상품', '등록안함'];
 	const [detail, setDetail] = useState({ state: 'F', recommend: 0 });
 	const [optionList, setOptionList] = useState([]);
 	const [recommendList, setRecommendList] = useState([]);
 
 	useEffect(() => {
 		let isSubscribed = true;
-		if (props.mode === 'edit') {
-			setDetail({
-				...detail,
-				state: props.state,
-				recommend: props.recommend,
+		if (props.mode === 'edit' && props.product_id) {
+			setIsLoading(true);
+			_product.get_detail(props.product_id).then((res) => {
+				if (isSubscribed && res.data.success) {
+					setDetail(res.data.product);
+				}
 			});
-		} else if (props.mode === 'detail') {
+		}
+		setIsLoading(false);
+		return () => {
+			isSubscribed = false;
+		};
+	}, [props.mode, props.product_id]);
+
+	useEffect(() => {
+		let isSubscribed = true;
+		if (props.mode === 'detail') {
 			setIsLoading(true);
 			_product
 				.get_detail(props.product_id)
@@ -37,7 +45,6 @@ const StateInfo = (props) => {
 					});
 				});
 		}
-
 		setIsLoading(false);
 		return () => {
 			isSubscribed = false;
@@ -152,13 +159,14 @@ const StateInfo = (props) => {
 					<Right>
 						<RightInner>
 							<TypeBox>
-								{displayItems.map((el, idx) => (
+								{['노출', '노출안함'].map((el, idx) => (
 									<TypeItem
 										key={idx}
 										active={props.active}
 										selected={
-											(idx === 0 && detail.state === 'O') ||
-											(idx === 1 && detail.state === 'F')
+											idx === 0
+												? detail.state === 'O'
+												: detail.state === 'F'
 										}
 										onClick={selectDisplay}>
 										{el}
@@ -178,7 +186,7 @@ const StateInfo = (props) => {
 					<Right>
 						<RightInner>
 							<TypeBox>
-								{recommendItems.map((el, idx) => (
+								{['추천상품', '등록안함'].map((el, idx) => (
 									<TypeItem
 										key={idx}
 										active={props.active}
