@@ -11,8 +11,8 @@ import DeliveryList from '../components/Order/DeliveryList';
 
 const OrderPage = () => {
 	const [mode, setMode] = useState('list');
-	const [menu, setMenu] = useState('상품 이미지');
-	const [category, setCategory] = useState('이미지 목록');
+	const [menu, setMenu] = useState('주문');
+	const [category, setCategory] = useState('주문 목록');
 	const [info, setInfo] = useState({});
 	const [title, setTitle] = useState('');
 	const [desc, setDesc] = useState('');

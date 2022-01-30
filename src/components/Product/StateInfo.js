@@ -211,7 +211,6 @@ export default StateInfo;
 
 const Container = styled.div`
 	width: 119rem;
-	/* height: 20.8rem; */
 	margin-bottom: 4rem;
 `;
 const Head = styled.div`
