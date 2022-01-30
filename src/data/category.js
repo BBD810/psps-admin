@@ -23,6 +23,7 @@ export const bannerCategory = [
 		list_sub: `메인 배너 혹은 광고 배너를 새로 등록합니다.`,
 	},
 ];
+
 export const supplierCategory = [
 	{
 		item: '공급원 목록',
@@ -30,6 +31,7 @@ export const supplierCategory = [
 		list_sub: `공급원 정보를 조회 및 수정합니다.\n기존 정보를 수정하여 다른 공급원으로 활용하는 것은 권장하지 않습니다.`,
 	},
 ];
+
 export const productCategory = [
 	{
 		item: '상품 목록',
@@ -51,6 +53,7 @@ export const productCategory = [
 		list_sub: `새로운 상품을 등록합니다.\n상태 정보는 상품 추가 후 변경이 가능합니다.`,
 	},
 ];
+
 export const productImgCategory = [
 	{
 		item: '이미지 목록',
@@ -67,54 +70,32 @@ export const productImgCategory = [
 		list_sub: `새로운 상품 상세 이미지의 정보를 저장합니다.`,
 	},
 ];
-export const paymentCategory = [
+
+export const orderCategory = [
 	{
-		main: '메인 배너',
-		submain: '메인 배너 목록',
-		sub: `메인 배너를 조회 및 수정합니다.\n첫번째부터 세번째 이미지는 홈페이지에 노출됩니다.`,
+		item: '주문 목록',
+		list_main: '주문 목록',
+		list_sub: `주문 내역을 확인하고 처리합니다.`,
 	},
 	{
-		main: '광고 배너',
-		submain: '광고 배너 목록',
-		sub: `광고 배너를 조회 및 수정합니다.\n첫번째 이미지는 홈페이지에 노출됩니다.`,
-	},
-	{
-		main: '배너 추가',
-		submain: '새 배너 추가하기',
-		sub: `메인 배너 혹은 광고 배너를 새로 등록합니다.`,
+		item: '배송 관리',
+		list_main: '배송 관리',
+		list_sub: `주문 내역을 확인하고 처리합니다.`,
 	},
 ];
+
 export const userCategory = [
 	{
-		main: '메인 회원',
-		submain: '메인 배너 목록',
-		sub: `메인 배너를 조회 및 수정합니다.\n첫번째부터 세번째 이미지는 홈페이지에 노출됩니다.`,
-	},
-	{
-		main: '광고 회원',
-		submain: '광고 배너 목록',
-		sub: `광고 배너를 조회 및 수정합니다.\n첫번째 이미지는 홈페이지에 노출됩니다.`,
-	},
-	{
-		item: '배너 추가',
-		main: '새 배너 추가하기',
-		sub: `메인 배너 혹은 광고 배너를 새로 등록합니다.`,
+		item: '고객 목록',
+		list_main: '고객 목록',
+		list_sub: `주문 내역을 확인하고 처리합니다.`,
 	},
 ];
+
 export const statisticsCategory = [
 	{
-		item: '메인 회원',
-		main: '메인 배너 목록',
-		sub: `메인 배너를 조회 및 수정합니다.\n첫번째부터 세번째 이미지는 홈페이지에 노출됩니다.`,
-	},
-	{
-		item: '광고 회원',
-		main: '광고 배너 목록',
-		sub: `광고 배너를 조회 및 수정합니다.\n첫번째 이미지는 홈페이지에 노출됩니다.`,
-	},
-	{
-		item: '배너 추가',
-		main: '새 배너 추가하기',
-		sub: `메인 배너 혹은 광고 배너를 새로 등록합니다.`,
+		item: '고객 목록',
+		list_main: '고객 목록',
+		list_sub: `주문 내역을 확인하고 처리합니다.`,
 	},
 ];

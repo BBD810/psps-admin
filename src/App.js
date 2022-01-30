@@ -7,7 +7,7 @@ import BannerPage from './pages/BannerPage';
 import SupplierPage from './pages/SupplierPage';
 import ProductPage from './pages/ProductPage';
 import ProductImgPage from './pages/ProductImgPage';
-import PaymentPage from './pages/PaymentPage';
+import OrderPage from './pages/OrderPage';
 import UserPage from './pages/UserPage';
 
 const App = () => {
@@ -33,11 +33,7 @@ const App = () => {
 						path='/product-img'
 						component={Auth(ProductImgPage, true)}
 					/>
-					<Route
-						exact
-						path='/payment'
-						component={Auth(PaymentPage, true)}
-					/>
+					<Route exact path='/order' component={Auth(OrderPage, true)} />
 					<Route exact path='/user' component={Auth(UserPage, true)} />
 				</Switch>
 			</div>

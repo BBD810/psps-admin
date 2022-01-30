@@ -15,8 +15,8 @@ const SideBar = (props) => {
 		'공급원',
 		'상품',
 		'상품 이미지',
-		'결제',
-		'회원',
+		'주문',
+		'고객',
 		'통계',
 	];
 
@@ -35,15 +35,18 @@ const SideBar = (props) => {
 		} else if (innerText === '상품 이미지') {
 			history.push('/product-img');
 		} else if (innerText === '주문') {
-			history.push('/payment');
-		} else if (innerText === '회원') {
+			history.push('/order');
+		} else if (innerText === '고객') {
 			history.push('/user');
 		}
 		// else if (innerText === '통계') {}
 	};
 	const goLogout = () => {
 		request.logout().then((res) => {
-			res.data.success && dispatch(admin_logout()) && history.push('/login');
+			if (res.data.success) {
+				dispatch(admin_logout());
+				history.push('/login');
+			}
 		});
 	};
 

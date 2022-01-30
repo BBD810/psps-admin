@@ -17,9 +17,9 @@ const Category = (props) => {
 			setArr(data.productCategory);
 		} else if (props.menu === '상품 이미지') {
 			setArr(data.productImgCategory);
-		} else if (props.menu === '결제') {
-			setArr(data.paymentCategory);
-		} else if (props.menu === '회원') {
+		} else if (props.menu === '주문') {
+			setArr(data.orderCategory);
+		} else if (props.menu === '고객') {
 			setArr(data.userCategory);
 		} else if (props.menu === '통계') {
 			setArr(data.statisticsCategory);
