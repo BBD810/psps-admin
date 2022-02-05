@@ -17,10 +17,6 @@ const SupplierPage = () => {
 	const [desc, setDesc] = useState('');
 	const [modal, setModal] = useState({ type: '' });
 
-	const modalController = (data) => {
-		setModal(data);
-	};
-
 	useEffect(() => {
 		for (let i = 0; i < supplierCategory.length; i++) {
 			if (supplierCategory[i].item === category) {
@@ -29,43 +25,30 @@ const SupplierPage = () => {
 		}
 	}, []);
 
-	const getMenu = (menu) => {
-		setMenu(menu);
-	};
-	const getCategory = (category) => {
-		setCategory(category);
-	};
-
 	return (
 		<div id='container'>
 			<Container>
-				<SideBar getMenu={getMenu} menu={menu} />
+				<SideBar menu={menu} setMenu={setMenu} />
 				<Contents>
 					<Category
-						getCategory={getCategory}
 						category={category}
+						setCategory={setCategory}
 						mode={mode}
 						menu={menu}
 						title={title}
 						desc={desc}
 						modal={modal}
-						modalController={modalController}
+						setModal={setModal}
 					/>
-					<ListTemplate modal={modal} modalController={modalController} />
+					<ListTemplate modal={modal} setModal={setModal} />
 					{modal.type === 'confirm' && (
 						<Suspense fallback={<div>Loading...</div>}>
-							<ConfirmModal
-								modal={modal}
-								modalController={modalController}
-							/>
+							<ConfirmModal modal={modal} setModal={setModal} />
 						</Suspense>
 					)}
 					{modal.type === 'select' && (
 						<Suspense fallback={<div>Loading...</div>}>
-							<SelectModal
-								modal={modal}
-								modalController={modalController}
-							/>
+							<SelectModal modal={modal} setModal={setModal} />
 						</Suspense>
 					)}
 					<Footer />

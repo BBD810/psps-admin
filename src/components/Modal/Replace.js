@@ -18,14 +18,14 @@ const ReplaceModal = (props) => {
 		setOpenSelect(0);
 	};
 	const selectYes = () => {
-		props.modalController({
+		props.setModal({
 			type: '',
 			act: 'replace',
 			return: selected,
 		});
 	};
 	const selectNo = () => {
-		props.modalController({ ...props.modal, type: '' });
+		props.setModal({ ...props.modal, type: '' });
 	};
 
 	const onClick = () => {
@@ -35,7 +35,7 @@ const ReplaceModal = (props) => {
 	const onMouseDown = (e) => {
 		props.modal.type !== '' &&
 			(!modalBox.current || !modalBox.current.contains(e.target)) &&
-			props.modalController({ type: '' });
+			props.setModal({ type: '' });
 	};
 
 	return (

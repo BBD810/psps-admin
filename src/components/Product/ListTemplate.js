@@ -62,7 +62,7 @@ const ListTemplate = (props) => {
 
 	const goDetail = (el) => {
 		history.push({ state: el.product_id });
-		props.changeMode('detail');
+		props.setMode('detail');
 	};
 	const menuOpenController = (idx) => {
 		setMenuOpen(idx);
@@ -82,11 +82,11 @@ const ListTemplate = (props) => {
 	};
 	const selectEdit = (el) => {
 		history.push({ state: el.product_id });
-		props.changeMode('edit');
+		props.setMode('edit');
 	};
 	const selectDisplay = (el) => {
 		if (el.recommend) {
-			props.modalController({
+			props.setModal({
 				type: 'confirm',
 				text: '추천상품은\n노출상태를 변경할 수 없습니다.',
 			});
@@ -94,12 +94,12 @@ const ListTemplate = (props) => {
 			_product.change_display(el.product_id).then((res) => {
 				if (res.data.success) {
 					setList(res.data.product_list);
-					props.modalController({
+					props.setModal({
 						type: 'confirm',
 						text: '변경되었습니다.',
 					});
 				} else {
-					props.modalController({
+					props.setModal({
 						type: 'confirm',
 						text: '상품의 노출상태를 변경하려면\n최소 1개의 옵션이 노출상태여야 합니다.',
 					});
@@ -109,12 +109,12 @@ const ListTemplate = (props) => {
 	};
 	const selectDelete = (el) => {
 		if (el.recommend) {
-			props.modalController({
+			props.setModal({
 				type: 'confirm',
 				text: '추천상품은\n삭제할 수 없습니다.',
 			});
 		} else {
-			props.modalController({
+			props.setModal({
 				type: 'select',
 				text: '해당 상품을\n삭제하시겠습니까?',
 				act: 'delete',
@@ -192,7 +192,7 @@ const ListTemplate = (props) => {
 
 	const success = (list) => {
 		setList(list);
-		props.modalController({ type: '' });
+		props.setModal({ type: '' });
 	};
 
 	return (

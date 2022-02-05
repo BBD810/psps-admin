@@ -71,7 +71,7 @@ const Category = (props) => {
 					))}
 				</CategoryWrap>
 				<CurrentCategory>
-					{`${props.menu} 관리 / ${props.category}`}
+					{`${props.menu} / ${props.category}`}
 				</CurrentCategory>
 			</TitleBox>
 			<SubtitleBox>

@@ -101,10 +101,10 @@ const CreateTemplate = (props) => {
 	}, [part]);
 
 	const addOption = () => {
-		props.modalController({ type: 'option', act: 'add' });
+		props.setModal({ type: 'option', act: 'add' });
 	};
 	const editOption = (data, idx) => {
-		props.modalController({ type: 'option', act: 'edit', data, order: idx });
+		props.setModal({ type: 'option', act: 'edit', data, order: idx });
 	};
 	const displayOption = (idx) => {
 		let _optionList = [...optionList];
@@ -168,13 +168,13 @@ const CreateTemplate = (props) => {
 
 	const optionSuccess = (list) => {
 		setOptionList(list);
-		props.modalController({ type: '' });
+		props.setModal({ type: '' });
 	};
 
 	const onCreate = () => {
 		check
 			? createProduct()
-			: props.modalController({
+			: props.setModal({
 					type: 'confirm',
 					text: '부족한 내용을 확인해주세요.\n상품 옵션도 최소 1개 등록해야 합니다.',
 			  });
@@ -214,7 +214,7 @@ const CreateTemplate = (props) => {
 					createOption(count, product_id);
 				} else {
 					setIsLoading(false);
-					props.modalController({
+					props.setModal({
 						type: 'confirm',
 						text: '상품과 상품 옵션이 등록되었습니다.',
 					});
@@ -222,7 +222,7 @@ const CreateTemplate = (props) => {
 				}
 			} else {
 				setIsLoading(false);
-				props.modalController({
+				props.setModal({
 					type: 'confirm',
 					text: `${count + 1}번째 옵션 생성 중 문제가 발생했습니다.`,
 				});
@@ -231,7 +231,7 @@ const CreateTemplate = (props) => {
 	};
 
 	const openImgListModal = () => {
-		props.modalController({
+		props.setModal({
 			type: 'img_list',
 			text: '상품 상세 이미지를 선택해주세요.',
 		});
@@ -277,7 +277,7 @@ const CreateTemplate = (props) => {
 			<StateInfo
 				active={false}
 				modal={props.modal}
-				modalController={props.modalController}
+				setModal={props.setModal}
 			/>
 			<BasicInfo onMouseDown={onMouseDown}>
 				<Head>기본 정보</Head>

@@ -14,10 +14,6 @@ const UserPage = () => {
 	const [desc, setDesc] = useState('');
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
 
-	const modalController = (data) => {
-		setModal(data);
-	};
-
 	useEffect(() => {
 		for (let i = 0; i < userCategory.length; i++) {
 			if (userCategory[i].item === category) {
@@ -26,9 +22,6 @@ const UserPage = () => {
 		}
 	}, [mode]);
 
-	const getMenu = (menu) => {
-		setMenu(menu);
-	};
 	const getCategory = (category) => {
 		setCategory(category);
 		setMode('list');
@@ -37,19 +30,18 @@ const UserPage = () => {
 	return (
 		<div id='container'>
 			<Container>
-				<SideBar getMenu={getMenu} menu={menu} />
+				<SideBar menu={menu} setMenu={setMenu} />
 				<Contents>
 					<Category
 						getCategory={getCategory}
 						category={category}
-						mode={mode}
-						menu={menu}
 						title={title}
 						desc={desc}
+						mode={mode}
+						menu={menu}
 						modal={modal}
-						modalController={modalController}
+						setModal={setModal}
 					/>
-
 					<Footer />
 				</Contents>
 			</Container>

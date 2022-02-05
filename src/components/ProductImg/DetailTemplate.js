@@ -43,16 +43,16 @@ const DetailTemplate = (props) => {
 	}, [detail]);
 
 	const selectList = () => {
-		props.changeMode('list');
+		props.setMode('list');
 	};
 	const selectDelete = () => {
 		if (detail.share === 1) {
-			props.modalController({
+			props.setModal({
 				type: 'confirm',
 				text: '공유이미지는\n삭제할 수 없습니다.',
 			});
 		} else {
-			props.modalController({
+			props.setModal({
 				type: 'select',
 				text: '해당 이미지를\n삭제하시겠습니까?',
 				act: 'delete',
@@ -61,12 +61,12 @@ const DetailTemplate = (props) => {
 	};
 	const selectShare = () => {
 		if (detail.share === 1 && detail.used > 1) {
-			props.modalController({
+			props.setModal({
 				type: 'confirm',
 				text: '해당 상세이미지는\n공유된 상품이 2개 이상입니다.\n목록이전을 먼저 해주세요.',
 			});
 		} else {
-			props.modalController({
+			props.setModal({
 				type: 'select',
 				text: '타입(공유여부)을\n변경하시겠습니까?',
 				act: 'share',
@@ -75,17 +75,17 @@ const DetailTemplate = (props) => {
 	};
 	const selectReplace = () => {
 		if (detail.share === 0) {
-			props.modalController({
+			props.setModal({
 				type: 'confirm',
 				text: '공유된 상세이미지만\n상품목록 이전이 가능합니다.',
 			});
 		} else if (detail.share === 1 && detail.used === 0) {
-			props.modalController({
+			props.setModal({
 				type: 'confirm',
 				text: '해당 이미지가 공유된 상품이 없어서\n상품목록 이전이 불가능합니다.',
 			});
 		} else if (detail.share === 1 && detail.used > 0) {
-			props.modalController({
+			props.setModal({
 				type: 'list',
 				text: '상품의 목록을 어떤 상세이미지로\n이전하시겠습니까?',
 				desc: '타입을 공유로 설정한 이미지만 선택이 가능합니다.',
@@ -97,7 +97,7 @@ const DetailTemplate = (props) => {
 	};
 	const selectEdit = () => {
 		history.push({ state: detail.product_image_id });
-		props.changeMode('edit');
+		props.setMode('edit');
 	};
 	const checkLink = (product_id) => {
 		history.push({ pathname: '/product', state: product_id });
@@ -126,8 +126,8 @@ const DetailTemplate = (props) => {
 	}, [props.modal.type]);
 
 	const success = () => {
-		props.modalController({ type: '' });
-		props.changeMode('list');
+		props.setModal({ type: '' });
+		props.setMode('list');
 	};
 
 	return (

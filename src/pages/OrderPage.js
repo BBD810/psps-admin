@@ -18,10 +18,6 @@ const OrderPage = () => {
 	const [desc, setDesc] = useState('');
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
 
-	const modalController = (data) => {
-		setModal(data);
-	};
-
 	useEffect(() => {
 		for (let i = 0; i < orderCategory.length; i++) {
 			if (orderCategory[i].item === category) {
@@ -30,9 +26,6 @@ const OrderPage = () => {
 		}
 	}, []);
 
-	const getMenu = (menu) => {
-		setMenu(menu);
-	};
 	const getCategory = (category) => {
 		setCategory(category);
 		setMode('list');
@@ -41,17 +34,17 @@ const OrderPage = () => {
 	return (
 		<div id='container'>
 			<Container>
-				<SideBar getMenu={getMenu} menu={menu} />
+				<SideBar menu={menu} setMenu={setMenu} />
 				<Contents>
 					<Category
-						getCategory={getCategory}
 						category={category}
+						getCategory={getCategory}
 						mode={mode}
 						menu={menu}
 						title={title}
 						desc={desc}
 						modal={modal}
-						modalController={modalController}
+						setModal={setModal}
 					/>
 					<OrderFilter />
 					<OrderList />

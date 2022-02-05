@@ -127,7 +127,7 @@ const CreateTemplate = (props) => {
 	const onSubmit = (e) => {
 		const innerText = e.target.innerText;
 		if (innerText === '취소하기') {
-			props.changeMode('detail');
+			props.setMode('detail');
 		} else if (innerText === '추가하기') {
 			onCreate();
 		} else if (innerText === '저장하기') {
@@ -136,7 +136,7 @@ const CreateTemplate = (props) => {
 	};
 	const onCreate = () => {
 		if (!check) {
-			props.modalController({
+			props.setModal({
 				type: 'confirm',
 				text: '부족한 내용을 확인해주세요.',
 			});
@@ -151,7 +151,7 @@ const CreateTemplate = (props) => {
 			formData.append('product_id', product_id);
 			_banner.create(formData).then((res) => {
 				if (res.data.success) {
-					props.modalController({
+					props.setModal({
 						type: 'confirm',
 						text: '배너가 추가되었습니다.',
 					});
@@ -166,7 +166,7 @@ const CreateTemplate = (props) => {
 	};
 	const onEdit = () => {
 		if (!check) {
-			props.modalController({
+			props.setModal({
 				type: 'confirm',
 				text: '부족한 내용을 확인해주세요.',
 			});
@@ -191,8 +191,8 @@ const CreateTemplate = (props) => {
 			}
 		}
 		const successEdit = () => {
-			props.modalController({ type: 'confirm', text: '수정되었습니다.' });
-			props.changeMode('list');
+			props.setModal({ type: 'confirm', text: '수정되었습니다.' });
+			props.setMode('list');
 		};
 	};
 
@@ -278,7 +278,7 @@ const CreateTemplate = (props) => {
 						<ItemSelected
 							onClick={() => {
 								!part
-									? props.modalController({
+									? props.setModal({
 											type: 'confirm',
 											text: '대분류를 먼저 선택해주세요.',
 									  })
@@ -320,7 +320,6 @@ const CreateTemplate = (props) => {
 					{editMode && prevImg && (
 						<UploadImg
 							alt='img upload'
-							w
 							src={
 								img && prevImg ? prevImg : `${IMG_ADDRESS}/${prevImg}`
 							}

@@ -33,7 +33,7 @@ const DetailImgCreate = (props) => {
 		_product_img.create(formData).then((res) => {
 			if (res.data.success) {
 				history.push({ state: res.data.product_image_id });
-				props.modalController({
+				props.setModal({
 					type: 'confirm',
 					text: '이미지가 생성되었습니다.',
 				});
@@ -41,7 +41,7 @@ const DetailImgCreate = (props) => {
 		});
 	};
 	const selectNo = () => {
-		props.modalController({ ...props.modal, type: 'img_list' });
+		props.setModal({ ...props.modal, type: 'img_list' });
 	};
 
 	useEffect(() => {

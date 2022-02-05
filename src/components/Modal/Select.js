@@ -5,15 +5,15 @@ const SelectModal = (props) => {
 	const modalBox = useRef();
 
 	const selectYes = () => {
-		props.modalController({ ...props.modal, type: '', return: true });
+		props.setModal({ ...props.modal, type: '', return: true });
 	};
 	const selectNo = () => {
-		props.modalController({ ...props.modal, type: '', return: false });
+		props.setModal({ ...props.modal, type: '', return: false });
 	};
 	const onMouseDown = (e) => {
 		props.modal.type !== '' &&
 			(!modalBox.current || !modalBox.current.contains(e.target)) &&
-			props.modalController({ type: '' });
+			props.setModal({ type: '' });
 	};
 
 	return (

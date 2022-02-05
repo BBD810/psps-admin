@@ -58,13 +58,13 @@ const DetailImgListModal = (props) => {
 				: (value = singleSelected.product_image_id);
 		}
 		history.push({ state: value });
-		props.modalController({ type: '' });
+		props.setModal({ type: '' });
 	};
 	const selectNo = () => {
-		props.modalController({ ...props.modal, type: '' });
+		props.setModal({ ...props.modal, type: '' });
 	};
 	const selectCreate = () => {
-		props.modalController({ ...props.modal, type: 'img_create' });
+		props.setModal({ ...props.modal, type: 'img_create' });
 	};
 
 	const onMouseDown = (e) => {

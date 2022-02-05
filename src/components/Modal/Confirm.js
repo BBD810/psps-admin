@@ -4,13 +4,13 @@ import styled from 'styled-components';
 const ConfirmModal = (props) => {
 	const modalBox = useRef();
 	const onClick = () => {
-		props.modalController({ type: '' });
+		props.setModal({ type: '' });
 	};
 
 	const onMouseDown = (e) => {
 		props.modal.type !== '' &&
 			(!modalBox.current || !modalBox.current.contains(e.target)) &&
-			props.modalController({ type: '' });
+			props.setModal({ type: '' });
 	};
 
 	return (

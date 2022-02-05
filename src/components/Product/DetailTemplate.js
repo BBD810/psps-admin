@@ -16,10 +16,13 @@ const DetailTemplate = (props) => {
 	useEffect(() => {
 		let isSubscribed = true;
 		if (history.location.state) {
-			_product.get_detail(history.location.state).then((res) => {
+			const _product_id = history.location.state;
+			console.log('ccc', _product_id);
+			_product.get_detail(_product_id).then((res) => {
 				if (isSubscribed && res.data.success) {
-					setOptionList(res.data.product_option_list);
+					console.log('hihihi', res.data);
 					setDetail(res.data.product);
+					setOptionList(res.data.product_option_list);
 				}
 			});
 		}
@@ -29,16 +32,16 @@ const DetailTemplate = (props) => {
 	}, [history.location.state, props.modal]);
 
 	const selectList = () => {
-		props.changeMode('list');
+		props.setMode('list');
 	};
 	const selectDelete = () => {
 		if (detail.recommend) {
-			return props.modalController({
+			return props.setModal({
 				type: 'confirm',
 				text: '추천 상품은\n삭제할 수 없습니다.',
 			});
 		} else {
-			props.modalController({
+			props.setModal({
 				type: 'select',
 				text: '삭제하시겠습니까?',
 				act: 'delete',
@@ -47,8 +50,10 @@ const DetailTemplate = (props) => {
 	};
 	const selectEdit = () => {
 		history.push({ state: detail.product_id });
-		props.changeMode('edit');
+		props.setMode('edit');
 	};
+
+	console.log('ddd', props.modal);
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -64,8 +69,8 @@ const DetailTemplate = (props) => {
 	}, [props.modal.type]);
 
 	const success = () => {
-		props.modalController({ type: '' });
-		props.changeMode('list');
+		props.setModal({ type: '' });
+		props.setMode('list');
 	};
 
 	return (
@@ -73,9 +78,9 @@ const DetailTemplate = (props) => {
 			<StateInfo
 				active={true}
 				mode={props.mode}
-				product_id={detail.product_id}
 				modal={props.modal}
-				modalController={props.modalController}
+				setModal={props.setModal}
+				product_id={detail.product_id}
 			/>
 			<BasicInfo>
 				<Head>기본 정보</Head>

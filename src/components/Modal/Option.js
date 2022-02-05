@@ -39,7 +39,7 @@ const OptionModal = (props) => {
 
 	const selectYes = () => {
 		if (title.trim() && price.trim() && discount.trim()) {
-			props.modalController({
+			props.setModal({
 				...props.modal,
 				type: '',
 				return: {
@@ -55,7 +55,7 @@ const OptionModal = (props) => {
 		}
 	};
 	const selectNo = () => {
-		props.modalController({ ...props.modal, type: '' });
+		props.setModal({ ...props.modal, type: '' });
 	};
 
 	useEffect(() => {

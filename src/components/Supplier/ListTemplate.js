@@ -72,14 +72,14 @@ const ListTemplate = (props) => {
 			!input.tel ||
 			!input.email
 		) {
-			return props.modalController({
+			return props.setModal({
 				type: 'confirm',
 				text: '담당자 정보를 제외한\n모든 정보를 입력해주셔야 합니다.',
 			});
 		} else {
 			supplier.create(input, page).then((res) => {
 				if (res.data.success) {
-					props.modalController({
+					props.setModal({
 						type: 'confirm',
 						text: '추가되었습니다.',
 					});
@@ -118,7 +118,7 @@ const ListTemplate = (props) => {
 			setEditMode(false);
 		} else if (innerText === '삭제') {
 			setDetail(el);
-			props.modalController({
+			props.setModal({
 				type: 'select',
 				text: '삭제하시겠습니까?',
 				act: 'delete',
@@ -132,7 +132,7 @@ const ListTemplate = (props) => {
 		if (_modal.act === 'delete' && _modal.return) {
 			supplier.remove(detail.supplier_id, page).then((res) => {
 				if (isSubscribed && res.data.success) {
-					props.modalController({ type: '' });
+					props.setModal({ type: '' });
 					setTotal(res.data.total);
 					setList(res.data.supplier_list);
 				}
@@ -296,7 +296,9 @@ const ListTemplate = (props) => {
 					))}
 				</Body>
 			</Wrap>
-			<PageSelector page={page} total={total} onClickPage={onClickPage} />
+			{list.length > 0 && (
+				<PageSelector page={page} total={total} onClickPage={onClickPage} />
+			)}
 		</Container>
 	);
 };

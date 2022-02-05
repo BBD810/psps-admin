@@ -14,7 +14,7 @@ const ListModal = (props) => {
 		setSelected(e);
 	};
 	const selectYes = () => {
-		props.modalController({
+		props.setModal({
 			...props.modal,
 			type: '',
 			act: 'replace',
@@ -22,13 +22,13 @@ const ListModal = (props) => {
 		});
 	};
 	const selectNo = () => {
-		props.modalController({ ...props.modal, type: '' });
+		props.setModal({ ...props.modal, type: '' });
 	};
 
 	const onMouseDown = (e) => {
 		props.modal.type !== '' &&
 			(!modalBox.current || !modalBox.current.contains(e.target)) &&
-			props.modalController({ type: '' });
+			props.setModal({ type: '' });
 	};
 
 	return (

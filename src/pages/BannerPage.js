@@ -32,10 +32,6 @@ const BannerPage = () => {
 	const [desc, setDesc] = useState('');
 	const [modal, setModal] = useState({ type: '', text: '', return: '' });
 
-	const modalController = (data) => {
-		setModal(data);
-	};
-
 	useEffect(() => {
 		for (let i = 0; i < bannerCategory.length; i++) {
 			if (bannerCategory[i].item === category) {
@@ -54,12 +50,16 @@ const BannerPage = () => {
 		}
 	}, [info, mode]);
 
-	const changeMode = (mode) => {
-		setMode(mode);
-	};
-	const getMenu = (menu) => {
-		setMenu(menu);
-	};
+	// const modalController = (data) => {
+	// 	setModal(data);
+	// };
+
+	// const changeMode = (mode) => {
+	// 	setMode(mode);
+	// };
+	// const getMenu = (menu) => {
+	// 	setMenu(menu);
+	// };
 	const getCategory = (category) => {
 		setCategory(category);
 		setMode('list');
@@ -69,11 +69,11 @@ const BannerPage = () => {
 	return (
 		<div id='container'>
 			<Container>
-				<SideBar getMenu={getMenu} menu={menu} />
+				<SideBar menu={menu} />
 				<Contents>
 					<Category
-						getCategory={getCategory}
 						category={category}
+						getCategory={getCategory}
 						mode={mode}
 						menu={menu}
 						desc={desc}
@@ -83,9 +83,9 @@ const BannerPage = () => {
 							<ListTemplate
 								category={category}
 								mode={mode}
-								changeMode={changeMode}
 								modal={modal}
-								modalController={modalController}
+								setMode={setMode}
+								setModal={setModal}
 							/>
 						</Suspense>
 					)}
@@ -94,9 +94,9 @@ const BannerPage = () => {
 							<DetailTemplate
 								category={category}
 								mode={mode}
-								changeMode={changeMode}
 								modal={modal}
-								modalController={modalController}
+								setMode={setMode}
+								setModal={setModal}
 							/>
 						</Suspense>
 					)}
@@ -105,46 +105,37 @@ const BannerPage = () => {
 							<CreateTemplate
 								category={category}
 								mode={mode}
-								changeMode={changeMode}
-								desc={desc}
 								modal={modal}
-								modalController={modalController}
+								desc={desc}
+								setMode={setMode}
+								setModal={setModal}
 							/>
 						</Suspense>
 					)}
 					{createMode && (
 						<Suspense fallback={<div>Loading...</div>}>
 							<CreateTemplate
-								getCategory={getCategory}
 								category={category}
+								getCategory={getCategory}
 								desc={desc}
 								modal={modal}
-								modalController={modalController}
+								setModal={setModal}
 							/>
 						</Suspense>
 					)}
 					{modal.type === 'confirm' && (
 						<Suspense fallback={<div>Loading...</div>}>
-							<ConfirmModal
-								modal={modal}
-								modalController={modalController}
-							/>
+							<ConfirmModal modal={modal} setModal={setModal} />
 						</Suspense>
 					)}
 					{modal.type === 'select' && (
 						<Suspense fallback={<div>Loading...</div>}>
-							<SelectModal
-								modal={modal}
-								modalController={modalController}
-							/>
+							<SelectModal modal={modal} setModal={setModal} />
 						</Suspense>
 					)}
 					{modal.type === 'list' && (
 						<Suspense fallback={<div>Loading...</div>}>
-							<ListModal
-								modal={modal}
-								modalController={modalController}
-							/>
+							<ListModal modal={modal} setModal={setModal} />
 						</Suspense>
 					)}
 					<Footer />

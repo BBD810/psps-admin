@@ -50,7 +50,7 @@ const CreateTemplate = (props) => {
 
 	const onCreate = () => {
 		if (!check) {
-			return props.modalController({
+			return props.setModal({
 				type: 'confirm',
 				text: '부족한 내용을 확인해주세요.',
 			});
@@ -61,7 +61,7 @@ const CreateTemplate = (props) => {
 			formData.append('share', share);
 			_product_img.create(formData).then((res) => {
 				if (res.data.success) {
-					props.modalController({
+					props.setModal({
 						type: 'confirm',
 						text: '상품 이미지가 등록되었습니다.',
 					});
@@ -73,7 +73,7 @@ const CreateTemplate = (props) => {
 
 	const onEdit = () => {
 		if (!check) {
-			return props.modalController({
+			return props.setModal({
 				type: 'confirm',
 				text: '부족한 내용을 확인해주세요.',
 			});
@@ -95,12 +95,12 @@ const CreateTemplate = (props) => {
 		}
 	};
 	const successEdit = () => {
-		props.modalController({ type: 'confirm', text: '수정되었습니다.' });
-		props.changeMode('list');
+		props.setModal({ type: 'confirm', text: '수정되었습니다.' });
+		props.setMode('list');
 	};
 
 	const goList = () => {
-		props.changeMode('list');
+		props.setMode('list');
 	};
 	useEffect(() => {
 		if (editMode) {

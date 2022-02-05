@@ -39,31 +39,9 @@ const ProductPage = () => {
 	const [mode, setMode] = useState('list');
 	const [menu, setMenu] = useState('상품');
 	const [category, setCategory] = useState('상품 목록');
-	const [info, setInfo] = useState({});
 	const [title, setTitle] = useState('');
 	const [desc, setDesc] = useState('');
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
-
-	if (history.location.state) {
-		// changeMode('detail')
-		// console.log('cc', history.location.state);
-	}
-
-	const modalController = (data) => {
-		setModal(data);
-	};
-
-	useEffect(() => {
-		let isSubscribed = true;
-		for (let i = 0; i < productCategory.length; i++) {
-			if (isSubscribed && productCategory[i].item === category) {
-				setInfo(productCategory[i]);
-			}
-		}
-		return () => {
-			isSubscribed = false;
-		};
-	}, []);
 
 	const changeMode = (mode) => {
 		setMode(mode);
@@ -78,10 +56,19 @@ const ProductPage = () => {
 
 	const createMode = category === '상품 추가';
 
+	useEffect(() => {
+		// 상세이미지 안 상품목록 클릭 시 상품 디테일로 바로 연결
+		history.location.state && changeMode('detail');
+	}, [history.location.state]);
+
+	const modalController = (data) => {
+		setModal(data);
+	};
+
 	return (
 		<div id='container'>
 			<Container>
-				<SideBar getMenu={getMenu} menu={menu} />
+				<SideBar menu={menu} setMenu={setMenu} />
 				<Contents>
 					<Category
 						category={category}
@@ -91,16 +78,16 @@ const ProductPage = () => {
 						title={title}
 						desc={desc}
 						modal={modal}
-						modalController={modalController}
+						setModal={setModal}
 					/>
 					{!createMode && mode === 'list' && (
 						<Suspense fallback={<div>Loading...</div>}>
 							<ListTemplate
 								category={category}
 								mode={mode}
-								changeMode={changeMode}
 								modal={modal}
-								modalController={modalController}
+								setMode={setMode}
+								setModal={setModal}
 							/>
 						</Suspense>
 					)}
@@ -108,9 +95,9 @@ const ProductPage = () => {
 						<Suspense fallback={<div>Loading...</div>}>
 							<DetailTemplate
 								mode={mode}
-								changeMode={changeMode}
 								modal={modal}
-								modalController={modalController}
+								setMode={setMode}
+								setModal={setModal}
 							/>
 						</Suspense>
 					)}
@@ -118,9 +105,9 @@ const ProductPage = () => {
 						<Suspense fallback={<div>Loading...</div>}>
 							<EditTemplate
 								mode={mode}
-								changeMode={changeMode}
+								setMode={setMode}
 								modal={modal}
-								modalController={modalController}
+								setModal={setModal}
 							/>
 						</Suspense>
 					)}
@@ -130,50 +117,35 @@ const ProductPage = () => {
 								category={category}
 								getCategory={getCategory}
 								mode={mode}
-								changeMode={changeMode}
 								modal={modal}
-								modalController={modalController}
+								setMode={setMode}
+								setModal={setModal}
 							/>
 						</Suspense>
 					)}
 					{modal.type === 'confirm' && (
 						<Suspense fallback={<div>Loading...</div>}>
-							<ConfirmModal
-								modal={modal}
-								modalController={modalController}
-							/>
+							<ConfirmModal modal={modal} setModal={setModal} />
 						</Suspense>
 					)}
 					{modal.type === 'select' && (
 						<Suspense fallback={<div>Loading...</div>}>
-							<SelectModal
-								modal={modal}
-								modalController={modalController}
-							/>
+							<SelectModal modal={modal} setModal={setModal} />
 						</Suspense>
 					)}
 					{modal.type === 'option' && (
 						<Suspense fallback={<div>Loading...</div>}>
-							<OptionModal
-								modal={modal}
-								modalController={modalController}
-							/>
+							<OptionModal modal={modal} setModal={setModal} />
 						</Suspense>
 					)}
 					{modal.type === 'img_list' && (
 						<Suspense fallback={<div>Loading...</div>}>
-							<DetailImgListModal
-								modal={modal}
-								modalController={modalController}
-							/>
+							<DetailImgListModal modal={modal} setModal={setModal} />
 						</Suspense>
 					)}
 					{modal.type === 'img_create' && (
 						<Suspense fallback={<div>Loading...</div>}>
-							<DetailImgCreateModal
-								modal={modal}
-								modalController={modalController}
-							/>
+							<DetailImgCreateModal modal={modal} setModal={setModal} />
 						</Suspense>
 					)}
 

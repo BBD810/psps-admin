@@ -66,7 +66,6 @@ const EditTemplate = (props) => {
 		if (history.location.state) {
 			_product.get_detail(history.location.state).then((res) => {
 				if (isSubscribed && res.data.success) {
-					console.log(res.data);
 					let product = res.data.product;
 					setProduct_id(product.product_id);
 					setTitle(product.title);
@@ -130,10 +129,10 @@ const EditTemplate = (props) => {
 	}, [part]);
 
 	const addOption = () => {
-		props.modalController({ type: 'option', act: 'add' });
+		props.setModal({ type: 'option', act: 'add' });
 	};
 	const editOption = (data, idx) => {
-		props.modalController({ type: 'option', act: 'edit', data, order: idx });
+		props.setModal({ type: 'option', act: 'edit', data, order: idx });
 	};
 	const displayOption = (e) => {
 		setIsLoading(true);
@@ -163,7 +162,7 @@ const EditTemplate = (props) => {
 		});
 	};
 	const deleteOption = (e) => {
-		props.modalController({
+		props.setModal({
 			type: 'select',
 			text: '상품 옵션을 삭제하시겠습니까?',
 			act: 'delete',
@@ -190,7 +189,7 @@ const EditTemplate = (props) => {
 			_product_option.create(_modal.return, product_id).then((res) => {
 				if (res.data.success) {
 					setOptionList(res.data.product_option_list);
-					props.modalController({
+					props.setModal({
 						type: 'confirm',
 						text: '옵션이 추가되었습니다.',
 					});
@@ -200,12 +199,12 @@ const EditTemplate = (props) => {
 			_product_option.remove(_modal.target).then((res) => {
 				if (res.data.success) {
 					setOptionList(res.data.product_option_list);
-					props.modalController({
+					props.setModal({
 						type: 'confirm',
 						text: '삭제되었습니다.',
 					});
 				} else {
-					props.modalController({
+					props.setModal({
 						type: 'confirm',
 						text: '노출중이거나 추천중인 상품은\n최소 1개 이상의 노출중인 옵션이 있어야합니다.',
 					});
@@ -229,17 +228,17 @@ const EditTemplate = (props) => {
 
 	const optionSuccess = (list) => {
 		setOptionList(list);
-		props.modalController({ type: '' });
+		props.setModal({ type: '' });
 	};
 
 	const goList = () => {
-		props.changeMode('list');
+		props.setMode('list');
 	};
 
 	const onEdit = () => {
 		setIsLoading(true);
 		if (!check) {
-			props.modalController({
+			props.setModal({
 				type: 'confirm',
 				text: '부족한 내용을 확인해주세요.\n상품 옵션도 최소 1개 등록해야 합니다.',
 			});
@@ -250,7 +249,7 @@ const EditTemplate = (props) => {
 			optionList.length < 1 ||
 			!supplier.supplier_id
 		) {
-			props.modalController({
+			props.setModal({
 				type: 'confirm',
 				text: '부족한 내용을 확인해주세요.',
 			});
@@ -266,9 +265,7 @@ const EditTemplate = (props) => {
 			formData.append('supplier_id', supplier.supplier_id);
 			formData.append('product_image_id', detailImgId);
 			_product.edit(product_id, formData).then((res) => {
-				if (res.data.success) {
-					editSuccess();
-				}
+				res.data.success && editSuccess();
 			});
 		} else if (!thumbnailImg) {
 			const data = {
@@ -282,23 +279,21 @@ const EditTemplate = (props) => {
 				product_image_id: detailImgId,
 			};
 			_product.edit(product_id, data).then((res) => {
-				if (res.data.success) {
-					editSuccess();
-				}
+				res.data.success && editSuccess();
 			});
 		}
 		setIsLoading(false);
 	};
 	const editSuccess = () => {
-		props.changeMode('list');
-		props.modalController({
+		props.setMode('list');
+		props.setModal({
 			type: 'confirm',
 			text: '수정되었습니다.',
 		});
 	};
 
 	const openImgListModal = () => {
-		props.modalController({
+		props.setModal({
 			type: 'img_list',
 			text: '상품 상세 이미지를 선택해주세요.',
 		});
@@ -342,9 +337,9 @@ const EditTemplate = (props) => {
 			<StateInfo
 				active={false}
 				mode={props.mode}
-				product_id={product_id}
 				modal={props.modal}
-				modalController={props.modalController}
+				setModal={props.setModal}
+				product_id={product_id}
 			/>
 			<BasicInfo onMouseDown={onMouseDown}>
 				<Head>기본 정보</Head>

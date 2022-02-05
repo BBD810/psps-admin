@@ -40,16 +40,16 @@ const DetailTemplate = (props) => {
 
 	const selectEdit = () => {
 		history.push({ state: banner_id });
-		props.changeMode('edit');
+		props.setMode('edit');
 	};
 	const selectDisplay = () => {
 		if (detail.display === 1 && displayList.length === 1) {
-			return props.modalController({
+			return props.setModal({
 				type: 'confirm',
 				text: '최소 한 개의 배너는\n노출중이어야 합니다.',
 			});
 		} else if (detail.display === 0 && displayList.length === 3) {
-			return props.modalController({
+			return props.setModal({
 				type: 'list',
 				text: '배너는 최대 세 개만 노출이 가능합니다.\n교환할 배너를 선택해주세요.',
 				list: displayList,
@@ -59,7 +59,7 @@ const DetailTemplate = (props) => {
 		}
 	};
 	const goDisplay = () => {
-		props.modalController({
+		props.setModal({
 			type: 'select',
 			text: '해당 배너의\n노출상태를 변경하시겠습니까?',
 			act: 'display',
@@ -68,12 +68,12 @@ const DetailTemplate = (props) => {
 
 	const selectDelete = () => {
 		if (detail.display === 1) {
-			props.modalController({
+			props.setModal({
 				type: 'confirm',
 				text: '노출중인 배너는\n삭제할 수 없습니다.',
 			});
 		} else if (detail.display === 1 && displayList.length < 2) {
-			props.modalController({
+			props.setModal({
 				...props.modal,
 				type: 'confirm',
 				text: '최소 한 개의 배너는\n노출중이어야 합니다.',
@@ -83,14 +83,14 @@ const DetailTemplate = (props) => {
 		}
 	};
 	const goDelete = () => {
-		props.modalController({
+		props.setModal({
 			type: 'select',
 			text: '해당 배너를\n삭제하시겠습니까?',
 			act: 'delete',
 		});
 	};
 	const selectList = () => {
-		props.changeMode('list');
+		props.setMode('list');
 	};
 
 	useEffect(() => {
@@ -128,8 +128,8 @@ const DetailTemplate = (props) => {
 	}, [props.modal.type]);
 
 	const success = () => {
-		props.modalController({ type: '' });
-		props.changeMode('list');
+		props.setModal({ type: '' });
+		props.setMode('list');
 	};
 
 	return (

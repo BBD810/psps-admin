@@ -75,7 +75,7 @@ const ListTemplate = (props) => {
 
 	const goDetail = (el) => {
 		history.push({ state: el.product_image_id });
-		props.changeMode('detail');
+		props.setMode('detail');
 	};
 	const menuOpenController = (idx) => {
 		setMenuOpen(idx);
@@ -93,16 +93,16 @@ const ListTemplate = (props) => {
 	};
 	const selectEdit = (el) => {
 		history.push({ state: el.product_image_id });
-		props.changeMode('edit');
+		props.setMode('edit');
 	};
 	const selectShare = (detail) => {
 		if (detail.share === 1 && detail.used > 1) {
-			props.modalController({
+			props.setModal({
 				type: 'confirm',
 				text: '해당 상세이미지는\n공유된 상품이 2개 이상입니다.\n목록이전을 먼저 해주세요.',
 			});
 		} else {
-			props.modalController({
+			props.setModal({
 				type: 'select',
 				text: '타입(공유여부)을\n변경하시겠습니까?',
 				act: 'share',
@@ -111,12 +111,12 @@ const ListTemplate = (props) => {
 	};
 	const selectDelete = (detail) => {
 		if (detail.share === 1) {
-			props.modalController({
+			props.setModal({
 				type: 'confirm',
 				text: '공유이미지는\n삭제할 수 없습니다.',
 			});
 		} else {
-			props.modalController({
+			props.setModal({
 				type: 'select',
 				text: '해당 이미지를\n삭제하시겠습니까?',
 				act: 'delete',
@@ -198,7 +198,7 @@ const ListTemplate = (props) => {
 	const success = (list) => {
 		setView('전체보기');
 		setList(list);
-		props.modalController({ type: '' });
+		props.setModal({ type: '' });
 	};
 
 	return (
