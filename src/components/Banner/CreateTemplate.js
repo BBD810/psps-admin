@@ -521,7 +521,6 @@ const FileInput = styled.input`
 	border: none;
 	background-color: #2a3349;
 	border-radius: 4px;
-	cursor: pointer;
 `;
 const Buttons = styled.div`
 	height: 3.1rem;

@@ -53,7 +53,7 @@ const Category = (props) => {
 		setSub(_desc);
 	}, [props.mode, props.category, info]);
 
-	const categoryController = (e) => {
+	const onChangeCategory = (e) => {
 		props.getCategory(e.target.innerText);
 	};
 
@@ -65,7 +65,7 @@ const Category = (props) => {
 						<CategoryItem
 							key={idx}
 							select={props.category === el.item}
-							onClick={categoryController}>
+							onClick={onChangeCategory}>
 							{el.item}
 						</CategoryItem>
 					))}

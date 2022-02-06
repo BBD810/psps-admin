@@ -10,6 +10,7 @@ const SideBar = (props) => {
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const [pull, setPull] = useState(false);
+
 	const menus = [
 		'배너',
 		'공급원',
@@ -25,7 +26,7 @@ const SideBar = (props) => {
 	};
 	const menuController = (e) => {
 		const innerText = e.target.innerText;
-		props.getMenu(innerText);
+		props.setMenu(innerText);
 		if (innerText === '배너') {
 			history.push('/');
 		} else if (innerText === '공급원') {

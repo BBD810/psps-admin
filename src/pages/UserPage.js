@@ -33,8 +33,8 @@ const UserPage = () => {
 				<SideBar menu={menu} setMenu={setMenu} />
 				<Contents>
 					<Category
-						getCategory={getCategory}
 						category={category}
+						getCategory={getCategory}
 						title={title}
 						desc={desc}
 						mode={mode}

@@ -159,9 +159,10 @@ const ListTemplate = (props) => {
 		}
 		changeOrder(arr);
 	};
-
 	const changeOrder = (arr) => {
-		if (arr[0].display !== arr[1].display) {
+		if (arr.length < 2) {
+			return;
+		} else if (arr[0].display !== arr[1].display) {
 			props.setModal({
 				type: 'confirm',
 				text: '노출 상태가 같은 배너만\n순서 변경이 가능합니다.',
@@ -177,17 +178,14 @@ const ListTemplate = (props) => {
 		let isSubscribed = true;
 		let _modal = props.modal;
 		if (_modal.act === 'display' && _modal.return) {
-			setIsLoading(true);
 			banner.change_display(banner_id).then((res) => {
 				isSubscribed && res.data.success && success(res.data.banner_list);
 			});
 		} else if (_modal.act === 'delete' && _modal.return) {
-			setIsLoading(true);
 			banner.remove(banner_id).then((res) => {
 				isSubscribed && res.data.success && success(res.data.banner_list);
 			});
 		} else if (_modal.act === 'replace' && _modal.return) {
-			setIsLoading(true);
 			const arr = [detail, displayList[_modal.return]];
 			banner.replace_display(arr).then((res) => {
 				isSubscribed && res.data.success && success(res.data.banner_list);
@@ -199,7 +197,6 @@ const ListTemplate = (props) => {
 	}, [props.modal.type]);
 
 	const success = (list) => {
-		setIsLoading(false);
 		setList(list);
 		props.setModal({ type: '' });
 	};

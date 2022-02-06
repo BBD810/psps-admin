@@ -1,5 +1,4 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { supplierCategory } from '../data/category';
+import React, { lazy, Suspense, useState } from 'react';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
@@ -7,6 +6,16 @@ import Footer from '../components/Footer';
 import ListTemplate from '../components/Supplier/ListTemplate';
 import ConfirmModal from '../components/Modal/Confirm';
 import SelectModal from '../components/Modal/Select';
+
+const ListTemplate = lazy(() => {
+	return import('../components/Supplier/ListTemplate');
+});
+const ConfirmModal = lazy(() => {
+	return import('../components/Modal/Confirm');
+});
+const SelectModal = lazy(() => {
+	return import('../');
+});
 
 const SupplierPage = () => {
 	const [mode, setMode] = useState('list');
@@ -17,13 +26,9 @@ const SupplierPage = () => {
 	const [desc, setDesc] = useState('');
 	const [modal, setModal] = useState({ type: '' });
 
-	useEffect(() => {
-		for (let i = 0; i < supplierCategory.length; i++) {
-			if (supplierCategory[i].item === category) {
-				setInfo(supplierCategory[i]);
-			}
-		}
-	}, []);
+	const getCategory = (category) => {
+		setCategory(category);
+	};
 
 	return (
 		<div id='container'>
@@ -32,11 +37,11 @@ const SupplierPage = () => {
 				<Contents>
 					<Category
 						category={category}
-						setCategory={setCategory}
-						mode={mode}
-						menu={menu}
+						getCategory={getCategory}
 						title={title}
 						desc={desc}
+						mode={mode}
+						menu={menu}
 						modal={modal}
 						setModal={setModal}
 					/>

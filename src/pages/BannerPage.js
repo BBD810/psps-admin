@@ -50,16 +50,6 @@ const BannerPage = () => {
 		}
 	}, [info, mode]);
 
-	// const modalController = (data) => {
-	// 	setModal(data);
-	// };
-
-	// const changeMode = (mode) => {
-	// 	setMode(mode);
-	// };
-	// const getMenu = (menu) => {
-	// 	setMenu(menu);
-	// };
 	const getCategory = (category) => {
 		setCategory(category);
 		setMode('list');
@@ -69,7 +59,7 @@ const BannerPage = () => {
 	return (
 		<div id='container'>
 			<Container>
-				<SideBar menu={menu} />
+				<SideBar menu={menu} setMenu={setMenu} />
 				<Contents>
 					<Category
 						category={category}

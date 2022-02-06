@@ -306,7 +306,6 @@ const FileInput = styled.input`
 	position: absolute;
 	left: 0;
 	opacity: 0;
-	cursor: pointer;
 	border: none;
 	border-radius: 4px;
 	background-color: #2a3349;
