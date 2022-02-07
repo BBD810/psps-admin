@@ -22,6 +22,25 @@ const OrderFilter = (props) => {
 	const [partOpen, setPartOpen] = useState(0);
 	const [period, setPeriod] = useState(false);
 	const [date, setDate] = useState({ from: '', to: '' });
+	const [state, setState] = useState('');
+
+	const items = [
+		{ title: '기간', desc: '기간별 주문내역을 조회합니다.' },
+		{ title: '카테고리', desc: '상품 카테고리별 주문내역을 조회합니다.' },
+		{ title: '주문상태', desc: '주문상태별 주문내역을 조회합니다.' },
+		{ title: '회원구분', desc: '회원,비회원별 주문내역을 조회합니다.' },
+	];
+	const orderState = [
+		'입금전',
+		'결제완료',
+		'배송중',
+		'배송완료',
+		'취소요청',
+		'반품요청',
+		'교환요청',
+		'환불완료',
+		'취소완료',
+	];
 
 	const clickToday = () => {
 		period === 0 ? setPeriod('') : setPeriod(0);
@@ -46,15 +65,29 @@ const OrderFilter = (props) => {
 		setDate({ ...date, to: e.target.value });
 	};
 
-	const items = [
-		{ title: '기간', desc: '기간별 주문내역을 조회합니다.' },
-		{ title: '카테고리', desc: '상품 카테고리별 주문내역을 조회합니다.' },
-		{ title: '주문상태', desc: '주문상태별 주문내역을 조회합니다.' },
-		{ title: '회원구분', desc: '회원,비회원별 주문내역을 조회합니다.' },
-	];
+	const onChangePart = (e) => {
+		const text = e.target.innerText;
+		props.part !== text && props.setPart(text);
+		setPartOpen(0);
+	};
+	const onChangeSubPart = (e) => {
+		const text = e.target.innerText;
+		props.subPart !== text && props.setSubPart(text);
+		setPartOpen(0);
+	};
+	const onChangeState = (text) => {
+		state === text ? setState('') : setState(text);
+	};
+
+	const onMouseDown = (e) => {
+		partOpen !== 0 &&
+			(!partBox.current || !partBox.current.contains(e.target)) &&
+			(!subPartBox.current || !subPartBox.current.contains(e.target)) &&
+			setPartOpen(0);
+	};
 
 	return (
-		<Container>
+		<Container onMouseDown={onMouseDown}>
 			<Head>필터기능</Head>
 			<Body>
 				<Content>
@@ -93,6 +126,7 @@ const OrderFilter = (props) => {
 								/>
 								<ItemText>달력에서 찾기</ItemText>
 								<DatePicker type='date' onChange={onChangeStart} />
+								<Text>~</Text>
 								<DatePicker type='date' onChange={onChangeTo} />
 							</Item>
 						</RightInner>
@@ -112,9 +146,7 @@ const OrderFilter = (props) => {
 											{partList.map((el, idx) => (
 												<PartSelectList
 													key={idx}
-													onClick={() => {
-														props.setPart(el.title);
-													}}>
+													onClick={onChangePart}>
 													{el.title}
 												</PartSelectList>
 											))}
@@ -143,9 +175,7 @@ const OrderFilter = (props) => {
 											{props.subPartList.map((el, idx) => (
 												<PartSelectList
 													key={idx}
-													onClick={() => {
-														props.setSubPart(el);
-													}}>
+													onClick={onChangeSubPart}>
 													{el}
 												</PartSelectList>
 											))}
@@ -172,11 +202,38 @@ const OrderFilter = (props) => {
 				</Content>
 				<Content>
 					<LeftWrap data={items[2]} />
+					<Right>
+						<RightInner className='grid'>
+							{orderState.map((el, idx) => (
+								<Item key={idx}>
+									<CheckIcon
+										alt=''
+										src={state === el ? check_icon : uncheck_icon}
+										onClick={() => {
+											onChangeState(el);
+										}}
+									/>
+									<ItemText>{el}</ItemText>
+								</Item>
+							))}
+						</RightInner>
+					</Right>
 				</Content>
 				<Content>
 					<LeftWrap data={items[3]} />
+					<Right>
+						<RightInner>
+							{['회원', '비회원'].map((el, idx) => (
+								<Item key={idx}>
+									<CheckIcon alt='' src={check_icon} />
+									<ItemText>{el}</ItemText>
+								</Item>
+							))}
+						</RightInner>
+					</Right>
 				</Content>
 			</Body>
+			<Button>적용하기</Button>
 		</Container>
 	);
 };
@@ -186,6 +243,9 @@ export default OrderFilter;
 const Container = styled.div`
 	width: 119rem;
 	margin-bottom: 4rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 `;
 const Head = styled.div`
 	width: 100%;
@@ -210,6 +270,13 @@ const Content = styled.div`
 	border-radius: 4px;
 	:nth-last-child(1) {
 		margin: 0;
+	}
+	:nth-child(3) .grid {
+		width: 65%;
+		height: 100%;
+		padding: 2rem 4rem;
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
 	}
 `;
 const Left = styled.div`
@@ -246,11 +313,10 @@ const RightInner = styled.div`
 	padding: 0 4rem;
 	width: 100%;
 	display: flex;
-	/* display: grid;
-	grid-template-columns: repeat(4, 1fr); */
 `;
 const Item = styled.div`
-	height: 1.7rem;
+	min-width: 8rem;
+	height: 3.1rem;
 	display: flex;
 	align-items: center;
 	margin-right: 3rem;
@@ -274,7 +340,13 @@ const DatePicker = styled.input`
 	width: 11.5rem;
 	margin-left: 0.8rem;
 `;
-
+const Text = styled.p`
+	font-size: 1.2rem;
+	font-family: 'kr-b';
+	color: #2a3349;
+	text-align: center;
+	margin-left: 0.5rem;
+`;
 const Parts = styled.div`
 	width: 33rem;
 	height: 3.1rem;
@@ -345,4 +417,21 @@ const PartSelectList = styled.li`
 	:hover {
 		background-color: #e5e6ed;
 	}
+`;
+const Button = styled.button`
+	width: 10.6rem;
+	height: 3.1rem;
+	font-size: 1.2rem;
+	font-family: 'kr-b';
+	border: none;
+	border-radius: 4px;
+	background-color: #2a3349;
+	color: #fff;
+	margin-left: 0.8rem;
+	margin-top: 1rem;
+	${(props) =>
+		props.border &&
+		`	color: #2a3349; background-color: unset;
+		border: 2px solid #2a3349;`}
+	${(props) => props.add && `position:absolute; top:-8.8rem; right:0;`}
 `;
