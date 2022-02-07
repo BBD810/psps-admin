@@ -3,24 +3,13 @@ import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
-
-const ListTemplate = lazy(() => {
-	return import('../components/Supplier/ListTemplate');
-});
-const ConfirmModal = lazy(() => {
-	return import('../components/Modal/Confirm');
-});
-const SelectModal = lazy(() => {
-	return import('../components/Modal/Select');
-});
+import ListTemplate from '../components/Supplier/ListTemplate';
+import ConfirmModal from '../components/Modal/Confirm';
+import SelectModal from '../components/Modal/Select';
 
 const SupplierPage = () => {
-	const [mode, setMode] = useState('list');
 	const [menu, setMenu] = useState('공급원');
 	const [category, setCategory] = useState('공급원 목록');
-	const [info, setInfo] = useState({});
-	const [title, setTitle] = useState('');
-	const [desc, setDesc] = useState('');
 	const [modal, setModal] = useState({ type: '' });
 
 	const getCategory = (category) => {
@@ -35,23 +24,16 @@ const SupplierPage = () => {
 					<Category
 						category={category}
 						getCategory={getCategory}
-						title={title}
-						desc={desc}
-						mode={mode}
 						menu={menu}
 						modal={modal}
 						setModal={setModal}
 					/>
 					<ListTemplate modal={modal} setModal={setModal} />
 					{modal.type === 'confirm' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<ConfirmModal modal={modal} setModal={setModal} />
-						</Suspense>
+						<ConfirmModal modal={modal} setModal={setModal} />
 					)}
 					{modal.type === 'select' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<SelectModal modal={modal} setModal={setModal} />
-						</Suspense>
+						<SelectModal modal={modal} setModal={setModal} />
 					)}
 					<Footer />
 				</Contents>

@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as supplier from '../../controller/supplier';
+import * as _supplier from '../../controller/supplier';
 import styled from 'styled-components';
 import PageSelector from '../PageSelector';
-import Spinner from '../Spinner';
 
 const ListTemplate = (props) => {
 	const header = useRef();
@@ -21,7 +20,7 @@ const ListTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		supplier.get_list(page).then((res) => {
+		_supplier.get_list(page).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setTotal(res.data.total);
 				setList(res.data.supplier_list);
@@ -77,7 +76,7 @@ const ListTemplate = (props) => {
 				text: '담당자 정보를 제외한\n모든 정보를 입력해주셔야 합니다.',
 			});
 		} else {
-			supplier.create(input, page).then((res) => {
+			_supplier.create(input, page).then((res) => {
 				if (res.data.success) {
 					props.setModal({
 						type: 'confirm',
@@ -100,7 +99,7 @@ const ListTemplate = (props) => {
 			setDetail(el);
 			setEditMode(idx);
 		} else if (innerText === '저장') {
-			supplier.edit(detail, detail.supplier_id, page).then((res) => {
+			_supplier.edit(detail, detail.supplier_id, page).then((res) => {
 				if (res.data.success) {
 					setEditMode(false);
 					setList(res.data.supplier_list);
@@ -130,7 +129,7 @@ const ListTemplate = (props) => {
 		let isSubscribed = true;
 		let _modal = props.modal;
 		if (_modal.act === 'delete' && _modal.return) {
-			supplier.remove(detail.supplier_id, page).then((res) => {
+			_supplier.remove(detail.supplier_id, page).then((res) => {
 				if (isSubscribed && res.data.success) {
 					props.setModal({ type: '' });
 					setTotal(res.data.total);

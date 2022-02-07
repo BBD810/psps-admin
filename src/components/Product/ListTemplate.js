@@ -22,7 +22,7 @@ const ListTemplate = (props) => {
 	const subPartBox = useRef();
 	const [part, setPart] = useState('농산');
 	const [subPart, setSubPart] = useState('과일·수입청과');
-	const [partList, setPartList] = useState(category.part);
+	const partList = category.part;
 	const [subPartList, setSubPartList] = useState([]);
 	const [partOpen, setPartOpen] = useState(0);
 	const [detail, setDetail] = useState({});

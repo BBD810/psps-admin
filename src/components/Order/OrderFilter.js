@@ -1,64 +1,180 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import check_icon from '../../images/check_icon.svg';
-import uncheck_icon from '../../images/empty_icon.svg';
+import check_icon from '../../images/check_black_icon.svg';
+import uncheck_icon from '../../images/empty_black_icon.svg';
+import down from '../../images/angle-down.svg';
 
-const OrderFilter = () => {
+const LeftWrap = ({ data }) => {
+	return (
+		<Left>
+			<LeftInner>
+				<Title>{data && data.title}</Title>
+				<Desc>{data && data.desc}</Desc>
+			</LeftInner>
+		</Left>
+	);
+};
+
+const OrderFilter = (props) => {
+	const partBox = useRef();
+	const subPartBox = useRef();
+	const partList = props.partList;
+	const [partOpen, setPartOpen] = useState(0);
+	const [period, setPeriod] = useState(false);
+	const [date, setDate] = useState({ from: '', to: '' });
+
+	const clickToday = () => {
+		period === 0 ? setPeriod('') : setPeriod(0);
+	};
+	const clickOneMonth = () => {
+		period === 1 ? setPeriod('') : setPeriod(1);
+	};
+	const clickThreeMonth = () => {
+		period === 3 ? setPeriod('') : setPeriod(3);
+	};
+	const clickCalendar = () => {
+		period === 5 ? setPeriod('') : setPeriod(5);
+	};
+	const onChangeStart = (e) => {
+		// 끝날짜보다 빨라야함
+		setPeriod(5);
+		setDate({ ...date, from: e.target.value });
+	};
+	const onChangeTo = (e) => {
+		// 시작날짜보다 늦어야함
+		setPeriod(5);
+		setDate({ ...date, to: e.target.value });
+	};
+
+	const items = [
+		{ title: '기간', desc: '기간별 주문내역을 조회합니다.' },
+		{ title: '카테고리', desc: '상품 카테고리별 주문내역을 조회합니다.' },
+		{ title: '주문상태', desc: '주문상태별 주문내역을 조회합니다.' },
+		{ title: '회원구분', desc: '회원,비회원별 주문내역을 조회합니다.' },
+	];
+
 	return (
 		<Container>
 			<Head>필터기능</Head>
 			<Body>
 				<Content>
-					<Left>
-						<LeftInner>
-							<Title>기간</Title>
-							<Desc>기간별 주문내역을 조회합니다.</Desc>
-						</LeftInner>
-					</Left>
+					<LeftWrap data={items[0]} />
 					<Right>
 						<RightInner>
 							<Item>
-								<CheckIcon alt='' src={check_icon} />
+								<CheckIcon
+									alt='today'
+									src={period === 0 ? check_icon : uncheck_icon}
+									onClick={clickToday}
+								/>
 								<ItemText>오늘</ItemText>
 							</Item>
 							<Item>
-								<CheckIcon alt='' src={check_icon} />
+								<CheckIcon
+									alt='1 month'
+									src={period === 1 ? check_icon : uncheck_icon}
+									onClick={clickOneMonth}
+								/>
 								<ItemText>1개월</ItemText>
 							</Item>
 							<Item>
-								<CheckIcon alt='' src={check_icon} />
+								<CheckIcon
+									alt='3 month'
+									src={period === 3 ? check_icon : uncheck_icon}
+									onClick={clickThreeMonth}
+								/>
 								<ItemText>3개월</ItemText>
 							</Item>
 							<Item>
-								<CheckIcon alt='' src={check_icon} />
+								<CheckIcon
+									alt='period setting'
+									src={period === 5 ? check_icon : uncheck_icon}
+									onClick={clickCalendar}
+								/>
 								<ItemText>달력에서 찾기</ItemText>
+								<DatePicker type='date' onChange={onChangeStart} />
+								<DatePicker type='date' onChange={onChangeTo} />
 							</Item>
 						</RightInner>
 					</Right>
 				</Content>
 				<Content>
-					<Left>
-						<LeftInner>
-							<Title>카테고리</Title>
-							<Desc>상품 카테고리별 주문내역을 조회합니다.</Desc>
-						</LeftInner>
-					</Left>
+					<LeftWrap data={items[1]} />
+					<Right>
+						<RightInner>
+							<Parts>
+								<Part>
+									{partOpen === 1 ? (
+										<PartSelectWrap ref={partBox}>
+											<PartSelectList>
+												{props.part && `${props.part}`}
+											</PartSelectList>
+											{partList.map((el, idx) => (
+												<PartSelectList
+													key={idx}
+													onClick={() => {
+														props.setPart(el.title);
+													}}>
+													{el.title}
+												</PartSelectList>
+											))}
+										</PartSelectWrap>
+									) : (
+										<PartSelected
+											onClick={() => {
+												setPartOpen(1);
+											}}>
+											<PartText>
+												{props.part && `대분류 - ${props.part}`}
+											</PartText>
+											<PartSelectImg
+												alt='select button'
+												src={down}
+											/>
+										</PartSelected>
+									)}
+								</Part>
+								<Part>
+									{partOpen === 2 ? (
+										<PartSelectWrap ref={subPartBox}>
+											<PartSelectList>
+												{props.subPart && `${props.subPart}`}
+											</PartSelectList>
+											{props.subPartList.map((el, idx) => (
+												<PartSelectList
+													key={idx}
+													onClick={() => {
+														props.setSubPart(el);
+													}}>
+													{el}
+												</PartSelectList>
+											))}
+										</PartSelectWrap>
+									) : (
+										<PartSelected
+											onClick={() => {
+												setPartOpen(2);
+											}}>
+											<PartText>
+												{props.subPart &&
+													`소분류 - ${props.subPart}`}
+											</PartText>
+											<PartSelectImg
+												alt='select button'
+												src={down}
+											/>
+										</PartSelected>
+									)}
+								</Part>
+							</Parts>
+						</RightInner>
+					</Right>
 				</Content>
 				<Content>
-					<Left>
-						<LeftInner>
-							<Title>주문상태</Title>
-							<Desc>주문상태별 주문내역을 조회합니다.</Desc>
-						</LeftInner>
-					</Left>
+					<LeftWrap data={items[2]} />
 				</Content>
 				<Content>
-					<Left>
-						<LeftInner>
-							<Title>회원구분</Title>
-							<Desc>회원,비회원별 주문내역을 조회합니다.</Desc>
-						</LeftInner>
-					</Left>
+					<LeftWrap data={items[3]} />
 				</Content>
 			</Body>
 		</Container>
@@ -120,10 +236,9 @@ const Desc = styled.p`
 	color: #848ca2;
 	letter-spacing: -0.2px;
 `;
-const Right = styled(LeftInner)`
+const Right = styled.div`
 	width: 91rem;
 	display: flex;
-	justify-content: center;
 	align-items: center;
 `;
 const RightInner = styled.div`
@@ -155,4 +270,79 @@ const CheckIcon = styled.img`
 	height: 1.7rem;
 	margin-right: 0.6rem;
 `;
-const CalendarIcon = styled.img``;
+const DatePicker = styled.input`
+	width: 11.5rem;
+	margin-left: 0.8rem;
+`;
+
+const Parts = styled.div`
+	width: 33rem;
+	height: 3.1rem;
+	display: flex;
+	align-items: center;
+`;
+const Part = styled.div`
+	width: 100%;
+	position: relative;
+	:nth-child(1) {
+		margin-right: 1rem;
+	}
+`;
+const PartSelected = styled.div`
+	width: 16rem;
+	height: 3.1rem;
+	line-height: 3.1rem;
+	display: flex;
+	align-items: center;
+	padding: 0 1rem;
+	background-color: #f4f4f4;
+	border: 2px solid #e5e6ed;
+	border-radius: 4px;
+	cursor: pointer;
+`;
+const PartText = styled.p`
+	width: 100%;
+	font-size: 1.2rem;
+	color: #7f8697;
+`;
+const PartSelectImg = styled.img`
+	width: 0.7rem;
+	height: 0.6rem;
+	position: absolute;
+	right: 1rem;
+`;
+const PartSelectWrap = styled.ul`
+	width: 16rem;
+	max-height: 16rem;
+	line-height: 3.1rem;
+	position: absolute;
+	top: -1.6rem;
+	z-index: 3;
+	background-color: #fff;
+	box-shadow: 0px 3px 6px #00000029;
+	border: 2px solid #2a3349;
+	border-radius: 4px;
+	overflow-y: auto;
+	::-webkit-scrollbar {
+		width: 3px;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: #5e667b;
+		border-radius: 10px;
+	}
+	::-webkit-scrollbar-track {
+		background-color: #fff;
+	}
+`;
+const PartSelectList = styled.li`
+	height: 3.1rem;
+	line-height: 3.1rem;
+	padding: 0 0.8rem;
+	cursor: pointer;
+	:nth-child(1) {
+		border-bottom: 1px solid #e5e6ed;
+	}
+	:hover {
+		background-color: #e5e6ed;
+	}
+`;

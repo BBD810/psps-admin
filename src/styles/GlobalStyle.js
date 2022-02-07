@@ -84,6 +84,24 @@ input::-webkit-file-upload-button { cursor:pointer }
 button:hover {
 	cursor: pointer;
 }
+input[type='date']::-webkit-clear-button, 
+input[type='date']::-webkit-inner-spin-button { 
+ display: none; 
+ /* margin:0; */
+ border:1px solid red;
+} 
+input[type='date']::-webkit-calendar-picker-indicator { 
+	margin:0;
+	margin-top:3px;
+ 	color: red; 
+} 
+input[type='date'] { 
+	height:3.1rem;
+ 	font-size:1.2rem;
+ 	font-family:'kr-r';
+ 	color:#7F8697;
+	background-color:#F4F4F4;
+}
 `;
 
 export default GlobalStyle;

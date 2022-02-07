@@ -262,7 +262,7 @@ const Desc = styled.p`
 	color: #848ca2;
 	letter-spacing: -0.2px;
 `;
-const Right = styled(LeftInner)`
+const Right = styled.div`
 	width: 91rem;
 	display: flex;
 	justify-content: center;

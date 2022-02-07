@@ -1,34 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { orderCategory } from '../data/category';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
-import OrderFilter from '../components/Order/OrderFilter';
-import OrderList from '../components/Order/OrderList';
-import DeliveryFilter from '../components/Order/DeliveryFilter';
-import DeliveryList from '../components/Order/DeliveryList';
+import Order from '../components/Order/Order';
+import Delivery from '../components/Order/Delivery';
 
 const OrderPage = () => {
 	const [mode, setMode] = useState('list');
 	const [menu, setMenu] = useState('주문');
 	const [category, setCategory] = useState('주문 목록');
-	const [info, setInfo] = useState({});
 	const [title, setTitle] = useState('');
 	const [desc, setDesc] = useState('');
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
 
-	useEffect(() => {
-		for (let i = 0; i < orderCategory.length; i++) {
-			if (orderCategory[i].item === category) {
-				setInfo(orderCategory[i]);
-			}
-		}
-	}, []);
-
 	const getCategory = (category) => {
 		setCategory(category);
-		setMode('list');
 	};
 
 	return (
@@ -39,17 +26,15 @@ const OrderPage = () => {
 					<Category
 						category={category}
 						getCategory={getCategory}
-						mode={mode}
+						// mode={mode}
 						menu={menu}
-						title={title}
-						desc={desc}
+						// title={title}
+						// desc={desc}
 						modal={modal}
 						setModal={setModal}
 					/>
-					<OrderFilter />
-					<OrderList />
-					<DeliveryFilter />
-					<DeliveryList />
+					{category === '주문 목록' && <Order />}
+					{category === '배송 관리' && <Delivery />}
 					<Footer />
 				</Contents>
 			</Container>

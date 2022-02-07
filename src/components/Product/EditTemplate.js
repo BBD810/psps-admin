@@ -737,7 +737,7 @@ const Desc = styled.p`
 	color: #848ca2;
 	letter-spacing: -0.2px;
 `;
-const Right = styled(LeftInner)`
+const Right = styled.div`
 	width: 91rem;
 	display: flex;
 	justify-content: center;
@@ -745,6 +745,7 @@ const Right = styled(LeftInner)`
 `;
 const RightInner = styled.div`
 	margin: 2rem 0 2.7rem;
+	padding: 0 4rem;
 	width: 100%;
 	position: relative;
 	${(props) => props.option && `display: flex`}
