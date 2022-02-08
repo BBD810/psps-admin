@@ -26,10 +26,10 @@ const OrderPage = () => {
 					<Category
 						category={category}
 						getCategory={getCategory}
-						// mode={mode}
+						mode={mode}
 						menu={menu}
-						// title={title}
-						// desc={desc}
+						title={title}
+						desc={desc}
 						modal={modal}
 						setModal={setModal}
 					/>

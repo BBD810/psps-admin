@@ -2,44 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 import PageSelector from '../PageSelector';
 
-const OrderList = (props) => {
+const UserList = (props) => {
 	const header = [
-		'주문상태',
-		'주문일(결제일)',
-		'상품명',
-		'주문자(이메일)',
+		'이름',
+		'이메일',
+		'등록일',
+		'주소',
 		'연락처',
-		'결제금액',
-		'결제수단',
+		'등록계좌',
+		'주문내역',
 	];
-
-	const getButtonColor = (state) => {
-		let color;
-		if (state === '입금전') {
-			color = '#E6843B';
-		} else if (state === '결제완료') {
-			color = '#96738E';
-		} else if (state === '배송중') {
-			color = '#214588';
-		} else if (state === '취소요청') {
-			color = '#E60F0F';
-		} else if (state === '반품요청') {
-			color = '#00A1C7';
-		} else if (state === '교환요청') {
-			color = '#6CC109';
-		} else if (
-			state === '배송완료' ||
-			state === '취소완료' ||
-			state === '환불완료'
-		) {
-			color = '#94A0B5';
-		}
-		return color;
-	};
 
 	return (
 		<Container>
-			<Head>주문내역</Head>
+			<Head>고객목록</Head>
 			<Body>
 				<Header>
 					{header.map((el, idx) => (
@@ -49,20 +25,13 @@ const OrderList = (props) => {
 				<ListWrap>
 					{props.list.map((el, idx) => (
 						<List key={idx}>
-							<ListItem>
-								<StateButton
-									style={{
-										backgroundColor: `${getButtonColor(el.state)}`,
-									}}>
-									{el.state}
-								</StateButton>
-							</ListItem>
-							<ListItem>{`${el.order_date}\n(${el.payment_date})`}</ListItem>
-							<ListItem>{el.product}</ListItem>
-							<ListItem>{`${el.name}\n${el.email}`}</ListItem>
+							<ListItem>{el.name}</ListItem>
+							<ListItem>{el.email}</ListItem>
+							<ListItem>{el.date}</ListItem>
+							<ListItem>{el.address}</ListItem>
 							<ListItem>{el.contact}</ListItem>
-							<ListItem>{el.payment_price}</ListItem>
-							<ListItem>{el.payment_method}</ListItem>
+							<ListItem>{el.account}</ListItem>
+							<ListItem>확인하기</ListItem>
 						</List>
 					))}
 				</ListWrap>
@@ -78,7 +47,7 @@ const OrderList = (props) => {
 	);
 };
 
-export default OrderList;
+export default UserList;
 
 const Container = styled.div`
 	width: 119rem;
@@ -121,19 +90,19 @@ const HeaderItem = styled.li`
 		width: 8%;
 	}
 	:nth-child(2) {
-		width: 15%;
+		width: 17%;
 	}
 	:nth-child(3) {
-		width: 27%;
+		width: 10%;
 	}
 	:nth-child(4) {
-		width: 17%;
+		width: 22%;
 	}
 	:nth-child(5) {
 		width: 13%;
 	}
 	:nth-child(6) {
-		width: 10%;
+		width: 18%;
 	}
 	:nth-child(7) {
 		width: 10%;
@@ -161,36 +130,26 @@ const ListItem = styled.li`
 	font-size: 1.2rem;
 	color: #2a3349;
 	word-break: keep-all;
-	white-space: pre-wrap;
 	:nth-child(1) {
 		width: 8%;
 	}
 	:nth-child(2) {
-		width: 15%;
+		width: 17%;
 	}
 	:nth-child(3) {
-		width: 27%;
+		width: 10%;
 	}
 	:nth-child(4) {
-		width: 17%;
+		width: 22%;
 	}
 	:nth-child(5) {
 		width: 13%;
 	}
 	:nth-child(6) {
-		width: 10%;
+		width: 18%;
 	}
 	:nth-child(7) {
 		width: 10%;
+		text-decoration: underline;
 	}
-`;
-const StateButton = styled.button`
-	width: 6rem;
-	height: 2.5rem;
-	font-size: 1.2rem;
-	font-family: 'kr-b';
-	color: #ffffff;
-	border: none;
-	border-radius: 4px;
-	background-color: #e6843b;
 `;

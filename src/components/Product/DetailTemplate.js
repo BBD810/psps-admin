@@ -17,10 +17,8 @@ const DetailTemplate = (props) => {
 		let isSubscribed = true;
 		if (history.location.state) {
 			const _product_id = history.location.state;
-			console.log('ccc', _product_id);
 			_product.get_detail(_product_id).then((res) => {
 				if (isSubscribed && res.data.success) {
-					console.log('hihihi', res.data);
 					setDetail(res.data.product);
 					setOptionList(res.data.product_option_list);
 				}
@@ -52,8 +50,6 @@ const DetailTemplate = (props) => {
 		history.push({ state: detail.product_id });
 		props.setMode('edit');
 	};
-
-	console.log('ddd', props.modal);
 
 	useEffect(() => {
 		let isSubscribed = true;

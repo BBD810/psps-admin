@@ -18,11 +18,7 @@ const LeftWrap = ({ data }) => {
 const OrderFilter = (props) => {
 	const partBox = useRef();
 	const subPartBox = useRef();
-	const partList = props.partList;
 	const [partOpen, setPartOpen] = useState(0);
-	const [period, setPeriod] = useState(false);
-	const [date, setDate] = useState({ from: '', to: '' });
-	const [state, setState] = useState('');
 
 	const items = [
 		{ title: '기간', desc: '기간별 주문내역을 조회합니다.' },
@@ -43,26 +39,26 @@ const OrderFilter = (props) => {
 	];
 
 	const clickToday = () => {
-		period === 0 ? setPeriod('') : setPeriod(0);
+		props.period === 0 ? props.setPeriod('') : props.setPeriod(0);
 	};
 	const clickOneMonth = () => {
-		period === 1 ? setPeriod('') : setPeriod(1);
+		props.period === 1 ? props.setPeriod('') : props.setPeriod(1);
 	};
 	const clickThreeMonth = () => {
-		period === 3 ? setPeriod('') : setPeriod(3);
+		props.period === 3 ? props.setPeriod('') : props.setPeriod(3);
 	};
 	const clickCalendar = () => {
-		period === 5 ? setPeriod('') : setPeriod(5);
+		props.period === 5 ? props.setPeriod('') : props.setPeriod(5);
 	};
 	const onChangeStart = (e) => {
 		// 끝날짜보다 빨라야함
-		setPeriod(5);
-		setDate({ ...date, from: e.target.value });
+		props.setPeriod(5);
+		props.setDate({ ...props.date, from: e.target.value });
 	};
 	const onChangeTo = (e) => {
 		// 시작날짜보다 늦어야함
-		setPeriod(5);
-		setDate({ ...date, to: e.target.value });
+		props.setPeriod(5);
+		props.setDate({ ...props.date, to: e.target.value });
 	};
 
 	const onChangePart = (e) => {
@@ -76,7 +72,7 @@ const OrderFilter = (props) => {
 		setPartOpen(0);
 	};
 	const onChangeState = (text) => {
-		state === text ? setState('') : setState(text);
+		props.state === text ? props.setState('') : props.setState(text);
 	};
 
 	const onMouseDown = (e) => {
@@ -97,7 +93,7 @@ const OrderFilter = (props) => {
 							<Item>
 								<CheckIcon
 									alt='today'
-									src={period === 0 ? check_icon : uncheck_icon}
+									src={props.period === 0 ? check_icon : uncheck_icon}
 									onClick={clickToday}
 								/>
 								<ItemText>오늘</ItemText>
@@ -105,7 +101,7 @@ const OrderFilter = (props) => {
 							<Item>
 								<CheckIcon
 									alt='1 month'
-									src={period === 1 ? check_icon : uncheck_icon}
+									src={props.period === 1 ? check_icon : uncheck_icon}
 									onClick={clickOneMonth}
 								/>
 								<ItemText>1개월</ItemText>
@@ -113,7 +109,7 @@ const OrderFilter = (props) => {
 							<Item>
 								<CheckIcon
 									alt='3 month'
-									src={period === 3 ? check_icon : uncheck_icon}
+									src={props.period === 3 ? check_icon : uncheck_icon}
 									onClick={clickThreeMonth}
 								/>
 								<ItemText>3개월</ItemText>
@@ -121,7 +117,7 @@ const OrderFilter = (props) => {
 							<Item>
 								<CheckIcon
 									alt='period setting'
-									src={period === 5 ? check_icon : uncheck_icon}
+									src={props.period === 5 ? check_icon : uncheck_icon}
 									onClick={clickCalendar}
 								/>
 								<ItemText>달력에서 찾기</ItemText>
@@ -143,7 +139,7 @@ const OrderFilter = (props) => {
 											<PartSelectList>
 												{props.part && `${props.part}`}
 											</PartSelectList>
-											{partList.map((el, idx) => (
+											{props.partList.map((el, idx) => (
 												<PartSelectList
 													key={idx}
 													onClick={onChangePart}>
@@ -208,7 +204,9 @@ const OrderFilter = (props) => {
 								<Item key={idx}>
 									<CheckIcon
 										alt=''
-										src={state === el ? check_icon : uncheck_icon}
+										src={
+											props.state === el ? check_icon : uncheck_icon
+										}
 										onClick={() => {
 											onChangeState(el);
 										}}
@@ -427,11 +425,6 @@ const Button = styled.button`
 	border-radius: 4px;
 	background-color: #2a3349;
 	color: #fff;
-	margin-left: 0.8rem;
 	margin-top: 1rem;
-	${(props) =>
-		props.border &&
-		`	color: #2a3349; background-color: unset;
-		border: 2px solid #2a3349;`}
-	${(props) => props.add && `position:absolute; top:-8.8rem; right:0;`}
+	margin-bottom: 3.9rem;
 `;

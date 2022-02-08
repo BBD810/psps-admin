@@ -4,27 +4,19 @@ import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
+import UserFilter from '../components/User/UserFilter';
+import UserList from '../components/User/UserList';
 
 const UserPage = () => {
 	const [mode, setMode] = useState('list');
-	const [menu, setMenu] = useState('유저');
-	const [category, setCategory] = useState('유저 목록');
-	const [info, setInfo] = useState({});
-	const [title, setTitle] = useState('');
-	const [desc, setDesc] = useState('');
+	const [menu, setMenu] = useState('고객');
+	const [category, setCategory] = useState('고객 목록');
+	const [title, setTitle] = useState(userCategory[0].list_main);
+	const [desc, setDesc] = useState(userCategory[0].list_sub);
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
-
-	useEffect(() => {
-		for (let i = 0; i < userCategory.length; i++) {
-			if (userCategory[i].item === category) {
-				setInfo(userCategory[i]);
-			}
-		}
-	}, [mode]);
 
 	const getCategory = (category) => {
 		setCategory(category);
-		setMode('list');
 	};
 
 	return (
@@ -35,13 +27,15 @@ const UserPage = () => {
 					<Category
 						category={category}
 						getCategory={getCategory}
-						title={title}
-						desc={desc}
 						mode={mode}
 						menu={menu}
+						title={title}
+						desc={desc}
 						modal={modal}
 						setModal={setModal}
 					/>
+					{/* <UserFilter />
+					<UserList /> */}
 					<Footer />
 				</Contents>
 			</Container>

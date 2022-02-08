@@ -8,6 +8,7 @@ const ListTemplate = (props) => {
 	const body = useRef();
 	const [page, setPage] = useState(1);
 	const [total, setTotal] = useState(0);
+	const [onePage, setOnePage] = useState('12');
 	const [createMode, setCreateMode] = useState(false);
 	const [editMode, setEditMode] = useState(false);
 	const [input, setInput] = useState({});
@@ -296,7 +297,12 @@ const ListTemplate = (props) => {
 				</Body>
 			</Wrap>
 			{list.length > 0 && (
-				<PageSelector page={page} total={total} onClickPage={onClickPage} />
+				<PageSelector
+					page={page}
+					total={total}
+					onePage={12}
+					onClickPage={onClickPage}
+				/>
 			)}
 		</Container>
 	);
