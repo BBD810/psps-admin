@@ -72,7 +72,14 @@ const OrderFilter = (props) => {
 		setPartOpen(0);
 	};
 	const onChangeState = (text) => {
-		props.state === text ? props.setState('') : props.setState(text);
+		console.log('text', text);
+		console.log('state1', props.state);
+		if (props.state.has(text)) {
+			props.setState(props.state.remove(text));
+		} else {
+			props.setState(props.state.add(text));
+		}
+		console.log('state2', props.state);
 	};
 
 	const onMouseDown = (e) => {

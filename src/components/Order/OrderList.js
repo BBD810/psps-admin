@@ -1,4 +1,5 @@
 import React from 'react';
+import { priceToString } from '../../functions/PriceToString';
 import styled from 'styled-components';
 import PageSelector from '../PageSelector';
 
@@ -59,9 +60,9 @@ const OrderList = (props) => {
 							</ListItem>
 							<ListItem>{`${el.order_date}\n(${el.payment_date})`}</ListItem>
 							<ListItem>{el.product}</ListItem>
-							<ListItem>{`${el.name}\n${el.email}`}</ListItem>
+							<ListItem>{`${el.name}\n(${el.email})`}</ListItem>
 							<ListItem>{el.contact}</ListItem>
-							<ListItem>{el.payment_price}</ListItem>
+							<ListItem>{priceToString(el.payment_price)}</ListItem>
 							<ListItem>{el.payment_method}</ListItem>
 						</List>
 					))}

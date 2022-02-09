@@ -18,6 +18,25 @@ const UserPage = () => {
 	const getCategory = (category) => {
 		setCategory(category);
 	};
+	// const [list, setList] = useState([]);
+	const list = [
+		{
+			name: '김덕기',
+			email: 'bbd810@naver.com',
+			date: '2022-02-22',
+			address: '경기도 안산시 단원구 광덕서로102, 406-7호',
+			contact: '010-1234-1234',
+			account: '우리은행 1002-101-2023',
+		},
+		{
+			name: '김덕기',
+			email: 'bbd810@naver.com',
+			date: '2022-02-22',
+			address: '경기도 안산시 단원구 광덕서로102, 406-7호',
+			contact: '010-1234-1234',
+			account: '우리은행 1002-101-2023',
+		},
+	];
 
 	return (
 		<div id='container'>
@@ -34,8 +53,8 @@ const UserPage = () => {
 						modal={modal}
 						setModal={setModal}
 					/>
-					{/* <UserFilter />
-					<UserList /> */}
+					<UserFilter />
+					<UserList list={list} />
 					<Footer />
 				</Contents>
 			</Container>
