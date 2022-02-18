@@ -97,6 +97,7 @@ export default withRouter(LoginPage);
 const Login = styled.div`
 	width: 83.9rem;
 	height: 52.2rem;
+	margin-top: 22rem;
 	background: #fcfcfc 0% 0% no-repeat padding-box;
 	box-shadow: 2px 6px 30px #00000033;
 	border-radius: 4px;

@@ -132,13 +132,17 @@ const DetailTemplate = (props) => {
 		props.setMode('list');
 	};
 
+	console.log(detail.temp_image);
+
 	return (
 		<Container>
 			<DetailImgBox style={imgHeight}>
-				<DetailImg
-					alt='banner img'
-					src={detail.image && `${IMG_ADDRESS}/${detail.temp_image}`}
-				/>
+				{detail.temp_image && (
+					<DetailImg
+						alt='banner img'
+						src={`${IMG_ADDRESS}/${detail.temp_image}`}
+					/>
+				)}
 			</DetailImgBox>
 			<DetailContentsBox>
 				<DetailContents>

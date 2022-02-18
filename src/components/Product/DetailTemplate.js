@@ -188,13 +188,12 @@ const DetailTemplate = (props) => {
 						</Left>
 						<Right>
 							<RightInner>
-								<ThumbnailImg
-									alt=''
-									src={
-										detail.image &&
-										`${IMG_ADDRESS}/${detail.temp_image}`
-									}
-								/>
+								{detail.temp_image && (
+									<ThumbnailImg
+										alt=''
+										src={`${IMG_ADDRESS}/${detail.temp_image}`}
+									/>
+								)}
 							</RightInner>
 						</Right>
 					</Content>
@@ -208,13 +207,12 @@ const DetailTemplate = (props) => {
 						<Right>
 							<RightInner>
 								<DetailImgWrap>
-									<DetailImg
-										alt=''
-										src={
-											detail.detail_image &&
-											`${IMG_ADDRESS}/${detail.temp_detail_image}`
-										}
-									/>
+									{detail.temp_detail_image && (
+										<DetailImg
+											alt=''
+											src={`${IMG_ADDRESS}/${detail.temp_detail_image}`}
+										/>
+									)}
 								</DetailImgWrap>
 							</RightInner>
 						</Right>

@@ -205,10 +205,12 @@ const ListTemplate = (props) => {
 							{el.stock === 0 && (
 								<ListState className='sold_out'>Sold Out</ListState>
 							)}
-							<ListImg
-								alt='product img'
-								src={`${IMG_ADDRESS}/${el.temp_image}`}
-							/>
+							{el.temp_image && (
+								<ListImg
+									alt='product img'
+									src={`${IMG_ADDRESS}/${el.temp_image}`}
+								/>
+							)}
 						</ListImgWrap>
 						<ListBottom>
 							<ListTitle

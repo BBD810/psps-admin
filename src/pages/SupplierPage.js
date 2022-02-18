@@ -8,12 +8,14 @@ import ConfirmModal from '../components/Modal/Confirm';
 import SelectModal from '../components/Modal/Select';
 
 const SupplierPage = () => {
+	const [mode, setMode] = useState('list');
 	const [menu, setMenu] = useState('공급원');
 	const [category, setCategory] = useState('공급원 목록');
 	const [modal, setModal] = useState({ type: '' });
 
 	const getCategory = (category) => {
 		setCategory(category);
+		setMode('list');
 	};
 
 	return (
@@ -24,6 +26,7 @@ const SupplierPage = () => {
 					<Category
 						category={category}
 						getCategory={getCategory}
+						mode={mode}
 						menu={menu}
 						modal={modal}
 						setModal={setModal}

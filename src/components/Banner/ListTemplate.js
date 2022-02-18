@@ -201,6 +201,8 @@ const ListTemplate = (props) => {
 		props.setModal({ type: '' });
 	};
 
+	console.log(list);
+
 	return (
 		<Container onMouseDown={onMouseDown}>
 			{isLoading && <Spinner />}
@@ -214,10 +216,12 @@ const ListTemplate = (props) => {
 							{el.display === 1 && (
 								<ListState className='display'>DISPLAY</ListState>
 							)}
-							<ListImg
-								alt='banner img'
-								src={`${IMG_ADDRESS}/${el.temp_image}`}
-							/>
+							{el.temp_image && (
+								<ListImg
+									alt='banner img'
+									src={`${IMG_ADDRESS}/${el.temp_image}`}
+								/>
+							)}
 						</ListImgWrap>
 						<ListBottom>
 							<ListTitle

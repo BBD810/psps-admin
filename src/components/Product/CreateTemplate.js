@@ -181,6 +181,15 @@ const CreateTemplate = (props) => {
 	};
 
 	const createProduct = () => {
+		console.log('image', thumbnailImg);
+		console.log('title', title);
+		console.log('part', part);
+		console.log('subPart', subPart);
+		console.log('origin', origin);
+		console.log('storage', storage);
+		console.log('supplier_id', supplier.supplier_id);
+		console.log('product_image_id', detailImgId);
+
 		setIsLoading(true);
 		const formData = new FormData();
 		formData.append('image', thumbnailImg);

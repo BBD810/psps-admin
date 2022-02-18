@@ -179,7 +179,7 @@ const DetailTemplate = (props) => {
 					해상도 : 72dpi
 				</Desc>
 				<ImgWrap>
-					{detail.image && (
+					{detail.temp_image && (
 						<UploadImg
 							alt='product detail img'
 							src={`${IMG_ADDRESS}/${detail.temp_image}`}

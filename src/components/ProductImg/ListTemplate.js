@@ -213,10 +213,12 @@ const ListTemplate = (props) => {
 							{el.share === 1 && (
 								<ListState className='share'>Share Image</ListState>
 							)}
-							<ListImg
-								alt='product img'
-								src={`${IMG_ADDRESS}/${el.temp_image}`}
-							/>
+							{el.temp_image && (
+								<ListImg
+									alt='product img'
+									src={`${IMG_ADDRESS}/${el.temp_image}`}
+								/>
+							)}
 						</ListImgWrap>
 						<ListBottom>
 							<ListTitle

@@ -49,6 +49,9 @@ const CreateTemplate = (props) => {
 	};
 
 	const onCreate = () => {
+		console.log('title', title);
+		console.log('share', share);
+		console.log('img', img);
 		if (!check) {
 			return props.setModal({
 				type: 'confirm',
@@ -60,6 +63,7 @@ const CreateTemplate = (props) => {
 			formData.append('title', title);
 			formData.append('share', share);
 			_product_img.create(formData).then((res) => {
+				console.log(res.data);
 				if (res.data.success) {
 					props.setModal({
 						type: 'confirm',
