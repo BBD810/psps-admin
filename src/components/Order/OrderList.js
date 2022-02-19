@@ -1,12 +1,13 @@
 import React from 'react';
 import { priceToString } from '../../functions/PriceToString';
+import { dateObjToDate } from '../../functions/DateObjToDate';
 import styled from 'styled-components';
 import PageSelector from '../PageSelector';
 
 const OrderList = (props) => {
 	const header = [
 		'주문상태',
-		'주문일(결제일)',
+		'주문일',
 		'상품명',
 		'주문자(이메일)',
 		'연락처',
@@ -53,17 +54,17 @@ const OrderList = (props) => {
 							<ListItem>
 								<StateButton
 									style={{
-										backgroundColor: `${getButtonColor(el.state)}`,
+										backgroundColor: `${getButtonColor(el.process)}`,
 									}}>
-									{el.state}
+									{el.process}
 								</StateButton>
 							</ListItem>
-							<ListItem>{`${el.order_date}\n(${el.payment_date})`}</ListItem>
-							<ListItem>{el.product}</ListItem>
-							<ListItem>{`${el.name}\n(${el.email})`}</ListItem>
-							<ListItem>{el.contact}</ListItem>
-							<ListItem>{priceToString(el.payment_price)}</ListItem>
-							<ListItem>{el.payment_method}</ListItem>
+							<ListItem>{`${dateObjToDate(el.create_at)}`}</ListItem>
+							<ListItem>{el.name}</ListItem>
+							<ListItem>{`${el.user_name}\n(${el.user_email})`}</ListItem>
+							<ListItem>{el.phone_number}</ListItem>
+							<ListItem>{priceToString(el.amount)}</ListItem>
+							<ListItem>{`카드 결제`}</ListItem>
 						</List>
 					))}
 				</ListWrap>

@@ -1,3 +1,6 @@
 export const priceToString = (price) => {
-	return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	console.log('price', price);
+	if (typeof price === 'number') {
+		return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	}
 };

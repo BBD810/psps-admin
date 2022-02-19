@@ -13,4 +13,12 @@ const errorMessage = () => {
 	return new Error('Server Error');
 };
 
-const get_list = () => {};
+export const get_list = async (from, to, process) => {
+	return await instance
+		.get(`/list/?from=${from}&to=${to}&process=${process}`)
+		.catch(errorMessage);
+};
+
+export const get_detail = async (payment_id) => {
+	return await instance.get(`/detail/${payment_id}`).catch(errorMessage);
+};

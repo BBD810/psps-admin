@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-const OrderDetail = () => {
+const OrderDetail = (props) => {
 	const orderer = ['이름/회원정보', 'e-mail', '연락처/주소', '결제수단'];
 	const receiver = ['이름', '연락처/주소', '배송 요청사항'];
 	const header = ['상품/옵션명', '수량', '금액'];
@@ -51,6 +51,10 @@ const OrderDetail = () => {
 			price: '40,000',
 		},
 	];
+
+	const close = () => {
+		props.setModal({ type: '' });
+	};
 
 	return (
 		<Container>
@@ -120,7 +124,7 @@ const OrderDetail = () => {
 						</ProcessBody>
 					</Table>
 				</Content>
-				<Button>확인</Button>
+				<Button onClick={close}>확인</Button>
 			</Wrap>
 		</Container>
 	);
@@ -229,6 +233,8 @@ const FooterItem = styled.p`
 	color: #5e667b;
 	:nth-child(1) {
 		width: 74%;
+		font-family: 'kr-b';
+		color: #848ca2;
 		border-right: 1px solid #e5e6ed;
 		background-color: #f5f5f5;
 	}
