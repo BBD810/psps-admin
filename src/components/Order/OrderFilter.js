@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import check_icon from '../../images/check_black_icon.svg';
 import uncheck_icon from '../../images/empty_black_icon.svg';
@@ -16,15 +16,10 @@ const LeftWrap = ({ data }) => {
 };
 
 const OrderFilter = (props) => {
-	const partBox = useRef();
-	const subPartBox = useRef();
-	const [partOpen, setPartOpen] = useState(0);
-
 	const items = [
 		{ title: '기간', desc: '기간별 주문내역을 조회합니다.' },
-		{ title: '카테고리', desc: '상품 카테고리별 주문내역을 조회합니다.' },
 		{ title: '주문상태', desc: '주문상태별 주문내역을 조회합니다.' },
-		{ title: '회원구분', desc: '회원,비회원별 주문내역을 조회합니다.' },
+		// { title: '회원구분', desc: '회원,비회원별 주문내역을 조회합니다.' },
 	];
 	const orderState = [
 		'입금전',
@@ -60,37 +55,18 @@ const OrderFilter = (props) => {
 		props.setPeriod(5);
 		props.setDate({ ...props.date, to: e.target.value });
 	};
-
-	const onChangePart = (e) => {
-		const text = e.target.innerText;
-		props.part !== text && props.setPart(text);
-		setPartOpen(0);
-	};
-	const onChangeSubPart = (e) => {
-		const text = e.target.innerText;
-		props.subPart !== text && props.setSubPart(text);
-		setPartOpen(0);
-	};
 	const onChangeState = (text) => {
-		console.log('text', text);
-		console.log('state1', props.state);
-		if (props.state.has(text)) {
-			props.setState(props.state.remove(text));
+		let arr = [...props.state];
+		if (arr.includes(text)) {
+			arr = arr.filter((el) => el !== text);
 		} else {
-			props.setState(props.state.add(text));
+			arr.push(text);
 		}
-		console.log('state2', props.state);
-	};
-
-	const onMouseDown = (e) => {
-		partOpen !== 0 &&
-			(!partBox.current || !partBox.current.contains(e.target)) &&
-			(!subPartBox.current || !subPartBox.current.contains(e.target)) &&
-			setPartOpen(0);
+		props.setState(arr);
 	};
 
 	return (
-		<Container onMouseDown={onMouseDown}>
+		<Container>
 			<Head>필터기능</Head>
 			<Body>
 				<Content>
@@ -138,94 +114,33 @@ const OrderFilter = (props) => {
 				<Content>
 					<LeftWrap data={items[1]} />
 					<Right>
-						<RightInner>
-							<Parts>
-								<Part>
-									{partOpen === 1 ? (
-										<PartSelectWrap ref={partBox}>
-											<PartSelectList>
-												{props.part && `${props.part}`}
-											</PartSelectList>
-											{props.partList.map((el, idx) => (
-												<PartSelectList
-													key={idx}
-													onClick={onChangePart}>
-													{el.title}
-												</PartSelectList>
-											))}
-										</PartSelectWrap>
-									) : (
-										<PartSelected
-											onClick={() => {
-												setPartOpen(1);
-											}}>
-											<PartText>
-												{props.part && `대분류 - ${props.part}`}
-											</PartText>
-											<PartSelectImg
-												alt='select button'
-												src={down}
-											/>
-										</PartSelected>
-									)}
-								</Part>
-								<Part>
-									{partOpen === 2 ? (
-										<PartSelectWrap ref={subPartBox}>
-											<PartSelectList>
-												{props.subPart && `${props.subPart}`}
-											</PartSelectList>
-											{props.subPartList.map((el, idx) => (
-												<PartSelectList
-													key={idx}
-													onClick={onChangeSubPart}>
-													{el}
-												</PartSelectList>
-											))}
-										</PartSelectWrap>
-									) : (
-										<PartSelected
-											onClick={() => {
-												setPartOpen(2);
-											}}>
-											<PartText>
-												{props.subPart &&
-													`소분류 - ${props.subPart}`}
-											</PartText>
-											<PartSelectImg
-												alt='select button'
-												src={down}
-											/>
-										</PartSelected>
-									)}
-								</Part>
-							</Parts>
-						</RightInner>
-					</Right>
-				</Content>
-				<Content>
-					<LeftWrap data={items[2]} />
-					<Right>
 						<RightInner className='grid'>
 							{orderState.map((el, idx) => (
 								<Item key={idx}>
 									<CheckIcon
 										alt=''
 										src={
-											props.state === el ? check_icon : uncheck_icon
+											props.state.includes(el)
+												? check_icon
+												: uncheck_icon
 										}
 										onClick={() => {
 											onChangeState(el);
 										}}
 									/>
-									<ItemText>{el}</ItemText>
+									<ItemText
+										onClick={() => {
+											onChangeState(el);
+										}}>
+										{el}
+									</ItemText>
 								</Item>
 							))}
 						</RightInner>
 					</Right>
 				</Content>
-				<Content>
-					<LeftWrap data={items[3]} />
+				{/* <Content>
+					<LeftWrap data={items[2]} />
 					<Right>
 						<RightInner>
 							{['회원', '비회원'].map((el, idx) => (
@@ -236,7 +151,7 @@ const OrderFilter = (props) => {
 							))}
 						</RightInner>
 					</Right>
-				</Content>
+				</Content> */}
 			</Body>
 			<Button>적용하기</Button>
 		</Container>
@@ -276,7 +191,7 @@ const Content = styled.div`
 	:nth-last-child(1) {
 		margin: 0;
 	}
-	:nth-child(3) .grid {
+	:nth-child(2) .grid {
 		width: 65%;
 		height: 100%;
 		padding: 2rem 4rem;

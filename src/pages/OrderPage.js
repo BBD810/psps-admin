@@ -33,8 +33,12 @@ const OrderPage = () => {
 						modal={modal}
 						setModal={setModal}
 					/>
-					{category === '주문 목록' && <Order />}
-					{category === '배송 관리' && <Delivery />}
+					{category === '주문 목록' && (
+						<Order modal={modal} setModal={setModal} />
+					)}
+					{category === '배송 관리' && (
+						<Delivery modal={modal} setModal={setModal} />
+					)}
 					<Footer />
 				</Contents>
 			</Container>

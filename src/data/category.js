@@ -11,7 +11,7 @@ export const bannerCategory = [
 	{
 		item: '광고 배너',
 		list_main: '광고 배너 목록',
-		list_sub: `광고 배너를 조회 및 수정합니다.\n첫번째 이미지는 홈페이지에 노출됩니다.`,
+		list_sub: `광고 배너를 조회 및 수정합니다.\n메인페이지 및 카테고리 페이지 하단에 노출됩니다.`,
 		detail_main: '광고 배너 상세조회',
 		detail_sub: '해당 배너의 정보를 조회, 수정 및 삭제합니다.',
 		edit_main: '수정하기',

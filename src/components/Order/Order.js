@@ -1,18 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { orderCategory } from '../../data/category';
-import * as category from '../../data/link';
 import styled from 'styled-components';
 import OrderFilter from './OrderFilter';
 import OrderList from './OrderList';
+import OrderDetail from '../../components/Modal/OrderDetail';
 
-const Order = () => {
-	const [part, setPart] = useState('전체보기');
-	const [subPart, setSubPart] = useState('전체보기');
-	const partList = category.all_part;
-	const [subPartList, setSubPartList] = useState([]);
+const Order = (props) => {
 	const [period, setPeriod] = useState(false);
 	const [date, setDate] = useState({ from: '', to: '' });
-	const [state, setState] = useState(new Set());
+	const [state, setState] = useState([]);
 
 	// const [list, setList] = useState([]);
 	const [page, setPage] = useState(1);
@@ -36,27 +31,12 @@ const Order = () => {
 		payment_method: '신용카드 결제',
 	});
 
-	useEffect(() => {
-		for (let i = 0; i < category.all_part.length; i++) {
-			if (part === category.all_part[i].title) {
-				setSubPart(category.all_part[i].arr[0]);
-				return setSubPartList(category.all_part[i].arr);
-			}
-		}
-	}, [part]);
-
 	return (
 		<Container>
 			<OrderFilter
-				part={part}
-				subPart={subPart}
-				partList={partList}
-				subPartList={subPartList}
 				period={period}
 				date={date}
 				state={state}
-				setPart={setPart}
-				setSubPart={setSubPart}
 				setPeriod={setPeriod}
 				setDate={setDate}
 				setState={setState}
@@ -68,6 +48,9 @@ const Order = () => {
 				onePage={onePage}
 				onClickPage={onClickPage}
 			/>
+			{props.modal.type === '' && (
+				<OrderDetail modal={props.modal} setModal={props.setModal} />
+			)}
 		</Container>
 	);
 };

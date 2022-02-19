@@ -201,8 +201,6 @@ const ListTemplate = (props) => {
 		props.setModal({ type: '' });
 	};
 
-	console.log(list);
-
 	return (
 		<Container onMouseDown={onMouseDown}>
 			{isLoading && <Spinner />}
