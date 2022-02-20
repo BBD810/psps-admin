@@ -84,8 +84,8 @@ const OrderFilter = (props) => {
 		let from, to, process;
 		process = get_process(props.state);
 		if (props.period !== 5) {
-			from = 0;
-			to = typeof props.period === 'number' ? props.period : 3;
+			to = 0;
+			from = typeof props.period === 'number' ? props.period : 3;
 			get_order_list(from, to, process);
 		} else {
 			if (!props.date.from) {

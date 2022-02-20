@@ -38,6 +38,7 @@ const OrderList = (props) => {
 		}
 		return color;
 	};
+	const getDetail = (payment_id) => {};
 
 	return (
 		<Container>
