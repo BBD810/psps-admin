@@ -8,6 +8,6 @@ export const dateObjToDate = (date) => {
 		date.getHours(),
 		date.getMinutes(),
 	];
-	text = `${arr[0]}-${arr[1]}-${arr[2]} ${arr[3]}:${arr[4]}`;
+	text = `${arr[0]}-${arr[1]}-${arr[2]}\n${arr[3]}:${arr[4]}`;
 	return text;
 };

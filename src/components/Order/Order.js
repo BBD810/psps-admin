@@ -13,7 +13,7 @@ const Order = (props) => {
 	const [list, setList] = useState([]);
 	const [page, setPage] = useState(1);
 	const [total, setTotal] = useState(13);
-	const onePage = 15;
+	const onePage = 50;
 
 	const onClickPage = (e) => {
 		e !== page && setPage(e);
@@ -31,6 +31,10 @@ const Order = (props) => {
 	// 	payment_price: '1200000',
 	// 	payment_method: '신용카드 결제',
 	// });
+
+	useEffect(() => {
+		setTotal(list.length);
+	}, [list]);
 
 	return (
 		<Container>
@@ -52,6 +56,8 @@ const Order = (props) => {
 				total={total}
 				onePage={onePage}
 				onClickPage={onClickPage}
+				modal={props.modal}
+				setModal={props.setModal}
 			/>
 			{props.modal.type === 'confirm' && (
 				<ConfirmModal modal={props.modal} setModal={props.setModal} />

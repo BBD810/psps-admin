@@ -1,8 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { priceToString } from '../../functions/PriceToString';
+import { dateObjToDate } from '../../functions/DateObjToDate';
+import {
+	addrTransform,
+	productTransform,
+} from '../../functions/StringTransform';
+import * as _order from '../../controller/payment';
 import styled from 'styled-components';
 
 const OrderDetail = (props) => {
-	const orderer = ['이름/회원정보', 'e-mail', '연락처/주소', '결제수단'];
+	const orderer = ['이름', 'e-mail', '연락처/주소', '결제수단'];
 	const receiver = ['이름', '연락처/주소', '배송 요청사항'];
 	const header = ['상품/옵션명', '수량', '금액'];
 	const process = [
@@ -18,43 +25,32 @@ const OrderDetail = (props) => {
 	];
 	const modalBox = useRef();
 	const [detail, setDetail] = useState({});
+	const [product_list, setProduct_list] = useState([]);
 
-	const list = [
-		{
-			title: '명품횡성한우 구이세트2호/ 구이세트2호',
-			quantity: '2',
-			price: '40,000',
-		},
-		{
-			title: '명품횡성한우 구이세트2호/ 구이세트2호',
-			quantity: '2',
-			price: '40,000',
-		},
-		{
-			title: '명품횡성한우 구이세트2호/ 구이세트2호',
-			quantity: '2',
-			price: '40,000',
-		},
-		{
-			title: '명품횡성한우 구이세트2호/ 구이세트2호',
-			quantity: '2',
-			price: '40,000',
-		},
-		{
-			title: '명품횡성한우 구이세트2호/ 구이세트2호',
-			quantity: '2',
-			price: '40,000',
-		},
-		{
-			title: '명품횡성한우 구이세트2호/ 구이세트2호',
-			quantity: '2',
-			price: '40,000',
-		},
-	];
+	useEffect(() => {
+		_order.get_detail(props.modal.payment_id).then((res) => {
+			setDetail(res.data.payment);
+			setProduct_list(res.data.payment_product_list);
+		});
+	}, [props.modal.payment_id]);
 
 	const close = () => {
 		props.setModal({ type: '' });
 	};
+
+	const getTotalPrice = (arr) => {
+		let price = 0;
+		for (let i = 0; i < arr.length; i++) {
+			price += arr[i].amount;
+		}
+		return price;
+	};
+	const totalPrice = useMemo(
+		() => getTotalPrice(product_list),
+		[product_list]
+	);
+
+	console.log(detail);
 
 	return (
 		<Container>
@@ -65,7 +61,20 @@ const OrderDetail = (props) => {
 						{orderer.map((el, idx) => (
 							<OrdererList key={idx}>
 								<OrdererLeft>{el}</OrdererLeft>
-								<OrdererRight></OrdererRight>
+								{detail && (
+									<OrdererRight>
+										{idx === 0
+											? detail.buyer_name
+											: idx === 1
+											? detail.buyer_email
+											: idx === 2
+											? detail.buyer_addr &&
+											  `${detail.buyer_tel} / ${addrTransform(
+													detail.buyer_addr
+											  )}`
+											: `카드 결제`}
+									</OrdererRight>
+								)}
 							</OrdererList>
 						))}
 					</Table>
@@ -76,7 +85,18 @@ const OrderDetail = (props) => {
 						{receiver.map((el, idx) => (
 							<OrdererList key={idx}>
 								<OrdererLeft>{el}</OrdererLeft>
-								<OrdererRight></OrdererRight>
+								{detail && (
+									<OrdererRight>
+										{idx === 0
+											? detail.del_name
+											: idx === 1
+											? detail.del_addr &&
+											  `${detail.del_tel} / ${addrTransform(
+													detail.del_addr
+											  )}`
+											: detail.del_req}
+									</OrdererRight>
+								)}
 							</OrdererList>
 						))}
 					</Table>
@@ -89,17 +109,17 @@ const OrderDetail = (props) => {
 								<HeaderItem key={idx}>{el}</HeaderItem>
 							))}
 						</ProductHeader>
-						{list.map((el, idx) => (
+						{product_list.map((el, idx) => (
 							<ProductList key={idx}>
-								<ListItem>{el.title}</ListItem>
+								<ListItem>{productTransform(el.name)}</ListItem>
 								<ListItem>{el.quantity}</ListItem>
-								<ListItem>{el.price}</ListItem>
+								<ListItem>{`${priceToString(el.amount)}원`}</ListItem>
 							</ProductList>
 						))}
 
 						<ProductFooter>
 							<FooterItem>총 금액</FooterItem>
-							<FooterItem>1,000,000원</FooterItem>
+							<FooterItem>{`${priceToString(totalPrice)}원`}</FooterItem>
 						</ProductFooter>
 					</Table>
 				</Content>
@@ -112,15 +132,29 @@ const OrderDetail = (props) => {
 							))}
 						</ProcessHeader>
 						<ProcessBody>
+							<ProcessBodyItem>
+								{detail.create_at
+									? dateObjToDate(detail.create_at)
+									: ''}
+							</ProcessBodyItem>
+							<ProcessBodyItem>
+								{detail.create_at
+									? dateObjToDate(detail.create_at)
+									: ''}
+							</ProcessBodyItem>
+							<ProcessBodyItem>{`배송시작`}</ProcessBodyItem>
 							<ProcessBodyItem>{`2022-01-11\n15:24`}</ProcessBodyItem>
-							<ProcessBodyItem>{`2022-01-11\n15:24`}</ProcessBodyItem>
-							<ProcessBodyItem>{`2022-01-11\n15:24`}</ProcessBodyItem>
-							<ProcessBodyItem>{`2022-01-11\n15:24`}</ProcessBodyItem>
-							<ProcessBodyItem>{`2022-01-11\n15:24`}</ProcessBodyItem>
-							<ProcessBodyItem>{`2022-01-11\n15:24`}</ProcessBodyItem>
-							<ProcessBodyItem>{`2022-01-11\n15:24`}</ProcessBodyItem>
-							<ProcessBodyItem>{`2022-01-11\n15:24`}</ProcessBodyItem>
-							<ProcessBodyItem>{`2022-01-11\n15:24`}</ProcessBodyItem>
+							<ProcessBodyItem>
+								{detail.claim_at ? dateObjToDate(detail.claim_at) : ''}
+							</ProcessBodyItem>
+							<ProcessBodyItem>
+								{detail.cancel_at
+									? dateObjToDate(detail.cancel_at)
+									: ''}
+							</ProcessBodyItem>
+							<ProcessBodyItem>{`2022-02-11\n15:24`}</ProcessBodyItem>
+							<ProcessBodyItem>{`2022-02-11\n15:24`}</ProcessBodyItem>
+							<ProcessBodyItem>{`2022-02-11\n15:24`}</ProcessBodyItem>
 						</ProcessBody>
 					</Table>
 				</Content>
@@ -173,6 +207,7 @@ const Table = styled.ul`
 const OrdererList = styled.li`
 	width: 100%;
 	height: 3.1rem;
+	line-height: 3.1rem;
 	display: flex;
 	align-items: center;
 	border-bottom: 1px solid #e5e6ed;
@@ -183,7 +218,6 @@ const OrdererList = styled.li`
 const OrdererLeft = styled.div`
 	width: 15%;
 	height: 100%;
-	line-height: 3.1rem;
 	padding: 0 2rem;
 	font-size: 1.2rem;
 	font-family: 'kr-b';
@@ -302,6 +336,10 @@ const ProcessBodyItem = styled.li`
 	border-right: 1px solid #e5e6ed;
 	:nth-last-child(1) {
 		border: none;
+	}
+	:hover {
+		text-decoration: underline;
+		cursor: pointer;
 	}
 `;
 const Button = styled.button`

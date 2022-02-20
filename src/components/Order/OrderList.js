@@ -38,7 +38,9 @@ const OrderList = (props) => {
 		}
 		return color;
 	};
-	const getDetail = (payment_id) => {};
+	const getDetail = (payment_id) => {
+		props.setModal({ type: 'detail', payment_id });
+	};
 
 	return (
 		<Container>
@@ -61,7 +63,12 @@ const OrderList = (props) => {
 								</StateButton>
 							</ListItem>
 							<ListItem>{`${dateObjToDate(el.create_at)}`}</ListItem>
-							<ListItem>{el.name}</ListItem>
+							<ListItem
+								onClick={() => {
+									getDetail(el.payment_id);
+								}}>
+								{el.name}
+							</ListItem>
 							<ListItem>{`${el.user_name}\n(${el.user_email})`}</ListItem>
 							<ListItem>{el.phone_number}</ListItem>
 							<ListItem>{priceToString(el.amount)}</ListItem>
