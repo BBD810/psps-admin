@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { priceToString } from '../../functions/PriceToString';
-import { dateObjToDate } from '../../functions/DateObjToDate';
+import { dateObjToTimer } from '../../functions/DateObjToDate';
 import {
 	addrTransform,
 	productTransform,
@@ -49,8 +49,6 @@ const OrderDetail = (props) => {
 		() => getTotalPrice(product_list),
 		[product_list]
 	);
-
-	console.log(detail);
 
 	return (
 		<Container>
@@ -134,22 +132,22 @@ const OrderDetail = (props) => {
 						<ProcessBody>
 							<ProcessBodyItem>
 								{detail.create_at
-									? dateObjToDate(detail.create_at)
+									? dateObjToTimer(detail.create_at)
 									: ''}
 							</ProcessBodyItem>
 							<ProcessBodyItem>
 								{detail.create_at
-									? dateObjToDate(detail.create_at)
+									? dateObjToTimer(detail.create_at)
 									: ''}
 							</ProcessBodyItem>
 							<ProcessBodyItem>{`배송시작`}</ProcessBodyItem>
 							<ProcessBodyItem>{`2022-01-11\n15:24`}</ProcessBodyItem>
 							<ProcessBodyItem>
-								{detail.claim_at ? dateObjToDate(detail.claim_at) : ''}
+								{detail.claim_at ? dateObjToTimer(detail.claim_at) : ''}
 							</ProcessBodyItem>
 							<ProcessBodyItem>
 								{detail.cancel_at
-									? dateObjToDate(detail.cancel_at)
+									? dateObjToTimer(detail.cancel_at)
 									: ''}
 							</ProcessBodyItem>
 							<ProcessBodyItem>{`2022-02-11\n15:24`}</ProcessBodyItem>
@@ -180,7 +178,7 @@ const Wrap = styled.div`
 	flex-direction: column;
 	align-items: center;
 	position: fixed;
-	top: -20vh;
+	top: 0vh;
 	left: 50%;
 	transform: translate(-50%, 50%);
 	z-index: 10;

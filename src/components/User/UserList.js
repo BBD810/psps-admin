@@ -1,4 +1,7 @@
 import React from 'react';
+import { addrTransform } from '../../functions/StringTransform';
+import { dateObjToDate } from '../../functions/DateObjToDate';
+import { phoneNumberTransform } from '../../functions/PhoneNumberTransform';
 import styled from 'styled-components';
 import PageSelector from '../PageSelector';
 
@@ -12,6 +15,11 @@ const UserList = (props) => {
 		'등록계좌',
 		'주문내역',
 	];
+
+	const checkOrderList = (el) => {
+		props.setModal({ type: 'order', data: el });
+		console.log(el);
+	};
 
 	return (
 		<Container>
@@ -27,11 +35,24 @@ const UserList = (props) => {
 						<List key={idx}>
 							<ListItem>{el.name}</ListItem>
 							<ListItem>{el.email}</ListItem>
-							<ListItem>{el.date}</ListItem>
-							<ListItem>{el.address}</ListItem>
-							<ListItem>{el.contact}</ListItem>
-							<ListItem>{el.account}</ListItem>
-							<ListItem>확인하기</ListItem>
+							<ListItem>{dateObjToDate(el.create_at)}</ListItem>
+							<ListItem>
+								{el.address
+									? addrTransform(el.address)
+									: '등록되지 않음'}
+							</ListItem>
+							<ListItem>
+								{phoneNumberTransform(el.phone_number)}
+							</ListItem>
+							<ListItem>
+								{el.account ? el.account : '등록되지 않음'}
+							</ListItem>
+							<ListItem
+								onClick={() => {
+									checkOrderList(el);
+								}}>
+								확인하기
+							</ListItem>
 						</List>
 					))}
 				</ListWrap>

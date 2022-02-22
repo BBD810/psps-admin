@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import OrderFilter from './OrderFilter';
 import OrderList from './OrderList';
@@ -12,7 +12,7 @@ const Order = (props) => {
 
 	const [list, setList] = useState([]);
 	const [page, setPage] = useState(1);
-	const [total, setTotal] = useState(13);
+	const [total, setTotal] = useState(1);
 	const onePage = 50;
 
 	const onClickPage = (e) => {

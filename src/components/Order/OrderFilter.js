@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import * as _order from '../../controller/payment';
 import styled from 'styled-components';
 import check_icon from '../../images/check_black_icon.svg';
@@ -333,10 +333,10 @@ const Button = styled.button`
 	height: 3.1rem;
 	font-size: 1.2rem;
 	font-family: 'kr-b';
+	color: #fff;
 	border: none;
 	border-radius: 4px;
 	background-color: #2a3349;
-	color: #fff;
 	margin-top: 1rem;
 	margin-bottom: 3.9rem;
 `;

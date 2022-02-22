@@ -1,6 +1,6 @@
 import React from 'react';
 import { priceToString } from '../../functions/PriceToString';
-import { dateObjToDate } from '../../functions/DateObjToDate';
+import { dateObjToTimer } from '../../functions/DateObjToDate';
 import styled from 'styled-components';
 import PageSelector from '../PageSelector';
 
@@ -62,7 +62,7 @@ const OrderList = (props) => {
 									{el.process}
 								</StateButton>
 							</ListItem>
-							<ListItem>{`${dateObjToDate(el.create_at)}`}</ListItem>
+							<ListItem>{`${dateObjToTimer(el.create_at)}`}</ListItem>
 							<ListItem
 								onClick={() => {
 									getDetail(el.payment_id);

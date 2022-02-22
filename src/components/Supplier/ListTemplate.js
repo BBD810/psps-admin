@@ -8,7 +8,6 @@ const ListTemplate = (props) => {
 	const body = useRef();
 	const [page, setPage] = useState(1);
 	const [total, setTotal] = useState(0);
-	const [onePage, setOnePage] = useState('12');
 	const [createMode, setCreateMode] = useState(false);
 	const [editMode, setEditMode] = useState(false);
 	const [input, setInput] = useState({});

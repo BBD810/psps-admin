@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import * as _user from '../../controller/user';
 import styled from 'styled-components';
-import check_icon from '../../images/check_black_icon.svg';
-import uncheck_icon from '../../images/empty_black_icon.svg';
+import down from '../../images/angle-down.svg';
 
 const LeftWrap = ({ data }) => {
 	return (
@@ -15,10 +15,53 @@ const LeftWrap = ({ data }) => {
 };
 
 const UserFilter = (props) => {
+	const searchBox = useRef();
+	const [searchOpen, setSearchOpen] = useState(false);
+	const [searchItem, setSearchItem] = useState('이름');
+	const [name, setName] = useState('');
+	const [phone_number, setPhone_number] = useState('');
+
+	const onChangeSearchItem = (el) => {
+		if (el === '이름' && phone_number !== '') {
+			setName(phone_number);
+			setPhone_number('');
+		} else if (el === '연락처' && name !== '') {
+			setPhone_number(name);
+			setName('');
+		}
+		setSearchItem(el);
+		setSearchOpen(false);
+	};
 	const items = [
 		{ title: '검색', desc: '' },
-		{ title: '고객구분', desc: '회원,비회원별 주문 내역을 조회합니다.' },
+		// { title: '고객구분', desc: '회원,비회원별 주문 내역을 조회합니다.' },
 	];
+
+	useEffect(() => {
+		_user.get_list(props.page, name, phone_number).then((res) => {
+			if (res.data.success) {
+				props.setTotal(res.data.total);
+				props.setList(res.data.user_list);
+			}
+		});
+	}, []);
+
+	const onChangeSearchInput = (e) => {
+		let value = e.target.value;
+		searchItem === '이름' ? setName(value) : setPhone_number(value);
+	};
+
+	const onEnter = (e) => {
+		e.key === 'Enter' && onSubmit();
+	};
+
+	const onSubmit = () => {
+		_user.get_list(props.page, name, phone_number).then((res) => {
+			if (res.data.success) {
+				props.setList(res.data.user_list);
+			}
+		});
+	};
 
 	return (
 		<Container>
@@ -28,12 +71,41 @@ const UserFilter = (props) => {
 					<LeftWrap data={items[0]} />
 					<Right>
 						<RightInner>
-							{/* 이름, 전화번호로 검색 */}
-							<Item></Item>
+							{searchOpen ? (
+								<ItemSelectWrap ref={searchBox}>
+									<ItemSelectList>{'이름'}</ItemSelectList>
+									{['이름', '연락처'].map((el, idx) => (
+										<ItemSelectList
+											key={idx}
+											onClick={() => {
+												onChangeSearchItem(el);
+											}}>
+											{el}
+										</ItemSelectList>
+									))}
+								</ItemSelectWrap>
+							) : (
+								<ItemSelected
+									onClick={() => {
+										setSearchOpen(true);
+									}}>
+									<ItemText>{searchItem}</ItemText>
+									<ItemSelectImg alt='select button' src={down} />
+								</ItemSelected>
+							)}
+							<SearchInput
+								placeholder={
+									searchItem === '이름'
+										? '이름을 입력해주세요.'
+										: '연락처를 입력해주세요.'
+								}
+								onKeyDown={onEnter}
+								onChange={onChangeSearchInput}
+							/>
 						</RightInner>
 					</Right>
 				</Content>
-				<Content>
+				{/* <Content>
 					<LeftWrap data={items[1]} />
 					<Right>
 						<RightInner>
@@ -45,8 +117,9 @@ const UserFilter = (props) => {
 							))}
 						</RightInner>
 					</Right>
-				</Content>
+				</Content> */}
 			</Body>
+			<Button onClick={onSubmit}>적용하기</Button>
 		</Container>
 	);
 };
@@ -129,27 +202,82 @@ const RightInner = styled.div`
 	padding: 0 4rem;
 	width: 100%;
 	display: flex;
-`;
-const Item = styled.div`
-	min-width: 8rem;
-	height: 3.1rem;
-	display: flex;
-	align-items: center;
-	margin-right: 3rem;
-	:nth-last-child(1) {
-		margin-right: 0;
-	}
+	position: relative;
 `;
 
+const ItemSelected = styled.div`
+	width: 9rem;
+	height: 3.1rem;
+	line-height: 3.1rem;
+	display: flex;
+	align-items: center;
+	padding: 0 1rem;
+	background-color: #f4f4f4;
+	border: 2px solid #e5e6ed;
+	border-radius: 4px;
+	cursor: pointer;
+	position: absolute;
+`;
 const ItemText = styled.p`
-	height: 1.7rem;
-	line-height: 1.7rem;
+	width: 100%;
+	font-size: 1.2rem;
+	color: #7f8697;
+`;
+const ItemSelectImg = styled.img`
+	width: 0.7rem;
+	height: 0.6rem;
+	position: absolute;
+	right: 1rem;
+`;
+const ItemSelectWrap = styled.ul`
+	width: 9rem;
+	max-height: 16rem;
+	line-height: 3.1rem;
+	position: absolute;
+	z-index: 3;
+	background-color: #fff;
+	box-shadow: 0px 3px 6px #00000029;
+	border: 2px solid #2a3349;
+	border-radius: 4px;
+	overflow-y: auto;
+	::-webkit-scrollbar {
+		width: 3px;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: #5e667b;
+		border-radius: 10px;
+	}
+	::-webkit-scrollbar-track {
+		background-color: #fff;
+	}
+`;
+const ItemSelectList = styled.li`
+	height: 3.1rem;
+	line-height: 3.1rem;
+	padding: 0 0.8rem;
+	cursor: pointer;
+	:nth-child(1) {
+		border-bottom: 1px solid #e5e6ed;
+	}
+	:hover {
+		background-color: #e5e6ed;
+	}
+`;
+const SearchInput = styled.input`
+	width: 16rem;
+	height: 3.1rem;
+	margin-left: 9.4rem;
+	font-size: 1.2rem;
+	color: #7f8697;
+`;
+const Button = styled.button`
+	width: 10.6rem;
+	height: 3.1rem;
 	font-size: 1.2rem;
 	font-family: 'kr-b';
-	color: #2a3349;
-`;
-const CheckIcon = styled.img`
-	width: 2.4rem;
-	height: 1.7rem;
-	margin-right: 0.6rem;
+	color: #fff;
+	margin-top: 1rem;
+	border: none;
+	border-radius: 4px;
+	background-color: #2a3349;
 `;

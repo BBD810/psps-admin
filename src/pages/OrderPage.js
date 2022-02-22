@@ -4,7 +4,7 @@ import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
 import Order from '../components/Order/Order';
-import Delivery from '../components/Order/Delivery';
+// import Delivery from '../components/Order/Delivery';
 
 const OrderPage = () => {
 	const [mode, setMode] = useState('list');
@@ -36,9 +36,9 @@ const OrderPage = () => {
 					{category === '주문 목록' && (
 						<Order modal={modal} setModal={setModal} />
 					)}
-					{category === '배송 관리' && (
+					{/* {category === '배송 관리' && (
 						<Delivery modal={modal} setModal={setModal} />
-					)}
+					)} */}
 					<Footer />
 				</Contents>
 			</Container>

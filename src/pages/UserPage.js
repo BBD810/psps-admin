@@ -6,37 +6,22 @@ import Category from '../components/Category';
 import Footer from '../components/Footer';
 import UserFilter from '../components/User/UserFilter';
 import UserList from '../components/User/UserList';
+import UserOrderModal from '../components/Modal/UserOrder';
 
 const UserPage = () => {
-	const [mode, setMode] = useState('list');
+	const mode = 'list';
+	const title = userCategory[0].list_main;
+	const desc = userCategory[0].list_sub;
 	const [menu, setMenu] = useState('고객');
 	const [category, setCategory] = useState('고객 목록');
-	const [title, setTitle] = useState(userCategory[0].list_main);
-	const [desc, setDesc] = useState(userCategory[0].list_sub);
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
+	const [page, setPage] = useState(1);
+	const [total, setTotal] = useState(0);
+	const [list, setList] = useState([]);
 
 	const getCategory = (category) => {
 		setCategory(category);
 	};
-	// const [list, setList] = useState([]);
-	const list = [
-		{
-			name: '김덕기',
-			email: 'bbd810@naver.com',
-			date: '2022-02-22',
-			address: '경기도 안산시 단원구 광덕서로102, 406-7호',
-			contact: '010-1234-1234',
-			account: '우리은행 1002-101-2023',
-		},
-		{
-			name: '김덕기',
-			email: 'bbd810@naver.com',
-			date: '2022-02-22',
-			address: '경기도 안산시 단원구 광덕서로102, 406-7호',
-			contact: '010-1234-1234',
-			account: '우리은행 1002-101-2023',
-		},
-	];
 
 	return (
 		<div id='container'>
@@ -53,8 +38,23 @@ const UserPage = () => {
 						modal={modal}
 						setModal={setModal}
 					/>
-					<UserFilter />
-					<UserList list={list} />
+					<UserFilter page={page} setList={setList} setTotal={setTotal} />
+					<UserList
+						page={page}
+						total={total}
+						list={list}
+						modal={modal}
+						setModal={setModal}
+					/>
+					{modal.type === 'order' && (
+						<UserOrderModal
+							page={page}
+							setPage={setPage}
+							total={total}
+							modal={modal}
+							setModal={setModal}
+						/>
+					)}
 					<Footer />
 				</Contents>
 			</Container>
