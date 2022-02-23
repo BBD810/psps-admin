@@ -32,10 +32,6 @@ const Order = (props) => {
 	// 	payment_method: '신용카드 결제',
 	// });
 
-	useEffect(() => {
-		setTotal(list.length);
-	}, [list]);
-
 	return (
 		<Container>
 			<OrderFilter

@@ -112,8 +112,9 @@ const OrderFilter = (props) => {
 	};
 	const get_order_list = (from, to, process) => {
 		_order.get_list(from, to, process).then((res) => {
+			console.log('주문조회', res.data);
 			if (res.data.success) {
-				props.setList(res.data.payment_list);
+				props.setList(res.data.payment_product_list);
 			}
 		});
 	};

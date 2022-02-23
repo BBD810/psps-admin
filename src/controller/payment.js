@@ -13,7 +13,7 @@ const errorMessage = () => {
 	return new Error('Server Error');
 };
 
-export const get_list = async (from, to, process) => {
+export const get_list = async (from, to, process, page) => {
 	return await instance
 		.get(`/list/?from=${from}&to=${to}&process=${process}`)
 		.catch(errorMessage);

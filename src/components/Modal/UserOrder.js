@@ -29,6 +29,9 @@ const UserOrderModal = (props) => {
 		};
 	}, [props.modal.data]);
 
+	const onClick = () => {
+		props.setModal({ type: '' });
+	};
 	const onClickPage = (e) => {
 		e !== props.page && props.setPage(e);
 	};
@@ -85,6 +88,7 @@ const UserOrderModal = (props) => {
 					onClickPage={onClickPage}
 					style={{ marginTop: '2rem' }}
 				/>
+				<Button onClick={onClick}>확인</Button>
 			</Wrap>
 		</Container>
 	);
@@ -202,4 +206,15 @@ const OrderItem = styled(OrderHeaderItem)`
 	:nth-child(4) {
 		width: 21%;
 	}
+`;
+const Button = styled.button`
+	width: 10.6rem;
+	height: 3.1rem;
+	font-size: 1.2rem;
+	font-family: 'kr-b';
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	background-color: #2a3349;
+	margin-top: 4rem;
 `;

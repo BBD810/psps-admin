@@ -1,6 +1,7 @@
 import React from 'react';
 import { priceToString } from '../../functions/PriceToString';
-import { dateObjToTimer } from '../../functions/DateObjToDate';
+import { dateObjToTimer2 } from '../../functions/DateObjToDate';
+import { productTransform } from '../../functions/StringTransform';
 import styled from 'styled-components';
 import PageSelector from '../PageSelector';
 
@@ -8,9 +9,10 @@ const OrderList = (props) => {
 	const header = [
 		'주문상태',
 		'주문일',
+		'주문번호',
 		'상품명',
+		'공급원',
 		'주문자(이메일)',
-		'연락처',
 		'결제금액',
 		'결제수단',
 	];
@@ -52,29 +54,35 @@ const OrderList = (props) => {
 					))}
 				</Header>
 				<ListWrap>
-					{props.list.map((el, idx) => (
-						<List key={idx}>
-							<ListItem>
-								<StateButton
-									style={{
-										backgroundColor: `${getButtonColor(el.process)}`,
+					{props.list &&
+						props.list.map((el, idx) => (
+							<List key={idx}>
+								<ListItem>
+									<StateButton
+										style={{
+											backgroundColor: `${getButtonColor(
+												el.process
+											)}`,
+										}}>
+										{el.process}
+									</StateButton>
+								</ListItem>
+								<ListItem>{`${dateObjToTimer2(
+									el.create_at
+								)}`}</ListItem>
+								<ListItem>{el.payment_uid}</ListItem>
+								<ListItem
+									onClick={() => {
+										getDetail(el.payment_id);
 									}}>
-									{el.process}
-								</StateButton>
-							</ListItem>
-							<ListItem>{`${dateObjToTimer(el.create_at)}`}</ListItem>
-							<ListItem
-								onClick={() => {
-									getDetail(el.payment_id);
-								}}>
-								{el.name}
-							</ListItem>
-							<ListItem>{`${el.user_name}\n(${el.user_email})`}</ListItem>
-							<ListItem>{el.phone_number}</ListItem>
-							<ListItem>{priceToString(el.amount)}</ListItem>
-							<ListItem>{`카드 결제`}</ListItem>
-						</List>
-					))}
+									{productTransform(el.name)}
+								</ListItem>
+								<ListItem>{el.supplier_name}</ListItem>
+								<ListItem>{`${el.us_name}\n(${el.us_email})`}</ListItem>
+								<ListItem>{priceToString(el.amount)}</ListItem>
+								<ListItem>{`카드 결제`}</ListItem>
+							</List>
+						))}
 				</ListWrap>
 				<PageSelector
 					page={props.page}
@@ -128,24 +136,28 @@ const HeaderItem = styled.li`
 	font-family: 'kr-b';
 	color: #5e667b;
 	:nth-child(1) {
-		width: 8%;
+		width: 7%;
+		padding-left: 0.4rem;
 	}
 	:nth-child(2) {
-		width: 15%;
-	}
-	:nth-child(3) {
-		width: 27%;
-	}
-	:nth-child(4) {
-		width: 17%;
-	}
-	:nth-child(5) {
-		width: 13%;
-	}
-	:nth-child(6) {
 		width: 10%;
 	}
+	:nth-child(3) {
+		width: 8%;
+	}
+	:nth-child(4) {
+		width: 20%;
+	}
+	:nth-child(5) {
+		width: 15%;
+	}
+	:nth-child(6) {
+		width: 20%;
+	}
 	:nth-child(7) {
+		width: 10%;
+	}
+	:nth-child(8) {
 		width: 10%;
 	}
 `;
@@ -173,24 +185,27 @@ const ListItem = styled.li`
 	word-break: keep-all;
 	white-space: pre-wrap;
 	:nth-child(1) {
-		width: 8%;
+		width: 7%;
 	}
 	:nth-child(2) {
-		width: 15%;
-	}
-	:nth-child(3) {
-		width: 27%;
-	}
-	:nth-child(4) {
-		width: 17%;
-	}
-	:nth-child(5) {
-		width: 13%;
-	}
-	:nth-child(6) {
 		width: 10%;
 	}
+	:nth-child(3) {
+		width: 8%;
+	}
+	:nth-child(4) {
+		width: 20%;
+	}
+	:nth-child(5) {
+		width: 15%;
+	}
+	:nth-child(6) {
+		width: 20%;
+	}
 	:nth-child(7) {
+		width: 10%;
+	}
+	:nth-child(8) {
 		width: 10%;
 	}
 `;
