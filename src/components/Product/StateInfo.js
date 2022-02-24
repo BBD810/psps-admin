@@ -97,6 +97,7 @@ const StateInfo = (props) => {
 				});
 			}
 		}
+		setIsLoading(false);
 	};
 
 	const selectRecommend = (e) => {
@@ -114,6 +115,7 @@ const StateInfo = (props) => {
 		) {
 			return setIsLoading(false);
 		} else if (detail.state !== 'O') {
+			setIsLoading(false);
 			return props.setModal({
 				type: 'confirm',
 				text: '노출하지 않은 상품은\n추천 상품으로 등록할 수 없습니다.',

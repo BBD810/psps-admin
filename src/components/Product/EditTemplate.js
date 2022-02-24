@@ -60,6 +60,9 @@ const EditTemplate = (props) => {
 		};
 	}, []);
 
+	console.log('detailImgId', detailImgId);
+	console.log('detailPrevImg', detailPrevImg);
+
 	useEffect(() => {
 		setIsLoading(true);
 		let isSubscribed = true;

@@ -361,6 +361,17 @@ const DetailImgWrap = styled.div`
 	width: 56rem;
 	height: 24.8rem;
 	overflow-y: auto;
+	::-webkit-scrollbar {
+		width: 5px;
+		height: 5px;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: #5e667b;
+		border-radius: 10px;
+	}
+	::-webkit-scrollbar-track {
+		background-color: #fff;
+	}
 `;
 const DetailImg = styled.img``;
 const ItemTitle = styled.p`
