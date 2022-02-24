@@ -104,6 +104,7 @@ input[type='date'] {
 }
 ::-webkit-scrollbar {
 	width: 3px;
+	height:3px;
 }
 ::-webkit-scrollbar-thumb {
 	background-color: #5e667b;

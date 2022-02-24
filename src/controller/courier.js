@@ -3,8 +3,8 @@ import { ADDRESS } from '../config';
 
 const instance = axios.create({
 	proxy: `${ADDRESS}`,
-	baseURL: '/user',
-	// baseURL: `${ADDRESS}/user`,
+	baseURL: '/courier',
+	// baseURL: `${ADDRESS}/courier`,
 	withCredentials: true,
 });
 
@@ -13,8 +13,6 @@ const errorMessage = () => {
 	return new Error('Server Error');
 };
 
-export const get_list = async (page, name, phone_number) => {
-	return await instance
-		.get(`/list/?page=${page}&name=${name}&phone_number=${phone_number}`)
-		.catch(errorMessage);
+export const get_list = async () => {
+	return await instance.get('/list').catch(errorMessage);
 };

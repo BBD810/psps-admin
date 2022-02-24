@@ -4,6 +4,7 @@ import OrderFilter from './OrderFilter';
 import OrderList from './OrderList';
 import ConfirmModal from '../../components/Modal/Confirm';
 import OrderDetailModal from '../../components/Modal/OrderDetail';
+import TrackingNumberModal from '../Modal/TrackingNumber';
 
 const Order = (props) => {
 	const [period, setPeriod] = useState(3);
@@ -60,6 +61,12 @@ const Order = (props) => {
 			)}
 			{props.modal.type === 'detail' && (
 				<OrderDetailModal modal={props.modal} setModal={props.setModal} />
+			)}
+			{props.modal.act === 'tracking' && (
+				<TrackingNumberModal
+					modal={props.modal}
+					setModal={props.setModal}
+				/>
 			)}
 		</Container>
 	);
