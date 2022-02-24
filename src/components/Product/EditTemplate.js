@@ -815,6 +815,7 @@ const OptionItem = styled.div`
 	height: 2rem;
 	font-size: 1.2rem;
 	color: #2a3349;
+	cursor: pointer;
 	:nth-child(1) {
 		width: 38%;
 		padding-left: 1rem;
@@ -839,6 +840,7 @@ const OptionItem = styled.div`
 const OptionIcon = styled.img`
 	width: 2.4rem;
 	height: 1.7rem;
+	/* cursor: pointer; */
 `;
 const OptionButtons = styled.div`
 	width: 10.6rem;
@@ -941,7 +943,7 @@ const ThumbnailInput = styled.input`
 	width: 17.7rem;
 	height: 16.3rem;
 	position: absolute;
-	left: 0;
+	left: 4rem;
 	opacity: 0;
 	z-index: 3;
 	cursor: pointer;
@@ -951,7 +953,9 @@ const DetailImgWrap = styled.div`
 	height: 24.8rem;
 	overflow: hidden;
 `;
-const DetailImg = styled.img``;
+const DetailImg = styled.img`
+	cursor: pointer;
+`;
 const RequireList = styled.li`
 	height: 3.1rem;
 	margin-bottom: 1rem;

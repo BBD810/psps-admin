@@ -18,7 +18,6 @@ const UserList = (props) => {
 
 	const checkOrderList = (el) => {
 		props.setModal({ type: 'order', data: el });
-		console.log(el);
 	};
 
 	return (

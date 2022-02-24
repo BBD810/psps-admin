@@ -40,8 +40,8 @@ const OrderList = (props) => {
 		}
 		return color;
 	};
-	const getDetail = (payment_id) => {
-		props.setModal({ type: 'detail', payment_id });
+	const getDetail = (payment_uid) => {
+		props.setModal({ type: 'detail', payment_uid });
 	};
 
 	return (
@@ -72,8 +72,9 @@ const OrderList = (props) => {
 								)}`}</ListItem>
 								<ListItem>{el.payment_uid}</ListItem>
 								<ListItem
+									name='true'
 									onClick={() => {
-										getDetail(el.payment_id);
+										getDetail(el.payment_uid);
 									}}>
 									{productTransform(el.name)}
 								</ListItem>
@@ -208,6 +209,12 @@ const ListItem = styled.li`
 	:nth-child(8) {
 		width: 10%;
 	}
+	${(props) =>
+		props.name &&
+		`:hover {
+			text-decoration:underline;
+			cursor:pointer;
+	}`}
 `;
 const StateButton = styled.button`
 	width: 6rem;

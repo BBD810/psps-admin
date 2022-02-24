@@ -14,7 +14,6 @@ const errorMessage = () => {
 };
 
 export const get_list = async (page, name, phone_number) => {
-	console.log('page', page, 'name', name, 'phone_number', phone_number);
 	return await instance
 		.get(`/list/?page=${page}&name=${name}&phone_number=${phone_number}`)
 		.catch(errorMessage);

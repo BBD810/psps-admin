@@ -2,9 +2,9 @@ import axios from 'axios';
 import { ADDRESS } from '../config';
 
 const instance = axios.create({
-	proxy: `${ADDRESS}`,
-	baseURL: '/payment',
-	// baseURL: `${ADDRESS}/payment`,
+	// proxy: `${ADDRESS}`,
+	// baseURL: '/payment',
+	baseURL: `${ADDRESS}/payment`,
 	withCredentials: true,
 });
 
@@ -15,12 +15,12 @@ const errorMessage = () => {
 
 export const get_list = async (from, to, process, page) => {
 	return await instance
-		.get(`/list/?from=${from}&to=${to}&process=${process}`)
+		.get(`/list/?from=${from}&to=${to}&process=${process}&page=${page}`)
 		.catch(errorMessage);
 };
 
-export const get_detail = async (payment_id) => {
-	return await instance.get(`/detail/${payment_id}`).catch(errorMessage);
+export const get_detail = async (payment_uid) => {
+	return await instance.get(`/detail/${payment_uid}`).catch(errorMessage);
 };
 
 export const get_user_order_list = async (user_id) => {

@@ -181,15 +181,6 @@ const CreateTemplate = (props) => {
 	};
 
 	const createProduct = () => {
-		console.log('image', thumbnailImg);
-		console.log('title', title);
-		console.log('part', part);
-		console.log('subPart', subPart);
-		console.log('origin', origin);
-		console.log('storage', storage);
-		console.log('supplier_id', supplier.supplier_id);
-		console.log('product_image_id', detailImgId);
-
 		setIsLoading(true);
 		const formData = new FormData();
 		formData.append('image', thumbnailImg);
@@ -879,7 +870,7 @@ const ThumbnailInput = styled.input`
 	width: 17.7rem;
 	height: 16.3rem;
 	position: absolute;
-	left: 0;
+	left: 4rem;
 	opacity: 0;
 	z-index: 3;
 	cursor: pointer;
@@ -889,7 +880,9 @@ const DetailImgWrap = styled.div`
 	height: 24.8rem;
 	overflow: hidden;
 `;
-const DetailImg = styled.img``;
+const DetailImg = styled.img`
+	cursor: pointer;
+`;
 const RequireList = styled.li`
 	height: 3.1rem;
 	margin-bottom: 1rem;

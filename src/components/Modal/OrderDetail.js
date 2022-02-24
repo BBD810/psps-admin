@@ -11,6 +11,7 @@ import styled from 'styled-components';
 const OrderDetail = (props) => {
 	const orderer = ['이름', 'e-mail', '연락처/주소', '결제수단'];
 	const receiver = ['이름', '연락처/주소', '배송 요청사항'];
+	const order = ['주문번호', '총 결제 금액'];
 	const header = ['상품/옵션명', '수량', '금액'];
 	const process = [
 		'주문일',
@@ -28,11 +29,14 @@ const OrderDetail = (props) => {
 	const [product_list, setProduct_list] = useState([]);
 
 	useEffect(() => {
-		_order.get_detail(props.modal.payment_id).then((res) => {
+		_order.get_detail(props.modal.payment_uid).then((res) => {
+			console.log('res.data', res.data);
 			setDetail(res.data.payment);
 			setProduct_list(res.data.payment_product_list);
 		});
-	}, [props.modal.payment_id]);
+	}, [props.modal.payment_uid]);
+
+	console.log('detail', detail);
 
 	const close = () => {
 		props.setModal({ type: '' });
@@ -100,7 +104,29 @@ const OrderDetail = (props) => {
 					</Table>
 				</Content>
 				<Content>
-					<Title>주문 상품</Title>
+					<Title>주문 내역</Title>
+					<Table>
+						{order.map((el, idx) => (
+							<OrdererList key={idx}>
+								<OrdererLeft>{el}</OrdererLeft>
+								{detail && (
+									<OrdererRight>
+										{idx === 0
+											? detail.del_name
+											: idx === 1
+											? detail.del_addr &&
+											  `${detail.del_tel} / ${addrTransform(
+													detail.del_addr
+											  )}`
+											: detail.del_req}
+									</OrdererRight>
+								)}
+							</OrdererList>
+						))}
+					</Table>
+				</Content>
+				<Content>
+					<SpTitle>주문 상품</SpTitle>
 					<Table>
 						<ProductHeader>
 							{header.map((el, idx) => (
@@ -131,24 +157,24 @@ const OrderDetail = (props) => {
 						</ProcessHeader>
 						<ProcessBody>
 							<ProcessBodyItem>
-								{detail.create_at
+								{/* {detail.create_at
 									? dateObjToTimer(detail.create_at)
-									: ''}
+									: ''} */}
 							</ProcessBodyItem>
 							<ProcessBodyItem>
-								{detail.create_at
+								{/* {detail.create_at
 									? dateObjToTimer(detail.create_at)
-									: ''}
+									: ''} */}
 							</ProcessBodyItem>
 							<ProcessBodyItem>{`배송시작`}</ProcessBodyItem>
 							<ProcessBodyItem>{`2022-01-11\n15:24`}</ProcessBodyItem>
 							<ProcessBodyItem>
-								{detail.claim_at ? dateObjToTimer(detail.claim_at) : ''}
+								{/* {detail.claim_at ? dateObjToTimer(detail.claim_at) : ''} */}
 							</ProcessBodyItem>
 							<ProcessBodyItem>
-								{detail.cancel_at
+								{/* {detail.cancel_at
 									? dateObjToTimer(detail.cancel_at)
-									: ''}
+									: ''} */}
 							</ProcessBodyItem>
 							<ProcessBodyItem>{`2022-02-11\n15:24`}</ProcessBodyItem>
 							<ProcessBodyItem>{`2022-02-11\n15:24`}</ProcessBodyItem>
@@ -194,6 +220,11 @@ const Title = styled.h3`
 	margin-bottom: 1rem;
 	width: 100%;
 	font-size: 2rem;
+	font-family: 'kr-b';
+	color: #2a3349;
+`;
+const SpTitle = styled.h4`
+	font-size: 1.2rem;
 	font-family: 'kr-b';
 	color: #2a3349;
 `;

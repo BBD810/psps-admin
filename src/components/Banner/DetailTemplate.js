@@ -132,8 +132,6 @@ const DetailTemplate = (props) => {
 		props.setMode('list');
 	};
 
-	console.log(detail.temp_image);
-
 	return (
 		<Container>
 			<DetailImgBox style={imgHeight}>

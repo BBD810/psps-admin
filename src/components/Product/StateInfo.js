@@ -288,10 +288,11 @@ const TypeItem = styled.div`
 	text-align: center;
 	font-size: 1.4rem;
 	border-radius: 4px;
+	cursor: pointer;
 	${(props) =>
 		props.selected
 			? `color:#111A31; font-family:'kr-b'; 
 				border:2px solid #A8B0C3;`
 			: `color: #5E667B;  `}
-	${(props) => props.selected && props.active && `border:2px solid #5887FF`}
+	${(props) => props.selected && props.active && `border:2px solid #5887FF`};
 `;
