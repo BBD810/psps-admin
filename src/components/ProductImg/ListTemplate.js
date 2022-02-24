@@ -445,16 +445,6 @@ const ItemSelectWrap = styled.ul`
 	border: 2px solid #2a3349;
 	border-radius: 4px;
 	overflow-y: auto;
-	::-webkit-scrollbar {
-		width: 3px;
-	}
-	::-webkit-scrollbar-thumb {
-		background-color: #5e667b;
-		border-radius: 10px;
-	}
-	::-webkit-scrollbar-track {
-		background-color: #fff;
-	}
 `;
 const ItemSelectList = styled.li`
 	height: 3.2rem;

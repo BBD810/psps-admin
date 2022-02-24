@@ -102,6 +102,16 @@ input[type='date'] {
  	color:#7F8697;
 	background-color:#F4F4F4;
 }
+::-webkit-scrollbar {
+	width: 3px;
+}
+::-webkit-scrollbar-thumb {
+	background-color: #5e667b;
+	border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+	background-color: #fff;
+}
 `;
 
 export default GlobalStyle;

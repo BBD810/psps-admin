@@ -26,33 +26,33 @@ const OrderDetail = (props) => {
 	];
 	const modalBox = useRef();
 	const [detail, setDetail] = useState({});
-	const [product_list, setProduct_list] = useState([]);
+	const [supplier_list, setSupplier_list] = useState([]);
 
 	useEffect(() => {
 		_order.get_detail(props.modal.payment_uid).then((res) => {
 			console.log('res.data', res.data);
 			setDetail(res.data.payment);
-			setProduct_list(res.data.payment_product_list);
+			setSupplier_list(res.data.supplier_list);
 		});
 	}, [props.modal.payment_uid]);
-
-	console.log('detail', detail);
 
 	const close = () => {
 		props.setModal({ type: '' });
 	};
 
-	const getTotalPrice = (arr) => {
-		let price = 0;
-		for (let i = 0; i < arr.length; i++) {
-			price += arr[i].amount;
-		}
-		return price;
-	};
-	const totalPrice = useMemo(
-		() => getTotalPrice(product_list),
-		[product_list]
-	);
+	// const getTotalPrice = (arr) => {
+	// 	let price = 0;
+	// 	for (let i = 0; i < arr.length; i++) {
+	// 		price += arr[i].amount;
+	// 	}
+	// 	return price;
+	// };
+	// const totalPrice = useMemo(
+	// 	() => getTotalPrice(supplier_list),
+	// 	[supplier_list]
+	// );
+
+	console.log('supplier_list', supplier_list);
 
 	return (
 		<Container>
@@ -112,13 +112,8 @@ const OrderDetail = (props) => {
 								{detail && (
 									<OrdererRight>
 										{idx === 0
-											? detail.del_name
-											: idx === 1
-											? detail.del_addr &&
-											  `${detail.del_tel} / ${addrTransform(
-													detail.del_addr
-											  )}`
-											: detail.del_req}
+											? detail.payment_uid
+											: priceToString(detail.amount)}
 									</OrdererRight>
 								)}
 							</OrdererList>
@@ -126,26 +121,44 @@ const OrderDetail = (props) => {
 					</Table>
 				</Content>
 				<Content>
-					<SpTitle>주문 상품</SpTitle>
-					<Table>
-						<ProductHeader>
-							{header.map((el, idx) => (
-								<HeaderItem key={idx}>{el}</HeaderItem>
-							))}
-						</ProductHeader>
-						{product_list.map((el, idx) => (
-							<ProductList key={idx}>
-								<ListItem>{productTransform(el.name)}</ListItem>
-								<ListItem>{el.quantity}</ListItem>
-								<ListItem>{`${priceToString(el.amount)}원`}</ListItem>
-							</ProductList>
-						))}
+					{supplier_list.map((supplier, idx) => (
+						<Supplier key={idx}>
+							<SupplierTitle>
+								{supplier.info.supplier_name}
+							</SupplierTitle>
+							<Table>
+								<ProductHeader>
+									{header.map((el, idx) => (
+										<HeaderItem key={idx}>{el}</HeaderItem>
+									))}
+								</ProductHeader>
+								{supplier_list[idx].product.map((el, idx) => (
+									<ProductList key={idx}>
+										<ListItem>{productTransform(el.name)}</ListItem>
+										<ListItem>{el.quantity}</ListItem>
+										<ListItem>{`${priceToString(
+											el.amount
+										)}`}</ListItem>
+									</ProductList>
+								))}
 
-						<ProductFooter>
-							<FooterItem>총 금액</FooterItem>
-							<FooterItem>{`${priceToString(totalPrice)}원`}</FooterItem>
-						</ProductFooter>
-					</Table>
+								<ProductFooter>
+									<FooterItem>총 금액</FooterItem>
+									<FooterItem>
+										{`${priceToString(supplier.amount)}`}
+									</FooterItem>
+								</ProductFooter>
+							</Table>
+							<SupplierBottom>
+								<SupplierText>일괄 처리</SupplierText>
+								<SupplierButton first>
+									반품 / 교환 / 환불
+								</SupplierButton>
+								<SupplierButton>취소 처리</SupplierButton>
+								<SupplierButton last>운송장 입력</SupplierButton>
+							</SupplierBottom>
+						</Supplier>
+					))}
 				</Content>
 				<Content>
 					<Title>주문상태별 일자</Title>
@@ -199,12 +212,14 @@ const Container = styled.div`
 `;
 const Wrap = styled.div`
 	width: 94rem;
+	max-height: 100rem;
+	overflow-y: auto;
 	padding: 3.6rem 8.7rem 5rem 8.7rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	position: fixed;
-	top: 0vh;
+	top: -20vh;
 	left: 50%;
 	transform: translate(-50%, 50%);
 	z-index: 10;
@@ -223,7 +238,11 @@ const Title = styled.h3`
 	font-family: 'kr-b';
 	color: #2a3349;
 `;
-const SpTitle = styled.h4`
+const Supplier = styled.div`
+	margin-bottom: 2rem;
+`;
+const SupplierTitle = styled.h4`
+	margin-bottom: 0.8rem;
 	font-size: 1.2rem;
 	font-family: 'kr-b';
 	color: #2a3349;
@@ -231,6 +250,37 @@ const SpTitle = styled.h4`
 const Table = styled.ul`
 	width: 100%;
 	border: 1px solid #e5e6ed;
+`;
+const SupplierBottom = styled.div`
+	margin-top: 0.8rem;
+	width: 100%;
+	height: 3.1rem;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+`;
+const SupplierText = styled.p`
+	height: 3.1rem;
+	line-height: 3.1rem;
+	font-size: 1.2rem;
+	font-family: 'kr-b';
+	color: #848ca2;
+`;
+const SupplierButton = styled.button`
+	width: 10.6rem;
+	height: 3.1rem;
+	font-size: 1.2rem;
+	font-family: 'kr-b';
+	border: none;
+	border-radius: 4px;
+	${(props) =>
+		props.first
+			? `width:12rem; margin-left:2rem;`
+			: `width:10.6rem; margin-left:0.8rem;`}
+	${(props) =>
+		props.last
+			? `background-color:#2A3349; color:#fff;`
+			: `background-color:unset; color:#2A3349; border:1px solid #2A3349`}
 `;
 
 const OrdererList = styled.li`

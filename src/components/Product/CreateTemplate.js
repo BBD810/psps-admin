@@ -693,7 +693,6 @@ const Option = styled.div`
 const OptionHeader = styled.div`
 	width: 100%;
 	display: flex;
-	${(props) => props.scroll}
 `;
 const OptionHeaderItem = styled.div`
 	:nth-child(1) {
@@ -721,16 +720,6 @@ const OptionBody = styled.ul`
 	border: 1px solid #e5e6ed;
 	border-top: 2px solid #e5e6ed;
 	border-bottom: 2px solid #e5e6ed;
-	::-webkit-scrollbar {
-		width: 3px;
-	}
-	::-webkit-scrollbar-thumb {
-		background-color: #5e667b;
-		border-radius: 10px;
-	}
-	::-webkit-scrollbar-track {
-		background-color: #fff;
-	}
 `;
 const OptionList = styled.li`
 	display: flex;
@@ -839,16 +828,6 @@ const ItemSelectWrap = styled.ul`
 	border: 2px solid #2a3349;
 	border-radius: 4px;
 	overflow-y: auto;
-	::-webkit-scrollbar {
-		width: 3px;
-	}
-	::-webkit-scrollbar-thumb {
-		background-color: #5e667b;
-		border-radius: 10px;
-	}
-	::-webkit-scrollbar-track {
-		background-color: #fff;
-	}
 `;
 const ItemSelectList = styled.li`
 	height: 3.1rem;

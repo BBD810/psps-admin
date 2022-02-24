@@ -272,16 +272,6 @@ const ShareList = styled.ul`
 	border-top: 2px solid #e5e6ed;
 	border-bottom: 2px solid #e5e6ed;
 	overflow-y: auto;
-	::-webkit-scrollbar {
-		width: 3px;
-	}
-	::-webkit-scrollbar-thumb {
-		background-color: #5e667b;
-		border-radius: 10px;
-	}
-	::-webkit-scrollbar-track {
-		background-color: #fff;
-	}
 `;
 const ShareItem = styled.li`
 	margin-bottom: 0.8rem;
