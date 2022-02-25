@@ -26,3 +26,7 @@ export const get_detail = async (payment_uid) => {
 export const get_user_order_list = async (user_id) => {
 	return await instance.get(`/user/${user_id}`).catch(errorMessage);
 };
+
+export const enter_tracking_number = async (data) => {
+	return await instance.patch(`/delivery`, data).catch(errorMessage);
+};

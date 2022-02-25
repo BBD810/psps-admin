@@ -23,19 +23,10 @@ const OrderDetail = (props) => {
 		'수량',
 		'금액',
 	];
-	const process = [
-		'주문일',
-		'결제일',
-		'배송시작',
-		'배송완료',
-		'취소요청',
-		'취소완료',
-		'반품요청',
-		'교환요청',
-		'환불완료',
-	];
+
 	const [detail, setDetail] = useState({});
 	const [supplier_list, setSupplier_list] = useState([]);
+	const [checked, setChecked] = useState([]);
 
 	useEffect(() => {
 		_order.get_detail(props.modal.payment_uid).then((res) => {
@@ -44,16 +35,79 @@ const OrderDetail = (props) => {
 		});
 	}, [props.modal.payment_uid]);
 
-	const enterTrackingNumber = () => {
-		props.setModal({ ...props.modal, act: 'tracking', data: '' });
+	const singleTrackingNumber = (el) => {
+		setChecked([el]);
+		enterTrackingNumber([el]);
+	};
+	const enterTrackingNumber = (list) => {
+		if (list.length === 0) {
+			alert('체크된 항목이 없습니다.');
+		} else {
+			props.setModal({ ...props.modal, act: 'tracking', data: list });
+		}
 	};
 	const close = () => {
 		props.setModal({ type: '' });
 	};
 
+	console.log('checked', checked);
+
+	const allCheckItem = (supplier) => {
+		let arr = [...checked];
+		let _switch = false;
+		for (let i = 0; i < supplier.product.length; i++) {
+			//  체크가 안 된 애가 하나라도 있을 때
+			if (!checked.includes(supplier.product[i])) {
+				_switch = true;
+				arr.push(supplier.product[i]);
+			}
+		}
+		if (!_switch) {
+			for (let i = 0; i < supplier.product.length; i++) {
+				arr = arr.filter((el) => el !== supplier.product[i]);
+			}
+		}
+		_switch = false;
+		setChecked([...new Set(arr)]);
+	};
+	const checkItem = (el) => {
+		let arr = [...checked];
+		if (checked.includes(el)) {
+			arr = arr.filter((e) => e !== el);
+		} else {
+			arr.push(el);
+		}
+		setChecked(arr);
+	};
+
 	useEffect(() => {
 		console.log('props.modal', props.modal);
+		let _modal = props.modal;
+		if (_modal.return) {
+			const data = {
+				payment_product_list: checked,
+				cou_id: _modal.return.id,
+				cou_num: _modal.return.num,
+			};
+			console.log('data', data);
+			_order.enter_tracking_number(data).then((res) => {
+				console.log('res.data', res.data);
+				if (res.data.success) {
+					enterSuccess(res.data.supplier_list);
+				} else {
+					alert('배송지 입력에 실패했습니다.');
+					props.setModal({ ...props.modal, return: '' });
+				}
+			});
+		}
 	}, [props.modal]);
+
+	const enterSuccess = (list) => {
+		props.setModal({ ...props.modal, return: '' });
+		setChecked([]);
+		setSupplier_list(list);
+	};
+	const enterFail = () => {};
 
 	return (
 		<Container>
@@ -122,8 +176,8 @@ const OrderDetail = (props) => {
 					</Table>
 				</Content>
 				<Content>
-					{supplier_list.map((supplier, idx) => (
-						<Supplier key={idx}>
+					{supplier_list.map((supplier, index) => (
+						<Supplier key={index}>
 							<SupplierTitle>
 								{supplier.info.supplier_name}
 							</SupplierTitle>
@@ -132,19 +186,42 @@ const OrderDetail = (props) => {
 									{header.map((el, idx) => (
 										<HeaderItem key={idx}>
 											{idx === 0 && (
-												<CheckIcon alt='' src={check_icon} />
+												<CheckIcon
+													alt=''
+													src={uncheck_icon}
+													onClick={() => {
+														allCheckItem(supplier);
+													}}
+												/>
 											)}
 											{el}
 										</HeaderItem>
 									))}
 								</ProductHeader>
-								{supplier_list[idx].product.map((el, idx) => (
+								{supplier_list[index].product.map((el, idx) => (
 									<ProductList key={idx}>
 										<ListItem>
-											<CheckIcon alt='' src={check_icon} />
+											<CheckIcon
+												alt=''
+												src={
+													checked.includes(el)
+														? check_icon
+														: uncheck_icon
+												}
+												onClick={() => {
+													checkItem(el);
+												}}
+											/>
 											{productTransform(el.name)}
 										</ListItem>
-										<ListItem>{`입력하기`}</ListItem>
+										<ListItem
+											onClick={() => {
+												singleTrackingNumber(el);
+											}}>
+											{el.cou_name && el.cou_num
+												? `${el.cou_name} ${el.cou_num}`
+												: '입력하기'}
+										</ListItem>
 										<ListItem>{`취소요청`}</ListItem>
 										<ListItem>{`확인하기`}</ListItem>
 										<ListItem>
@@ -173,26 +250,43 @@ const OrderDetail = (props) => {
 									</FooterItem>
 								</ProductFooter>
 							</Table>
-							<SupplierBottom>
-								<SupplierText>일괄 처리</SupplierText>
-								<SupplierButton first>
-									반품 / 교환 / 환불
-								</SupplierButton>
-								<SupplierButton>취소 처리</SupplierButton>
-								<SupplierButton last onClick={enterTrackingNumber}>
-									운송장 입력
-								</SupplierButton>
-							</SupplierBottom>
 						</Supplier>
 					))}
 				</Content>
-				<Button onClick={close}>확인</Button>
+				<SupplierBottom>
+					<SupplierText>일괄 처리</SupplierText>
+					<SupplierButton first>주문 취소</SupplierButton>
+					<SupplierButton second>반품 / 교환 / 환불</SupplierButton>
+					<SupplierButton>요청 거절</SupplierButton>
+					<SupplierButton
+						last
+						onClick={() => {
+							enterTrackingNumber(checked);
+						}}>
+						운송장 입력
+					</SupplierButton>
+				</SupplierBottom>
+				<Buttons>
+					<Button onClick={close}>확인</Button>
+				</Buttons>
 			</Wrap>
 		</Container>
 	);
 };
 
 export default OrderDetail;
+
+// const process = [
+// 	'주문일',
+// 	'결제일',
+// 	'배송시작',
+// 	'배송완료',
+// 	'취소요청',
+// 	'취소완료',
+// 	'반품요청',
+// 	'교환요청',
+// 	'환불완료',
+// ];
 
 {
 	/* <Content>
@@ -249,14 +343,14 @@ const Container = styled.div`
 `;
 const Wrap = styled.div`
 	width: 94rem;
-	max-height: 120rem;
-	overflow-y: auto;
+	max-height: 95rem;
+	overflow-y: scroll;
 	padding: 4rem 5.2rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	position: fixed;
-	top: -20vh;
+	top: -23%;
 	left: 50%;
 	transform: translate(-50%, 50%);
 	z-index: 10;
@@ -313,10 +407,8 @@ const SupplierButton = styled.button`
 	font-family: 'kr-b';
 	border: none;
 	border-radius: 4px;
-	${(props) =>
-		props.first
-			? `width:12rem; margin-left:2rem;`
-			: `width:10.6rem; margin-left:0.8rem;`}
+	${(props) => (props.first ? ` margin-left:2rem;` : ` margin-left:0.8rem;`)}
+	${(props) => (props.second ? `width:12rem;` : `width:10.6rem;`)}
 	${(props) =>
 		props.last
 			? `background-color:#2A3349; color:#fff;`
@@ -462,45 +554,53 @@ const ListItem = styled.p`
 	}
 `;
 
-const ProcessHeader = styled.ul`
+// const ProcessHeader = styled.ul`
+// 	height: 3.1rem;
+// 	line-height: 3.1rem;
+// 	display: flex;
+// 	text-align: center;
+// 	border-bottom: 1px solid e5e6ed;
+// `;
+// const ProcessHeaderItem = styled.li`
+// 	width: 11.11111%;
+// 	height: 100%;
+// 	font-size: 1.2rem;
+// 	font-family: 'kr-b';
+// 	color: #848ca2;
+// 	background-color: #f5f5f5;
+// 	border-right: 1px solid #e5e6ed;
+// 	:nth-last-child(1) {
+// 		border: none;
+// 	}
+// `;
+// const ProcessBody = styled.ul`
+// 	height: 7.4rem;
+// 	display: flex;
+// 	text-align: center;
+// `;
+// const ProcessBodyItem = styled.li`
+// 	width: 11.11111%;
+// 	height: 100%;
+// 	font-size: 1.2rem;
+// 	color: #5e667b;
+// 	padding-top: 2rem;
+// 	white-space: pre-wrap;
+// 	border-right: 1px solid #e5e6ed;
+// 	:nth-last-child(1) {
+// 		border: none;
+// 	}
+// 	:hover {
+// 		text-decoration: underline;
+// 		cursor: pointer;
+// 	}
+// `;
+const Buttons = styled.div`
+	width: 100%;
 	height: 3.1rem;
-	line-height: 3.1rem;
 	display: flex;
-	text-align: center;
-	border-bottom: 1px solid e5e6ed;
-`;
-const ProcessHeaderItem = styled.li`
-	width: 11.11111%;
-	height: 100%;
-	font-size: 1.2rem;
-	font-family: 'kr-b';
-	color: #848ca2;
-	background-color: #f5f5f5;
-	border-right: 1px solid #e5e6ed;
-	:nth-last-child(1) {
-		border: none;
-	}
-`;
-const ProcessBody = styled.ul`
-	height: 7.4rem;
-	display: flex;
-	text-align: center;
-`;
-const ProcessBodyItem = styled.li`
-	width: 11.11111%;
-	height: 100%;
-	font-size: 1.2rem;
-	color: #5e667b;
-	padding-top: 2rem;
-	white-space: pre-wrap;
-	border-right: 1px solid #e5e6ed;
-	:nth-last-child(1) {
-		border: none;
-	}
-	:hover {
-		text-decoration: underline;
-		cursor: pointer;
-	}
+	justify-content: center;
+	margin-top: 0;
+	margin-bottom: 3rem;
 `;
 const Button = styled.button`
 	margin-top: 3rem;
