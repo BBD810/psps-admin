@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import OrderFilter from './OrderFilter';
 import OrderList from './OrderList';
-import ConfirmModal from '../../components/Modal/Confirm';
-import OrderDetailModal from '../../components/Modal/OrderDetail';
+import ConfirmModal from '../Modal/Confirm';
+import OrderDetailModal from '../Modal/OrderDetail';
+import OrderClaimModal from '../Modal/OrderClaim';
+import OrderProcessModal from '../Modal/OrderProcess';
 import TrackingNumberModal from '../Modal/TrackingNumber';
 
 const Order = (props) => {
@@ -61,6 +63,12 @@ const Order = (props) => {
 			)}
 			{props.modal.type === 'detail' && (
 				<OrderDetailModal modal={props.modal} setModal={props.setModal} />
+			)}
+			{props.modal.act === 'claim' && (
+				<OrderClaimModal modal={props.modal} setModal={props.setModal} />
+			)}
+			{props.modal.act === 'process' && (
+				<OrderProcessModal modal={props.modal} setModal={props.setModal} />
 			)}
 			{props.modal.act === 'tracking' && (
 				<TrackingNumberModal

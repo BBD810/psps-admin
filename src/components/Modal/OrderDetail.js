@@ -23,6 +23,7 @@ const OrderDetail = (props) => {
 		'수량',
 		'금액',
 	];
+	const shippingFee = ['배송비', '', '', '', 1, priceToString(3000)];
 
 	const [detail, setDetail] = useState({});
 	const [supplier_list, setSupplier_list] = useState([]);
@@ -35,28 +36,10 @@ const OrderDetail = (props) => {
 		});
 	}, [props.modal.payment_uid]);
 
-	const singleTrackingNumber = (el) => {
-		setChecked([el]);
-		enterTrackingNumber([el]);
-	};
-	const enterTrackingNumber = (list) => {
-		if (list.length === 0) {
-			alert('체크된 항목이 없습니다.');
-		} else {
-			props.setModal({ ...props.modal, act: 'tracking', data: list });
-		}
-	};
-	const close = () => {
-		props.setModal({ type: '' });
-	};
-
-	console.log('checked', checked);
-
 	const allCheckItem = (supplier) => {
 		let arr = [...checked];
 		let _switch = false;
 		for (let i = 0; i < supplier.product.length; i++) {
-			//  체크가 안 된 애가 하나라도 있을 때
 			if (!checked.includes(supplier.product[i])) {
 				_switch = true;
 				arr.push(supplier.product[i]);
@@ -80,8 +63,28 @@ const OrderDetail = (props) => {
 		setChecked(arr);
 	};
 
+	const singleTrackingNumber = (el) => {
+		setChecked([el]);
+		enterTrackingNumber([el]);
+	};
+	const enterTrackingNumber = (list) => {
+		if (list.length === 0) {
+			alert('체크된 항목이 없습니다.');
+		} else {
+			props.setModal({ ...props.modal, act: 'tracking', data: list });
+		}
+	};
+	const checkClaim = (el) => {
+		console.log(el);
+	};
+	const checkProcess = (el) => {
+		props.setModal({ ...props.modal, act: 'process', data: el });
+	};
+	const close = () => {
+		props.setModal({ type: '' });
+	};
+
 	useEffect(() => {
-		console.log('props.modal', props.modal);
 		let _modal = props.modal;
 		if (_modal.return) {
 			const data = {
@@ -89,9 +92,7 @@ const OrderDetail = (props) => {
 				cou_id: _modal.return.id,
 				cou_num: _modal.return.num,
 			};
-			console.log('data', data);
 			_order.enter_tracking_number(data).then((res) => {
-				console.log('res.data', res.data);
 				if (res.data.success) {
 					enterSuccess(res.data.supplier_list);
 				} else {
@@ -101,7 +102,6 @@ const OrderDetail = (props) => {
 			});
 		}
 	}, [props.modal]);
-
 	const enterSuccess = (list) => {
 		props.setModal({ ...props.modal, return: '' });
 		setChecked([]);
@@ -200,7 +200,10 @@ const OrderDetail = (props) => {
 								</ProductHeader>
 								{supplier_list[index].product.map((el, idx) => (
 									<ProductList key={idx}>
-										<ListItem>
+										<ListItem
+											onClick={() => {
+												checkItem(el);
+											}}>
 											<CheckIcon
 												alt=''
 												src={
@@ -208,13 +211,11 @@ const OrderDetail = (props) => {
 														? check_icon
 														: uncheck_icon
 												}
-												onClick={() => {
-													checkItem(el);
-												}}
 											/>
 											{productTransform(el.name)}
 										</ListItem>
 										<ListItem
+											inserted={el.cou_name && el.cou_num}
 											onClick={() => {
 												singleTrackingNumber(el);
 											}}>
@@ -222,8 +223,24 @@ const OrderDetail = (props) => {
 												? `${el.cou_name} ${el.cou_num}`
 												: '입력하기'}
 										</ListItem>
-										<ListItem>{`취소요청`}</ListItem>
-										<ListItem>{`확인하기`}</ListItem>
+										<ListItem
+											onClick={() => {
+												(el.process === '취소요청' ||
+													el.process === '환불요청' ||
+													el.process === '반품요청') &&
+													checkClaim(el);
+											}}>
+											{(el.process === '취소요청' ||
+												el.process === '환불요청' ||
+												el.process === '반품요청') &&
+												el.process}
+										</ListItem>
+										<ListItem
+											onClick={() => {
+												checkProcess(el);
+											}}>
+											확인하기
+										</ListItem>
 										<ListItem>
 											{`${priceToString(el.quantity)}`}
 										</ListItem>
@@ -233,14 +250,15 @@ const OrderDetail = (props) => {
 									</ProductList>
 								))}
 								<ProductList>
-									<ListItem style={{ paddingLeft: '4.4rem' }}>
-										배송비
-									</ListItem>
-									<ListItem></ListItem>
-									<ListItem></ListItem>
-									<ListItem></ListItem>
-									<ListItem>1</ListItem>
-									<ListItem>{priceToString(3000)}</ListItem>
+									{shippingFee.map((el, idx) => (
+										<ListItem
+											key={idx}
+											style={
+												idx === 0 ? { paddingLeft: '4.4rem' } : null
+											}>
+											{el}
+										</ListItem>
+									))}
 								</ProductList>
 
 								<ProductFooter>
@@ -275,64 +293,6 @@ const OrderDetail = (props) => {
 };
 
 export default OrderDetail;
-
-// const process = [
-// 	'주문일',
-// 	'결제일',
-// 	'배송시작',
-// 	'배송완료',
-// 	'취소요청',
-// 	'취소완료',
-// 	'반품요청',
-// 	'교환요청',
-// 	'환불완료',
-// ];
-
-{
-	/* <Content>
-	<Title>주문상태별 일자</Title>
-	<Table>
-		<ProcessHeader>
-			{process.map((el, idx) => (
-				<ProcessHeaderItem key={idx}>{el}</ProcessHeaderItem>
-			))}
-		</ProcessHeader>
-		<ProcessBody>
-			<ProcessBodyItem> */
-}
-{
-	/* {detail.create_at
-									? dateObjToTimer(detail.create_at)
-									: ''} */
-}
-// </ProcessBodyItem>
-// <ProcessBodyItem>
-{
-	/* {detail.create_at
-									? dateObjToTimer(detail.create_at)
-									: ''} */
-}
-// </ProcessBodyItem>
-// <ProcessBodyItem>{`배송시작`}</ProcessBodyItem>
-// <ProcessBodyItem>{`2022-01-11\n15:24`}</ProcessBodyItem>
-// <ProcessBodyItem>
-{
-	/* {detail.claim_at ? dateObjToTimer(detail.claim_at) : ''} */
-}
-// </ProcessBodyItem>
-// <ProcessBodyItem>
-{
-	/* {detail.cancel_at
-									? dateObjToTimer(detail.cancel_at)
-									: ''} */
-}
-// 			</ProcessBodyItem>
-// 			<ProcessBodyItem>{`2022-02-11\n15:24`}</ProcessBodyItem>
-// 			<ProcessBodyItem>{`2022-02-11\n15:24`}</ProcessBodyItem>
-// 			<ProcessBodyItem>{`2022-02-11\n15:24`}</ProcessBodyItem>
-// 		</ProcessBody>
-// 	</Table>
-// </Content>;
 
 const Container = styled.div`
 	width: 100vw;
@@ -386,7 +346,6 @@ const Table = styled.ul`
 	border: 1px solid #e5e6ed;
 `;
 const SupplierBottom = styled.div`
-	margin-top: 0.8rem;
 	width: 100%;
 	height: 3.1rem;
 	display: flex;
@@ -531,17 +490,35 @@ const ListItem = styled.p`
 	border-right: 1px solid #e5e6ed;
 	:nth-child(1) {
 		width: 34%;
+		cursor: pointer;
+		:hover {
+			text-decoration: underline;
+		}
 	}
 	:nth-child(2) {
 		width: 24%;
+		cursor: pointer;
+		:hover {
+			text-decoration: underline;
+		}
+		${(props) => (props.inserted ? `color:#2A3349` : `color:#5887FF`)}
 	}
 	:nth-child(3) {
 		width: 11%;
 		justify-content: center;
+		color: #ff5858;
+		cursor: pointer;
+		:hover {
+			text-decoration: underline;
+		}
 	}
 	:nth-child(4) {
 		width: 11%;
 		justify-content: center;
+		cursor: pointer;
+		:hover {
+			text-decoration: underline;
+		}
 	}
 	:nth-child(5) {
 		width: 8%;
@@ -553,57 +530,15 @@ const ListItem = styled.p`
 		border: none;
 	}
 `;
-
-// const ProcessHeader = styled.ul`
-// 	height: 3.1rem;
-// 	line-height: 3.1rem;
-// 	display: flex;
-// 	text-align: center;
-// 	border-bottom: 1px solid e5e6ed;
-// `;
-// const ProcessHeaderItem = styled.li`
-// 	width: 11.11111%;
-// 	height: 100%;
-// 	font-size: 1.2rem;
-// 	font-family: 'kr-b';
-// 	color: #848ca2;
-// 	background-color: #f5f5f5;
-// 	border-right: 1px solid #e5e6ed;
-// 	:nth-last-child(1) {
-// 		border: none;
-// 	}
-// `;
-// const ProcessBody = styled.ul`
-// 	height: 7.4rem;
-// 	display: flex;
-// 	text-align: center;
-// `;
-// const ProcessBodyItem = styled.li`
-// 	width: 11.11111%;
-// 	height: 100%;
-// 	font-size: 1.2rem;
-// 	color: #5e667b;
-// 	padding-top: 2rem;
-// 	white-space: pre-wrap;
-// 	border-right: 1px solid #e5e6ed;
-// 	:nth-last-child(1) {
-// 		border: none;
-// 	}
-// 	:hover {
-// 		text-decoration: underline;
-// 		cursor: pointer;
-// 	}
-// `;
 const Buttons = styled.div`
 	width: 100%;
 	height: 3.1rem;
 	display: flex;
 	justify-content: center;
-	margin-top: 0;
+	margin-top: 6rem;
 	margin-bottom: 3rem;
 `;
 const Button = styled.button`
-	margin-top: 3rem;
 	width: 10.6rem;
 	height: 3.1rem;
 	font-size: 1.2rem;
