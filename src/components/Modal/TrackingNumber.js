@@ -79,7 +79,7 @@ const TrackingNumberModal = (props) => {
 						)}
 						<Input
 							type='number'
-							placeholder={'운송장 번호를 입력해주세요.'}
+							placeholder={'숫자만 입력해주세요.'}
 							onChange={onChangeCou_num}
 						/>
 					</Item>

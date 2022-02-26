@@ -158,10 +158,6 @@ const ProcessBodyItem = styled.li`
 	:nth-last-child(1) {
 		border: none;
 	}
-	:hover {
-		text-decoration: underline;
-		cursor: pointer;
-	}
 `;
 const Button = styled.button`
 	width: 10.6rem;

@@ -1,25 +1,18 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const OrderClaimModal = (props) => {
-	const modalBox = useRef();
-
 	const selectYes = () => {
 		props.setModal({ ...props.modal, type: '', return: true });
 	};
 	const selectNo = () => {
 		props.setModal({ ...props.modal, type: '', return: false });
 	};
-	const onMouseDown = (e) => {
-		props.modal.type !== '' &&
-			(!modalBox.current || !modalBox.current.contains(e.target)) &&
-			props.setModal({ type: '' });
-	};
 
 	return (
-		<Container onMouseDown={onMouseDown}>
-			<Wrap ref={modalBox}>
-				<Text>{props.modal.text}</Text>
+		<Container>
+			<Wrap>
+				<Text>{props.modal.data.process}</Text>
 				<Buttons>
 					<Button border onClick={selectNo}>
 						아니요
@@ -43,8 +36,8 @@ const Container = styled.div`
 	left: 0;
 `;
 const Wrap = styled.div`
-	width: 41.1rem;
-	height: 21.6rem;
+	width: 43.4rem;
+	height: 26.2rem;
 	padding: 3rem 0;
 	display: flex;
 	flex-direction: column;

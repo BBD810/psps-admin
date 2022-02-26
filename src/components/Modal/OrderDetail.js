@@ -75,7 +75,7 @@ const OrderDetail = (props) => {
 		}
 	};
 	const checkClaim = (el) => {
-		console.log(el);
+		props.setModal({ ...props.modal, act: 'claim', data: el });
 	};
 	const checkProcess = (el) => {
 		props.setModal({ ...props.modal, act: 'process', data: el });
