@@ -2,23 +2,27 @@ import React from 'react';
 import styled from 'styled-components';
 
 const OrderClaimModal = (props) => {
-	const selectYes = () => {
-		props.setModal({ ...props.modal, type: '', return: true });
+	const selectConfirm = () => {
+		props.setModal({ ...props.modal, act: '', return: true });
 	};
-	const selectNo = () => {
-		props.setModal({ ...props.modal, type: '', return: false });
+	const selectClose = () => {
+		props.setModal({ ...props.modal, act: '', return: false });
 	};
 
 	return (
 		<Container>
 			<Wrap>
 				<Text>{props.modal.data.process}</Text>
+				<Reason>
+					<Left>취소사유:</Left>
+					<Right>{props.modal.data.claim_reason}</Right>
+				</Reason>
 				<Buttons>
-					<Button border onClick={selectNo}>
-						아니요
+					<Button border onClick={selectClose}>
+						닫기
 					</Button>
-					<Button filled onClick={selectYes}>
-						예
+					<Button filled onClick={selectConfirm}>
+						취소처리
 					</Button>
 				</Buttons>
 			</Wrap>
@@ -37,7 +41,6 @@ const Container = styled.div`
 `;
 const Wrap = styled.div`
 	width: 43.4rem;
-	height: 26.2rem;
 	padding: 3rem 0;
 	display: flex;
 	flex-direction: column;
@@ -52,13 +55,30 @@ const Wrap = styled.div`
 	box-shadow: 0px 4px 30px #0000004d;
 `;
 const Text = styled.p`
-	height: 5.6rem;
-	line-height: 2.8rem;
+	height: 2.9rem;
+	line-height: 2.9rem;
 	font-size: 2rem;
 	font-family: 'kr-b';
 	color: #2a3349;
 	text-align: center;
-	margin-bottom: 5rem;
+	margin-bottom: 2.7rem;
+`;
+const Reason = styled.div`
+	max-width: 90%;
+	display: flex;
+	align-items: center;
+	margin-bottom: 7.8rem;
+`;
+const Left = styled.p`
+	font-size: 1.2rem;
+	font-family: 'kr-b';
+	color: #848ca2;
+	margin-right: 0.8rem;
+`;
+const Right = styled.p`
+	max-width: 90%;
+	font-size: 1.2rem;
+	color: #7f8697;
 `;
 const Buttons = styled.div`
 	display: flex;
