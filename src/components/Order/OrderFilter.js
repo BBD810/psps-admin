@@ -86,7 +86,7 @@ const OrderFilter = (props) => {
 		if (props.period !== 5) {
 			to = 0;
 			from = typeof props.period === 'number' ? props.period : 3;
-			get_order_list(from, to, process);
+			get_order_list(from, to, process, props.page);
 		} else {
 			if (!props.date.from) {
 				return props.setModal({
@@ -110,9 +110,11 @@ const OrderFilter = (props) => {
 			}
 		}
 	};
-	const get_order_list = (from, to, process) => {
-		_order.get_list(from, to, process).then((res) => {
+	const get_order_list = (from, to, process, page) => {
+		_order.get_list(from, to, process, page).then((res) => {
 			if (res.data.success) {
+				console.log('dfdfd', res.data);
+				// props.setTotal(res.data.total);
 				props.setList(res.data.payment_product_list);
 			}
 		});

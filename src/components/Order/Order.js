@@ -40,7 +40,9 @@ const Order = (props) => {
 			<OrderFilter
 				period={period}
 				date={date}
+				page={page}
 				state={state}
+				setTotal={setTotal}
 				setPeriod={setPeriod}
 				setDate={setDate}
 				setState={setState}
