@@ -99,3 +99,40 @@ export const statisticsCategory = [
 		list_sub: `주문 내역을 확인하고 처리합니다.`,
 	},
 ];
+
+export const faqCategory = [
+	{
+		item: '상품',
+		list_main: '상품 관련',
+		list_sub: '상품 관련 FAQ를 관리합니다. 내용 클릭 시 수정이 가능합니다.',
+	},
+	{
+		item: '주문/결제',
+		list_main: '주문/결제 관련',
+		list_sub:
+			'주문/결제 관련 FAQ를 관리합니다. 내용 클릭 시 수정이 가능합니다.',
+	},
+	{
+		item: '배송',
+		list_main: '배송 관련',
+		list_sub: '배송 관련 FAQ를 관리합니다. 내용 클릭 시 수정이 가능합니다.',
+	},
+	{
+		item: '취소/교환/반품',
+		list_main: '취소/교환/반품 관련',
+		list_sub:
+			'취소/교환/반품 관련 FAQ를 관리합니다. 내용 클릭 시 수정이 가능합니다.',
+	},
+	{
+		item: '회원정보',
+		list_main: '회원정보 관련',
+		list_sub:
+			'회원정보 관련 FAQ를 관리합니다. 내용 클릭 시 수정이 가능합니다.',
+	},
+	{
+		item: '서비스이용',
+		list_main: '서비스이용 관련',
+		list_sub:
+			'서비스이용 관련 FAQ를 관리합니다. 내용 클릭 시 수정이 가능합니다.',
+	},
+];

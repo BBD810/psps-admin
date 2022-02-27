@@ -23,6 +23,8 @@ const Category = (props) => {
 			setArr(data.userCategory);
 		} else if (props.menu === '통계') {
 			setArr(data.statisticsCategory);
+		} else if (props.menu === 'FAQ') {
+			setArr(data.faqCategory);
 		}
 		for (let i = 0; i < arr.length; i++) {
 			if (props.category === arr[i].item) {

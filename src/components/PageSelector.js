@@ -27,8 +27,6 @@ const PageSelector = ({ page, total, onePage, onClickPage, style }) => {
 		setPages(update);
 	}, [total, page]);
 
-	console.log('pageSelector--', onePage);
-
 	return (
 		<PageList style={style}>
 			<PageItem onClick={page === 1 ? null : () => onClickPage(page - 1)}>

@@ -9,6 +9,7 @@ import ProductPage from './pages/ProductPage';
 import ProductImgPage from './pages/ProductImgPage';
 import OrderPage from './pages/OrderPage';
 import UserPage from './pages/UserPage';
+import FaqPage from './pages/FaqPage';
 
 const App = () => {
 	return (
@@ -35,6 +36,7 @@ const App = () => {
 					/>
 					<Route exact path='/order' component={Auth(OrderPage, true)} />
 					<Route exact path='/user' component={Auth(UserPage, true)} />
+					<Route exact path='/faq' component={Auth(FaqPage, null)} />
 				</Switch>
 			</div>
 		</Router>

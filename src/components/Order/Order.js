@@ -18,10 +18,6 @@ const Order = (props) => {
 	const [total, setTotal] = useState(1);
 	const onePage = 50;
 
-	const onClickPage = (e) => {
-		e !== page && setPage(e);
-	};
-
 	// const list = Array(15).fill({
 	// 	state: '배송중',
 	// 	order_date: '2022-02-08 11:54',
@@ -56,7 +52,7 @@ const Order = (props) => {
 				page={page}
 				total={total}
 				onePage={onePage}
-				onClickPage={onClickPage}
+				onClickPage={setPage}
 				modal={props.modal}
 				setModal={props.setModal}
 			/>

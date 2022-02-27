@@ -19,6 +19,7 @@ const SideBar = (props) => {
 		'주문',
 		'고객',
 		'통계',
+		'FAQ',
 	];
 
 	const slideController = () => {
@@ -41,6 +42,9 @@ const SideBar = (props) => {
 			history.push('/user');
 		}
 		// else if (innerText === '통계') {}
+		else if (innerText === 'FAQ') {
+			history.push('/faq');
+		}
 	};
 	const goLogout = () => {
 		request.logout().then((res) => {
@@ -76,7 +80,7 @@ export default withRouter(SideBar);
 
 const SideBarContainer = styled.div`
 	width: 19.8rem;
-	height: 62rem;
+	height: 68.1rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -118,7 +122,7 @@ const LogoImg = styled.img`
 `;
 const MainMenu = styled.ul`
 	width: 13.8rem;
-	height: 47rem;
+	height: 53.1rem;
 	padding: 1.9rem 0;
 	background-color: #ffffff;
 	box-shadow: -3px 4px 30px #0000001a;

@@ -18,6 +18,7 @@ const UserPage = () => {
 	const [page, setPage] = useState(1);
 	const [total, setTotal] = useState(0);
 	const [list, setList] = useState([]);
+	const onePage = 10;
 
 	const getCategory = (category) => {
 		setCategory(category);
@@ -40,9 +41,12 @@ const UserPage = () => {
 					/>
 					<UserFilter page={page} setList={setList} setTotal={setTotal} />
 					<UserList
+						list={list}
+						setList={setList}
 						page={page}
 						total={total}
-						list={list}
+						onePage={onePage}
+						onClickPage={setPage}
 						modal={modal}
 						setModal={setModal}
 					/>

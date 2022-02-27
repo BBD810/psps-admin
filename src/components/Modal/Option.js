@@ -38,7 +38,6 @@ const OptionModal = (props) => {
 	};
 
 	const selectYes = () => {
-		console.log('title', title, 'price', price, 'discount', discount);
 		if (title && price && discount) {
 			props.setModal({
 				...props.modal,

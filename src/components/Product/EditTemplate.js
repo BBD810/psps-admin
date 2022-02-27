@@ -60,9 +60,6 @@ const EditTemplate = (props) => {
 		};
 	}, []);
 
-	console.log('detailImgId', detailImgId);
-	console.log('detailPrevImg', detailPrevImg);
-
 	useEffect(() => {
 		setIsLoading(true);
 		let isSubscribed = true;
@@ -187,7 +184,6 @@ const EditTemplate = (props) => {
 	};
 
 	useEffect(() => {
-		console.log('props.modal', props.modal);
 		const _modal = props.modal;
 		if (_modal.act === 'add' && _modal.return) {
 			_product_option.create(_modal.return, product_id).then((res) => {
