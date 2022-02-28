@@ -113,8 +113,7 @@ const OrderFilter = (props) => {
 	const get_order_list = (from, to, process, page) => {
 		_order.get_list(from, to, process, page).then((res) => {
 			if (res.data.success) {
-				console.log('total', res.data);
-				// props.setTotal(res.data.total);
+				props.setTotal(res.data.total);
 				props.setList(res.data.payment_product_list);
 			}
 		});

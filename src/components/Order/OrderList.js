@@ -44,15 +44,6 @@ const OrderList = (props) => {
 		props.setModal({ type: 'detail', payment_uid });
 	};
 
-	console.log(
-		'page',
-		props.page,
-		'total',
-		props.total,
-		'onePage',
-		props.onePage
-	);
-
 	return (
 		<Container>
 			<Head>주문내역</Head>
