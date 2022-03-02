@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { priceToString } from '../../functions/PriceToString';
-import { dateObjToTimer } from '../../functions/DateObjToDate';
 import {
 	addrTransform,
 	productTransform,
@@ -9,7 +8,6 @@ import * as _order from '../../controller/payment';
 import styled from 'styled-components';
 import check_icon from '../../images/check_square.svg';
 import uncheck_icon from '../../images/uncheck_square.svg';
-import TrackingNumberModal from './TrackingNumber';
 
 const OrderDetail = (props) => {
 	const orderer = ['이름', 'e-mail', '연락처/주소', '결제수단'];

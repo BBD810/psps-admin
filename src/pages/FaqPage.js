@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { faqTypeTransform2 } from '../functions/FaqTypeTransform';
 import * as _faq from '../controller/faq';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
+import Footer from '../components/Footer';
 import ListTemplate from '../components/Faq/ListTemplate';
 import styled from 'styled-components';
 
@@ -10,46 +12,23 @@ const FaqPage = () => {
 	const [menu, setMenu] = useState('FAQ');
 	const [category, setCategory] = useState('상품관련');
 	const [desc, setDesc] = useState('');
-
 	const getCategory = (category) => {
 		setCategory(category);
 	};
 
-	const [page, setPage] = useState(1);
-	const [total, setTotal] = useState(1);
-	const onePage = 10;
-	const [list, setList] = useState([
-		{
-			type: '상품',
-			question: '고기 색깔이 이상해요.',
-			answer: '원래 그래요',
-		},
-		{
-			type: '주문/결제',
-			question: '고기 색깔이 이상해요.',
-			answer: '원래 그래요',
-		},
-		{
-			type: '취소/교환/환불',
-			question: '고기 색깔이 이상해요.',
-			answer: '원래 그래요',
-		},
-		{
-			type: '서비스 이용',
-			question: '고기 색깔이 이상해요.',
-			answer: '원래 그래요',
-		},
-	]);
+	const [list, setList] = useState([]);
 
 	useEffect(() => {
 		let isSubscribed = true;
-		// _faq.get_list().then((res) => {
-		// 	console.log(res.data);
-		// });
+		_faq.get_list(faqTypeTransform2(category)).then((res) => {
+			if (isSubscribed && res.data.success) {
+				setList(res.data.question_list);
+			}
+		});
 		return () => {
 			isSubscribed = false;
 		};
-	}, []);
+	}, [category]);
 
 	return (
 		<Container>
@@ -62,14 +41,8 @@ const FaqPage = () => {
 					menu={menu}
 					desc={desc}
 				/>
-				<ListTemplate
-					list={list}
-					setList={setList}
-					page={page}
-					total={total}
-					onePage={onePage}
-					onClickPage={setPage}
-				/>
+				<ListTemplate list={list} setList={setList} />
+				<Footer />
 			</Contents>
 		</Container>
 	);

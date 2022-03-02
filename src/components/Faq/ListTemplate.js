@@ -1,6 +1,6 @@
 import React from 'react';
+import { faqTypeTransform } from '../../functions/FaqTypeTransform';
 import styled from 'styled-components';
-import PageSelector from '../PageSelector';
 
 const ListTemplate = (props) => {
 	const header = ['타입', '질문', '답변', '관리'];
@@ -18,22 +18,13 @@ const ListTemplate = (props) => {
 					{props.list &&
 						props.list.map((el, idx) => (
 							<List key={idx}>
-								<ListItem>{el.type}</ListItem>
-								<ListItem>{el.question}</ListItem>
-								<ListItem>{el.answer}</ListItem>
+								<ListItem>{faqTypeTransform(el.qu_type_id)}</ListItem>
+								<ListItem>{el.qu_title}</ListItem>
+								<ListItem>{el.qu_text}</ListItem>
 								<ListItem>삭제하기</ListItem>
 							</List>
 						))}
 				</ListWrap>
-				{props.list.length > 0 && (
-					<PageSelector
-						page={props.page}
-						total={props.total}
-						onePage={props.onePage}
-						onClickPage={props.onClickPage}
-						style={{ marginTop: '6.2rem' }}
-					/>
-				)}
 			</Body>
 			<Button>추가하기</Button>
 		</Container>
@@ -96,6 +87,8 @@ const HeaderItem = styled.li`
 `;
 const ListWrap = styled.div`
 	width: 100%;
+	height: 46.9rem;
+	overflow-y: auto;
 `;
 const List = styled.ul`
 	padding: 0 4rem;
