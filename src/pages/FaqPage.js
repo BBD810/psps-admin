@@ -30,6 +30,8 @@ const FaqPage = () => {
 		};
 	}, [category]);
 
+	console.log('aa');
+
 	return (
 		<Container>
 			<SideBar menu={menu} setMenu={setMenu} />

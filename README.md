@@ -1,5 +1,23 @@
 ## Progress & Update
 
+> 2022.03.03
+
+**에러 노트**
+
+-  문제 :
+   "Invalid options object. Dev Server has been initialized using an options object that does not match the API schema.
+   options.allowedHosts[0] should be a non-empty string. error Command failed with exit code 1. info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command."
+   라는 에러 문구와 함께 yarn start(npm start) 실행이 되지 않는 현상 발생.
+   package.json에 있는 proxy 설정을 지우면 앱이 실행은 되었으나 로컬 환경에서 개발이 불가능해짐.
+
+   해결 방법 : react-scripts를 v5 => v4.0.3 버전으로 다운그레이드, proxy-middleware 설치 후 setupProxy.js에 proxy 수동 설정 후 해결
+   (setupProxy + react-scripts@5.0.0 => 실행이 안 됨
+   setupProxy 없이 react-scripts@4.0.3 => 실행은 되지만 서버 요청이 정상적으로 작동하지 않음.)
+
+   출처 : https://stackoverflow.com/questions/70374005/invalid-options-object-dev-server-has-been-initialized-using-an-options-object_
+
+---
+
 > 2022.03.02
 
 -  FAQ 리스트 조회 기능 추가
