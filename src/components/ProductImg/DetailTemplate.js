@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
-import { IMG_ADDRESS, CLIENT_ADDRESS } from '../../config';
+import { IMG_ADDRESS } from '../../config';
 import * as product_img from '../../controller/product_img';
 import styled from 'styled-components';
 
@@ -22,7 +22,7 @@ const DetailTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
-	}, []);
+	}, [history.location.state]);
 	useEffect(() => {
 		let isSubscribed = true;
 		product_img.get_share_list(true).then((res) => {
@@ -123,6 +123,7 @@ const DetailTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
+		// eslint-disable-next-line
 	}, [props.modal.type]);
 
 	const success = () => {
@@ -280,43 +281,9 @@ const ShareItem = styled.li`
 		margin: 0;
 	}
 `;
-const UploadButton = styled.button`
-	width: 10.6rem;
-	height: 3.1rem;
-	font-size: 1.2rem;
-	font-family: 'kr-b';
-	color: #fff;
-	border: none;
-	border-radius: 4px;
-	background-color: #2a3349;
-`;
-const SaveButton = styled.button`
-	width: 10.6rem;
-	height: 3.1rem;
-	font-size: 1.2rem;
-	font-family: 'kr-b';
-	color: #fff;
-	border: none;
-	border-radius: 4px;
-	background-color: #2a3349;
-	position: absolute;
-	top: -5.75rem;
-	right: 0;
-	${(props) => !props.active && `opacity:0.4`}
-`;
 const BottomWrap = styled.div`
 	width: 100%;
 	position: relative;
-`;
-const FileInput = styled.input`
-	width: 10.6rem;
-	height: 3.1rem;
-	position: absolute;
-	left: 0;
-	opacity: 0;
-	border: none;
-	border-radius: 4px;
-	background-color: #2a3349;
 `;
 const ImgWrap = styled.div`
 	margin-top: 2rem;

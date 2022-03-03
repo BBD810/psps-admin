@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { faqTypeTransform2 } from '../functions/FaqTypeTransform';
 import * as _faq from '../controller/faq';
 import SideBar from '../components/SideBar';
@@ -7,14 +7,16 @@ import Footer from '../components/Footer';
 import ListTemplate from '../components/Faq/ListTemplate';
 import styled from 'styled-components';
 
+const FaqInputModal = lazy(() => {
+	return import('../components/Modal/FaqInput');
+});
+
 const FaqPage = () => {
 	const mode = 'list';
 	const [menu, setMenu] = useState('FAQ');
 	const [category, setCategory] = useState('상품관련');
 	const [desc, setDesc] = useState('');
-	const getCategory = (category) => {
-		setCategory(category);
-	};
+	const [modal, setModal] = useState({ type: '' });
 
 	const [list, setList] = useState([]);
 
@@ -30,20 +32,24 @@ const FaqPage = () => {
 		};
 	}, [category]);
 
-	console.log('aa');
-
 	return (
 		<Container>
 			<SideBar menu={menu} setMenu={setMenu} />
 			<Contents>
 				<Category
 					category={category}
-					getCategory={getCategory}
+					getCategory={setCategory}
 					mode={mode}
 					menu={menu}
 					desc={desc}
 				/>
 				<ListTemplate list={list} setList={setList} />
+				{modal.type === 'create' ||
+					(modal.type === 'edit' && (
+						<Suspense fallback={<div>Loading...</div>}>
+							<FaqInputModal modal={modal} setModal={setModal} />
+						</Suspense>
+					))}
 				<Footer />
 			</Contents>
 		</Container>

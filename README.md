@@ -16,6 +16,8 @@
 
    출처 : https://stackoverflow.com/questions/70374005/invalid-options-object-dev-server-has-been-initialized-using-an-options-object_
 
+-  콘솔 eslint error 수정
+
 ---
 
 > 2022.03.02

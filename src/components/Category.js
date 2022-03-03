@@ -32,10 +32,12 @@ const Category = (props) => {
 				break;
 			}
 		}
+		// eslint-disable-next-line
 	}, [props.menu, props.category]);
 
 	useEffect(() => {
 		props.getCategory(arr[0].item);
+		// eslint-disable-next-line
 	}, [arr]);
 
 	useEffect(() => {

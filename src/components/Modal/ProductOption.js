@@ -19,7 +19,7 @@ const OptionModal = (props) => {
 			setName(data.name);
 			setWeight(data.weight);
 		}
-	}, [props.modal.act]);
+	}, [props.modal.act, props.modal.data]);
 
 	const onChangeTitle = (e) => {
 		setTitle(e.target.value);

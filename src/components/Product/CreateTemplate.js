@@ -57,6 +57,7 @@ const CreateTemplate = (props) => {
 			history.replace();
 			isSubscribed = false;
 		};
+		// eslint-disable-next-line
 	}, []);
 
 	const onChangeTitle = (e) => {
@@ -151,6 +152,7 @@ const CreateTemplate = (props) => {
 			_optionList[modal.order] = modal.return;
 			optionSuccess(_optionList);
 		}
+		// eslint-disable-next-line
 	}, [props.modal.type]);
 
 	useEffect(() => {
@@ -164,6 +166,7 @@ const CreateTemplate = (props) => {
 				}
 			});
 		}
+		// eslint-disable-next-line
 	}, [history.location.state]);
 
 	const optionSuccess = (list) => {

@@ -1,6 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
-import { productCategory } from '../data/category';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
@@ -25,7 +24,7 @@ const SelectModal = lazy(() => {
 	return import('../components/Modal/Select');
 });
 const OptionModal = lazy(() => {
-	return import('../components/Modal/Option');
+	return import('../components/Modal/ProductOption');
 });
 const DetailImgListModal = lazy(() => {
 	return import('../components/Modal/DetailImgList');
@@ -46,9 +45,6 @@ const ProductPage = () => {
 	const changeMode = (mode) => {
 		setMode(mode);
 	};
-	const getMenu = (menu) => {
-		setMenu(menu);
-	};
 	const getCategory = (category) => {
 		setCategory(category);
 		setMode('list');
@@ -60,10 +56,6 @@ const ProductPage = () => {
 		// 상세이미지 안 상품목록 클릭 시 상품 디테일로 바로 연결
 		history.location.state && changeMode('detail');
 	}, [history.location.state]);
-
-	const modalController = (data) => {
-		setModal(data);
-	};
 
 	return (
 		<div id='container'>

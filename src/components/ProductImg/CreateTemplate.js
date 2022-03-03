@@ -31,6 +31,7 @@ const CreateTemplate = (props) => {
 				}
 			});
 		}
+		// eslint-disable-next-line
 	}, [props.mode]);
 
 	const onChangeTitle = (e) => {
@@ -108,6 +109,7 @@ const CreateTemplate = (props) => {
 		} else {
 			title && img ? setCheck(true) : setCheck(false);
 		}
+		// eslint-disable-next-line
 	}, [title, share, img]);
 
 	return (

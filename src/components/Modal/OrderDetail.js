@@ -99,13 +99,14 @@ const OrderDetail = (props) => {
 				}
 			});
 		}
+		// eslint-disable-next-line
 	}, [props.modal]);
 	const enterSuccess = (list) => {
 		props.setModal({ ...props.modal, return: '' });
 		setChecked([]);
 		setSupplier_list(list);
 	};
-	const enterFail = () => {};
+	// const enterFail = () => {};
 
 	return (
 		<Container>

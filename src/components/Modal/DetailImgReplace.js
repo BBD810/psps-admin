@@ -10,8 +10,8 @@ const ReplaceModal = (props) => {
 	const [openSelect, setOpenSelect] = useState(false);
 
 	useEffect(() => {
-		setList(props.modal.list);
-	}, []);
+		props.modal.list && setList(props.modal.list);
+	}, [props.modal.list]);
 
 	const selectController = (idx) => {
 		setSelected(idx);

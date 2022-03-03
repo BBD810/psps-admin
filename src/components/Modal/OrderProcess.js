@@ -18,7 +18,7 @@ const OrderProcessModal = (props) => {
 
 	useEffect(() => {
 		props.modal.data && setDetail(props.modal.data);
-	}, []);
+	}, [props.modal.data]);
 
 	const onClick = () => {
 		props.setModal({ ...props.modal, act: '' });

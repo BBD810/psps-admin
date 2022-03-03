@@ -36,7 +36,7 @@ const DetailTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
-	}, []);
+	}, [history.location.state, props.category]);
 
 	const selectEdit = () => {
 		history.push({ state: banner_id });
@@ -103,7 +103,7 @@ const DetailTemplate = (props) => {
 				}
 			}
 		}
-	}, [displayList]);
+	}, [displayList, detail.banner_id]);
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -125,6 +125,7 @@ const DetailTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
+		// eslint-disable-next-line
 	}, [props.modal.type]);
 
 	const success = () => {

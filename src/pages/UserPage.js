@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { userCategory } from '../data/category';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';

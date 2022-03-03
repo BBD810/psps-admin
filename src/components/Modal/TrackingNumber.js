@@ -41,7 +41,7 @@ const TrackingNumberModal = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
-	}, []);
+	}, [list]);
 
 	return (
 		<Container>

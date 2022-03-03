@@ -62,7 +62,8 @@ const DetailTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
-	}, [props.modal.type]);
+		// eslint-disable-next-line
+	}, [props.modal.type, detail.product_id]);
 
 	const success = () => {
 		props.setModal({ type: '' });

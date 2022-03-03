@@ -21,7 +21,7 @@ const SelectModal = lazy(() => {
 	return import('../components/Modal/Select');
 });
 const ListModal = lazy(() => {
-	return import('../components/Modal/List');
+	return import('../components/Modal/BannerList');
 });
 
 const BannerPage = () => {

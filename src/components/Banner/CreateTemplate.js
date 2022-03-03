@@ -64,6 +64,7 @@ const CreateTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
+		// eslint-disable-next-line
 	}, [props.mode, props.input]);
 
 	useEffect(() => {
@@ -78,6 +79,7 @@ const CreateTemplate = (props) => {
 		} else {
 			setCheck(false);
 		}
+		// eslint-disable-next-line
 	}, [title, img, page, subPart, product_id]);
 
 	const onChangeType = (e) => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
-import { IMG_ADDRESS, ADDRESS } from '../../config';
+import { IMG_ADDRESS } from '../../config';
 import * as toggleMenu from '../../data/toggle';
 import * as _product_img from '../../controller/product_img';
 import styled from 'styled-components';
@@ -193,6 +193,7 @@ const ListTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
+		// eslint-disable-next-line
 	}, [props.modal.type]);
 
 	const success = (list) => {
@@ -296,7 +297,7 @@ const ListTemplate = (props) => {
 	);
 };
 
-export default ListTemplate;
+export default withRouter(ListTemplate);
 
 const Container = styled.div`
 	width: 119rem;

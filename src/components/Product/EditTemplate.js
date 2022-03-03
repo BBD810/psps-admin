@@ -14,7 +14,6 @@ import empty_icon from '../../images/empty_icon.svg';
 import check_icon from '../../images/check_icon.svg';
 import delete_icon from '../../images/delete_icon.svg';
 import add_detail from '../../images/add_detail.svg';
-import add_thumbnail from '../../images/add_thumbnail.svg';
 import StateInfo from './StateInfo';
 import Spinner from '../Spinner';
 
@@ -58,6 +57,7 @@ const EditTemplate = (props) => {
 			history.replace();
 			isSubscribed = false;
 		};
+		// eslint-disable-next-line
 	}, []);
 
 	useEffect(() => {
@@ -85,7 +85,7 @@ const EditTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
-	}, [props.mode]);
+	}, [props.mode, history.location.state]);
 
 	const onChangeTitle = (e) => {
 		setTitle(e.target.value);
@@ -211,6 +211,7 @@ const EditTemplate = (props) => {
 				}
 			});
 		}
+		// eslint-disable-next-line
 	}, [props.modal.type]);
 
 	useEffect(() => {
@@ -224,6 +225,7 @@ const EditTemplate = (props) => {
 				}
 			});
 		}
+		// eslint-disable-next-line
 	}, [history.location.state]);
 
 	const optionSuccess = (list) => {
@@ -958,20 +960,6 @@ const RequireInput = styled.input`
 	color: #7f8697;
 `;
 
-const SaveButton = styled.button`
-	width: 10.6rem;
-	height: 3.1rem;
-	font-size: 1.2rem;
-	font-family: 'kr-b';
-	color: #fff;
-	border: none;
-	border-radius: 4px;
-	background-color: #2a3349;
-	position: absolute;
-	top: -5.75rem;
-	right: 0;
-	${(props) => !props.active && `opacity:0.4`}
-`;
 const Buttons = styled.div`
 	display: flex;
 	align-items: center;

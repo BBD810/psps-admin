@@ -21,7 +21,7 @@ const SelectModal = lazy(() => {
 	return import('../components/Modal/Select');
 });
 const ReplaceModal = lazy(() => {
-	return import('../components/Modal/Replace');
+	return import('../components/Modal/DetailImgReplace');
 });
 
 const ProductImgPage = () => {

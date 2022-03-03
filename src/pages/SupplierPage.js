@@ -4,8 +4,13 @@ import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
 import ListTemplate from '../components/Supplier/ListTemplate';
-import ConfirmModal from '../components/Modal/Confirm';
-import SelectModal from '../components/Modal/Select';
+
+const ConfirmModal = lazy(() => {
+	return import('../components/Modal/Confirm');
+});
+const SelectModal = lazy(() => {
+	return import('../components/Modal/Select');
+});
 
 const SupplierPage = () => {
 	const [mode, setMode] = useState('list');
@@ -33,10 +38,14 @@ const SupplierPage = () => {
 					/>
 					<ListTemplate modal={modal} setModal={setModal} />
 					{modal.type === 'confirm' && (
-						<ConfirmModal modal={modal} setModal={setModal} />
+						<Suspense fallback={<div>Loading...</div>}>
+							<ConfirmModal modal={modal} setModal={setModal} />
+						</Suspense>
 					)}
 					{modal.type === 'select' && (
-						<SelectModal modal={modal} setModal={setModal} />
+						<Suspense fallback={<div>Loading...</div>}>
+							<SelectModal modal={modal} setModal={setModal} />
+						</Suspense>
 					)}
 					<Footer />
 				</Contents>

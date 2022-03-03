@@ -25,7 +25,7 @@ const PageSelector = ({ page, total, onePage, onClickPage, style }) => {
 			}
 		}
 		setPages(update);
-	}, [total, page]);
+	}, [total, page, totalPage]);
 
 	return (
 		<PageList style={style}>

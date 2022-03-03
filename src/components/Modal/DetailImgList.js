@@ -3,7 +3,6 @@ import { withRouter, useHistory } from 'react-router-dom';
 import * as _product_img from '../../controller/product_img';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
-import DetailImgCreate from './DetailImgCreate';
 
 const DetailImgListModal = (props) => {
 	const history = useHistory();
@@ -13,7 +12,6 @@ const DetailImgListModal = (props) => {
 	const [listOpen, setListOpen] = useState(false);
 	const [shareList, setShareList] = useState([]);
 	const [singleList, setSingleList] = useState([]);
-	const [list, setList] = useState([]);
 	const [shareSelected, setShareSelected] = useState(false);
 	const [singleSelected, setSingleSelected] = useState(false);
 
@@ -168,7 +166,7 @@ const DetailImgListModal = (props) => {
 	);
 };
 
-export default DetailImgListModal;
+export default withRouter(DetailImgListModal);
 
 const Container = styled.div`
 	width: 100vw;

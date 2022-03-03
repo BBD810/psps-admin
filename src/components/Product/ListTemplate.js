@@ -9,7 +9,6 @@ import down from '../../images/angle-down.svg';
 import left from '../../images/left.svg';
 import right from '../../images/right.svg';
 import toggle from '../../images/toggle.svg';
-import example from '../../images/banner1.png';
 import Spinner from '../Spinner';
 
 const ListTemplate = (props) => {
@@ -188,6 +187,7 @@ const ListTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
+		// eslint-disable-next-line
 	}, [props.modal.type]);
 
 	const success = (list) => {
