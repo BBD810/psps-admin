@@ -2,7 +2,7 @@ export const faqTypeTransform = (type) => {
 	let text;
 	type = Number(type);
 	if (type === 1) {
-		text = '상품관련';
+		text = '상품';
 	} else if (type === 2) {
 		text = '주문/결제';
 	} else if (type === 3) {

@@ -1,5 +1,8 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { faqTypeTransform2 } from '../functions/FaqTypeTransform';
+import {
+	faqTypeTransform,
+	faqTypeTransform2,
+} from '../functions/FaqTypeTransform';
 import * as _faq from '../controller/faq';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
@@ -32,6 +35,26 @@ const FaqPage = () => {
 		};
 	}, [category]);
 
+	useEffect(() => {
+		if (modal.act === 'create' && modal.return) {
+			_faq.create(modal.return).then((res) => {
+				const { success, qu_type_id, question_list } = res.data;
+				success && faqSuccess(qu_type_id, question_list);
+			});
+		} else if (modal.act === 'edit' && modal.return) {
+			_faq.edit(modal.qu_id, modal.return).then((res) => {
+				const { success, qu_type_id, question_list } = res.data;
+				success && faqSuccess(qu_type_id, question_list);
+			});
+		}
+	}, [modal.type]);
+
+	const faqSuccess = (qu_type_id, list) => {
+		setModal({ type: '' });
+		setCategory(faqTypeTransform(qu_type_id));
+		setList(list);
+	};
+
 	return (
 		<Container>
 			<SideBar menu={menu} setMenu={setMenu} />
@@ -43,13 +66,17 @@ const FaqPage = () => {
 					menu={menu}
 					desc={desc}
 				/>
-				<ListTemplate list={list} setList={setList} />
-				{modal.type === 'create' ||
-					(modal.type === 'edit' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<FaqInputModal modal={modal} setModal={setModal} />
-						</Suspense>
-					))}
+				<ListTemplate
+					list={list}
+					setList={setList}
+					modal={modal}
+					setModal={setModal}
+				/>
+				{(modal.act === 'create' || modal.act === 'edit') && (
+					<Suspense fallback={<div>Loading...</div>}>
+						<FaqInputModal modal={modal} setModal={setModal} />
+					</Suspense>
+				)}
 				<Footer />
 			</Contents>
 		</Container>

@@ -14,7 +14,12 @@ const errorMessage = () => {
 };
 
 export const create = async (data) => {
+	console.log('create data', data);
 	return await instance.post('/', data).catch(errorMessage);
+};
+
+export const edit = async (qu_id, data) => {
+	return await instance.put(`${qu_id}`, data).catch(errorMessage);
 };
 
 export const get_list = async (qu_type_id) => {

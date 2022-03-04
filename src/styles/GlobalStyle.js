@@ -55,16 +55,19 @@ p {
 textarea {
 	resize: none;
 }
-input {
+input, 
+textarea {
 	padding:0 1rem;
 	background: #f4f4f4 0% 0% no-repeat padding-box;
 	border: 2px solid #e5e6ed;
 	border-radius: 4px;
 }
+textarea {
+	padding: 0.5rem 1rem;
+}
 input:focus,
 textarea:focus {
 	outline: none;
-	background: var(--unnamed-color-ffffff) 0% 0% no-repeat padding-box;
 	border: 2px solid var(--unnamed-color-111a31);
 	background: #ffffff 0% 0% no-repeat padding-box;
 	box-shadow: 0px 3px 6px #00000029;

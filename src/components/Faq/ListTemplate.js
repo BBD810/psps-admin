@@ -5,6 +5,13 @@ import styled from 'styled-components';
 const ListTemplate = (props) => {
 	const header = ['타입', '질문', '답변', '관리'];
 
+	const createFaq = () => {
+		props.setModal({ act: 'create' });
+	};
+	const editFaq = (el) => {
+		props.setModal({ act: 'edit', data: el, qu_id: el.qu_id });
+	};
+
 	return (
 		<Container>
 			<Head>FAQ 목록</Head>
@@ -19,14 +26,24 @@ const ListTemplate = (props) => {
 						props.list.map((el, idx) => (
 							<List key={idx}>
 								<ListItem>{faqTypeTransform(el.qu_type_id)}</ListItem>
-								<ListItem>{el.qu_title}</ListItem>
-								<ListItem>{el.qu_text}</ListItem>
+								<ListItem
+									onClick={() => {
+										editFaq(el);
+									}}>
+									{el.qu_title}
+								</ListItem>
+								<ListItem
+									onClick={() => {
+										editFaq(el);
+									}}>
+									{el.qu_text}
+								</ListItem>
 								<ListItem>삭제하기</ListItem>
 							</List>
 						))}
 				</ListWrap>
 			</Body>
-			<Button>추가하기</Button>
+			<Button onClick={createFaq}>추가하기</Button>
 		</Container>
 	);
 };
@@ -114,11 +131,13 @@ const ListItem = styled.li`
 		width: 10%;
 		padding-left: 0.4rem;
 	}
-	:nth-child(2) {
-		width: 40%;
-	}
+	:nth-child(2),
 	:nth-child(3) {
 		width: 40%;
+		cursor: pointer;
+		:hover {
+			text-decoration: underline;
+		}
 	}
 	:nth-child(4) {
 		width: 10%;
