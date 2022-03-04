@@ -22,6 +22,10 @@ export const edit = async (qu_id, data) => {
 	return await instance.put(`${qu_id}`, data).catch(errorMessage);
 };
 
+export const remove = async (qu_id) => {
+	return await instance.delete(`${qu_id}`).catch(errorMessage);
+};
+
 export const get_list = async (qu_type_id) => {
 	return await instance.get(`/list/${qu_type_id}`).catch(errorMessage);
 };

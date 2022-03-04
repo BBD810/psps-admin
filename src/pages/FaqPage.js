@@ -13,6 +13,9 @@ import styled from 'styled-components';
 const FaqInputModal = lazy(() => {
 	return import('../components/Modal/FaqInput');
 });
+const SelectModal = lazy(() => {
+	return import('../components/Modal/Select');
+});
 
 const FaqPage = () => {
 	const mode = 'list';
@@ -46,6 +49,12 @@ const FaqPage = () => {
 				const { success, qu_type_id, question_list } = res.data;
 				success && faqSuccess(qu_type_id, question_list);
 			});
+		} else if (modal.act === 'delete' && modal.return) {
+			_faq.remove(modal.qu_id).then((res) => {
+				console.log('res.data', res.data);
+				const { success, qu_type_id, question_list } = res.data;
+				success && faqSuccess(qu_type_id, question_list);
+			});
 		}
 	}, [modal.type]);
 
@@ -75,6 +84,11 @@ const FaqPage = () => {
 				{(modal.act === 'create' || modal.act === 'edit') && (
 					<Suspense fallback={<div>Loading...</div>}>
 						<FaqInputModal modal={modal} setModal={setModal} />
+					</Suspense>
+				)}
+				{modal.type === 'select' && (
+					<Suspense fallback={<div>Loading...</div>}>
+						<SelectModal modal={modal} setModal={setModal} />
 					</Suspense>
 				)}
 				<Footer />

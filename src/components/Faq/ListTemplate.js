@@ -11,6 +11,14 @@ const ListTemplate = (props) => {
 	const editFaq = (el) => {
 		props.setModal({ act: 'edit', data: el, qu_id: el.qu_id });
 	};
+	const removeFaq = (el) => {
+		props.setModal({
+			type: 'select',
+			text: '삭제하시겠습니까?',
+			act: 'delete',
+			qu_id: el.qu_id,
+		});
+	};
 
 	return (
 		<Container>
@@ -38,7 +46,12 @@ const ListTemplate = (props) => {
 									}}>
 									{el.qu_text}
 								</ListItem>
-								<ListItem>삭제하기</ListItem>
+								<ListItem
+									onClick={() => {
+										removeFaq(el);
+									}}>
+									삭제하기
+								</ListItem>
 							</List>
 						))}
 				</ListWrap>

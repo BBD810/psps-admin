@@ -18,8 +18,6 @@ const FaqInputModal = (props) => {
 		return arr;
 	});
 
-	console.log('props.modal', props.modal);
-
 	useEffect(() => {
 		if (props.modal.data) {
 			const _data = props.modal.data;
@@ -56,8 +54,14 @@ const FaqInputModal = (props) => {
 		});
 	};
 
+	const onMouseDown = (e) => {
+		typeOpen &&
+			(!typeBox.current || !typeBox.current.contains(e.target)) &&
+			setTypeOpen(false);
+	};
+
 	return (
-		<Container>
+		<Container onMouseDown={onMouseDown}>
 			<Wrap>
 				<Text>
 					{`FAQ ${props.modal.act === 'create' ? '추가' : '수정'}하기`}
