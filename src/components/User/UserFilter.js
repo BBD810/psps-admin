@@ -44,6 +44,7 @@ const UserFilter = (props) => {
 				props.setList(res.data.user_list);
 			}
 		});
+		// eslint-disable-next-line
 	}, []);
 
 	const onChangeSearchInput = (e) => {

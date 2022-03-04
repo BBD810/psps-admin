@@ -1,5 +1,4 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { bannerCategory } from '../data/category';
+import React, { lazy, Suspense, useState } from 'react';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
@@ -28,27 +27,7 @@ const BannerPage = () => {
 	const [mode, setMode] = useState('list');
 	const [menu, setMenu] = useState('배너');
 	const [category, setCategory] = useState('메인 배너');
-	const [info, setInfo] = useState({});
-	const [desc, setDesc] = useState('');
 	const [modal, setModal] = useState({ type: '', text: '', return: '' });
-
-	useEffect(() => {
-		for (let i = 0; i < bannerCategory.length; i++) {
-			if (bannerCategory[i].item === category) {
-				setInfo(bannerCategory[i]);
-			}
-		}
-	}, [mode]);
-
-	useEffect(() => {
-		if (mode === 'list') {
-			setDesc({ ...desc, main: info.list_main, sub: info.list_sub });
-		} else if (mode === 'detail') {
-			setDesc({ ...desc, main: info.detail_main, sub: info.detail_sub });
-		} else if (mode === 'edit') {
-			setDesc({ ...desc, main: info.edit_main, sub: info.edit_sub });
-		}
-	}, [info, mode]);
 
 	const getCategory = (category) => {
 		setCategory(category);
@@ -66,7 +45,6 @@ const BannerPage = () => {
 						getCategory={getCategory}
 						mode={mode}
 						menu={menu}
-						desc={desc}
 					/>
 					{!createMode && mode === 'list' && (
 						<Suspense fallback={<div>Loading...</div>}>
@@ -96,7 +74,6 @@ const BannerPage = () => {
 								category={category}
 								mode={mode}
 								modal={modal}
-								desc={desc}
 								setMode={setMode}
 								setModal={setModal}
 							/>
@@ -107,7 +84,6 @@ const BannerPage = () => {
 							<CreateTemplate
 								category={category}
 								getCategory={getCategory}
-								desc={desc}
 								modal={modal}
 								setModal={setModal}
 							/>

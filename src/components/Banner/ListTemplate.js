@@ -20,17 +20,15 @@ const ListTemplate = (props) => {
 	const [detail, setDetail] = useState({});
 	const [list, setList] = useState([]);
 	const [displayList, setDisplayList] = useState([]);
-	let type;
 
 	useEffect(() => {
 		setIsLoading(true);
 		let isSubscribed = true;
-		type = props.category.substr(0, 2);
-		banner.get_list(type).then((res) => {
+		banner.get_list(props.category.substr(0, 2)).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setIsLoading(false);
 				setList(res.data.banner_list);
-				type === '메인'
+				res.data.type === '메인'
 					? setImgHeight({ height: '16.9rem' })
 					: setImgHeight({ height: '11.3rem' });
 			}
@@ -42,8 +40,7 @@ const ListTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		type = props.category.substr(0, 2);
-		banner.get_display_list(type, true).then((res) => {
+		banner.get_display_list(props.category.substr(0, 2), true).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setDisplayList(res.data.banner_list);
 			}
@@ -51,6 +48,7 @@ const ListTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
+		// eslint-disable-next-line
 	}, [list]);
 
 	const goDetail = (el) => {
@@ -194,6 +192,7 @@ const ListTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
+		// eslint-disable-next-line
 	}, [props.modal.type]);
 
 	const success = (list) => {

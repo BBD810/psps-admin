@@ -25,7 +25,7 @@ export const faqTypeTransform2 = (type) => {
 		number = 2;
 	} else if (type === '배송') {
 		number = 3;
-	} else if (type === '배송') {
+	} else if (type === '취소/교환/반품') {
 		number = 4;
 	} else if (type === '회원정보') {
 		number = 5;

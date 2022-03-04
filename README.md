@@ -6,6 +6,7 @@
 -  자주묻는질문 생성 기능 추가
 -  자주묻는질문 수정 기능 추가
 -  자주묻는질문 삭제 기능 추가
+-  eslint error 해결, 불필요한 코드 삭제
 
 ---
 
@@ -25,7 +26,7 @@
 
    출처 : https://stackoverflow.com/questions/70374005/invalid-options-object-dev-server-has-been-initialized-using-an-options-object_
 
--  콘솔 eslint error 수정
+-  콘솔 eslint error 해결
 
 ---
 

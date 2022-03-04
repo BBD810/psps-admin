@@ -21,9 +21,7 @@ const FaqPage = () => {
 	const mode = 'list';
 	const [menu, setMenu] = useState('FAQ');
 	const [category, setCategory] = useState('상품관련');
-	const [desc, setDesc] = useState('');
 	const [modal, setModal] = useState({ type: '' });
-
 	const [list, setList] = useState([]);
 
 	useEffect(() => {
@@ -51,11 +49,11 @@ const FaqPage = () => {
 			});
 		} else if (modal.act === 'delete' && modal.return) {
 			_faq.remove(modal.qu_id).then((res) => {
-				console.log('res.data', res.data);
 				const { success, qu_type_id, question_list } = res.data;
 				success && faqSuccess(qu_type_id, question_list);
 			});
 		}
+		// eslint-disable-next-line
 	}, [modal.type]);
 
 	const faqSuccess = (qu_type_id, list) => {
@@ -73,7 +71,6 @@ const FaqPage = () => {
 					getCategory={setCategory}
 					mode={mode}
 					menu={menu}
-					desc={desc}
 				/>
 				<ListTemplate
 					list={list}

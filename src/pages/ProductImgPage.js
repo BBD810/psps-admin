@@ -1,5 +1,4 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { productImgCategory } from '../data/category';
+import React, { lazy, Suspense, useState } from 'react';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
@@ -28,27 +27,7 @@ const ProductImgPage = () => {
 	const [mode, setMode] = useState('list');
 	const [menu, setMenu] = useState('상품 이미지');
 	const [category, setCategory] = useState('이미지 목록');
-	const [info, setInfo] = useState({});
-	const [desc, setDesc] = useState('');
-	const [modal, setModal] = useState({ type: '', test: '', return: '' });
-
-	useEffect(() => {
-		for (let i = 0; i < productImgCategory.length; i++) {
-			if (productImgCategory[i].item === category) {
-				return setInfo(productImgCategory[i]);
-			}
-		}
-	}, [mode]);
-
-	useEffect(() => {
-		if (mode === 'list') {
-			setDesc({ ...desc, main: info.list_main, sub: info.list_sub });
-		} else if (mode === 'detail') {
-			setDesc({ ...desc, main: info.detail_main, sub: info.detail_sub });
-		} else if (mode === 'edit') {
-			setDesc({ ...desc, main: info.edit_main, sub: info.edit_sub });
-		}
-	}, [info, mode]);
+	const [modal, setModal] = useState({ type: '' });
 
 	const getCategory = (category) => {
 		setCategory(category);
@@ -66,7 +45,6 @@ const ProductImgPage = () => {
 						getCategory={getCategory}
 						mode={mode}
 						menu={menu}
-						desc={desc}
 					/>
 					{!createMode && mode === 'list' && (
 						<Suspense fallback={<div>Loading...</div>}>
@@ -84,7 +62,6 @@ const ProductImgPage = () => {
 							<DetailTemplate
 								category={category}
 								mode={mode}
-								desc={desc}
 								modal={modal}
 								setMenu={setMenu}
 								setMode={setMode}
@@ -96,7 +73,6 @@ const ProductImgPage = () => {
 						<Suspense fallback={<div>Loading...</div>}>
 							<CreateTemplate
 								category={category}
-								desc={desc}
 								mode={mode}
 								modal={modal}
 								setMode={setMode}
@@ -109,7 +85,6 @@ const ProductImgPage = () => {
 							<CreateTemplate
 								category={category}
 								getCategory={getCategory}
-								desc={desc}
 								modal={modal}
 								setModal={setModal}
 							/>

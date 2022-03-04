@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { userCategory } from '../data/category';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
@@ -10,19 +9,13 @@ import UserOrderModal from '../components/Modal/UserOrder';
 
 const UserPage = () => {
 	const mode = 'list';
-	const title = userCategory[0].list_main;
-	const desc = userCategory[0].list_sub;
 	const [menu, setMenu] = useState('고객');
 	const [category, setCategory] = useState('고객 목록');
-	const [modal, setModal] = useState({ type: '', test: '', return: '' });
+	const [modal, setModal] = useState({ type: '' });
 	const [page, setPage] = useState(1);
 	const [total, setTotal] = useState(0);
 	const [list, setList] = useState([]);
 	const onePage = 10;
-
-	const getCategory = (category) => {
-		setCategory(category);
-	};
 
 	return (
 		<div id='container'>
@@ -31,11 +24,9 @@ const UserPage = () => {
 				<Contents>
 					<Category
 						category={category}
-						getCategory={getCategory}
+						getCategory={setCategory}
 						mode={mode}
 						menu={menu}
-						title={title}
-						desc={desc}
 						modal={modal}
 						setModal={setModal}
 					/>

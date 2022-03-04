@@ -16,7 +16,7 @@ const FaqInputModal = (props) => {
 			arr.push(el.item);
 		});
 		return arr;
-	});
+	}, []);
 
 	useEffect(() => {
 		if (props.modal.data) {
@@ -25,7 +25,7 @@ const FaqInputModal = (props) => {
 			setQuestion(_data.qu_title);
 			setAnswer(_data.qu_text);
 		}
-	}, []);
+	}, [props.modal.data]);
 
 	const onChangeType = (idx) => {
 		setType(idx + 1);

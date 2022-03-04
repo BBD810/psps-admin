@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
@@ -7,16 +7,10 @@ import Order from '../components/Order/Order';
 // import Delivery from '../components/Order/Delivery';
 
 const OrderPage = () => {
-	const [mode, setMode] = useState('list');
+	const mode = 'list';
 	const [menu, setMenu] = useState('주문');
 	const [category, setCategory] = useState('주문 목록');
-	const [title, setTitle] = useState('');
-	const [desc, setDesc] = useState('');
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
-
-	const getCategory = (category) => {
-		setCategory(category);
-	};
 
 	return (
 		<div id='container'>
@@ -25,11 +19,9 @@ const OrderPage = () => {
 				<Contents>
 					<Category
 						category={category}
-						getCategory={getCategory}
+						getCategory={setCategory}
 						mode={mode}
 						menu={menu}
-						title={title}
-						desc={desc}
 						modal={modal}
 						setModal={setModal}
 					/>

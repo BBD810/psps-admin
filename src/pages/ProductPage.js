@@ -38,8 +38,6 @@ const ProductPage = () => {
 	const [mode, setMode] = useState('list');
 	const [menu, setMenu] = useState('상품');
 	const [category, setCategory] = useState('상품 목록');
-	const [title, setTitle] = useState('');
-	const [desc, setDesc] = useState('');
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
 
 	const changeMode = (mode) => {
@@ -67,8 +65,6 @@ const ProductPage = () => {
 						getCategory={getCategory}
 						mode={mode}
 						menu={menu}
-						title={title}
-						desc={desc}
 						modal={modal}
 						setModal={setModal}
 					/>

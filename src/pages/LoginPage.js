@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useRef, useState } from 'react';
 import { withRouter, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { admin_login } from '../modules/admin';
-import * as auth from '../controller/auth';
+import * as _auth from '../controller/auth';
 import styled from 'styled-components';
 import logo from '../images/cetus-logo.svg';
 
@@ -17,7 +17,7 @@ const LoginPage = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [show, setShow] = useState(false);
-	const [modal, setModal] = useState({ type: '', text: '' });
+	const [modal, setModal] = useState({ type: '' });
 
 	const onChangeUsername = (e) => {
 		return setUsername(e.target.value);
@@ -45,7 +45,7 @@ const LoginPage = () => {
 			setModal({ type: 'confirm', text: '비밀번호를 확인해주세요.' });
 		} else {
 			const data = { username, password };
-			auth.login(data).then((res) => {
+			_auth.login(data).then((res) => {
 				if (res.data.success) {
 					dispatch(admin_login());
 					setModal({ type: 'confirm', text: '로그인 되었습니다.' });
@@ -63,7 +63,7 @@ const LoginPage = () => {
 	return (
 		<div id='container'>
 			<Login>
-				<LogoImg alt='로고' src={logo} />
+				<LogoImg alt='logo img' src={logo} />
 				<Input
 					type='text'
 					value={username ? username : ''}
