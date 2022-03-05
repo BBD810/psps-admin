@@ -36,6 +36,8 @@ const UserOrderModal = (props) => {
 		e !== props.page && props.setPage(e);
 	};
 
+	console.log(list);
+
 	return (
 		<Container>
 			<Wrap>
@@ -76,7 +78,7 @@ const UserOrderModal = (props) => {
 								<OrderItem>{dateObjToDate(el.create_at)}</OrderItem>
 								<OrderItem>{el.name}</OrderItem>
 								<OrderItem>{priceToString(el.amount)}</OrderItem>
-								<OrderItem>{el.status}</OrderItem>
+								<OrderItem>{el.process}</OrderItem>
 							</OrderList>
 						))}
 					</OrderTable>

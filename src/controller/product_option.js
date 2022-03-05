@@ -17,8 +17,8 @@ export const create = async (data, product_id) => {
 	return await instance.post(`/${product_id}`, data).catch(errorMessage);
 };
 
-export const edit = async (data, product_id) => {
-	return await instance.put(`/${product_id}`, data).catch(errorMessage);
+export const edit = async (data, product_option_id) => {
+	return await instance.put(`/${product_option_id}`, data).catch(errorMessage);
 };
 
 export const remove = async (product_option_id) => {

@@ -38,12 +38,16 @@ const UserFilter = (props) => {
 	];
 
 	useEffect(() => {
+		let isSubscribed = true;
 		_user.get_list(props.page, name, phone_number).then((res) => {
-			if (res.data.success) {
+			if (isSubscribed && res.data.success) {
 				props.setTotal(res.data.total);
 				props.setList(res.data.user_list);
 			}
 		});
+		return () => {
+			isSubscribed = false;
+		};
 		// eslint-disable-next-line
 	}, []);
 

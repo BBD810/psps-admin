@@ -195,6 +195,16 @@ const EditTemplate = (props) => {
 					});
 				}
 			});
+		} else if (_modal.act === 'edit' && _modal.return) {
+			_product_option
+				.edit(_modal.return, _modal.data.product_option_id)
+				.then((res) => {
+					setOptionList(res.data.product_option_list);
+					props.setModal({
+						type: 'confirm',
+						text: '옵션이 수정되었습니다.',
+					});
+				});
 		} else if (_modal.act === 'delete' && _modal.return) {
 			_product_option.remove(_modal.target).then((res) => {
 				if (res.data.success) {
@@ -227,11 +237,6 @@ const EditTemplate = (props) => {
 		}
 		// eslint-disable-next-line
 	}, [history.location.state]);
-
-	const optionSuccess = (list) => {
-		setOptionList(list);
-		props.setModal({ type: '' });
-	};
 
 	const goList = () => {
 		props.setMode('list');

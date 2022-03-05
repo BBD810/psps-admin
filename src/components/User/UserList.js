@@ -171,5 +171,6 @@ const ListItem = styled.li`
 	:nth-child(7) {
 		width: 10%;
 		text-decoration: underline;
+		cursor: pointer;
 	}
 `;

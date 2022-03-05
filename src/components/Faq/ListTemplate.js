@@ -147,6 +147,7 @@ const ListItem = styled.li`
 	:nth-child(2),
 	:nth-child(3) {
 		width: 40%;
+		padding-right: 3.7rem;
 		cursor: pointer;
 		:hover {
 			text-decoration: underline;
