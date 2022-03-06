@@ -25,6 +25,14 @@ const StateInfo = (props) => {
 		};
 	}, [props.mode, props.product_id]);
 
+	const getRecommendList = () => {
+		_product.get_recommend_list().then((res) => {
+			if (res.data.success) {
+				setRecommendList(res.data.product_recommend_list);
+			}
+		});
+	};
+
 	useEffect(() => {
 		let isSubscribed = true;
 		if (props.mode === 'detail') {
@@ -37,13 +45,7 @@ const StateInfo = (props) => {
 						setOptionList(res.data.product_option_list);
 					}
 				})
-				.then(() => {
-					_product.get_recommend_list().then((res) => {
-						if (isSubscribed && res.data.success) {
-							setRecommendList(res.data.product_recommend_list);
-						}
-					});
-				});
+				.then(getRecommendList());
 		}
 		setIsLoading(false);
 		return () => {
@@ -52,10 +54,8 @@ const StateInfo = (props) => {
 	}, [props.mode, props.product_id]);
 
 	const selectDisplay = (e) => {
-		setIsLoading(true);
 		const text = e.target.innerText;
 		if (!props.active) {
-			setIsLoading(false);
 			return props.setModal({
 				type: 'confirm',
 				text: '노출 여부 혹은 추천상품등록 여부는\n상세조회에서 가능합니다.',
@@ -64,9 +64,8 @@ const StateInfo = (props) => {
 			(text === '노출' && detail.state === 'O') ||
 			(text === '노출안함' && detail.state === 'F')
 		) {
-			return setIsLoading(false);
+			return;
 		} else if (text === '노출안함' && detail.recommend) {
-			setIsLoading(false);
 			return props.setModal({
 				type: 'confirm',
 				text: '추천상품으로 등록된 상품은\n노출 여부 변경이 불가능합니다.',
@@ -79,7 +78,6 @@ const StateInfo = (props) => {
 				}
 			}
 			if (text === '노출' && count === 0) {
-				setIsLoading(false);
 				return props.setModal({
 					type: 'confirm',
 					text: '상품을 노출 상태로 변경하려면\n최소 1개 이상의 옵션이 노출 상태여야 합니다.',
@@ -88,7 +86,6 @@ const StateInfo = (props) => {
 				_product.change_display(detail.product_id).then((res) => {
 					if (res.data.success) {
 						setDetail({ ...detail, state: res.data.product.state });
-						setIsLoading(false);
 						props.setModal({
 							type: 'confirm',
 							text: '노출여부가 변경되었습니다.',
@@ -97,14 +94,11 @@ const StateInfo = (props) => {
 				});
 			}
 		}
-		setIsLoading(false);
 	};
 
 	const selectRecommend = (e) => {
-		setIsLoading(true);
 		const text = e.target.innerText;
 		if (!props.active) {
-			setIsLoading(false);
 			return props.setModal({
 				type: 'confirm',
 				text: '노출여부 혹은 추천상품 등록 여부는\n상세조회에서 가능합니다.',
@@ -113,21 +107,18 @@ const StateInfo = (props) => {
 			(text === '추천상품' && detail.recommend) ||
 			(text === '등록안함' && !detail.recommend)
 		) {
-			return setIsLoading(false);
+			return;
 		} else if (detail.state !== 'O') {
-			setIsLoading(false);
 			return props.setModal({
 				type: 'confirm',
 				text: '노출하지 않은 상품은\n추천 상품으로 등록할 수 없습니다.',
 			});
 		} else if (text === '등록안함' && recommendList.length < 2) {
-			setIsLoading(false);
 			return props.setModal({
 				type: 'confirm',
 				text: '추천 상품은\n최소 1개 이상 있어야 합니다.',
 			});
 		} else if (text === '추천상품' && recommendList.length > 5) {
-			setIsLoading(false);
 			props.setModal({
 				type: 'confirm',
 				text: '추천상품은\n최대 6개까지 등록 가능합니다.',
@@ -136,11 +127,11 @@ const StateInfo = (props) => {
 			_product.change_recommend(detail.product_id).then((res) => {
 				if (res.data.success) {
 					setDetail({ ...detail, recommend: res.data.product.recommend });
-					setIsLoading(false);
 					props.setModal({
 						type: 'confirm',
 						text: '추천상품 여부가 변경되었습니다.',
 					});
+					getRecommendList();
 				}
 			});
 		}
