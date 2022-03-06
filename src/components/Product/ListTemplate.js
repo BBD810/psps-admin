@@ -379,6 +379,13 @@ const ListTitle = styled.p`
 	font-family: 'kr-b';
 	color: #5e667b;
 	cursor: pointer;
+	display: -webkit-box;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	-ms-line-clamp: 1;
+	-moz-line-clamp: 1;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
 	:hover {
 		text-decoration: underline;
 	}

@@ -811,15 +811,23 @@ const OptionItem = styled.div`
 	height: 2rem;
 	font-size: 1.2rem;
 	color: #2a3349;
-	cursor: pointer;
+	display: -webkit-box;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	-ms-line-clamp: 1;
+	-moz-line-clamp: 1;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
 	:nth-child(1) {
 		width: 38%;
 		padding-left: 1rem;
+		cursor: pointer;
 	}
 	:nth-child(2),
 	:nth-child(3) {
 		width: 17%;
 		text-align: center;
+		cursor: pointer;
 	}
 	:nth-child(4),
 	:nth-child(5),
@@ -836,7 +844,7 @@ const OptionItem = styled.div`
 const OptionIcon = styled.img`
 	width: 2.4rem;
 	height: 1.7rem;
-	/* cursor: pointer; */
+	cursor: pointer;
 `;
 const OptionButtons = styled.div`
 	width: 10.6rem;

@@ -91,12 +91,9 @@ const OrderDetail = (props) => {
 				cou_num: _modal.return.num,
 			};
 			_order.enter_tracking_number(data).then((res) => {
-				if (res.data.success) {
-					enterSuccess(res.data.supplier_list);
-				} else {
-					alert('배송지 입력에 실패했습니다.');
-					props.setModal({ ...props.modal, return: '' });
-				}
+				console.log(res.data);
+				const { success, supplier_list } = res.data;
+				success ? enterSuccess(supplier_list) : enterFail();
 			});
 		}
 		// eslint-disable-next-line
@@ -106,7 +103,10 @@ const OrderDetail = (props) => {
 		setChecked([]);
 		setSupplier_list(list);
 	};
-	// const enterFail = () => {};
+	const enterFail = () => {
+		alert('운송장 입력에 실패했습니다.');
+		props.setModal({ ...props.modal, return: '' });
+	};
 
 	return (
 		<Container>
@@ -480,7 +480,6 @@ const ProductList = styled.li`
 `;
 const ListItem = styled.p`
 	height: 3.1rem;
-	line-height: 3.1rem;
 	padding: 0 2rem;
 	font-size: 1.2rem;
 	color: #5e667b;

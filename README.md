@@ -2,7 +2,17 @@
 
 > 2022.03.06
 
-**상품디테일 - 추천상품여부 변경 시 즉각 반영되지 않는 버그 수정 => 디테일 정보는 변경이 되었으나 추천상품 리스트 state를 변경해주지 않아서 발생했었음.**
+-  상품디테일 => 추천상품여부 변경 시 즉각 반영되지 않는 버그 수정 => 디테일 정보는 변경이 되었으나 추천상품 리스트 state를 변경해주지 않아서 발생했었음.
+
+-  고객 목록에서의 이메일, 상품 목록에서의 상품명/옵션명 등 칸에 비해 텍스트가 길어질 경우 "..." 으로 생략
+
+**에러 노트**
+
+-  문제 :
+   "Uncaught ReferenceError: process is not defined 라는 문구와 함께 앱 실행 도중 갑자기 멈춰버림. 코드 수정 후 변경 사항을 확인하려면 매번 새로고침해야 하는 상황 발생.
+
+   해결 방법 :
+   react scripts가 v4 => v5로 업데이트 되면서 버전 간 충돌이 일어난 듯.. 이전 버전으로 다운그레이드
 
 ---
 
@@ -33,9 +43,8 @@
    라는 에러 문구와 함께 yarn start(npm start) 실행이 되지 않는 현상 발생.
    package.json에 있는 proxy 설정을 지우면 앱이 실행은 되었으나 로컬 환경에서 개발이 불가능해짐.
 
-   해결 방법 : react-scripts를 v5 => v4.0.3 버전으로 다운그레이드, proxy-middleware 설치 후 setupProxy.js에 proxy 수동 설정 후 해결
-   (setupProxy + react-scripts@5.0.0 => 실행이 안 됨
-   setupProxy 없이 react-scripts@4.0.3 => 실행은 되지만 서버 요청이 정상적으로 작동하지 않음.)
+   해결 방법 :
+   proxy-middleware 설치 후 setupProxy.js에 proxy 수동 설정 후 해결
 
    출처 : https://stackoverflow.com/questions/70374005/invalid-options-object-dev-server-has-been-initialized-using-an-options-object_
 

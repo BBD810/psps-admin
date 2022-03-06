@@ -429,6 +429,13 @@ const OptionItem = styled.div`
 	height: 2rem;
 	font-size: 1.2rem;
 	color: #2a3349;
+	display: -webkit-box;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	-ms-line-clamp: 1;
+	-moz-line-clamp: 1;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
 	:nth-child(1) {
 		width: 44%;
 		padding-left: 1rem;

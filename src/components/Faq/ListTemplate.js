@@ -152,6 +152,13 @@ const ListItem = styled.li`
 		:hover {
 			text-decoration: underline;
 		}
+		display: -webkit-box;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		-ms-line-clamp: 2;
+		-moz-line-clamp: 2;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
 	}
 	:nth-child(4) {
 		width: 10%;

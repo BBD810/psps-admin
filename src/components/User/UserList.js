@@ -150,6 +150,27 @@ const ListItem = styled.li`
 	font-size: 1.2rem;
 	color: #2a3349;
 	word-break: keep-all;
+	:nth-child(1),
+	:nth-child(2) {
+		display: -webkit-box;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		-ms-line-clamp: 1;
+		-moz-line-clamp: 1;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+	}
+	:nth-child(4) {
+		display: -webkit-box;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		-ms-line-clamp: 3;
+		-moz-line-clamp: 3;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		/* border: 1px solid blue; */
+	}
+
 	:nth-child(1) {
 		width: 8%;
 	}

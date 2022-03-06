@@ -185,6 +185,28 @@ const ListItem = styled.li`
 	color: #2a3349;
 	word-break: keep-all;
 	white-space: pre-wrap;
+	:nth-child(2),
+	:nth-child(3),
+	:nth-child(5),
+	:nth-child(8) {
+		display: -webkit-box;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		-ms-line-clamp: 1;
+		-moz-line-clamp: 1;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+	}
+	:nth-child(4),
+	:nth-child(6) {
+		display: -webkit-box;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		-ms-line-clamp: 2;
+		-moz-line-clamp: 2;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
 	:nth-child(1) {
 		width: 7%;
 	}
