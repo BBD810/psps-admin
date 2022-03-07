@@ -6,7 +6,6 @@ const ConfirmModal = (props) => {
 	const onClick = () => {
 		props.setModal({ type: '' });
 	};
-
 	const onMouseDown = (e) => {
 		props.modal.type !== '' &&
 			(!modalBox.current || !modalBox.current.contains(e.target)) &&

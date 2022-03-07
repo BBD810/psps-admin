@@ -8,7 +8,6 @@ const OrderProcessModal = (props) => {
 		'결제일',
 		'배송시작',
 		'취소요청',
-		'환불요청',
 		'반품요청',
 		'교환요청',
 		'요청처리완료',
@@ -49,10 +48,6 @@ const OrderProcessModal = (props) => {
 							</ProcessBodyItem>
 							<ProcessBodyItem>
 								{detail.process === '취소요청' &&
-									dateObjToTimer(detail.claim_at)}
-							</ProcessBodyItem>
-							<ProcessBodyItem>
-								{detail.process === '환불요청' &&
 									dateObjToTimer(detail.claim_at)}
 							</ProcessBodyItem>
 							<ProcessBodyItem>
@@ -128,7 +123,7 @@ const ProcessHeader = styled.ul`
 	border-bottom: 1px solid e5e6ed;
 `;
 const ProcessHeaderItem = styled.li`
-	width: 12.5%;
+	width: 14.285714%;
 	height: 100%;
 	font-size: 1.2rem;
 	font-family: 'kr-b';
@@ -145,7 +140,7 @@ const ProcessBody = styled.ul`
 	text-align: center;
 `;
 const ProcessBodyItem = styled.li`
-	width: 12.5%;
+	width: 14.285714%;
 	height: 100%;
 	font-size: 1.2rem;
 	color: #5e667b;

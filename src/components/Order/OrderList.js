@@ -31,11 +31,7 @@ const OrderList = (props) => {
 			color = '#00A1C7';
 		} else if (state === '교환요청') {
 			color = '#6CC109';
-		} else if (
-			state === '배송완료' ||
-			state === '취소완료' ||
-			state === '환불완료'
-		) {
+		} else if (state === '배송완료' || state === '취소완료') {
 			color = '#94A0B5';
 		}
 		return color;

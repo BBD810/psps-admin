@@ -59,6 +59,9 @@ const LoginPage = () => {
 			});
 		}
 	};
+	const onEnter = (e) => {
+		e.key === 'Enter' && onSubmit();
+	};
 
 	return (
 		<div id='container'>
@@ -70,6 +73,7 @@ const LoginPage = () => {
 					placeholder='ID'
 					onFocus={onNotShow}
 					onChange={onChangeUsername}
+					onKeyDown={onEnter}
 				/>
 				<Input
 					type={show ? 'text' : 'password'}
@@ -77,6 +81,7 @@ const LoginPage = () => {
 					placeholder='Password'
 					onFocus={onShow}
 					onChange={onChangePassword}
+					onKeyDown={onEnter}
 				/>
 				<Button onClick={onSubmit}>Log in</Button>
 				<Text ref={showButton} onClick={showController}>

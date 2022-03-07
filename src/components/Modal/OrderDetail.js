@@ -225,12 +225,10 @@ const OrderDetail = (props) => {
 										<ListItem
 											onClick={() => {
 												(el.process === '취소요청' ||
-													el.process === '환불요청' ||
 													el.process === '반품요청') &&
 													checkClaim(el);
 											}}>
 											{(el.process === '취소요청' ||
-												el.process === '환불요청' ||
 												el.process === '반품요청') &&
 												el.process}
 										</ListItem>
@@ -273,7 +271,7 @@ const OrderDetail = (props) => {
 				<SupplierBottom>
 					<SupplierText>일괄 처리</SupplierText>
 					<SupplierButton first>주문 취소</SupplierButton>
-					<SupplierButton second>반품 / 교환 / 환불</SupplierButton>
+					<SupplierButton second>반품 / 교환</SupplierButton>
 					<SupplierButton>요청 거절</SupplierButton>
 					<SupplierButton
 						last
@@ -366,7 +364,6 @@ const SupplierButton = styled.button`
 	border: none;
 	border-radius: 4px;
 	${(props) => (props.first ? ` margin-left:2rem;` : ` margin-left:0.8rem;`)}
-	${(props) => (props.second ? `width:12rem;` : `width:10.6rem;`)}
 	${(props) =>
 		props.last
 			? `background-color:#2A3349; color:#fff;`
