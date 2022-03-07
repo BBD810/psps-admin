@@ -6,6 +6,7 @@ import { priceToString } from '../../functions/PriceToString';
 import * as _payment from '../../controller/payment';
 import styled from 'styled-components';
 import PageSelector from '../PageSelector';
+import { setUncaughtExceptionCaptureCallback } from 'process';
 
 const UserOrderModal = (props) => {
 	const info = ['이름/이메일', '등록일', '주소', '연락처', '등록계좌'];
@@ -14,15 +15,23 @@ const UserOrderModal = (props) => {
 	const [detail, setDetail] = useState({});
 	const [list, setList] = useState([]);
 
+	const [order_page, setOrder_page] = useState(1);
+	const [order_total, setOrder_total] = useState(1);
+	const order_onePage = 10;
+
 	useEffect(() => {
 		let isSubscribed = true;
 		if (props.modal.data) {
 			setDetail(props.modal.data);
-			_payment.get_user_order_list(props.modal.data.user_id).then((res) => {
-				if (isSubscribed && res.data.success) {
-					setList(res.data.payment_list);
-				}
-			});
+			_payment
+				.get_user_order_list(props.modal.data.user_id, order_page)
+				.then((res) => {
+					if (isSubscribed && res.data.success) {
+						console.log(res.data);
+						setList(res.data.payment_list);
+						// setOrder_total(res.data.total);
+					}
+				});
 		}
 		return () => {
 			isSubscribed = false;
@@ -33,10 +42,10 @@ const UserOrderModal = (props) => {
 		props.setModal({ type: '' });
 	};
 	const onClickPage = (e) => {
-		e !== props.page && props.setPage(e);
+		e !== order_page && setOrder_page(e);
 	};
 
-	console.log(list);
+	// console.log(list);
 
 	return (
 		<Container>
@@ -84,9 +93,9 @@ const UserOrderModal = (props) => {
 					</OrderTable>
 				</Content>
 				<PageSelector
-					page={props.page}
-					total={props.total}
-					onePage={10}
+					page={order_page}
+					total={order_total}
+					onePage={order_onePage}
 					onClickPage={onClickPage}
 					style={{ marginTop: '2rem' }}
 				/>
@@ -186,12 +195,17 @@ const OrderHeaderItem = styled.div`
 	}
 	:nth-child(4) {
 		width: 21%;
+		border-right: unset;
 	}
 `;
 const OrderTable = styled(InfoTable)`
-	max-height: 33.1rem;
+	max-height: 36.1rem;
 `;
-const OrderList = styled(OrderHeader)``;
+const OrderList = styled(OrderHeader)`
+	:nth-last-child(1) {
+		border-bottom: unset;
+	}
+`;
 const OrderItem = styled(OrderHeaderItem)`
 	font-family: 'kr-r';
 	color: #2a3349;
