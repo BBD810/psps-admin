@@ -9,7 +9,7 @@ import PageSelector from '../PageSelector';
 
 const UserOrderModal = (props) => {
 	const info = ['이름/이메일', '등록일', '주소', '연락처', '등록계좌'];
-	const header = ['주문일', '주문상품', '결제금액', '주문상태'];
+	const header = ['주문일', '주문상품', '결제금액'];
 
 	const [detail, setDetail] = useState({});
 	const [list, setList] = useState([]);
@@ -26,9 +26,8 @@ const UserOrderModal = (props) => {
 				.get_user_order_list(props.modal.data.user_id, order_page)
 				.then((res) => {
 					if (isSubscribed && res.data.success) {
-						console.log(res.data);
 						setList(res.data.payment_list);
-						// setOrder_total(res.data.total);
+						setOrder_total(res.data.total);
 					}
 				});
 		}
@@ -43,8 +42,6 @@ const UserOrderModal = (props) => {
 	const onClickPage = (e) => {
 		e !== order_page && setOrder_page(e);
 	};
-
-	// console.log(list);
 
 	return (
 		<Container>
@@ -86,7 +83,6 @@ const UserOrderModal = (props) => {
 								<OrderItem>{dateObjToDate(el.create_at)}</OrderItem>
 								<OrderItem>{el.name}</OrderItem>
 								<OrderItem>{priceToString(el.amount)}</OrderItem>
-								<OrderItem>{el.process}</OrderItem>
 							</OrderList>
 						))}
 					</OrderTable>
@@ -115,6 +111,7 @@ const Container = styled.div`
 `;
 const Wrap = styled.div`
 	width: 94rem;
+	height: 79.1rem;
 	padding: 3.6rem 8.7rem 5rem 8.7rem;
 	display: flex;
 	flex-direction: column;
@@ -184,16 +181,13 @@ const OrderHeaderItem = styled.div`
 	border-right: 1px solid #e5e6ed;
 	background-color: #f5f5f5;
 	:nth-child(1) {
-		width: 20%;
+		width: 23%;
 	}
 	:nth-child(2) {
-		width: 38%;
+		width: 54%;
 	}
 	:nth-child(3) {
-		width: 21%;
-	}
-	:nth-child(4) {
-		width: 21%;
+		width: 23%;
 		border-right: unset;
 	}
 `;
@@ -210,16 +204,13 @@ const OrderItem = styled(OrderHeaderItem)`
 	color: #2a3349;
 	background-color: unset;
 	:nth-child(1) {
-		width: 20%;
+		width: 23%;
 	}
 	:nth-child(2) {
-		width: 38%;
+		width: 54%;
 	}
 	:nth-child(3) {
-		width: 21%;
-	}
-	:nth-child(4) {
-		width: 21%;
+		width: 23%;
 	}
 `;
 const Button = styled.button`

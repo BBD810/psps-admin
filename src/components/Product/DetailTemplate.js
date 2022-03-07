@@ -21,13 +21,15 @@ const DetailTemplate = (props) => {
 				if (isSubscribed && res.data.success) {
 					setDetail(res.data.product);
 					setOptionList(res.data.product_option_list);
+					history.replace();
 				}
 			});
 		}
 		return () => {
 			isSubscribed = false;
 		};
-	}, [history.location.state, props.modal]);
+		// eslint-disable-next-line
+	}, [history.location.state]);
 
 	const selectList = () => {
 		props.setMode('list');

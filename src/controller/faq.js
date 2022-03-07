@@ -14,7 +14,6 @@ const errorMessage = () => {
 };
 
 export const create = async (data) => {
-	console.log('create data', data);
 	return await instance.post('/', data).catch(errorMessage);
 };
 

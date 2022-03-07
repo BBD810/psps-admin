@@ -40,19 +40,21 @@ const ProductPage = () => {
 	const [category, setCategory] = useState('상품 목록');
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
 
-	const changeMode = (mode) => {
-		setMode(mode);
-	};
 	const getCategory = (category) => {
 		setCategory(category);
-		setMode('list');
+		// 상품이미지에서 history state 값을 가지고 넘어온 경우
+		// list가 아닌 detail로 보내야 함
+		history.location.state || setMode('list');
 	};
 
 	const createMode = category === '상품 추가';
 
 	useEffect(() => {
-		// 상세이미지 안 상품목록 클릭 시 상품 디테일로 바로 연결
-		history.location.state && changeMode('detail');
+		let isSubscribed = true;
+		history.location.state && isSubscribed && setMode('detail');
+		return () => {
+			isSubscribed = false;
+		};
 	}, [history.location.state]);
 
 	return (

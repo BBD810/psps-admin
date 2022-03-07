@@ -91,7 +91,6 @@ const OrderDetail = (props) => {
 				cou_num: _modal.return.num,
 			};
 			_order.enter_tracking_number(data).then((res) => {
-				console.log(res.data);
 				const { success, supplier_list } = res.data;
 				success ? enterSuccess(supplier_list) : enterFail();
 			});

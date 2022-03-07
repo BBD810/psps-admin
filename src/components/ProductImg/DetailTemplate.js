@@ -277,6 +277,9 @@ const ShareList = styled.ul`
 const ShareItem = styled.li`
 	margin-bottom: 0.8rem;
 	cursor: pointer;
+	:hover {
+		text-decoration: underline;
+	}
 	:nth-last-child(1) {
 		margin: 0;
 	}
