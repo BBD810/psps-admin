@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Left from '../images/page_left.svg';
-import Right from '../images/page_right.svg';
+import left from '../images/page_left.svg';
+import right from '../images/page_right.svg';
 
 const PageSelector = ({ page, total, onePage, onClickPage, style }) => {
 	const [pages, setPages] = useState([]);
@@ -30,7 +30,7 @@ const PageSelector = ({ page, total, onePage, onClickPage, style }) => {
 	return (
 		<PageList style={style}>
 			<PageItem onClick={page === 1 ? null : () => onClickPage(page - 1)}>
-				<MoveButton alt='prev button' src={Left} />
+				<MoveButton alt='prev button' src={left} />
 			</PageItem>
 			{pages.map((el, idx) => (
 				<PageItem
@@ -42,7 +42,7 @@ const PageSelector = ({ page, total, onePage, onClickPage, style }) => {
 			))}
 			<PageItem
 				onClick={page === totalPage ? null : () => onClickPage(page + 1)}>
-				<MoveButton alt='next button' src={Right} />
+				<MoveButton alt='next button' src={right} />
 			</PageItem>
 		</PageList>
 	);

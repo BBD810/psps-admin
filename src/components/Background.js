@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import Logo from '../images/cetus-logo.svg';
+import logo from '../images/cetus-logo.svg';
 const Background = () => {
 	const admin = useSelector((state) => state.admin);
 	const active = admin.login;
@@ -12,7 +12,7 @@ const Background = () => {
 			<Right>
 				<OutsideCircle active={active}>
 					<InsideCircle active={active} />
-					<LogoImage alt='로고' src={Logo} active={active} />
+					<LogoImage alt='logo img' src={logo} active={active} />
 				</OutsideCircle>
 			</Right>
 		</All>

@@ -4,11 +4,11 @@ import {
 	faqTypeTransform2,
 } from '../functions/FaqTypeTransform';
 import * as _faq from '../controller/faq';
+import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
 import Footer from '../components/Footer';
 import ListTemplate from '../components/Faq/ListTemplate';
-import styled from 'styled-components';
 
 const FaqInputModal = lazy(() => {
 	return import('../components/Modal/FaqInput');

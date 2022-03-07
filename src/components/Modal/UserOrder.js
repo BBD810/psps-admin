@@ -6,7 +6,6 @@ import { priceToString } from '../../functions/PriceToString';
 import * as _payment from '../../controller/payment';
 import styled from 'styled-components';
 import PageSelector from '../PageSelector';
-import { setUncaughtExceptionCaptureCallback } from 'process';
 
 const UserOrderModal = (props) => {
 	const info = ['이름/이메일', '등록일', '주소', '연락처', '등록계좌'];
@@ -36,7 +35,7 @@ const UserOrderModal = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
-	}, [props.modal.data]);
+	}, [props.modal.data, order_page]);
 
 	const onClick = () => {
 		props.setModal({ type: '' });
