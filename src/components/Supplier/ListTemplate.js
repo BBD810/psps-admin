@@ -42,7 +42,7 @@ const ListTemplate = (props) => {
 	];
 
 	const createController = () => {
-		!editMode && setCreateMode(!createMode);
+		typeof editMode !== 'number' && setCreateMode(!createMode);
 	};
 	const inputController = (e, idx) => {
 		const value = e.target.value;
@@ -107,6 +107,7 @@ const ListTemplate = (props) => {
 			});
 		}
 	};
+	console.log(editMode);
 
 	const deleteController = (innerText, el) => {
 		if (createMode) {
