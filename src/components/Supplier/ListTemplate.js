@@ -107,7 +107,6 @@ const ListTemplate = (props) => {
 			});
 		}
 	};
-	console.log(editMode);
 
 	const deleteController = (innerText, el) => {
 		if (createMode) {
