@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import * as _product_img from '../../controller/product_img';
 import styled from 'styled-components';
 
@@ -106,7 +106,7 @@ const DetailImgCreate = (props) => {
 	);
 };
 
-export default withRouter(DetailImgCreate);
+export default DetailImgCreate;
 
 const Container = styled.div`
 	width: 100vw;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { admin_logout } from '../modules/admin';
 import * as request from '../controller/auth';
@@ -76,7 +76,7 @@ const SideBar = (props) => {
 	);
 };
 
-export default withRouter(SideBar);
+export default SideBar;
 
 const SideBarContainer = styled.div`
 	width: 19.8rem;

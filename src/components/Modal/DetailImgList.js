@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import * as _product_img from '../../controller/product_img';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
@@ -166,7 +166,7 @@ const DetailImgListModal = (props) => {
 	);
 };
 
-export default withRouter(DetailImgListModal);
+export default DetailImgListModal;
 
 const Container = styled.div`
 	width: 100vw;

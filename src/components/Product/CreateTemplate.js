@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { priceToString } from '../../functions/PriceToString';
 import { IMG_ADDRESS } from '../../config';
 import * as _product_option from '../../controller/product_option';
@@ -611,7 +611,7 @@ const CreateTemplate = (props) => {
 	);
 };
 
-export default withRouter(CreateTemplate);
+export default CreateTemplate;
 
 const Container = styled.div`
 	width: 119rem;

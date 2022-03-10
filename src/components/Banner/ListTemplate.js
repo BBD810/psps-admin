@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { IMG_ADDRESS, CLIENT_ADDRESS } from '../../config';
 import { getLink } from '../../functions/GetLink';
 import * as toggleMenu from '../../data/toggle';
@@ -271,7 +271,7 @@ const ListTemplate = (props) => {
 	);
 };
 
-export default withRouter(ListTemplate);
+export default ListTemplate;
 
 const Container = styled.div`
 	width: 119rem;

@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
@@ -146,7 +146,7 @@ const ProductPage = () => {
 	);
 };
 
-export default withRouter(ProductPage);
+export default ProductPage;
 
 const Container = styled.div`
 	width: 160rem;

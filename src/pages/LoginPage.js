@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useRef, useState } from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { admin_login } from '../modules/admin';
 import * as _auth from '../controller/auth';
@@ -97,7 +97,7 @@ const LoginPage = () => {
 	);
 };
 
-export default withRouter(LoginPage);
+export default LoginPage;
 
 const Login = styled.div`
 	width: 83.9rem;

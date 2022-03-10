@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { priceToString } from '../../functions/PriceToString';
 import { IMG_ADDRESS } from '../../config';
 import * as _product from '../../controller/product';
@@ -270,7 +270,7 @@ const DetailTemplate = (props) => {
 	);
 };
 
-export default withRouter(DetailTemplate);
+export default DetailTemplate;
 
 const Container = styled.div`
 	width: 119rem;
