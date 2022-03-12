@@ -55,7 +55,6 @@ const ListModal = (props) => {
 						확인
 					</Button>
 				</Buttons>
-				{/* <Button onClick={onSubmit}>확인</Button> */}
 			</Wrap>
 		</Container>
 	);

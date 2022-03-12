@@ -90,7 +90,6 @@ const DetailTemplate = (props) => {
 				text: '상품의 목록을 어떤 상세이미지로\n이전하시겠습니까?',
 				desc: '타입을 공유로 설정한 이미지만 선택이 가능합니다.',
 				act: 'replace',
-				// list: shareImgList,
 				list: shareImgList,
 			});
 		}

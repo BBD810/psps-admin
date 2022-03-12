@@ -42,8 +42,6 @@ const ProductPage = () => {
 
 	const getCategory = (category) => {
 		setCategory(category);
-		// 상품이미지에서 history state 값을 가지고 넘어온 경우
-		// list가 아닌 detail로 보내야 함
 		history.location.state || setMode('list');
 	};
 
