@@ -3,7 +3,7 @@
 > 2022.03.14
 
 -  개발환경/배포환경 환경변수 재설정
--  controller 함수 instance 수정
+-  controller 함수 instance 재설정
 
 ---
 
