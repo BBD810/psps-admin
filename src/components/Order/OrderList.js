@@ -81,13 +81,15 @@ const OrderList = (props) => {
 							</List>
 						))}
 				</ListWrap>
-				<PageSelector
-					page={props.page}
-					total={props.total}
-					onePage={props.onePage}
-					onClickPage={props.onClickPage}
-					style={{ marginTop: '6.2rem' }}
-				/>
+				{props.list.length > 0 && (
+					<PageSelector
+						page={props.page}
+						total={props.total}
+						onePage={props.onePage}
+						onClickPage={props.onClickPage}
+						style={{ marginTop: '6.2rem' }}
+					/>
+				)}
 			</Body>
 		</Container>
 	);

@@ -87,13 +87,16 @@ const UserOrderModal = (props) => {
 						))}
 					</OrderTable>
 				</Content>
-				<PageSelector
-					page={order_page}
-					total={order_total}
-					onePage={order_onePage}
-					onClickPage={onClickPage}
-					style={{ marginTop: '2rem' }}
-				/>
+				{list.length > 0 && (
+					<PageSelector
+						page={order_page}
+						total={order_total}
+						onePage={order_onePage}
+						onClickPage={onClickPage}
+						style={{ marginTop: '2rem' }}
+					/>
+				)}
+
 				<Button onClick={onClick}>확인</Button>
 			</Wrap>
 		</Container>

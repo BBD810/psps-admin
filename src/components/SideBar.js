@@ -84,7 +84,6 @@ const SideBarContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	position: --webkit-sticky;
 	position: sticky;
 	top: 5rem;
 	left: 0;
