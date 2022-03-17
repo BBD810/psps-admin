@@ -240,9 +240,9 @@ const OrderDetail = (props) => {
 										<ListItem>
 											{`${priceToString(el.quantity)}`}
 										</ListItem>
-										<ListItem>
-											{`${priceToString(el.amount)}`}
-										</ListItem>
+										<ListItem>{`${priceToString(
+											el.amount
+										)}`}</ListItem>
 									</ProductList>
 								))}
 								<ProductList>
@@ -299,16 +299,15 @@ const Container = styled.div`
 `;
 const Wrap = styled.div`
 	width: 94rem;
-	max-height: 95rem;
+	max-height: 85rem;
 	overflow-y: scroll;
 	padding: 4rem 5.2rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	position: fixed;
-	top: -23%;
-	left: 50%;
-	transform: translate(-50%, 50%);
+	top: 5%;
+	transform: translateX(50%);
 	z-index: 10;
 	border-radius: 4px;
 	background-color: #fff;
