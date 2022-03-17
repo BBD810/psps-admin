@@ -99,7 +99,10 @@ const DetailTemplate = (props) => {
 		props.setMode('edit');
 	};
 	const checkLink = (product_id) => {
-		history.push({ pathname: '/product', state: product_id });
+		history.push({
+			pathname: '/product',
+			state: { from: 'img', product_id },
+		});
 	};
 
 	useEffect(() => {

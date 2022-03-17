@@ -155,19 +155,6 @@ const CreateTemplate = (props) => {
 		// eslint-disable-next-line
 	}, [props.modal.type]);
 
-	useEffect(() => {
-		if (history.location.state) {
-			setDetailImgId(history.location.state);
-			_product_img.get_detail(history.location.state).then((res) => {
-				if (res.data.success) {
-					setDetailPrevImg(res.data.product_image.image);
-					history.replace();
-				}
-			});
-		}
-		// eslint-disable-next-line
-	}, [history.location.state]);
-
 	const optionSuccess = (list) => {
 		setOptionList(list);
 		props.setModal({ type: '' });

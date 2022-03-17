@@ -41,19 +41,12 @@ const ProductPage = () => {
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
 
 	const getCategory = (category) => {
+		const _state = history.location.state;
 		setCategory(category);
-		history.location.state || setMode('list');
+		_state && _state.from ? setMode('detail') : setMode('list');
 	};
 
 	const createMode = category === '상품 추가';
-
-	useEffect(() => {
-		let isSubscribed = true;
-		history.location.state && isSubscribed && setMode('detail');
-		return () => {
-			isSubscribed = false;
-		};
-	}, [history.location.state]);
 
 	return (
 		<div id='container'>

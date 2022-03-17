@@ -46,6 +46,10 @@ export const productCategory = [
 		item: '추천 상품 목록',
 		list_main: '추천 상품 목록',
 		list_sub: `추천 상품을 확인하고 조회합니다.\n추천 상품은 최대 6개까지 등록 가능합니다.`,
+		detail_main: '추천 상품 상세조회',
+		detail_sub: `추천 상품의 정보를 확인합니다.`,
+		edit_main: '상품 수정하기',
+		edit_sub: `상품의 정보를 수정합니다.\n상태정보는 상세조회에서 변경이 가능합니다.`,
 	},
 	{
 		item: '상품 추가',
