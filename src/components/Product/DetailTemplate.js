@@ -7,14 +7,17 @@ import styled from 'styled-components';
 import check_icon from '../../images/check_icon.svg';
 import empty_icon from '../../images/empty_icon.svg';
 import StateInfo from '../Product/StateInfo';
+import Spinner from '../Spinner';
 
 const DetailTemplate = (props) => {
+	const [isLoading, setIsLoading] = useState(false);
 	const history = useHistory();
 	const [detail, setDetail] = useState({});
 	const [optionList, setOptionList] = useState([]);
 	let isSubscribed = true;
 
 	useEffect(() => {
+		setIsLoading(true);
 		if (history.location.state) {
 			const _state = history.location.state;
 			if (_state.from) {
@@ -25,6 +28,7 @@ const DetailTemplate = (props) => {
 				getDetail(_product_id);
 			}
 		}
+		setIsLoading(false);
 		return () => {
 			isSubscribed = false;
 		};
@@ -83,6 +87,7 @@ const DetailTemplate = (props) => {
 
 	return (
 		<Container>
+			{isLoading && <Spinner />}
 			<StateInfo
 				active={true}
 				mode={props.mode}
