@@ -237,6 +237,19 @@ const CreateTemplate = (props) => {
 	};
 
 	useEffect(() => {
+		if (history.location.state) {
+			setDetailImgId(history.location.state);
+			_product_img.get_detail(history.location.state).then((res) => {
+				if (res.data.success) {
+					setDetailPrevImg(res.data.product_image.image);
+					history.replace();
+				}
+			});
+		}
+		// eslint-disable-next-line
+	}, [history.location.state]);
+
+	useEffect(() => {
 		title &&
 		part &&
 		subPart &&
@@ -589,7 +602,6 @@ const CreateTemplate = (props) => {
 					</Content>
 				</Body>
 			</BasicInfo>
-
 			<SaveButton active={check} onClick={onCreate}>
 				저장하기
 			</SaveButton>

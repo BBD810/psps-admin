@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';

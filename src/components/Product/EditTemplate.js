@@ -303,6 +303,19 @@ const EditTemplate = (props) => {
 	};
 
 	useEffect(() => {
+		if (history.location.state) {
+			setDetailImgId(history.location.state);
+			_product_img.get_detail(history.location.state).then((res) => {
+				if (res.data.success) {
+					setDetailPrevImg(res.data.product_image.image);
+					history.replace();
+				}
+			});
+		}
+		// eslint-disable-next-line
+	}, [history.location.state]);
+
+	useEffect(() => {
 		title &&
 		part &&
 		subPart &&
@@ -323,6 +336,8 @@ const EditTemplate = (props) => {
 		origin,
 		storage,
 	]);
+
+	console.log(history.location);
 
 	return (
 		<Container>
@@ -596,7 +611,7 @@ const EditTemplate = (props) => {
 									{supplierOpen ? (
 										<ItemSelectWrap ref={supplierBox}>
 											<ItemSelectList>
-												{supplier.name
+												{supplier
 													? supplier.name
 													: '공급원을 선택해주세요.'}
 											</ItemSelectList>

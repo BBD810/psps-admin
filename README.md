@@ -4,6 +4,7 @@
 
 -  DetailImgReplaceModal => 선택 리스트 오픈 중 외부 클릭 시 닫히도록 수정
 -  선택 리스트 height => max-height 로 수정
+-  상품 추가/수정페이지 이미지 등록 안 되는 오류 수정
 
 ---
 
