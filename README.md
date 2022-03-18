@@ -1,5 +1,12 @@
 ## Progress & Update
 
+> 2022.03.18
+
+-  DetailImgReplaceModal => 선택 리스트 오픈 중 외부 클릭 시 닫히도록 수정
+-  선택 리스트 height => max-height 로 수정
+
+---
+
 > 2022.03.17
 
 -  상품 상세보기 데이터 불러오기 중 로딩화면 추가

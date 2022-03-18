@@ -36,6 +36,9 @@ const ReplaceModal = (props) => {
 		props.modal.type !== '' &&
 			(!modalBox.current || !modalBox.current.contains(e.target)) &&
 			props.setModal({ type: '' });
+		openSelect &&
+			(!listBox.current || !listBox.current.contains(e.target)) &&
+			setOpenSelect(false);
 	};
 
 	return (
@@ -164,7 +167,7 @@ const ItemSelectImg = styled.img`
 `;
 const ItemSelectWrap = styled.ul`
 	width: 20rem;
-	height: 16rem;
+	max-height: 16rem;
 	line-height: 3.2rem;
 	position: absolute;
 	z-index: 3;

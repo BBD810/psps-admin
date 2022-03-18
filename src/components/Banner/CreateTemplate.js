@@ -457,7 +457,7 @@ const ItemSelectImg = styled.img`
 `;
 const ItemSelectWrap = styled.ul`
 	width: 20rem;
-	height: 16rem;
+	max-height: 16rem;
 	line-height: 3.2rem;
 	position: absolute;
 	z-index: 3;
