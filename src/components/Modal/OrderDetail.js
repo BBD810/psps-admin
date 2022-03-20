@@ -26,6 +26,9 @@ const OrderDetail = (props) => {
 	const [detail, setDetail] = useState({});
 	const [supplier_list, setSupplier_list] = useState([]);
 	const [checked, setChecked] = useState([]);
+	const [del_refund, setDel_refund] = useState(0);
+
+	console.log(supplier_list);
 
 	useEffect(() => {
 		_order.get_detail(props.modal.payment_uid).then((res) => {
@@ -97,6 +100,7 @@ const OrderDetail = (props) => {
 		}
 		// eslint-disable-next-line
 	}, [props.modal]);
+
 	const enterSuccess = (list) => {
 		props.setModal({ ...props.modal, return: '' });
 		setChecked([]);
@@ -106,6 +110,41 @@ const OrderDetail = (props) => {
 		alert('운송장 입력에 실패했습니다.');
 		props.setModal({ ...props.modal, return: '' });
 	};
+
+	const claimOrder = (e) => {
+		let arr = [];
+		const innerText = e.target.innerText;
+		if (checked.length === 0) {
+			return alert('선택된 항목이 없습니다.');
+		}
+		if (innerText === '주문 취소') {
+			arr = checked.filter((el) => el.process === '취소요청');
+			if (arr.length !== checked.length) {
+				return alert(`주문상태가 "취소요청"인\n주문만 가능합니다`);
+			}
+		} else if (innerText === '반품 / 교환') {
+			arr = checked.filter(
+				(el) => el.process === '반품요청' || el.process === '교환요청'
+			);
+			if (arr.length !== checked.length) {
+				return alert(
+					`주문상태가 "반품요청" 혹은 "교환요청"인\n주문만 가능합니다`
+				);
+			}
+		}
+		console.log('arr', arr);
+		const data = {
+			payment: detail,
+			payment_product_list: checked,
+			del_refund,
+		};
+		console.log('data', data);
+		_order.claim_handling(data).then((res) => {
+			console.log('res.data', res.data);
+		});
+	};
+
+	console.log(checked);
 
 	return (
 		<Container>
@@ -269,8 +308,12 @@ const OrderDetail = (props) => {
 				</Content>
 				<SupplierBottom>
 					<SupplierText>일괄 처리</SupplierText>
-					<SupplierButton first>주문 취소</SupplierButton>
-					<SupplierButton second>반품 / 교환</SupplierButton>
+					<SupplierButton first onClick={claimOrder}>
+						주문 취소
+					</SupplierButton>
+					<SupplierButton second onClick={claimOrder}>
+						반품 / 교환
+					</SupplierButton>
 					<SupplierButton>요청 거절</SupplierButton>
 					<SupplierButton
 						last

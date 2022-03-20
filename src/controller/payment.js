@@ -35,3 +35,11 @@ export const get_user_order_list = async (user_id, page) => {
 export const enter_tracking_number = async (data) => {
 	return await instance.patch(`/delivery`, data).catch(errorMessage);
 };
+
+export const claim_handling = async (data) => {
+	return await instance.patch(`/refund`, data).catch(errorMessage);
+};
+
+export const claim_refuse = async (data) => {
+	return await instance.patch(`/refuse`, data).catch(errorMessage);
+};
