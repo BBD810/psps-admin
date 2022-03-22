@@ -5,7 +5,8 @@ const GlobalStyle = createGlobalStyle`
 	box-sizing: border-box;	
 }
 html {
-	font-size: 62.5%;
+	/* font-size: 62.5%; */
+	font-size:41.66666%;
 	font-family:'kr-r'
 }
 body {
@@ -20,8 +21,10 @@ body {
 	align-items:center;
 }
 #App {
-	width: 1920px;
-	height:995px;
+	/* width: 1920px;
+	height:995px; */
+	width:1280px;
+	height:720px;
 	display: flex;
 	justify-content: center;
 	position:relative;
