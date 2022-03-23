@@ -22,10 +22,10 @@ const Background = () => {
 export default Background;
 
 const All = styled.div`
-	width: 1920px;
-	height: 995px;
-	max-width: 1920px;
-	max-height: 995px;
+	width: 1280px;
+	height: 720px;
+	max-width: 1280px;
+	max-height: 720px;
 	display: flex;
 	position: fixed;
 	top: 50%;

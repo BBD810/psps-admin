@@ -21,8 +21,6 @@ body {
 	align-items:center;
 }
 #App {
-	/* width: 1920px;
-	height:995px; */
 	width:1280px;
 	height:720px;
 	display: flex;

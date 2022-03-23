@@ -141,7 +141,7 @@ export default ProductPage;
 
 const Container = styled.div`
 	width: 160rem;
-	margin: 4.25rem 0;
+	margin: 3rem 0;
 	padding-right: 8.09rem;
 	display: flex;
 	position: relative;
@@ -150,7 +150,7 @@ const Container = styled.div`
 	box-shadow: 2px 6px 30px #00000033;
 `;
 const Contents = styled.div`
-	min-height: 78.9rem;
+	min-height: 66rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
