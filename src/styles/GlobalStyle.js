@@ -5,13 +5,12 @@ const GlobalStyle = createGlobalStyle`
 	box-sizing: border-box;	
 }
 html {
-	/* font-size: 62.5%; */
-	font-size:41.66666%;
-	font-family:'kr-r'
+	font-size: 62.5%;
+	font-family:'kr-r';
 }
 body {
 	margin: 0;
-	background: #E5E6ED 0% 0% no-repeat padding-box
+	background-color: #E5E6ED;
 }
 #root {
 	width: 100vw;
@@ -21,8 +20,8 @@ body {
 	align-items:center;
 }
 #App {
-	width:1280px;
-	height:720px;
+	width:1920px;
+	height:995px;
 	display: flex;
 	justify-content: center;
 	position:relative;
@@ -96,7 +95,7 @@ input[type='date']::-webkit-inner-spin-button {
 input[type='date']::-webkit-calendar-picker-indicator { 
 	margin:0;
 	margin-top:3px;
- 	color: red; 
+ 	color: red;
 } 
 input[type='date'] { 
 	height:3.1rem;
@@ -115,6 +114,15 @@ input[type='date'] {
 }
 ::-webkit-scrollbar-track {
 	background-color: #fff;
+}
+@media screen and (max-width:1300px) {
+	html {
+		font-size:41.66666%;
+	}
+	#App {
+		width:1280px;
+		height:720px;
+	}
 }
 `;
 

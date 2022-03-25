@@ -42,17 +42,23 @@ export default OrderPage;
 
 const Container = styled.div`
 	width: 160rem;
-	margin: 3rem 0;
+	margin: 4.25rem 0;
 	padding-right: 8.09rem;
 	display: flex;
 	position: relative;
 	border-radius: 4px;
 	background-color: #fff;
 	box-shadow: 2px 6px 30px #00000033;
+	@media ${(props) => props.theme.hd} {
+		margin: 3rem 0;
+	}
 `;
 const Contents = styled.div`
-	min-height: 66rem;
+	min-height: 78.9rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	@media ${(props) => props.theme.hd} {
+		min-height: 66rem;
+	}
 `;
