@@ -117,18 +117,18 @@ const OrderDetail = (props) => {
 		if (checked.length === 0) {
 			return alert('선택된 항목이 없습니다.');
 		}
-		if (innerText === '주문 취소') {
+		if (innerText === '주문취소 처리') {
 			arr = checked.filter((el) => el.process === '취소요청');
 			if (arr.length !== checked.length) {
-				return alert(`주문상태가 "취소요청"인\n주문만 가능합니다`);
+				return alert(`주문상태가 "취소요청"인\n경우만 가능합니다`);
 			}
-		} else if (innerText === '반품 / 교환') {
+		} else if (innerText === '교환/환불 처리') {
 			arr = checked.filter(
-				(el) => el.process === '반품요청' || el.process === '교환요청'
+				(el) => el.process === '교환요청' || el.process === '환불요청'
 			);
 			if (arr.length !== checked.length) {
 				return alert(
-					`주문상태가 "반품요청" 혹은 "교환요청"인\n주문만 가능합니다`
+					`주문상태가 "교환요청" 혹은 "환불요청"인\n경우만 가능합니다`
 				);
 			}
 		}
@@ -263,11 +263,13 @@ const OrderDetail = (props) => {
 										<ListItem
 											onClick={() => {
 												(el.process === '취소요청' ||
-													el.process === '반품요청') &&
+													el.process === '교환요청' ||
+													el.process === '환불요청') &&
 													checkClaim(el);
 											}}>
 											{(el.process === '취소요청' ||
-												el.process === '반품요청') &&
+												el.process === '교환요청' ||
+												el.process === '환불요청') &&
 												el.process}
 										</ListItem>
 										<ListItem
@@ -309,10 +311,10 @@ const OrderDetail = (props) => {
 				<SupplierBottom>
 					<SupplierText>일괄 처리</SupplierText>
 					<SupplierButton first onClick={claimOrder}>
-						주문 취소
+						주문취소 처리
 					</SupplierButton>
 					<SupplierButton second onClick={claimOrder}>
-						반품 / 교환
+						교환/환불 처리
 					</SupplierButton>
 					<SupplierButton>요청 거절</SupplierButton>
 					<SupplierButton

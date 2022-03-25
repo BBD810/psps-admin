@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { dateObjToTimer } from '../../functions/DateObjToDate';
+import styled from 'styled-components';
 
 const OrderProcessModal = (props) => {
 	const process = [
 		'주문일',
 		'결제일',
-		'배송시작',
+		'운송장번호',
 		'취소요청',
-		'반품요청',
 		'교환요청',
+		'환불요청',
 		'요청처리완료',
 	];
 
@@ -51,15 +51,15 @@ const OrderProcessModal = (props) => {
 									dateObjToTimer(detail.claim_at)}
 							</ProcessBodyItem>
 							<ProcessBodyItem>
-								{detail.process === '반품요청' &&
-									dateObjToTimer(detail.claim_at)}
-							</ProcessBodyItem>
-							<ProcessBodyItem>
 								{detail.process === '교환요청' &&
 									dateObjToTimer(detail.claim_at)}
 							</ProcessBodyItem>
 							<ProcessBodyItem>
-								{detail.process === '반품요청' &&
+								{detail.process === '환불요청' &&
+									dateObjToTimer(detail.claim_at)}
+							</ProcessBodyItem>
+							<ProcessBodyItem>
+								{detail.process === '처리완료' &&
 									dateObjToTimer(detail.confirm_at)}
 							</ProcessBodyItem>
 						</ProcessBody>

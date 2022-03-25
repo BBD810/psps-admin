@@ -19,22 +19,22 @@ const OrderList = (props) => {
 
 	const getButtonColor = (state) => {
 		let color;
-		if (state === '입금전') {
-			color = '#E6843B';
-		} else if (state === '결제완료') {
-			color = '#96738E';
-		} else if (state === '배송중') {
-			color = '#214588';
-		} else if (state === '취소요청') {
-			color = '#E60F0F';
-		} else if (state === '반품요청') {
-			color = '#00A1C7';
-		} else if (state === '교환요청') {
-			color = '#6CC109';
-		} else if (state === '배송완료' || state === '취소완료') {
-			color = '#94A0B5';
+		switch (state) {
+			case '입금전':
+				return (color = '#E6843B');
+			case '결제완료':
+				return (color = '#96738E');
+			case '배송중':
+				return (color = '#214588');
+			case '취소요청':
+				return (color = '#E60F0F');
+			case '교환요청':
+				return (color = '#6CC109');
+			case '환불요청':
+				return (color = '#00A1C7');
+			case '처리완료' || '배송완료':
+				return (color = '#94A0B5');
 		}
-		return color;
 	};
 	const getDetail = (payment_uid) => {
 		props.setModal({ type: 'detail', payment_uid });

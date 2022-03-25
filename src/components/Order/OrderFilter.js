@@ -27,10 +27,9 @@ const OrderFilter = (props) => {
 		'배송중',
 		'배송완료',
 		'취소요청',
-		'반품요청',
 		'교환요청',
-		'반품완료',
-		'취소완료',
+		'환불요청',
+		'처리완료',
 	];
 
 	const clickToday = () => {
@@ -252,7 +251,7 @@ const Content = styled.div`
 		height: 100%;
 		padding: 2rem 4rem;
 		display: grid;
-		grid-template-columns: repeat(5, 1fr);
+		grid-template-columns: repeat(4, 1fr);
 	}
 `;
 const Left = styled.div`
