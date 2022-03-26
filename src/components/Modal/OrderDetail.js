@@ -26,9 +26,7 @@ const OrderDetail = (props) => {
 	const [detail, setDetail] = useState({});
 	const [supplier_list, setSupplier_list] = useState([]);
 	const [checked, setChecked] = useState([]);
-	const [del_refund, setDel_refund] = useState(0);
-
-	console.log(supplier_list);
+	const [del_checked, setDel_checked] = useState([]);
 
 	useEffect(() => {
 		_order.get_detail(props.modal.payment_uid).then((res) => {
@@ -62,6 +60,15 @@ const OrderDetail = (props) => {
 			arr.push(el);
 		}
 		setChecked(arr);
+	};
+	const checkDel = (idx) => {
+		let arr = [...del_checked];
+		if (del_checked.includes(idx)) {
+			arr = arr.filter((e) => e !== idx);
+		} else {
+			arr.push(idx);
+		}
+		setDel_checked(arr);
 	};
 
 	const singleTrackingNumber = (el) => {
@@ -132,19 +139,17 @@ const OrderDetail = (props) => {
 				);
 			}
 		}
-		console.log('arr', arr);
 		const data = {
 			payment: detail,
 			payment_product_list: checked,
-			del_refund,
+			del_refund: del_checked.length * 3000,
 		};
 		console.log('data', data);
 		_order.claim_handling(data).then((res) => {
 			console.log('res.data', res.data);
+			setSupplier_list(res.data.supplier_list);
 		});
 	};
-
-	console.log(checked);
 
 	return (
 		<Container>
@@ -288,11 +293,21 @@ const OrderDetail = (props) => {
 								))}
 								<ProductList>
 									{shippingFee.map((el, idx) => (
-										<ListItem
-											key={idx}
-											style={
-												idx === 0 ? { paddingLeft: '4.4rem' } : null
-											}>
+										<ListItem key={idx}>
+											{idx === 0 && (
+												<CheckIcon
+													alt=''
+													src={
+														del_checked.includes(index)
+															? check_icon
+															: uncheck_icon
+													}
+													onClick={() => {
+														checkDel(index);
+													}}
+												/>
+											)}
+
 											{el}
 										</ListItem>
 									))}
