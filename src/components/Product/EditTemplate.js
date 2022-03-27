@@ -337,8 +337,6 @@ const EditTemplate = (props) => {
 		storage,
 	]);
 
-	console.log(history.location);
-
 	return (
 		<Container>
 			{isLoading && <Spinner />}

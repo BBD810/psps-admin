@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { theme } from '../styles/theme';
 import { useSelector } from 'react-redux';
 import logo from '../images/cetus-logo.svg';
 const Background = () => {

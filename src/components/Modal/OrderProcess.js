@@ -46,6 +46,7 @@ const OrderProcessModal = (props) => {
 									detail.cou_num &&
 									`${detail.cou_name}\n${detail.cou_num}`}
 							</ProcessBodyItem>
+							{/* process가 처리완료일 경우 기존의 클레임 종류가 무엇인지 정보 받아서 변경하기 */}
 							<ProcessBodyItem>
 								{detail.process === '취소요청' &&
 									dateObjToTimer(detail.claim_at)}

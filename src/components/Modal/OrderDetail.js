@@ -144,9 +144,7 @@ const OrderDetail = (props) => {
 			payment_product_list: checked,
 			del_refund: del_checked.length * 3000,
 		};
-		console.log('data', data);
 		_order.claim_handling(data).then((res) => {
-			console.log('res.data', res.data);
 			setSupplier_list(res.data.supplier_list);
 		});
 	};
@@ -231,6 +229,7 @@ const OrderDetail = (props) => {
 												<CheckIcon
 													alt=''
 													src={uncheck_icon}
+													style={{ cursor: 'pointer' }}
 													onClick={() => {
 														allCheckItem(supplier);
 													}}
@@ -269,12 +268,14 @@ const OrderDetail = (props) => {
 											onClick={() => {
 												(el.process === '취소요청' ||
 													el.process === '교환요청' ||
-													el.process === '환불요청') &&
+													el.process === '환불요청' ||
+													el.process === '처리완료') &&
 													checkClaim(el);
 											}}>
 											{(el.process === '취소요청' ||
 												el.process === '교환요청' ||
-												el.process === '환불요청') &&
+												el.process === '환불요청' ||
+												el.process === '처리완료') &&
 												el.process}
 										</ListItem>
 										<ListItem
@@ -293,7 +294,11 @@ const OrderDetail = (props) => {
 								))}
 								<ProductList>
 									{shippingFee.map((el, idx) => (
-										<ListItem key={idx}>
+										<ListItem
+											key={idx}
+											onClick={() => {
+												checkDel(index);
+											}}>
 											{idx === 0 && (
 												<CheckIcon
 													alt=''
@@ -302,9 +307,6 @@ const OrderDetail = (props) => {
 															? check_icon
 															: uncheck_icon
 													}
-													onClick={() => {
-														checkDel(index);
-													}}
 												/>
 											)}
 

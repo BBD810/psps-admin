@@ -12,7 +12,6 @@ const Order = (props) => {
 	const [period, setPeriod] = useState(3);
 	const [date, setDate] = useState({ from: '', to: '' });
 	const [state, setState] = useState([]);
-
 	const [list, setList] = useState([]);
 	const [page, setPage] = useState(1);
 	const [total, setTotal] = useState(1);

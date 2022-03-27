@@ -2,29 +2,22 @@ import React from 'react';
 import styled from 'styled-components';
 
 const OrderClaimModal = (props) => {
-	const selectConfirm = () => {
-		props.setModal({ ...props.modal, act: '', return: true });
-	};
 	const selectClose = () => {
 		props.setModal({ ...props.modal, act: '', return: false });
 	};
+	const _data = props.modal.data;
 
 	return (
 		<Container>
 			<Wrap>
-				<Text>{props.modal.data.process}</Text>
+				<Text>{_data.process}</Text>
 				<Reason>
-					<Left>취소사유:</Left>
-					<Right>{props.modal.data.claim_reason}</Right>
+					<Left>사유:</Left>
+					<Right>{_data.claim_reason}</Right>
 				</Reason>
-				<Buttons>
-					<Button border onClick={selectClose}>
-						닫기
-					</Button>
-					<Button filled onClick={selectConfirm}>
-						취소처리
-					</Button>
-				</Buttons>
+				<Button filled onClick={selectClose}>
+					확인
+				</Button>
 			</Wrap>
 		</Container>
 	);
@@ -80,10 +73,6 @@ const Right = styled.p`
 	font-size: 1.2rem;
 	color: #7f8697;
 `;
-const Buttons = styled.div`
-	display: flex;
-	align-items: center;
-`;
 const Button = styled.button`
 	width: 10.6rem;
 	height: 3.1rem;
@@ -93,7 +82,4 @@ const Button = styled.button`
 	border: none;
 	border-radius: 4px;
 	background-color: #2a3349;
-	${(props) =>
-		props.border &&
-		`margin-right:0.8rem; border:2px solid #2A3349; background-color:#fff; color:#2A3349`}
 `;

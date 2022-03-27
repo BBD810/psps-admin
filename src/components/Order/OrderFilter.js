@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as _order from '../../controller/payment';
 import styled from 'styled-components';
 import check_icon from '../../images/check_black_icon.svg';
@@ -78,6 +78,10 @@ const OrderFilter = (props) => {
 		}
 		return text;
 	};
+
+	useEffect(() => {
+		onSubmit();
+	}, [props.page]);
 
 	const onSubmit = () => {
 		let from, to, process;
