@@ -14,19 +14,25 @@ const DetailTemplate = (props) => {
 	const history = useHistory();
 	const [detail, setDetail] = useState({});
 	const [optionList, setOptionList] = useState([]);
-	let isSubscribed = true;
 
 	useEffect(() => {
+		let isSubscribed = true;
 		setIsLoading(true);
 		if (history.location.state) {
 			const _state = history.location.state;
+			let _product_id;
 			if (_state.from) {
-				const _product_id = _state.product_id;
-				getDetail(_product_id);
+				_product_id = _state.product_id;
 			} else {
-				const _product_id = _state;
-				getDetail(_product_id);
+				_product_id = _state;
 			}
+			_product.get_detail(_product_id).then((res) => {
+				if (isSubscribed && res.data.success) {
+					setDetail(res.data.product);
+					setOptionList(res.data.product_option_list);
+					history.replace();
+				}
+			});
 		}
 		setIsLoading(false);
 		return () => {
@@ -35,15 +41,6 @@ const DetailTemplate = (props) => {
 		// eslint-disable-next-line
 	}, [history.location.state]);
 
-	const getDetail = (_product_id) => {
-		_product.get_detail(_product_id).then((res) => {
-			if (isSubscribed && res.data.success) {
-				setDetail(res.data.product);
-				setOptionList(res.data.product_option_list);
-				history.replace();
-			}
-		});
-	};
 	const selectList = () => {
 		props.setMode('list');
 	};

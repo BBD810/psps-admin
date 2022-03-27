@@ -18,7 +18,7 @@ const OrderList = (props) => {
 	];
 
 	const getButtonColor = (state) => {
-		let color;
+		let color = '';
 		switch (state) {
 			case '입금전':
 				return (color = '#E6843B');
@@ -32,7 +32,7 @@ const OrderList = (props) => {
 				return (color = '#6CC109');
 			case '환불요청':
 				return (color = '#00A1C7');
-			case '처리완료' || '배송완료':
+			default: // eslint-disable-next-line
 				return (color = '#94A0B5');
 		}
 	};

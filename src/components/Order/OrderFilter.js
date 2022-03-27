@@ -81,6 +81,7 @@ const OrderFilter = (props) => {
 
 	useEffect(() => {
 		onSubmit();
+		// eslint-disable-next-line
 	}, [props.page]);
 
 	const onSubmit = () => {
