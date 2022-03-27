@@ -18,22 +18,21 @@ const OrderList = (props) => {
 	];
 
 	const getButtonColor = (state) => {
-		let color = '';
 		switch (state) {
 			case '입금전':
-				return (color = '#E6843B');
+				return '#E6843B';
 			case '결제완료':
-				return (color = '#96738E');
+				return '#96738E';
 			case '배송중':
-				return (color = '#214588');
+				return '#214588';
 			case '취소요청':
-				return (color = '#E60F0F');
+				return '#E60F0F';
 			case '교환요청':
-				return (color = '#6CC109');
+				return '#6CC109';
 			case '환불요청':
-				return (color = '#00A1C7');
-			default: // eslint-disable-next-line
-				return (color = '#94A0B5');
+				return '#00A1C7';
+			default:
+				return '#94A0B5';
 		}
 	};
 	const getDetail = (payment_uid) => {
@@ -241,8 +240,7 @@ const StateButton = styled.button`
 	height: 2.5rem;
 	font-size: 1.2rem;
 	font-family: 'kr-b';
-	color: #ffffff;
+	color: #fff;
 	border: none;
 	border-radius: 4px;
-	background-color: #e6843b;
 `;
