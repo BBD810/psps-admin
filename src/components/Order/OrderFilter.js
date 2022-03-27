@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as _order from '../../controller/payment';
 import styled from 'styled-components';
 import check_icon from '../../images/check_black_icon.svg';
 import uncheck_icon from '../../images/empty_black_icon.svg';
+import useDidMountEffect from '../../components/useDidMountEffect';
 
 const LeftWrap = ({ data }) => {
 	return (
@@ -79,9 +80,8 @@ const OrderFilter = (props) => {
 		return text;
 	};
 
-	useEffect(() => {
+	useDidMountEffect(() => {
 		onSubmit();
-		// eslint-disable-next-line
 	}, [props.page]);
 
 	const onSubmit = () => {
