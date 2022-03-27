@@ -24,6 +24,7 @@ const Order = (props) => {
 				date={date}
 				page={page}
 				state={state}
+				setPage={setPage}
 				setTotal={setTotal}
 				setPeriod={setPeriod}
 				setDate={setDate}

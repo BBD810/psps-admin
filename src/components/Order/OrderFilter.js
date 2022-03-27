@@ -80,9 +80,16 @@ const OrderFilter = (props) => {
 		return text;
 	};
 
+	console.log(props.page);
+
 	useDidMountEffect(() => {
 		onSubmit();
 	}, [props.page]);
+
+	const onClick = () => {
+		props.setPage(1);
+		onSubmit();
+	};
 
 	const onSubmit = () => {
 		let from, to, process;
@@ -213,7 +220,7 @@ const OrderFilter = (props) => {
 					</Right>
 				</Content> */}
 			</Body>
-			<Button onClick={onSubmit}>적용하기</Button>
+			<Button onClick={onClick}>적용하기</Button>
 		</Container>
 	);
 };
