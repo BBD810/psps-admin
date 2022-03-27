@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as _order from '../../controller/payment';
 import styled from 'styled-components';
 import check_icon from '../../images/check_black_icon.svg';
 import uncheck_icon from '../../images/empty_black_icon.svg';
 import useDidMountEffect from '../../components/useDidMountEffect';
+import Spinner from '../Spinner';
 
 const LeftWrap = ({ data }) => {
 	return (
@@ -17,6 +18,7 @@ const LeftWrap = ({ data }) => {
 };
 
 const OrderFilter = (props) => {
+	const [isLoading, setIsLoading] = useState(false);
 	const items = [
 		{ title: '기간', desc: '기간별 주문내역을 조회합니다.' },
 		{ title: '주문상태', desc: '주문상태별 주문내역을 조회합니다.' },
@@ -80,8 +82,6 @@ const OrderFilter = (props) => {
 		return text;
 	};
 
-	console.log(props.page);
-
 	useDidMountEffect(() => {
 		onSubmit();
 	}, [props.page]);
@@ -92,6 +92,7 @@ const OrderFilter = (props) => {
 	};
 
 	const onSubmit = () => {
+		setIsLoading(true);
 		let from, to, process;
 		process = get_process(props.state);
 		if (props.period !== 5) {
@@ -120,6 +121,7 @@ const OrderFilter = (props) => {
 				}
 			}
 		}
+		setIsLoading(false);
 	};
 	const get_order_list = (from, to, process, page) => {
 		_order.get_list(from, to, process, page).then((res) => {
@@ -132,6 +134,7 @@ const OrderFilter = (props) => {
 
 	return (
 		<Container>
+			{isLoading && <Spinner />}
 			<Head>필터기능</Head>
 			<Body>
 				<Content>
