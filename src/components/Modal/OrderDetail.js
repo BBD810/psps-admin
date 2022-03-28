@@ -149,6 +149,31 @@ const OrderDetail = (props) => {
 		});
 	};
 
+	const claimRefuse = () => {
+		let arr = [];
+		if (checked.length === 0) {
+			return alert('선택된 항목이 없습니다.');
+		}
+		arr = checked.filter(
+			(el) =>
+				el.process === '취소요청' ||
+				el.process === '교환요청' ||
+				el.process === '환불요청'
+		);
+		if (arr.length !== checked.length) {
+			return alert(
+				`주문상태가 "취소요청", "교환요청", "환불요청"인\n경우만 가능합니다.`
+			);
+		}
+		const data = {
+			payment: detail,
+			payment_product_list: checked,
+		};
+		_order.claim_refuse(data).then((res) => {
+			setSupplier_list(res.data.supplier_list);
+		});
+	};
+
 	return (
 		<Container>
 			<Wrap>
@@ -333,7 +358,7 @@ const OrderDetail = (props) => {
 					<SupplierButton second onClick={claimOrder}>
 						교환/환불 처리
 					</SupplierButton>
-					<SupplierButton>요청 거절</SupplierButton>
+					<SupplierButton onClick={claimRefuse}>요청 거절</SupplierButton>
 					<SupplierButton
 						last
 						onClick={() => {
