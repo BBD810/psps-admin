@@ -133,6 +133,9 @@ const Container = styled.div`
 	position: fixed;
 	top: 0;
 	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
 const Wrap = styled.div`
 	width: 41.1rem;
@@ -141,9 +144,6 @@ const Wrap = styled.div`
 	flex-direction: column;
 	align-items: center;
 	position: fixed;
-	top: 10vh;
-	left: 50%;
-	transform: translate(-50%, 50%);
 	z-index: 10;
 	border-radius: 4px;
 	background-color: #fff;
