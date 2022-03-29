@@ -26,13 +26,13 @@ const ListTemplate = (props) => {
 		let isSubscribed = true;
 		banner.get_list(props.category.substr(0, 2)).then((res) => {
 			if (isSubscribed && res.data.success) {
-				setIsLoading(false);
 				setList(res.data.banner_list);
 				res.data.type === '메인'
 					? setImgHeight({ height: '16.9rem' })
 					: setImgHeight({ height: '11.3rem' });
 			}
 		});
+		setIsLoading(false);
 		return () => {
 			isSubscribed = false;
 		};

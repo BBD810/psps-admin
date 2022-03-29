@@ -32,10 +32,7 @@ const UserFilter = (props) => {
 		setSearchItem(el);
 		setSearchOpen(false);
 	};
-	const items = [
-		{ title: '검색', desc: '' },
-		// { title: '고객구분', desc: '회원,비회원별 주문 내역을 조회합니다.' },
-	];
+	const items = [{ title: '검색', desc: '' }];
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -116,19 +113,6 @@ const UserFilter = (props) => {
 						</RightInner>
 					</Right>
 				</Content>
-				{/* <Content>
-					<LeftWrap data={items[1]} />
-					<Right>
-						<RightInner>
-							{['회원', '비회원'].map((el, idx) => (
-								<Item key={idx}>
-									<CheckIcon alt='' src={check_icon} />
-									<ItemText>{el}</ItemText>
-								</Item>
-							))}
-						</RightInner>
-					</Right>
-				</Content> */}
 			</Body>
 			<Button onClick={onSubmit}>적용하기</Button>
 		</Container>

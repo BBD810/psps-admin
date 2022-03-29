@@ -22,7 +22,6 @@ const OrderFilter = (props) => {
 	const items = [
 		{ title: '기간', desc: '기간별 주문내역을 조회합니다.' },
 		{ title: '주문상태', desc: '주문상태별 주문내역을 조회합니다.' },
-		// { title: '회원구분', desc: '회원,비회원별 주문내역을 조회합니다.' },
 	];
 	const orderState = [
 		'입금전',
@@ -101,23 +100,28 @@ const OrderFilter = (props) => {
 			get_order_list(from, to, process, props.page);
 		} else {
 			if (!props.date.from) {
-				return props.setModal({
+				props.setModal({
 					type: 'confirm',
 					text: '시작 날짜를 선택해주세요.',
 				});
 			} else if (!props.date.to) {
-				return props.setModal({
+				props.setModal({
 					type: 'confirm',
 					text: '끝 날짜를 선택해주세요.',
 				});
 			} else if (props.date.from && props.date.to) {
 				if (props.date.from > props.date.to) {
-					return props.setModal({
+					props.setModal({
 						type: 'confirm',
 						text: '끝 날짜가 시작 날짜보다 이릅니다.',
 					});
 				} else {
-					get_order_list(props.date.from, props.date.to, process);
+					get_order_list(
+						props.date.from,
+						props.date.to,
+						process,
+						props.page
+					);
 				}
 			}
 		}
@@ -209,26 +213,13 @@ const OrderFilter = (props) => {
 						</RightInner>
 					</Right>
 				</Content>
-				{/* <Content>
-					<LeftWrap data={items[2]} />
-					<Right>
-						<RightInner>
-							{['회원', '비회원'].map((el, idx) => (
-								<Item key={idx}>
-									<CheckIcon alt='' src={check_icon} />
-									<ItemText>{el}</ItemText>
-								</Item>
-							))}
-						</RightInner>
-					</Right>
-				</Content> */}
 			</Body>
 			<Button onClick={onClick}>적용하기</Button>
 		</Container>
 	);
 };
 
-export default OrderFilter;
+export default React.memo(OrderFilter);
 
 const Container = styled.div`
 	width: 119rem;

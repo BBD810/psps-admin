@@ -27,10 +27,10 @@ const ListTemplate = (props) => {
 		let isSubscribed = true;
 		_product_img.get_list().then((res) => {
 			if (isSubscribed && res.data.success) {
-				setIsLoading(false);
 				setList(res.data.product_image_list);
 			}
 		});
+		setIsLoading(false);
 		return () => {
 			isSubscribed = false;
 		};
@@ -38,12 +38,8 @@ const ListTemplate = (props) => {
 
 	const viewSelectController = (e) => {
 		const innerText = e.target.innerText;
-		if (innerText === view) {
-			return setViewOpen(false);
-		} else {
-			setView(innerText);
-			setViewOpen(false);
-		}
+		innerText !== view && setView(innerText);
+		setViewOpen(false);
 	};
 
 	useEffect(() => {
@@ -67,7 +63,6 @@ const ListTemplate = (props) => {
 				}
 			});
 		}
-
 		return () => {
 			isSubscribed = false;
 		};

@@ -49,36 +49,31 @@ const OrderList = (props) => {
 					))}
 				</Header>
 				<ListWrap>
-					{props.list &&
-						props.list.map((el, idx) => (
-							<List key={idx}>
-								<ListItem>
-									<StateButton
-										style={{
-											backgroundColor: `${getButtonColor(
-												el.process
-											)}`,
-										}}>
-										{el.process}
-									</StateButton>
-								</ListItem>
-								<ListItem>{`${dateObjToTimer2(
-									el.create_at
-								)}`}</ListItem>
-								<ListItem>{el.payment_uid}</ListItem>
-								<ListItem
-									name='true'
-									onClick={() => {
-										getDetail(el.payment_uid);
+					{props.list.map((el, idx) => (
+						<List key={idx}>
+							<ListItem>
+								<StateButton
+									style={{
+										backgroundColor: `${getButtonColor(el.process)}`,
 									}}>
-									{productTransform(el.name)}
-								</ListItem>
-								<ListItem>{el.supplier_name}</ListItem>
-								<ListItem>{`${el.us_name}\n(${el.us_email})`}</ListItem>
-								<ListItem>{priceToString(el.amount)}</ListItem>
-								<ListItem>{`카드 결제`}</ListItem>
-							</List>
-						))}
+									{el.process}
+								</StateButton>
+							</ListItem>
+							<ListItem>{`${dateObjToTimer2(el.create_at)}`}</ListItem>
+							<ListItem>{el.payment_uid}</ListItem>
+							<ListItem
+								name='true'
+								onClick={() => {
+									getDetail(el.payment_uid);
+								}}>
+								{productTransform(el.name)}
+							</ListItem>
+							<ListItem>{el.supplier_name}</ListItem>
+							<ListItem>{`${el.us_name}\n(${el.us_email})`}</ListItem>
+							<ListItem>{priceToString(el.amount)}</ListItem>
+							<ListItem>{`카드 결제`}</ListItem>
+						</List>
+					))}
 				</ListWrap>
 				{props.list.length > 0 && (
 					<PageSelector
@@ -94,7 +89,7 @@ const OrderList = (props) => {
 	);
 };
 
-export default OrderList;
+export default React.memo(OrderList);
 
 const Container = styled.div`
 	width: 119rem;
@@ -243,4 +238,5 @@ const StateButton = styled.button`
 	color: #fff;
 	border: none;
 	border-radius: 4px;
+	cursor: default !important;
 `;

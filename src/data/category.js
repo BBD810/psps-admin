@@ -96,14 +96,6 @@ export const userCategory = [
 	},
 ];
 
-export const statisticsCategory = [
-	{
-		item: '고객 목록',
-		list_main: '고객 목록',
-		list_sub: `주문 내역을 확인하고 처리합니다.`,
-	},
-];
-
 export const faqCategory = [
 	{
 		item: '상품',

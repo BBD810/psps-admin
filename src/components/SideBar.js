@@ -18,7 +18,6 @@ const SideBar = (props) => {
 		'상품 이미지',
 		'주문',
 		'고객',
-		'통계',
 		'FAQ',
 	];
 
@@ -28,22 +27,30 @@ const SideBar = (props) => {
 	const menuController = (e) => {
 		const innerText = e.target.innerText;
 		props.setMenu(innerText);
-		if (innerText === '배너') {
-			history.push('/');
-		} else if (innerText === '공급원') {
-			history.push('/supplier');
-		} else if (innerText === '상품') {
-			history.push('/product');
-		} else if (innerText === '상품 이미지') {
-			history.push('/product-img');
-		} else if (innerText === '주문') {
-			history.push('/order');
-		} else if (innerText === '고객') {
-			history.push('/user');
-		}
-		// else if (innerText === '통계') {}
-		else if (innerText === 'FAQ') {
-			history.push('/faq');
+		switch (innerText) {
+			case '배너':
+				history.push('/');
+				break;
+			case '공급원':
+				history.push('/supplier');
+				break;
+			case '상품':
+				history.push('/product');
+				break;
+			case '상품 이미지':
+				history.push('/product-img');
+				break;
+			case '주문':
+				history.push('/order');
+				break;
+			case '고객':
+				history.push('/user');
+				break;
+			case 'FAQ':
+				history.push('/faq');
+				break;
+			default:
+				history.push('/');
 		}
 	};
 	const goLogout = () => {
@@ -76,7 +83,7 @@ const SideBar = (props) => {
 	);
 };
 
-export default SideBar;
+export default React.memo(SideBar);
 
 const SideBarContainer = styled.div`
 	width: 19.8rem;
@@ -121,7 +128,7 @@ const LogoImg = styled.img`
 `;
 const MainMenu = styled.ul`
 	width: 13.8rem;
-	height: 53.1rem;
+	height: 46.9rem;
 	padding: 1.9rem 0;
 	background-color: #ffffff;
 	box-shadow: -3px 4px 30px #0000001a;

@@ -34,17 +34,16 @@ const ListTemplate = (props) => {
 			_product.get_list(part, subPart).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_list);
-					setIsLoading(false);
 				}
 			});
 		} else if (props.category === '추천 상품 목록') {
 			_product.get_recommend_list().then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_recommend_list);
-					setIsLoading(false);
 				}
 			});
 		}
+		setIsLoading(false);
 		return () => {
 			isSubscribed = false;
 		};

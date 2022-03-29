@@ -18,8 +18,8 @@ const StateInfo = (props) => {
 					setDetail(res.data.product);
 				}
 			});
+			setIsLoading(false);
 		}
-		setIsLoading(false);
 		return () => {
 			isSubscribed = false;
 		};
@@ -46,8 +46,8 @@ const StateInfo = (props) => {
 					}
 				})
 				.then(getRecommendList());
+			setIsLoading(false);
 		}
-		setIsLoading(false);
 		return () => {
 			isSubscribed = false;
 		};
@@ -200,7 +200,7 @@ const StateInfo = (props) => {
 	);
 };
 
-export default StateInfo;
+export default React.memo(StateInfo);
 
 const Container = styled.div`
 	width: 119rem;

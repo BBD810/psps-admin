@@ -21,8 +21,6 @@ const Category = (props) => {
 			setArr(data.orderCategory);
 		} else if (props.menu === '고객') {
 			setArr(data.userCategory);
-		} else if (props.menu === '통계') {
-			setArr(data.statisticsCategory);
 		} else if (props.menu === 'FAQ') {
 			setArr(data.faqCategory);
 		}
