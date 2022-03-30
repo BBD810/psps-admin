@@ -31,6 +31,9 @@ const OrderList = (props) => {
 				return '#6CC109';
 			case '환불요청':
 				return '#00A1C7';
+			case '배송완료':
+			case '처리완료':
+				return '#94A0B5';
 			default:
 				return '#94A0B5';
 		}
