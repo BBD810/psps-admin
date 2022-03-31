@@ -81,11 +81,6 @@ export const orderCategory = [
 		list_main: '주문 목록',
 		list_sub: `주문 내역을 확인하고 처리합니다.`,
 	},
-	// {
-	// 	item: '배송 관리',
-	// 	list_main: '배송 관리',
-	// 	list_sub: `주문 내역을 확인하고 처리합니다.`,
-	// },
 ];
 
 export const userCategory = [

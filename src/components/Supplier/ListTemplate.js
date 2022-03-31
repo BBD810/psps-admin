@@ -46,20 +46,22 @@ const ListTemplate = (props) => {
 	};
 	const inputController = (e, idx) => {
 		const value = e.target.value;
-		if (idx === 0) {
-			setInput({ ...input, name: value });
-		} else if (idx === 1) {
-			setInput({ ...input, owner: value });
-		} else if (idx === 2) {
-			setInput({ ...input, business_number: value });
-		} else if (idx === 3) {
-			setInput({ ...input, address: value });
-		} else if (idx === 4) {
-			setInput({ ...input, tel: value });
-		} else if (idx === 5) {
-			setInput({ ...input, email: value });
-		} else if (idx === 6) {
-			setInput({ ...input, manager_tel: value });
+		switch (idx) {
+			case 0:
+				return setInput({ ...input, name: value });
+			case 1:
+				return setInput({ ...input, owner: value });
+			case 2:
+				return setInput({ ...input, business_number: value });
+			case 3:
+				return setInput({ ...input, address: value });
+			case 4:
+				return setInput({ ...input, tel: value });
+			case 5:
+				return setInput({ ...input, email: value });
+			case 6:
+				return setInput({ ...input, manager_tel: value });
+			default:
 		}
 	};
 	const onCreate = () => {
