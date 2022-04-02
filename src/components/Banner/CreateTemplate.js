@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { extension } from '../../data/extension';
 import { IMG_ADDRESS } from '../../config';
 import * as link from '../../data/link';
-import * as _banner from '../../controller/banner';
+import * as bannerController from '../../controller/banner';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
 
@@ -14,15 +14,14 @@ const CreateTemplate = (props) => {
 	const subPartSelect = useRef();
 	const types = ['메인', '광고'];
 	const [type, setType] = useState('메인');
-	const [banner_id, setBanner_id] = useState('');
+	const [bannerId, setBannerId] = useState('');
 	const [title, setTitle] = useState('');
 	const [page, setPage] = useState('');
 	const [part, setPart] = useState('');
 	const [subPart, setSubPart] = useState('');
-	const [product_id, setProduct_id] = useState('');
+	const [productId, setProductId] = useState('');
 	const [img, setImg] = useState(false);
 	const [prevImg, setPrevImg] = useState(false);
-	// const [newPrevImg, setNewPrevImg] = useState(false);
 	const [openSelect, setOpenSelect] = useState(false);
 	const [check, setCheck] = useState(false);
 	const [subPartList, setSubPartList] = useState(link.part[0].arr);
@@ -42,10 +41,10 @@ const CreateTemplate = (props) => {
 	useEffect(() => {
 		let isSubscribed = true;
 		if (editMode && history.location.state) {
-			_banner.get_detail(history.location.state).then((res) => {
+			bannerController.get_detail(history.location.state).then((res) => {
 				if (isSubscribed && res.data.success) {
 					let banner = res.data.banner;
-					setBanner_id(banner.banner_id);
+					setBannerId(banner.banner_id);
 					setType(banner.type);
 					setTitle(banner.title);
 					setPage(banner.page);
@@ -56,7 +55,7 @@ const CreateTemplate = (props) => {
 						setPart(banner.part);
 						setSubPart(banner.subPart);
 					} else if (banner.page === '상품 상세보기') {
-						setProduct_id(banner.product_id);
+						setProductId(banner.product_id);
 					}
 				}
 			});
@@ -72,7 +71,7 @@ const CreateTemplate = (props) => {
 			if (page === '상품 카테고리') {
 				subPart ? setCheck(true) : setCheck(false);
 			} else if (page === '상품 상세보기') {
-				product_id ? setCheck(true) : setCheck(false);
+				productId ? setCheck(true) : setCheck(false);
 			} else {
 				setCheck(true);
 			}
@@ -80,7 +79,7 @@ const CreateTemplate = (props) => {
 			setCheck(false);
 		}
 		// eslint-disable-next-line
-	}, [title, img, page, subPart, product_id]);
+	}, [title, img, page, subPart, productId]);
 
 	const onChangeType = (e) => {
 		setType(e.target.innerText);
@@ -104,7 +103,7 @@ const CreateTemplate = (props) => {
 		setOpenSelect(0);
 	};
 	const onChangeProductId = (e) => {
-		setProduct_id(e.target.value);
+		setProductId(e.target.value);
 	};
 	const onClick = () => {
 		setOpenSelect(0);
@@ -150,8 +149,8 @@ const CreateTemplate = (props) => {
 			formData.append('page', page);
 			formData.append('part', part);
 			formData.append('subPart', subPart);
-			formData.append('product_id', product_id);
-			_banner.create(formData).then((res) => {
+			formData.append('product_id', productId);
+			bannerController.create(formData).then((res) => {
 				if (res.data.success) {
 					props.setModal({
 						type: 'confirm',
@@ -181,13 +180,13 @@ const CreateTemplate = (props) => {
 				formData.append('page', page);
 				formData.append('part', part);
 				formData.append('subPart', subPart);
-				formData.append('product_id', product_id);
-				_banner.edit(formData, banner_id).then((res) => {
+				formData.append('product_id', productId);
+				bannerController.edit(formData, bannerId).then((res) => {
 					res.data.success && successEdit();
 				});
 			} else {
-				const data = { type, title, page, part, subPart, product_id };
-				_banner.edit(data, banner_id).then((res) => {
+				const data = { type, title, page, part, subPart, productId };
+				bannerController.edit(data, bannerId).then((res) => {
 					res.data.success && successEdit();
 				});
 			}
@@ -305,7 +304,7 @@ const CreateTemplate = (props) => {
 				<Item active={detailActive}>
 					<Subtitle>상품</Subtitle>
 					<Input
-						defaultValue={product_id ? product_id : null}
+						defaultValue={productId ? productId : null}
 						disabled={page !== '상품 상세보기'}
 						placeholder='상품의 코드를 입력해주세요.'
 						onChange={onChangeProductId}

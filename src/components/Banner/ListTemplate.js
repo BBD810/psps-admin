@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { IMG_ADDRESS, CLIENT_ADDRESS } from '../../config';
 import { getLink } from '../../functions/GetLink';
 import * as toggleMenu from '../../data/toggle';
-import * as banner from '../../controller/banner';
+import * as bannerController from '../../controller/banner';
 import styled from 'styled-components';
 import left from '../../images/left.svg';
 import right from '../../images/right.svg';
@@ -16,7 +16,7 @@ const ListTemplate = (props) => {
 	const menuSelect = useRef();
 	const [menuOpen, setMenuOpen] = useState('close');
 	const [imgHeight, setImgHeight] = useState({});
-	const [banner_id, setBanner_id] = useState('');
+	const [bannerId, setBannerId] = useState('');
 	const [detail, setDetail] = useState({});
 	const [list, setList] = useState([]);
 	const [displayList, setDisplayList] = useState([]);
@@ -24,7 +24,7 @@ const ListTemplate = (props) => {
 	useEffect(() => {
 		setIsLoading(true);
 		let isSubscribed = true;
-		banner.get_list(props.category.substr(0, 2)).then((res) => {
+		bannerController.get_list(props.category.substr(0, 2)).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setList(res.data.banner_list);
 				res.data.type === '메인'
@@ -40,11 +40,13 @@ const ListTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		banner.get_display_list(props.category.substr(0, 2), true).then((res) => {
-			if (isSubscribed && res.data.success) {
-				setDisplayList(res.data.banner_list);
-			}
-		});
+		bannerController
+			.get_display_list(props.category.substr(0, 2), true)
+			.then((res) => {
+				if (isSubscribed && res.data.success) {
+					setDisplayList(res.data.banner_list);
+				}
+			});
 		return () => {
 			isSubscribed = false;
 		};
@@ -52,7 +54,7 @@ const ListTemplate = (props) => {
 	}, [list]);
 
 	const goDetail = (el) => {
-		history.push({ state: el.banner_id });
+		history.push({ state: el.bannerId });
 		props.setMode('detail');
 	};
 	const menuOpenController = (idx) => {
@@ -69,12 +71,12 @@ const ListTemplate = (props) => {
 		} else if (menu === '링크확인') {
 			selectLink(el);
 		}
-		setBanner_id(el.banner_id);
+		setBannerId(el.bannerId);
 		setDetail(el);
 		setMenuOpen('close');
 	};
 	const selectEdit = (el) => {
-		history.push({ state: el.banner_id });
+		history.push({ state: el.bannerId });
 		props.setMode('edit');
 	};
 	const selectDisplay = (detail) => {
@@ -166,7 +168,7 @@ const ListTemplate = (props) => {
 				text: '노출 상태가 같은 배너만\n순서 변경이 가능합니다.',
 			});
 		} else {
-			banner.change_order(arr).then((res) => {
+			bannerController.change_order(arr).then((res) => {
 				res.data.success && success(res.data.banner_list);
 			});
 		}
@@ -176,16 +178,16 @@ const ListTemplate = (props) => {
 		let isSubscribed = true;
 		let _modal = props.modal;
 		if (_modal.act === 'display' && _modal.return) {
-			banner.change_display(banner_id).then((res) => {
+			bannerController.change_display(bannerId).then((res) => {
 				isSubscribed && res.data.success && success(res.data.banner_list);
 			});
 		} else if (_modal.act === 'delete' && _modal.return) {
-			banner.remove(banner_id).then((res) => {
+			bannerController.remove(bannerId).then((res) => {
 				isSubscribed && res.data.success && success(res.data.banner_list);
 			});
 		} else if (_modal.act === 'replace' && _modal.return) {
 			const arr = [detail, displayList[_modal.return]];
-			banner.replace_display(arr).then((res) => {
+			bannerController.replace_display(arr).then((res) => {
 				isSubscribed && res.data.success && success(res.data.banner_list);
 			});
 		}

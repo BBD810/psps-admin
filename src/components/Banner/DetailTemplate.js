@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom';
 import { IMG_ADDRESS } from '../../config';
 import { numberToString } from '../../functions/NumberToString';
 import { getLinkKr } from '../../functions/GetLink';
-import * as banner from '../../controller/banner';
+import * as bannerController from '../../controller/banner';
 import styled from 'styled-components';
 
 const DetailTemplate = (props) => {
 	const history = useHistory();
-	const [banner_id, setBanner_id] = useState('');
+	const [bannerId, setBannerId] = useState('');
 	const [imgHeight, setImgHeight] = useState({});
 	const [displayList, setDisplayList] = useState(false);
 	const [detail, setDetail] = useState({});
@@ -22,13 +22,13 @@ const DetailTemplate = (props) => {
 		} else if (props.category === '광고 배너') {
 			setImgHeight({ height: '34.9rem' });
 		}
-		banner.get_detail(history.location.state).then((res) => {
+		bannerController.get_detail(history.location.state).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setDetail(res.data.banner);
-				setBanner_id(history.location.state);
+				setBannerId(history.location.state);
 			}
 		});
-		banner.get_display_list(type, true).then((res) => {
+		bannerController.get_display_list(type, true).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setDisplayList(res.data.banner_list);
 			}
@@ -39,7 +39,7 @@ const DetailTemplate = (props) => {
 	}, [history.location.state, props.category]);
 
 	const selectEdit = () => {
-		history.push({ state: banner_id });
+		history.push({ state: bannerId });
 		props.setMode('edit');
 	};
 	const selectDisplay = () => {
@@ -96,29 +96,29 @@ const DetailTemplate = (props) => {
 	useEffect(() => {
 		if (displayList) {
 			for (let i = 0; i < displayList.length; i++) {
-				if (displayList[i].banner_id === detail.banner_id) {
+				if (displayList[i].bannerId === detail.bannerId) {
 					return setDisplayState(numberToString(i + 1) + '번째로 노출 중');
 				} else {
 					setDisplayState('노출되지 않음');
 				}
 			}
 		}
-	}, [displayList, detail.banner_id]);
+	}, [displayList, detail.bannerId]);
 
 	useEffect(() => {
 		let isSubscribed = true;
 		let _modal = props.modal;
 		if (_modal.act === 'display' && _modal.return) {
-			banner.change_display(banner_id).then((res) => {
+			bannerController.change_display(bannerId).then((res) => {
 				isSubscribed && res.data.success && success();
 			});
 		} else if (_modal.act === 'delete' && _modal.return) {
-			banner.remove(banner_id).then((res) => {
+			bannerController.remove(bannerId).then((res) => {
 				isSubscribed && res.data.success && success();
 			});
 		} else if (_modal.act === 'replace' && _modal.return) {
 			const arr = [detail, displayList[props.modal.return]];
-			banner.replace_display(arr).then((res) => {
+			bannerController.replace_display(arr).then((res) => {
 				isSubscribed && res.data.success && success();
 			});
 		}
