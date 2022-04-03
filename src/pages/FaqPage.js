@@ -3,7 +3,7 @@ import {
 	faqTypeTransform,
 	faqTypeTransform2,
 } from '../functions/FaqTypeTransform';
-import * as _faq from '../controller/faq';
+import * as faqController from '../controller/faq';
 import styled from 'styled-components';
 import SideBar from '../components/SideBar';
 import Category from '../components/Category';
@@ -26,7 +26,7 @@ const FaqPage = () => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		_faq.get_list(faqTypeTransform2(category)).then((res) => {
+		faqController.get_list(faqTypeTransform2(category)).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setList(res.data.question_list);
 			}
@@ -38,17 +38,17 @@ const FaqPage = () => {
 
 	useEffect(() => {
 		if (modal.act === 'create' && modal.return) {
-			_faq.create(modal.return).then((res) => {
+			faqController.create(modal.return).then((res) => {
 				const { success, qu_type_id, question_list } = res.data;
 				success && faqSuccess(qu_type_id, question_list);
 			});
 		} else if (modal.act === 'edit' && modal.return) {
-			_faq.edit(modal.qu_id, modal.return).then((res) => {
+			faqController.edit(modal.qu_id, modal.return).then((res) => {
 				const { success, qu_type_id, question_list } = res.data;
 				success && faqSuccess(qu_type_id, question_list);
 			});
 		} else if (modal.act === 'delete' && modal.return) {
-			_faq.remove(modal.qu_id).then((res) => {
+			faqController.remove(modal.qu_id).then((res) => {
 				const { success, qu_type_id, question_list } = res.data;
 				success && faqSuccess(qu_type_id, question_list);
 			});
@@ -56,9 +56,9 @@ const FaqPage = () => {
 		// eslint-disable-next-line
 	}, [modal.type]);
 
-	const faqSuccess = (qu_type_id, list) => {
+	const faqSuccess = (questionTypeId, list) => {
 		setModal({ type: '' });
-		setCategory(faqTypeTransform(qu_type_id));
+		setCategory(faqTypeTransform(questionTypeId));
 		setList(list);
 	};
 
