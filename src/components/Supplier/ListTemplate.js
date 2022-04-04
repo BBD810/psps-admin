@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as _supplier from '../../controller/supplier';
+import * as supplierController from '../../controller/supplier';
 import styled from 'styled-components';
 import PageSelector from '../PageSelector';
 
@@ -20,7 +20,7 @@ const ListTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		_supplier.get_list(page).then((res) => {
+		supplierController.get_list(page).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setTotal(res.data.total);
 				setList(res.data.supplier_list);
@@ -80,7 +80,7 @@ const ListTemplate = (props) => {
 				text: '담당자 정보를 제외한\n모든 정보를 입력해주셔야 합니다.',
 			});
 		} else {
-			_supplier.create(input, page).then((res) => {
+			supplierController.create(input, page).then((res) => {
 				if (res.data.success) {
 					props.setModal({
 						type: 'confirm',
@@ -103,12 +103,14 @@ const ListTemplate = (props) => {
 			setDetail(el);
 			setEditMode(idx);
 		} else if (innerText === '저장') {
-			_supplier.edit(detail, detail.supplier_id, page).then((res) => {
-				if (res.data.success) {
-					setEditMode(false);
-					setList(res.data.supplier_list);
-				}
-			});
+			supplierController
+				.edit(detail, detail.supplier_id, page)
+				.then((res) => {
+					if (res.data.success) {
+						setEditMode(false);
+						setList(res.data.supplier_list);
+					}
+				});
 		}
 	};
 
@@ -133,7 +135,7 @@ const ListTemplate = (props) => {
 		let isSubscribed = true;
 		let _modal = props.modal;
 		if (_modal.act === 'delete' && _modal.return) {
-			_supplier.remove(detail.supplier_id, page).then((res) => {
+			supplierController.remove(detail.supplier_id, page).then((res) => {
 				if (isSubscribed && res.data.success) {
 					props.setModal({ type: '' });
 					setTotal(res.data.total);
