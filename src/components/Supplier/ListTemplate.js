@@ -44,24 +44,26 @@ const ListTemplate = (props) => {
 	const createController = () => {
 		typeof editMode !== 'number' && setCreateMode(!createMode);
 	};
-	const inputController = (e, idx) => {
+	const inputController = (e, item) => {
 		const value = e.target.value;
-		switch (idx) {
-			case 0:
+		console.log(item);
+		switch (item) {
+			case '상호명':
 				return setInput({ ...input, name: value });
-			case 1:
+			case '대표':
 				return setInput({ ...input, owner: value });
-			case 2:
+			case '사업자 번호':
 				return setInput({ ...input, business_number: value });
-			case 3:
+			case '사업장 소재지':
 				return setInput({ ...input, address: value });
-			case 4:
+			case '연락처':
 				return setInput({ ...input, tel: value });
-			case 5:
+			case '이메일':
 				return setInput({ ...input, email: value });
-			case 6:
+			case '담당자 연락처':
 				return setInput({ ...input, manager_tel: value });
 			default:
+				return;
 		}
 	};
 	const onCreate = () => {
@@ -157,7 +159,7 @@ const ListTemplate = (props) => {
 								<HeaderInput
 									placeholder={el}
 									onChange={(e) => {
-										inputController(e, idx);
+										inputController(e, el);
 									}}
 								/>
 							)}
