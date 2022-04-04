@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import * as _order from '../../controller/payment';
+import * as orderController from '../../controller/payment';
 import styled from 'styled-components';
 import check_icon from '../../images/check_black_icon.svg';
 import uncheck_icon from '../../images/empty_black_icon.svg';
@@ -128,7 +128,7 @@ const OrderFilter = (props) => {
 		setIsLoading(false);
 	};
 	const get_order_list = (from, to, process, page) => {
-		_order.get_list(from, to, process, page).then((res) => {
+		orderController.get_list(from, to, process, page).then((res) => {
 			if (res.data.success) {
 				props.setTotal(res.data.total);
 				props.setList(res.data.payment_product_list);
