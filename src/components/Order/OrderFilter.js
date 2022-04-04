@@ -128,7 +128,7 @@ const OrderFilter = (props) => {
 		setIsLoading(false);
 	};
 	const get_order_list = (from, to, process, page) => {
-		orderController.get_list(from, to, process, page).then((res) => {
+		orderController.getList(from, to, process, page).then((res) => {
 			if (res.data.success) {
 				props.setTotal(res.data.total);
 				props.setList(res.data.payment_product_list);

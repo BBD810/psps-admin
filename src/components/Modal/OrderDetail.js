@@ -29,7 +29,7 @@ const OrderDetail = (props) => {
 	const [del_checked, setDel_checked] = useState([]);
 
 	useEffect(() => {
-		_order.get_detail(props.modal.payment_uid).then((res) => {
+		_order.getDetail(props.modal.payment_uid).then((res) => {
 			setDetail(res.data.payment);
 			setSupplier_list(res.data.supplier_list);
 		});
@@ -100,7 +100,7 @@ const OrderDetail = (props) => {
 				cou_id: _modal.return.id,
 				cou_num: _modal.return.num,
 			};
-			_order.enter_tracking_number(data).then((res) => {
+			_order.enterTrackingNumber(data).then((res) => {
 				const { success, supplier_list } = res.data;
 				success ? enterSuccess(supplier_list) : enterFail();
 			});
@@ -144,7 +144,7 @@ const OrderDetail = (props) => {
 			payment_product_list: checked,
 			del_refund: del_checked.length * 3000,
 		};
-		_order.claim_handling(data).then((res) => {
+		_order.claimHandling(data).then((res) => {
 			setSupplier_list(res.data.supplier_list);
 		});
 	};
@@ -169,7 +169,7 @@ const OrderDetail = (props) => {
 			payment: detail,
 			payment_product_list: checked,
 		};
-		_order.claim_refuse(data).then((res) => {
+		_order.claimRefuse(data).then((res) => {
 			setSupplier_list(res.data.supplier_list);
 		});
 	};

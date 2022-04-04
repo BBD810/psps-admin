@@ -22,13 +22,13 @@ const DetailTemplate = (props) => {
 		} else if (props.category === '광고 배너') {
 			setImgHeight({ height: '34.9rem' });
 		}
-		bannerController.get_detail(history.location.state).then((res) => {
+		bannerController.getDetail(history.location.state).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setDetail(res.data.banner);
 				setBannerId(history.location.state);
 			}
 		});
-		bannerController.get_display_list(type, true).then((res) => {
+		bannerController.getDisplayList(type, true).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setDisplayList(res.data.banner_list);
 			}
@@ -109,7 +109,7 @@ const DetailTemplate = (props) => {
 		let isSubscribed = true;
 		let _modal = props.modal;
 		if (_modal.act === 'display' && _modal.return) {
-			bannerController.change_display(bannerId).then((res) => {
+			bannerController.changeDisplay(bannerId).then((res) => {
 				isSubscribed && res.data.success && success();
 			});
 		} else if (_modal.act === 'delete' && _modal.return) {
@@ -118,7 +118,7 @@ const DetailTemplate = (props) => {
 			});
 		} else if (_modal.act === 'replace' && _modal.return) {
 			const arr = [detail, displayList[props.modal.return]];
-			bannerController.replace_display(arr).then((res) => {
+			bannerController.replaceDisplay(arr).then((res) => {
 				isSubscribed && res.data.success && success();
 			});
 		}

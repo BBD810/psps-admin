@@ -28,18 +28,18 @@ export const remove = async (product_option_id) => {
 	return await instance.delete(`/${product_option_id}`).catch(errorMessage);
 };
 
-export const change_display = async (product_option_id) => {
+export const changeDisplay = async (product_option_id) => {
 	return await instance
 		.patch(`/display/${product_option_id}`)
 		.catch(errorMessage);
 };
 
-export const change_stock = async (product_option_id) => {
+export const changeStock = async (product_option_id) => {
 	return await instance
 		.patch(`/stock/${product_option_id}`)
 		.catch(errorMessage);
 };
 
-export const change_order = async (arr) => {
+export const changeOrder = async (arr) => {
 	return await instance.patch(`/order`, arr).catch(errorMessage);
 };

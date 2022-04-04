@@ -25,7 +25,7 @@ const ListTemplate = (props) => {
 	useEffect(() => {
 		setIsLoading(true);
 		let isSubscribed = true;
-		productImgController.get_list().then((res) => {
+		productImgController.getList().then((res) => {
 			if (isSubscribed && res.data.success) {
 				setList(res.data.product_image_list);
 			}
@@ -45,19 +45,19 @@ const ListTemplate = (props) => {
 	useEffect(() => {
 		let isSubscribed = true;
 		if (view === '전체보기') {
-			productImgController.get_list().then((res) => {
+			productImgController.getList().then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_image_list);
 				}
 			});
 		} else if (view === '단일 이미지') {
-			productImgController.get_share_list(false).then((res) => {
+			productImgController.getShareList(false).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_image_list);
 				}
 			});
 		} else if (view === '공유 이미지') {
-			productImgController.get_share_list(true).then((res) => {
+			productImgController.getShareList(true).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_image_list);
 				}
@@ -154,7 +154,7 @@ const ListTemplate = (props) => {
 	const changeOrder = (arr) => {
 		if (arr[0] && arr[1]) {
 			let _view = viewChange(view);
-			productImgController.change_order(arr, _view).then((res) => {
+			productImgController.changeOrder(arr, _view).then((res) => {
 				res.data.success && setList(res.data.product_image_list);
 			});
 		}
@@ -174,7 +174,7 @@ const ListTemplate = (props) => {
 		let _modal = props.modal;
 		if (_modal.act === 'share' && _modal.return) {
 			productImgController
-				.change_share(detail.product_image_id)
+				.changeShare(detail.product_image_id)
 				.then((res) => {
 					isSubscribed &&
 						res.data.success &&

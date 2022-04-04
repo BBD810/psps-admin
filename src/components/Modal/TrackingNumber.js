@@ -32,7 +32,7 @@ const TrackingNumberModal = (props) => {
 	useEffect(() => {
 		let isSubscribed = true;
 		if (list.length < 1) {
-			_courier.get_list().then((res) => {
+			_courier.getList().then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.courier_list);
 				}

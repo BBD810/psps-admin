@@ -44,7 +44,7 @@ const EditTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		supplierController.get_list(0).then((res) => {
+		supplierController.getList(0).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setSupplierList(res.data.supplier_list);
 			}
@@ -60,7 +60,7 @@ const EditTemplate = (props) => {
 		setIsLoading(true);
 		let isSubscribed = true;
 		if (history.location.state) {
-			productController.get_detail(history.location.state).then((res) => {
+			productController.getDetail(history.location.state).then((res) => {
 				if (isSubscribed && res.data.success) {
 					let product = res.data.product;
 					setProductId(product.product_id);
@@ -133,7 +133,7 @@ const EditTemplate = (props) => {
 	const displayOption = (e) => {
 		setIsLoading(true);
 		const id = e.product_option_id;
-		productOptionController.change_display(id).then((res) => {
+		productOptionController.changeDisplay(id).then((res) => {
 			if (res.data.success) {
 				setOptionList(res.data.product_option_list);
 			}
@@ -143,7 +143,7 @@ const EditTemplate = (props) => {
 	const soldOutOption = (e) => {
 		setIsLoading(true);
 		const id = e.product_option_id;
-		productOptionController.change_stock(id).then((res) => {
+		productOptionController.changeStock(id).then((res) => {
 			if (res.data.success) {
 				setOptionList(res.data.product_option_list);
 			}
@@ -151,7 +151,7 @@ const EditTemplate = (props) => {
 		setIsLoading(false);
 	};
 	const allSoldOutOption = () => {
-		productController.change_all_sold_out(productId).then((res) => {
+		productController.changeAllSoldOut(productId).then((res) => {
 			if (res.data.success) {
 				setOptionList(res.data.product_option_list);
 			}
@@ -170,7 +170,7 @@ const EditTemplate = (props) => {
 		setIsLoading(true);
 		if (idx + 1 !== optionList.length) {
 			let arr = [optionList[idx], optionList[idx + 1]];
-			productOptionController.change_order(arr).then((res) => {
+			productOptionController.changeOrder(arr).then((res) => {
 				if (res.data.success) {
 					setOptionList(res.data.product_option_list);
 				}
@@ -303,7 +303,7 @@ const EditTemplate = (props) => {
 	useEffect(() => {
 		if (history.location.state) {
 			setDetailImgId(history.location.state);
-			productImgController.get_detail(history.location.state).then((res) => {
+			productImgController.getDetail(history.location.state).then((res) => {
 				if (res.data.success) {
 					setDetailPrevImg(res.data.product_image.image);
 					history.replace();

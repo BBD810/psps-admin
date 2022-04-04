@@ -28,28 +28,28 @@ export const edit = async (data, id) => {
 	return await instance.put(`/?banner_id=${id}`, data).catch(errorMessage);
 };
 
-export const get_list = async (type) => {
+export const getList = async (type) => {
 	return await instance.get(`/?type=${type}`).catch(errorMessage);
 };
 
-export const get_display_list = async (type, boolean) => {
+export const getDisplayList = async (type, boolean) => {
 	return await instance
 		.get(`/?type=${type}&display=${boolean}`)
 		.catch(errorMessage);
 };
 
-export const get_detail = async (id) => {
+export const getDetail = async (id) => {
 	return await instance.get(`/detail/?banner_id=${id}`).catch(errorMessage);
 };
 
-export const change_display = async (id) => {
+export const changeDisplay = async (id) => {
 	return await instance.get(`/display/?banner_id=${id}`).catch(errorMessage);
 };
 
-export const change_order = async (arr) => {
+export const changeOrder = async (arr) => {
 	return await instance.patch('/order', arr).catch(errorMessage);
 };
 
-export const replace_display = async (arr) => {
+export const replaceDisplay = async (arr) => {
 	return await instance.patch('/display', arr).catch(errorMessage);
 };

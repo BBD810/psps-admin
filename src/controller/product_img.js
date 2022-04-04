@@ -36,36 +36,36 @@ export const edit = async (data, id, contain) => {
 	}
 };
 
-export const get_list = async () => {
+export const getList = async () => {
 	return await instance.get('/').catch(errorMessage);
 };
 
-export const get_detail = async (id) => {
+export const getDetail = async (id) => {
 	return await instance
 		.get(`/detail/?product_image_id=${id}`)
 		.catch(errorMessage);
 };
 
-export const get_share_list = async (boolean) => {
+export const getShareList = async (boolean) => {
 	return await instance.get(`/?share=${boolean}`).catch(errorMessage);
 };
 
 // 단일이미지이고 상품에 아직 사용되지 않은 이미지 리스트
-export const get_unused_single_list = async () => {
+export const getUnusedSingleList = async () => {
 	return await instance.get(`/unused`).catch(errorMessage);
 };
 
-export const change_share = async (id) => {
+export const changeShare = async (id) => {
 	return await instance
 		.patch(`/share/?product_image_id=${id}`)
 		.catch(errorMessage);
 };
 
-export const replace_share = async (arr) => {
+export const replaceShare = async (arr) => {
 	return await instance.post(`/replace`, arr).catch(errorMessage);
 };
 
-export const change_order = async (arr, view) => {
+export const changeOrder = async (arr, view) => {
 	return await instance
 		.patch(`/order/?share=${view}`, arr)
 		.catch(errorMessage);

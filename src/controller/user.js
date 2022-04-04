@@ -16,7 +16,7 @@ const errorMessage = () => {
 	return new Error('Server Error');
 };
 
-export const get_list = async (page, name, phone_number) => {
+export const getList = async (page, name, phone_number) => {
 	return await instance
 		.get(`/list/?page=${page}&name=${name}&phone_number=${phone_number}`)
 		.catch(errorMessage);

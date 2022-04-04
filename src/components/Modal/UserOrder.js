@@ -23,7 +23,7 @@ const UserOrderModal = (props) => {
 		if (props.modal.data) {
 			setDetail(props.modal.data);
 			_payment
-				.get_user_order_list(props.modal.data.user_id, order_page)
+				.getUserOrderList(props.modal.data.user_id, order_page)
 				.then((res) => {
 					if (isSubscribed && res.data.success) {
 						setList(res.data.payment_list);

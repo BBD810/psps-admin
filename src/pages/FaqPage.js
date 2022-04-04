@@ -26,7 +26,7 @@ const FaqPage = () => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		faqController.get_list(faqTypeTransform2(category)).then((res) => {
+		faqController.getList(faqTypeTransform2(category)).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setList(res.data.question_list);
 			}

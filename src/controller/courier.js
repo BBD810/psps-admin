@@ -16,6 +16,6 @@ const errorMessage = () => {
 	return new Error('Server Error');
 };
 
-export const get_list = async () => {
+export const getList = async () => {
 	return await instance.get('/list').catch(errorMessage);
 };

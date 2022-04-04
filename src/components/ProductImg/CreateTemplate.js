@@ -19,7 +19,7 @@ const CreateTemplate = (props) => {
 
 	useEffect(() => {
 		if (editMode) {
-			productImgController.get_detail(history.location.state).then((res) => {
+			productImgController.getDetail(history.location.state).then((res) => {
 				if (res.data.success) {
 					let product_image = res.data.product_image;
 					setProductImgId(product_image.product_image_id);

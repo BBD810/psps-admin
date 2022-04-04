@@ -20,7 +20,7 @@ const ListTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		supplierController.get_list(page).then((res) => {
+		supplierController.getList(page).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setTotal(res.data.total);
 				setList(res.data.supplier_list);

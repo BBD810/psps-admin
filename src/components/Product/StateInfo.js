@@ -13,7 +13,7 @@ const StateInfo = (props) => {
 		let isSubscribed = true;
 		if (props.mode === 'edit' && props.product_id) {
 			setIsLoading(true);
-			productController.get_detail(props.product_id).then((res) => {
+			productController.getDetail(props.product_id).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setDetail(res.data.product);
 				}
@@ -26,7 +26,7 @@ const StateInfo = (props) => {
 	}, [props.mode, props.product_id]);
 
 	const getRecommendList = () => {
-		productController.get_recommend_list().then((res) => {
+		productController.getRecommendList().then((res) => {
 			if (res.data.success) {
 				setRecommendList(res.data.product_recommend_list);
 			}
@@ -38,7 +38,7 @@ const StateInfo = (props) => {
 		if (props.mode === 'detail') {
 			setIsLoading(true);
 			productController
-				.get_detail(props.product_id)
+				.getDetail(props.product_id)
 				.then((res) => {
 					if (isSubscribed && res.data.success) {
 						setDetail(res.data.product);
@@ -83,7 +83,7 @@ const StateInfo = (props) => {
 					text: '상품을 노출 상태로 변경하려면\n최소 1개 이상의 옵션이 노출 상태여야 합니다.',
 				});
 			} else {
-				productController.change_display(detail.product_id).then((res) => {
+				productController.changeDisplay(detail.product_id).then((res) => {
 					if (res.data.success) {
 						setDetail({ ...detail, state: res.data.product.state });
 						props.setModal({
@@ -124,7 +124,7 @@ const StateInfo = (props) => {
 				text: '추천상품은\n최대 6개까지 등록 가능합니다.',
 			});
 		} else {
-			productController.change_recommend(detail.product_id).then((res) => {
+			productController.changeRecommend(detail.product_id).then((res) => {
 				if (res.data.success) {
 					setDetail({ ...detail, recommend: res.data.product.recommend });
 					props.setModal({

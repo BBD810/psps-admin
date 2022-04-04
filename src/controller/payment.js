@@ -16,30 +16,30 @@ const errorMessage = () => {
 	return new Error('Server Error');
 };
 
-export const get_list = async (from, to, process, page) => {
+export const getList = async (from, to, process, page) => {
 	return await instance
 		.get(`/list/?from=${from}&to=${to}&process=${process}&page=${page}`)
 		.catch(errorMessage);
 };
 
-export const get_detail = async (payment_uid) => {
+export const getDetail = async (payment_uid) => {
 	return await instance.get(`/detail/${payment_uid}`).catch(errorMessage);
 };
 
-export const get_user_order_list = async (user_id, page) => {
+export const getUserOrderList = async (user_id, page) => {
 	return await instance
 		.get(`/user/${user_id}/?page=${page}`)
 		.catch(errorMessage);
 };
 
-export const enter_tracking_number = async (data) => {
+export const enterTrackingNumber = async (data) => {
 	return await instance.patch(`/delivery`, data).catch(errorMessage);
 };
 
-export const claim_handling = async (data) => {
+export const claimHandling = async (data) => {
 	return await instance.patch(`/refund`, data).catch(errorMessage);
 };
 
-export const claim_refuse = async (data) => {
+export const claimRefuse = async (data) => {
 	return await instance.patch(`/refuse`, data).catch(errorMessage);
 };

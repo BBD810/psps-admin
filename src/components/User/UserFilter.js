@@ -36,7 +36,7 @@ const UserFilter = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		userController.get_list(props.page, name, phoneNumber).then((res) => {
+		userController.getList(props.page, name, phoneNumber).then((res) => {
 			if (isSubscribed && res.data.success) {
 				props.setTotal(res.data.total);
 				props.setList(res.data.user_list);
@@ -58,7 +58,7 @@ const UserFilter = (props) => {
 	};
 
 	const onSubmit = () => {
-		userController.get_list(props.page, name, phoneNumber).then((res) => {
+		userController.getList(props.page, name, phoneNumber).then((res) => {
 			if (res.data.success) {
 				props.setList(res.data.user_list);
 			}

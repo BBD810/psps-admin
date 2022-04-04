@@ -44,7 +44,7 @@ const CreateTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		supplierController.get_list(0).then((res) => {
+		supplierController.getList(0).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setSupplierList(res.data.supplier_list);
 			}
@@ -237,7 +237,7 @@ const CreateTemplate = (props) => {
 	useEffect(() => {
 		if (history.location.state) {
 			setDetailImgId(history.location.state);
-			productImgController.get_detail(history.location.state).then((res) => {
+			productImgController.getDetail(history.location.state).then((res) => {
 				if (res.data.success) {
 					setDetailPrevImg(res.data.product_image.image);
 					history.replace();

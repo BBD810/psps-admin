@@ -41,7 +41,7 @@ const CreateTemplate = (props) => {
 	useEffect(() => {
 		let isSubscribed = true;
 		if (editMode && history.location.state) {
-			bannerController.get_detail(history.location.state).then((res) => {
+			bannerController.getDetail(history.location.state).then((res) => {
 				if (isSubscribed && res.data.success) {
 					let banner = res.data.banner;
 					setBannerId(banner.banner_id);

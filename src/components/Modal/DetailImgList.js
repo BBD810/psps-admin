@@ -18,14 +18,14 @@ const DetailImgListModal = (props) => {
 	useEffect(() => {
 		let isSubscribed = true;
 		_product_img
-			.get_share_list(true)
+			.getShareList(true)
 			.then((res) => {
 				isSubscribed &&
 					res.data.success &&
 					setShareList(res.data.product_image_list);
 			})
 			.then(
-				_product_img.get_unused_single_list(false).then((res) => {
+				_product_img.getUnusedSingleList(false).then((res) => {
 					isSubscribed &&
 						res.data.success &&
 						setSingleList(res.data.product_image_list);

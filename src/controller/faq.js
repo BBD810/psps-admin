@@ -28,6 +28,6 @@ export const remove = async (qu_id) => {
 	return await instance.delete(`${qu_id}`).catch(errorMessage);
 };
 
-export const get_list = async (qu_type_id) => {
+export const getList = async (qu_type_id) => {
 	return await instance.get(`/list/${qu_type_id}`).catch(errorMessage);
 };

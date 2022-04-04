@@ -28,32 +28,32 @@ export const edit = async (id, data) => {
 	return await instance.put(`/${id}`, data).catch(errorMessage);
 };
 
-export const get_list = async (part, subPart) => {
+export const getList = async (part, subPart) => {
 	return await instance.get(`/list/${part}/${subPart}`).catch(errorMessage);
 };
 
-export const get_recommend_list = async () => {
+export const getRecommendList = async () => {
 	return await instance.get(`/recommend`).catch(errorMessage);
 };
 
-export const get_detail = async (id) => {
+export const getDetail = async (id) => {
 	return await instance.get(`/detail/${id}`).catch(errorMessage);
 };
 
-export const change_display = async (id) => {
+export const changeDisplay = async (id) => {
 	return await instance.patch(`/display/${id}`).catch(errorMessage);
 };
 
-export const change_recommend = async (id) => {
+export const changeRecommend = async (id) => {
 	return await instance.patch(`/recommend/${id}`).catch(errorMessage);
 };
 
-export const change_order = async (arr, boolean) => {
+export const changeOrder = async (arr, boolean) => {
 	return await instance
 		.patch(`/order/?isRecommend=${boolean}`, arr)
 		.catch(errorMessage);
 };
 
-export const change_all_sold_out = async (product_id) => {
+export const changeAllSoldOut = async (product_id) => {
 	return await instance.patch(`/stock/${product_id}`).catch(errorMessage);
 };

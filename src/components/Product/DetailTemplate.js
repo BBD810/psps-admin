@@ -26,7 +26,7 @@ const DetailTemplate = (props) => {
 			} else {
 				_product_id = _state;
 			}
-			productController.get_detail(_product_id).then((res) => {
+			productController.getDetail(_product_id).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setDetail(res.data.product);
 					setOptionList(res.data.product_option_list);

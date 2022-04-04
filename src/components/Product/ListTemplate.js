@@ -30,13 +30,13 @@ const ListTemplate = (props) => {
 		setIsLoading(true);
 		let isSubscribed = true;
 		if (props.category === '상품 목록') {
-			productController.get_list(part, subPart).then((res) => {
+			productController.getList(part, subPart).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_list);
 				}
 			});
 		} else if (props.category === '추천 상품 목록') {
-			productController.get_recommend_list().then((res) => {
+			productController.getRecommendList().then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_recommend_list);
 				}
@@ -88,7 +88,7 @@ const ListTemplate = (props) => {
 				text: '추천상품은\n노출상태를 변경할 수 없습니다.',
 			});
 		} else {
-			productController.change_display(el.product_id).then((res) => {
+			productController.changeDisplay(el.product_id).then((res) => {
 				if (res.data.success) {
 					setList(res.data.product_list);
 					props.setModal({
@@ -147,7 +147,7 @@ const ListTemplate = (props) => {
 		let type;
 		props.category === '추천 상품 목록' ? (type = true) : (type = false);
 		if (arr[0] && arr[1]) {
-			productController.change_order(arr, type).then((res) => {
+			productController.changeOrder(arr, type).then((res) => {
 				res.data.success && setList(res.data.product_list);
 			});
 		}

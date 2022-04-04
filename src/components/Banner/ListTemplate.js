@@ -24,7 +24,7 @@ const ListTemplate = (props) => {
 	useEffect(() => {
 		setIsLoading(true);
 		let isSubscribed = true;
-		bannerController.get_list(props.category.substr(0, 2)).then((res) => {
+		bannerController.getList(props.category.substr(0, 2)).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setList(res.data.banner_list);
 				res.data.type === '메인'
@@ -41,7 +41,7 @@ const ListTemplate = (props) => {
 	useEffect(() => {
 		let isSubscribed = true;
 		bannerController
-			.get_display_list(props.category.substr(0, 2), true)
+			.getDisplayList(props.category.substr(0, 2), true)
 			.then((res) => {
 				if (isSubscribed && res.data.success) {
 					setDisplayList(res.data.banner_list);
@@ -168,7 +168,7 @@ const ListTemplate = (props) => {
 				text: '노출 상태가 같은 배너만\n순서 변경이 가능합니다.',
 			});
 		} else {
-			bannerController.change_order(arr).then((res) => {
+			bannerController.changeOrder(arr).then((res) => {
 				res.data.success && success(res.data.banner_list);
 			});
 		}
@@ -178,7 +178,7 @@ const ListTemplate = (props) => {
 		let isSubscribed = true;
 		let _modal = props.modal;
 		if (_modal.act === 'display' && _modal.return) {
-			bannerController.change_display(bannerId).then((res) => {
+			bannerController.changeDisplay(bannerId).then((res) => {
 				isSubscribed && res.data.success && success(res.data.banner_list);
 			});
 		} else if (_modal.act === 'delete' && _modal.return) {
@@ -187,7 +187,7 @@ const ListTemplate = (props) => {
 			});
 		} else if (_modal.act === 'replace' && _modal.return) {
 			const arr = [detail, displayList[_modal.return]];
-			bannerController.replace_display(arr).then((res) => {
+			bannerController.replaceDisplay(arr).then((res) => {
 				isSubscribed && res.data.success && success(res.data.banner_list);
 			});
 		}

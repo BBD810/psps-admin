@@ -13,7 +13,7 @@ const DetailTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		productImgController.get_detail(history.location.state).then((res) => {
+		productImgController.getDetail(history.location.state).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setDetail(res.data.product_image);
 				setShareList(res.data.product_list);
@@ -25,7 +25,7 @@ const DetailTemplate = (props) => {
 	}, [history.location.state]);
 	useEffect(() => {
 		let isSubscribed = true;
-		productImgController.get_share_list(true).then((res) => {
+		productImgController.getShareList(true).then((res) => {
 			if (isSubscribed && res.data.success) {
 				let list = res.data.product_image_list;
 				for (let i = 0; i < list.length; i++) {
@@ -114,13 +114,13 @@ const DetailTemplate = (props) => {
 			});
 		} else if (_modal.act === 'share' && _modal.return) {
 			productImgController
-				.change_share(detail.product_image_id)
+				.changeShare(detail.product_image_id)
 				.then((res) => {
 					isSubscribed && res.data.success && success();
 				});
 		} else if (_modal.act === 'replace' && _modal.return) {
 			let arr = [detail, shareImgList[_modal.return]];
-			productImgController.replace_share(arr).then((res) => {
+			productImgController.replaceShare(arr).then((res) => {
 				isSubscribed && res.data.success && success();
 			});
 		}
