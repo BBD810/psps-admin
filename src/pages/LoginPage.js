@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { admin_login } from '../modules/admin';
-import * as _auth from '../controller/auth';
+import * as authController from '../controller/auth';
 import styled from 'styled-components';
 import logo from '../images/cetus-logo.svg';
 
@@ -45,7 +45,7 @@ const LoginPage = () => {
 			setModal({ type: 'confirm', text: '비밀번호를 확인해주세요.' });
 		} else {
 			const data = { username, password };
-			_auth.login(data).then((res) => {
+			authController.login(data).then((res) => {
 				if (res.data.success) {
 					dispatch(admin_login());
 					setModal({ type: 'confirm', text: '로그인 되었습니다.' });
