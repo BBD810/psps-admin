@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import * as _product from '../../controller/product';
+import * as productController from '../../controller/product';
 import styled from 'styled-components';
 import Spinner from '../Spinner';
 
@@ -13,7 +13,7 @@ const StateInfo = (props) => {
 		let isSubscribed = true;
 		if (props.mode === 'edit' && props.product_id) {
 			setIsLoading(true);
-			_product.get_detail(props.product_id).then((res) => {
+			productController.get_detail(props.product_id).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setDetail(res.data.product);
 				}
@@ -26,7 +26,7 @@ const StateInfo = (props) => {
 	}, [props.mode, props.product_id]);
 
 	const getRecommendList = () => {
-		_product.get_recommend_list().then((res) => {
+		productController.get_recommend_list().then((res) => {
 			if (res.data.success) {
 				setRecommendList(res.data.product_recommend_list);
 			}
@@ -37,7 +37,7 @@ const StateInfo = (props) => {
 		let isSubscribed = true;
 		if (props.mode === 'detail') {
 			setIsLoading(true);
-			_product
+			productController
 				.get_detail(props.product_id)
 				.then((res) => {
 					if (isSubscribed && res.data.success) {
@@ -83,7 +83,7 @@ const StateInfo = (props) => {
 					text: '상품을 노출 상태로 변경하려면\n최소 1개 이상의 옵션이 노출 상태여야 합니다.',
 				});
 			} else {
-				_product.change_display(detail.product_id).then((res) => {
+				productController.change_display(detail.product_id).then((res) => {
 					if (res.data.success) {
 						setDetail({ ...detail, state: res.data.product.state });
 						props.setModal({
@@ -124,7 +124,7 @@ const StateInfo = (props) => {
 				text: '추천상품은\n최대 6개까지 등록 가능합니다.',
 			});
 		} else {
-			_product.change_recommend(detail.product_id).then((res) => {
+			productController.change_recommend(detail.product_id).then((res) => {
 				if (res.data.success) {
 					setDetail({ ...detail, recommend: res.data.product.recommend });
 					props.setModal({

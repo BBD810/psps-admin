@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IMG_ADDRESS, CLIENT_ADDRESS } from '../../config';
-import * as _product from '../../controller/product';
+import * as productController from '../../controller/product';
 import * as category from '../../data/link';
 import * as toggleMenu from '../../data/toggle';
 import styled from 'styled-components';
@@ -12,13 +12,12 @@ import toggle from '../../images/toggle.svg';
 import Spinner from '../Spinner';
 
 const ListTemplate = (props) => {
-	const [isLoading, setIsLoading] = useState(false);
 	const history = useHistory();
 	const menuBox = useRef();
-	const [menuOpen, setMenuOpen] = useState('close');
-
 	const partBox = useRef();
 	const subPartBox = useRef();
+	const [isLoading, setIsLoading] = useState(false);
+	const [menuOpen, setMenuOpen] = useState('close');
 	const [part, setPart] = useState('농산');
 	const [subPart, setSubPart] = useState('과일·수입청과');
 	const partList = category.part;
@@ -31,13 +30,13 @@ const ListTemplate = (props) => {
 		setIsLoading(true);
 		let isSubscribed = true;
 		if (props.category === '상품 목록') {
-			_product.get_list(part, subPart).then((res) => {
+			productController.get_list(part, subPart).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_list);
 				}
 			});
 		} else if (props.category === '추천 상품 목록') {
-			_product.get_recommend_list().then((res) => {
+			productController.get_recommend_list().then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_recommend_list);
 				}
@@ -89,7 +88,7 @@ const ListTemplate = (props) => {
 				text: '추천상품은\n노출상태를 변경할 수 없습니다.',
 			});
 		} else {
-			_product.change_display(el.product_id).then((res) => {
+			productController.change_display(el.product_id).then((res) => {
 				if (res.data.success) {
 					setList(res.data.product_list);
 					props.setModal({
@@ -148,7 +147,7 @@ const ListTemplate = (props) => {
 		let type;
 		props.category === '추천 상품 목록' ? (type = true) : (type = false);
 		if (arr[0] && arr[1]) {
-			_product.change_order(arr, type).then((res) => {
+			productController.change_order(arr, type).then((res) => {
 				res.data.success && setList(res.data.product_list);
 			});
 		}
@@ -179,7 +178,7 @@ const ListTemplate = (props) => {
 		let _modal = props.modal;
 		if (_modal.act === 'display' && _modal.return) {
 		} else if (_modal.act === 'delete' && _modal.return) {
-			_product.remove(detail.product_id).then((res) => {
+			productController.remove(detail.product_id).then((res) => {
 				isSubscribed && res.data.success && success(res.data.product_list);
 			});
 		}

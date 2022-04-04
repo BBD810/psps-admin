@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { priceToString } from '../../functions/PriceToString';
 import { IMG_ADDRESS } from '../../config';
-import * as _product_option from '../../controller/product_option';
-import * as _product_img from '../../controller/product_img';
-import * as _product from '../../controller/product';
-import * as _supplier from '../../controller/supplier';
+import * as productOptionController from '../../controller/product_option';
+import * as productImgController from '../../controller/product_img';
+import * as productController from '../../controller/product';
+import * as supplierController from '../../controller/supplier';
 import * as category from '../../data/link';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
@@ -19,36 +19,32 @@ import StateInfo from './StateInfo';
 import Spinner from '../Spinner';
 
 const CreateTemplate = (props) => {
-	const [isLoading, setIsLoading] = useState(false);
 	const history = useHistory();
 	const partBox = useRef();
 	const subPartBox = useRef();
 	const supplierBox = useRef();
+	const [isLoading, setIsLoading] = useState(false);
 	const [title, setTitle] = useState('');
 	const [part, setPart] = useState('농산');
 	const [subPart, setSubPart] = useState('과일/수입청과');
 	const partList = category.part;
 	const [subPartList, setSubPartList] = useState([]);
 	const [partOpen, setPartOpen] = useState(0);
-
 	const [optionList, setOptionList] = useState([]);
 	const [thumbnailImg, setThumbnailImg] = useState(false);
 	const [thumbnailPrevImg, setThumbnailPrevImg] = useState(false);
 	const [detailImgId, setDetailImgId] = useState(false);
 	const [detailPrevImg, setDetailPrevImg] = useState(false);
-
 	const [supplier, setSupplier] = useState('');
 	const [supplierOpen, setSupplierOpen] = useState(false);
 	const [supplierList, setSupplierList] = useState([]);
-
 	const [origin, setOrigin] = useState('');
 	const [storage, setStorage] = useState('');
-
 	const [check, setCheck] = useState(false);
 
 	useEffect(() => {
 		let isSubscribed = true;
-		_supplier.get_list(0).then((res) => {
+		supplierController.get_list(0).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setSupplierList(res.data.supplier_list);
 			}
@@ -180,7 +176,7 @@ const CreateTemplate = (props) => {
 		formData.append('storage', storage);
 		formData.append('supplier_id', supplier.supplier_id);
 		formData.append('product_image_id', detailImgId);
-		_product
+		productController
 			.create(formData)
 			.then((res) => {
 				if (res.data.success) {
@@ -196,27 +192,29 @@ const CreateTemplate = (props) => {
 		createOption(count, product_id);
 	};
 	const createOption = async (count, product_id) => {
-		_product_option.create(optionList[count], product_id).then((res) => {
-			if (res.data.success) {
-				if (count + 1 < optionList.length) {
-					count++;
-					createOption(count, product_id);
+		productOptionController
+			.create(optionList[count], product_id)
+			.then((res) => {
+				if (res.data.success) {
+					if (count + 1 < optionList.length) {
+						count++;
+						createOption(count, product_id);
+					} else {
+						setIsLoading(false);
+						props.setModal({
+							type: 'confirm',
+							text: '상품과 상품 옵션이 등록되었습니다.',
+						});
+						props.getCategory('상품 목록');
+					}
 				} else {
 					setIsLoading(false);
 					props.setModal({
 						type: 'confirm',
-						text: '상품과 상품 옵션이 등록되었습니다.',
+						text: `${count + 1}번째 옵션 생성 중 문제가 발생했습니다.`,
 					});
-					props.getCategory('상품 목록');
 				}
-			} else {
-				setIsLoading(false);
-				props.setModal({
-					type: 'confirm',
-					text: `${count + 1}번째 옵션 생성 중 문제가 발생했습니다.`,
-				});
-			}
-		});
+			});
 	};
 
 	const openImgListModal = () => {
@@ -239,7 +237,7 @@ const CreateTemplate = (props) => {
 	useEffect(() => {
 		if (history.location.state) {
 			setDetailImgId(history.location.state);
-			_product_img.get_detail(history.location.state).then((res) => {
+			productImgController.get_detail(history.location.state).then((res) => {
 				if (res.data.success) {
 					setDetailPrevImg(res.data.product_image.image);
 					history.replace();

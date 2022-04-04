@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { priceToString } from '../../functions/PriceToString';
 import { IMG_ADDRESS } from '../../config';
-import * as _product_option from '../../controller/product_option';
-import * as _product_img from '../../controller/product_img';
-import * as _product from '../../controller/product';
-import * as _supplier from '../../controller/supplier';
+import * as productOptionController from '../../controller/product_option';
+import * as productImgController from '../../controller/product_img';
+import * as productController from '../../controller/product';
+import * as supplierController from '../../controller/supplier';
 import * as category from '../../data/link';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
@@ -18,37 +18,33 @@ import StateInfo from './StateInfo';
 import Spinner from '../Spinner';
 
 const EditTemplate = (props) => {
-	const [isLoading, setIsLoading] = useState(false);
 	const history = useHistory();
 	const partBox = useRef();
 	const subPartBox = useRef();
 	const supplierBox = useRef();
+	const [isLoading, setIsLoading] = useState(false);
 	const [title, setTitle] = useState('');
 	const [part, setPart] = useState('농산');
 	const [subPart, setSubPart] = useState('과일/수입청과');
 	const partList = category.part;
 	const [subPartList, setSubPartList] = useState([]);
 	const [partOpen, setPartOpen] = useState(0);
-
 	const [optionList, setOptionList] = useState([]);
 	const [thumbnailImg, setThumbnailImg] = useState(false);
 	const [thumbnailPrevImg, setThumbnailPrevImg] = useState(false);
 	const [detailImgId, setDetailImgId] = useState(false);
 	const [detailPrevImg, setDetailPrevImg] = useState(false);
-
 	const [supplier, setSupplier] = useState('');
 	const [supplierOpen, setSupplierOpen] = useState(false);
 	const [supplierList, setSupplierList] = useState([]);
-
 	const [origin, setOrigin] = useState('');
 	const [storage, setStorage] = useState('');
-	const [product_id, setProduct_id] = useState('');
-
+	const [productId, setProductId] = useState('');
 	const [check, setCheck] = useState(false);
 
 	useEffect(() => {
 		let isSubscribed = true;
-		_supplier.get_list(0).then((res) => {
+		supplierController.get_list(0).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setSupplierList(res.data.supplier_list);
 			}
@@ -64,10 +60,10 @@ const EditTemplate = (props) => {
 		setIsLoading(true);
 		let isSubscribed = true;
 		if (history.location.state) {
-			_product.get_detail(history.location.state).then((res) => {
+			productController.get_detail(history.location.state).then((res) => {
 				if (isSubscribed && res.data.success) {
 					let product = res.data.product;
-					setProduct_id(product.product_id);
+					setProductId(product.product_id);
 					setTitle(product.title);
 					setPart(product.part);
 					setSubPart(product.subPart);
@@ -137,7 +133,7 @@ const EditTemplate = (props) => {
 	const displayOption = (e) => {
 		setIsLoading(true);
 		const id = e.product_option_id;
-		_product_option.change_display(id).then((res) => {
+		productOptionController.change_display(id).then((res) => {
 			if (res.data.success) {
 				setOptionList(res.data.product_option_list);
 			}
@@ -147,7 +143,7 @@ const EditTemplate = (props) => {
 	const soldOutOption = (e) => {
 		setIsLoading(true);
 		const id = e.product_option_id;
-		_product_option.change_stock(id).then((res) => {
+		productOptionController.change_stock(id).then((res) => {
 			if (res.data.success) {
 				setOptionList(res.data.product_option_list);
 			}
@@ -155,7 +151,7 @@ const EditTemplate = (props) => {
 		setIsLoading(false);
 	};
 	const allSoldOutOption = () => {
-		_product.change_all_sold_out(product_id).then((res) => {
+		productController.change_all_sold_out(productId).then((res) => {
 			if (res.data.success) {
 				setOptionList(res.data.product_option_list);
 			}
@@ -174,7 +170,7 @@ const EditTemplate = (props) => {
 		setIsLoading(true);
 		if (idx + 1 !== optionList.length) {
 			let arr = [optionList[idx], optionList[idx + 1]];
-			_product_option.change_order(arr).then((res) => {
+			productOptionController.change_order(arr).then((res) => {
 				if (res.data.success) {
 					setOptionList(res.data.product_option_list);
 				}
@@ -186,17 +182,19 @@ const EditTemplate = (props) => {
 	useEffect(() => {
 		const _modal = props.modal;
 		if (_modal.act === 'add' && _modal.return) {
-			_product_option.create(_modal.return, product_id).then((res) => {
-				if (res.data.success) {
-					setOptionList(res.data.product_option_list);
-					props.setModal({
-						type: 'confirm',
-						text: '옵션이 추가되었습니다.',
-					});
-				}
-			});
+			productOptionController
+				.create(_modal.return, productId)
+				.then((res) => {
+					if (res.data.success) {
+						setOptionList(res.data.product_option_list);
+						props.setModal({
+							type: 'confirm',
+							text: '옵션이 추가되었습니다.',
+						});
+					}
+				});
 		} else if (_modal.act === 'edit' && _modal.return) {
-			_product_option
+			productOptionController
 				.edit(_modal.return, _modal.data.product_option_id)
 				.then((res) => {
 					setOptionList(res.data.product_option_list);
@@ -206,7 +204,7 @@ const EditTemplate = (props) => {
 					});
 				});
 		} else if (_modal.act === 'delete' && _modal.return) {
-			_product_option.remove(_modal.target).then((res) => {
+			productOptionController.remove(_modal.target).then((res) => {
 				if (res.data.success) {
 					setOptionList(res.data.product_option_list);
 					props.setModal({
@@ -248,7 +246,7 @@ const EditTemplate = (props) => {
 			});
 		} else if (thumbnailImg) {
 			const formData = new FormData();
-			formData.append('product_id', product_id);
+			formData.append('product_id', productId);
 			formData.append('image', thumbnailImg);
 			formData.append('title', title);
 			formData.append('part', part);
@@ -257,12 +255,12 @@ const EditTemplate = (props) => {
 			formData.append('storage', storage);
 			formData.append('supplier_id', supplier.supplier_id);
 			formData.append('product_image_id', detailImgId);
-			_product.edit(product_id, formData).then((res) => {
+			productController.edit(productId, formData).then((res) => {
 				res.data.success && editSuccess();
 			});
 		} else if (!thumbnailImg) {
 			const data = {
-				product_id,
+				product_id: productId,
 				part,
 				subPart,
 				title,
@@ -271,7 +269,7 @@ const EditTemplate = (props) => {
 				supplier_id: supplier.supplier_id,
 				product_image_id: detailImgId,
 			};
-			_product.edit(product_id, data).then((res) => {
+			productController.edit(productId, data).then((res) => {
 				res.data.success && editSuccess();
 			});
 		}
@@ -305,7 +303,7 @@ const EditTemplate = (props) => {
 	useEffect(() => {
 		if (history.location.state) {
 			setDetailImgId(history.location.state);
-			_product_img.get_detail(history.location.state).then((res) => {
+			productImgController.get_detail(history.location.state).then((res) => {
 				if (res.data.success) {
 					setDetailPrevImg(res.data.product_image.image);
 					history.replace();
@@ -345,7 +343,7 @@ const EditTemplate = (props) => {
 				mode={props.mode}
 				modal={props.modal}
 				setModal={props.setModal}
-				product_id={product_id}
+				product_id={productId}
 			/>
 			<BasicInfo onMouseDown={onMouseDown}>
 				<Head>기본 정보</Head>

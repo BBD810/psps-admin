@@ -41,9 +41,9 @@ const ProductPage = () => {
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
 
 	const getCategory = (category) => {
-		const _state = history.location.state;
+		const data = history.location.state;
 		setCategory(category);
-		_state && _state.from ? setMode('detail') : setMode('list');
+		data && data.from ? setMode('detail') : setMode('list');
 	};
 
 	const createMode = category === '상품 추가';

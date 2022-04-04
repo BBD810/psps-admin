@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { priceToString } from '../../functions/PriceToString';
 import { IMG_ADDRESS } from '../../config';
-import * as _product from '../../controller/product';
+import * as productController from '../../controller/product';
 import styled from 'styled-components';
 import check_icon from '../../images/check_icon.svg';
 import empty_icon from '../../images/empty_icon.svg';
@@ -10,8 +10,8 @@ import StateInfo from '../Product/StateInfo';
 import Spinner from '../Spinner';
 
 const DetailTemplate = (props) => {
-	const [isLoading, setIsLoading] = useState(false);
 	const history = useHistory();
+	const [isLoading, setIsLoading] = useState(false);
 	const [detail, setDetail] = useState({});
 	const [optionList, setOptionList] = useState([]);
 
@@ -26,7 +26,7 @@ const DetailTemplate = (props) => {
 			} else {
 				_product_id = _state;
 			}
-			_product.get_detail(_product_id).then((res) => {
+			productController.get_detail(_product_id).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setDetail(res.data.product);
 					setOptionList(res.data.product_option_list);
@@ -67,7 +67,7 @@ const DetailTemplate = (props) => {
 		let isSubscribed = true;
 		const _modal = props.modal;
 		if (_modal.act === 'delete' && _modal.return) {
-			_product.remove(detail.product_id).then((res) => {
+			productController.remove(detail.product_id).then((res) => {
 				isSubscribed && res.data.success && success();
 			});
 		}
