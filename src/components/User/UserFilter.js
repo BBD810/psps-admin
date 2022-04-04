@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as _user from '../../controller/user';
+import * as userController from '../../controller/user';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
 
@@ -19,14 +19,14 @@ const UserFilter = (props) => {
 	const [searchOpen, setSearchOpen] = useState(false);
 	const [searchItem, setSearchItem] = useState('이름');
 	const [name, setName] = useState('');
-	const [phone_number, setPhone_number] = useState('');
+	const [phoneNumber, setPhoneNumber] = useState('');
 
 	const onChangeSearchItem = (el) => {
-		if (el === '이름' && phone_number !== '') {
-			setName(phone_number);
-			setPhone_number('');
+		if (el === '이름' && phoneNumber !== '') {
+			setName(phoneNumber);
+			setPhoneNumber('');
 		} else if (el === '연락처' && name !== '') {
-			setPhone_number(name);
+			setPhoneNumber(name);
 			setName('');
 		}
 		setSearchItem(el);
@@ -36,7 +36,7 @@ const UserFilter = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		_user.get_list(props.page, name, phone_number).then((res) => {
+		userController.get_list(props.page, name, phoneNumber).then((res) => {
 			if (isSubscribed && res.data.success) {
 				props.setTotal(res.data.total);
 				props.setList(res.data.user_list);
@@ -50,7 +50,7 @@ const UserFilter = (props) => {
 
 	const onChangeSearchInput = (e) => {
 		let value = e.target.value;
-		searchItem === '이름' ? setName(value) : setPhone_number(value);
+		searchItem === '이름' ? setName(value) : setPhoneNumber(value);
 	};
 
 	const onEnter = (e) => {
@@ -58,7 +58,7 @@ const UserFilter = (props) => {
 	};
 
 	const onSubmit = () => {
-		_user.get_list(props.page, name, phone_number).then((res) => {
+		userController.get_list(props.page, name, phoneNumber).then((res) => {
 			if (res.data.success) {
 				props.setList(res.data.user_list);
 			}
