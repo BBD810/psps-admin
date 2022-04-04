@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IMG_ADDRESS } from '../../config';
 import * as toggleMenu from '../../data/toggle';
-import * as _product_img from '../../controller/product_img';
+import * as productImgController from '../../controller/product_img';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
 import left from '../../images/left.svg';
@@ -11,11 +11,11 @@ import toggle from '../../images/toggle.svg';
 import Spinner from '../Spinner';
 
 const ListTemplate = (props) => {
-	const [isLoading, setIsLoading] = useState(false);
 	const history = useHistory();
 	const menuSelect = useRef();
 	const viewListBox = useRef();
 	const viewList = ['전체보기', '단일 이미지', '공유 이미지'];
+	const [isLoading, setIsLoading] = useState(false);
 	const [view, setView] = useState('전체보기');
 	const [viewOpen, setViewOpen] = useState(false);
 	const [menuOpen, setMenuOpen] = useState('close');
@@ -25,7 +25,7 @@ const ListTemplate = (props) => {
 	useEffect(() => {
 		setIsLoading(true);
 		let isSubscribed = true;
-		_product_img.get_list().then((res) => {
+		productImgController.get_list().then((res) => {
 			if (isSubscribed && res.data.success) {
 				setList(res.data.product_image_list);
 			}
@@ -45,19 +45,19 @@ const ListTemplate = (props) => {
 	useEffect(() => {
 		let isSubscribed = true;
 		if (view === '전체보기') {
-			_product_img.get_list().then((res) => {
+			productImgController.get_list().then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_image_list);
 				}
 			});
 		} else if (view === '단일 이미지') {
-			_product_img.get_share_list(false).then((res) => {
+			productImgController.get_share_list(false).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_image_list);
 				}
 			});
 		} else if (view === '공유 이미지') {
-			_product_img.get_share_list(true).then((res) => {
+			productImgController.get_share_list(true).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.product_image_list);
 				}
@@ -154,7 +154,7 @@ const ListTemplate = (props) => {
 	const changeOrder = (arr) => {
 		if (arr[0] && arr[1]) {
 			let _view = viewChange(view);
-			_product_img.change_order(arr, _view).then((res) => {
+			productImgController.change_order(arr, _view).then((res) => {
 				res.data.success && setList(res.data.product_image_list);
 			});
 		}
@@ -173,13 +173,15 @@ const ListTemplate = (props) => {
 		let isSubscribed = true;
 		let _modal = props.modal;
 		if (_modal.act === 'share' && _modal.return) {
-			_product_img.change_share(detail.product_image_id).then((res) => {
-				isSubscribed &&
-					res.data.success &&
-					success(res.data.product_image_list);
-			});
+			productImgController
+				.change_share(detail.product_image_id)
+				.then((res) => {
+					isSubscribed &&
+						res.data.success &&
+						success(res.data.product_image_list);
+				});
 		} else if (_modal.act === 'delete' && _modal.return) {
-			_product_img.remove(detail.product_image_id).then((res) => {
+			productImgController.remove(detail.product_image_id).then((res) => {
 				isSubscribed &&
 					res.data.success &&
 					success(res.data.product_image_list);

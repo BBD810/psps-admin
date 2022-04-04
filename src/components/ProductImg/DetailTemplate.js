@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IMG_ADDRESS } from '../../config';
-import * as product_img from '../../controller/product_img';
+import * as productImgController from '../../controller/product_img';
 import styled from 'styled-components';
 
 const DetailTemplate = (props) => {
@@ -13,7 +13,7 @@ const DetailTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		product_img.get_detail(history.location.state).then((res) => {
+		productImgController.get_detail(history.location.state).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setDetail(res.data.product_image);
 				setShareList(res.data.product_list);
@@ -25,7 +25,7 @@ const DetailTemplate = (props) => {
 	}, [history.location.state]);
 	useEffect(() => {
 		let isSubscribed = true;
-		product_img.get_share_list(true).then((res) => {
+		productImgController.get_share_list(true).then((res) => {
 			if (isSubscribed && res.data.success) {
 				let list = res.data.product_image_list;
 				for (let i = 0; i < list.length; i++) {
@@ -109,16 +109,18 @@ const DetailTemplate = (props) => {
 		let isSubscribed = true;
 		let _modal = props.modal;
 		if (_modal.act === 'delete' && _modal.return) {
-			product_img.remove(detail.product_image_id).then((res) => {
+			productImgController.remove(detail.product_image_id).then((res) => {
 				isSubscribed && res.data.success && success();
 			});
 		} else if (_modal.act === 'share' && _modal.return) {
-			product_img.change_share(detail.product_image_id).then((res) => {
-				isSubscribed && res.data.success && success();
-			});
+			productImgController
+				.change_share(detail.product_image_id)
+				.then((res) => {
+					isSubscribed && res.data.success && success();
+				});
 		} else if (_modal.act === 'replace' && _modal.return) {
 			let arr = [detail, shareImgList[_modal.return]];
-			product_img.replace_share(arr).then((res) => {
+			productImgController.replace_share(arr).then((res) => {
 				isSubscribed && res.data.success && success();
 			});
 		}

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { extension } from '../../data/extension';
 import { IMG_ADDRESS } from '../../config';
-import * as _product_img from '../../controller/product_img';
+import * as productImgController from '../../controller/product_img';
 import styled from 'styled-components';
 
 const CreateTemplate = (props) => {
 	const history = useHistory();
 	const typeItems = ['단일', '공유'];
-	const [product_image_id, setProduct_image_id] = useState('');
+	const [productImgId, setProductImgId] = useState('');
 	const [title, setTitle] = useState('');
 	const [share, setShare] = useState(0);
 	const [img, setImg] = useState(false);
@@ -19,10 +19,10 @@ const CreateTemplate = (props) => {
 
 	useEffect(() => {
 		if (editMode) {
-			_product_img.get_detail(history.location.state).then((res) => {
+			productImgController.get_detail(history.location.state).then((res) => {
 				if (res.data.success) {
 					let product_image = res.data.product_image;
-					setProduct_image_id(product_image.product_image_id);
+					setProductImgId(product_image.product_image_id);
 					setTitle(product_image.title);
 					setShare(product_image.share);
 					if (product_image.image) {
@@ -60,7 +60,7 @@ const CreateTemplate = (props) => {
 			formData.append('image', img);
 			formData.append('title', title);
 			formData.append('share', share);
-			_product_img.create(formData).then((res) => {
+			productImgController.create(formData).then((res) => {
 				if (res.data.success) {
 					props.setModal({
 						type: 'confirm',
@@ -83,13 +83,15 @@ const CreateTemplate = (props) => {
 				const formData = new FormData();
 				formData.append('image', img);
 				formData.append('title', title);
-				formData.append('product_image_id', product_image_id);
-				_product_img.edit(formData, product_image_id, true).then((res) => {
-					res.data.success && successEdit();
-				});
+				formData.append('product_image_id', productImgId);
+				productImgController
+					.edit(formData, productImgId, true)
+					.then((res) => {
+						res.data.success && successEdit();
+					});
 			} else {
-				const data = { title, product_image_id };
-				_product_img.edit(data, product_image_id, false).then((res) => {
+				const data = { title, productImgId };
+				productImgController.edit(data, productImgId, false).then((res) => {
 					res.data.success && successEdit();
 				});
 			}
