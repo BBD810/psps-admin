@@ -32,7 +32,6 @@ export const remove = async (supplier_id, page) => {
 		.catch(errorMessage);
 };
 
-// page = page, 0으로 보내면 전체 리스트
 export const getList = async (page) => {
 	return await instance.get(`/?page=${page}`).catch(errorMessage);
 };

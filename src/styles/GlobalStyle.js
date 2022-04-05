@@ -90,7 +90,6 @@ button:hover {
 input[type='date']::-webkit-clear-button, 
 input[type='date']::-webkit-inner-spin-button { 
  display: none; 
- /* margin:0; */
 } 
 input[type='date']::-webkit-calendar-picker-indicator { 
 	margin:0;

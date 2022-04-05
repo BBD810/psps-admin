@@ -438,7 +438,6 @@ const EditInput = styled.input`
 	width: 100%;
 	height: 2.5rem;
 	font-size: 1.2rem;
-	/* line-height: 4.3rem; */
 	text-align: center;
 	display: -webkit-box;
 	text-overflow: ellipsis;

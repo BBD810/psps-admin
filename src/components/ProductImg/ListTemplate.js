@@ -380,7 +380,6 @@ const ListButton = styled.img`
 `;
 const ToggleMenus = styled.ul`
 	width: 8.9rem;
-	/* height: 11.2rem; */
 	position: absolute;
 	right: 0;
 	background-color: #fff;

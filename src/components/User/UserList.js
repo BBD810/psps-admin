@@ -170,7 +170,6 @@ const ListItem = styled.li`
 		-moz-line-clamp: 3;
 		-webkit-line-clamp: 3;
 		-webkit-box-orient: vertical;
-		/* border: 1px solid blue; */
 	}
 
 	:nth-child(1) {
