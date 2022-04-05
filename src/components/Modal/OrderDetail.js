@@ -4,7 +4,7 @@ import {
 	addrTransform,
 	productTransform,
 } from '../../functions/StringTransform';
-import * as _order from '../../controller/payment';
+import * as orderController from '../../controller/payment';
 import styled from 'styled-components';
 import check_icon from '../../images/check_square.svg';
 import uncheck_icon from '../../images/uncheck_square.svg';
@@ -24,14 +24,14 @@ const OrderDetail = (props) => {
 	const shippingFee = ['배송비', '', '', '', 1, priceToString(3000)];
 
 	const [detail, setDetail] = useState({});
-	const [supplier_list, setSupplier_list] = useState([]);
+	const [supplierList, setSupplierList] = useState([]);
 	const [checked, setChecked] = useState([]);
-	const [del_checked, setDel_checked] = useState([]);
+	const [delChecked, setDelChecked] = useState([]);
 
 	useEffect(() => {
-		_order.getDetail(props.modal.payment_uid).then((res) => {
+		orderController.getDetail(props.modal.payment_uid).then((res) => {
 			setDetail(res.data.payment);
-			setSupplier_list(res.data.supplier_list);
+			setSupplierList(res.data.supplier_list);
 		});
 	}, [props.modal.payment_uid]);
 
@@ -62,13 +62,13 @@ const OrderDetail = (props) => {
 		setChecked(arr);
 	};
 	const checkDel = (idx) => {
-		let arr = [...del_checked];
-		if (del_checked.includes(idx)) {
+		let arr = [...delChecked];
+		if (delChecked.includes(idx)) {
 			arr = arr.filter((e) => e !== idx);
 		} else {
 			arr.push(idx);
 		}
-		setDel_checked(arr);
+		setDelChecked(arr);
 	};
 
 	const singleTrackingNumber = (el) => {
@@ -100,7 +100,7 @@ const OrderDetail = (props) => {
 				cou_id: _modal.return.id,
 				cou_num: _modal.return.num,
 			};
-			_order.enterTrackingNumber(data).then((res) => {
+			orderController.enterTrackingNumber(data).then((res) => {
 				const { success, supplier_list } = res.data;
 				success ? enterSuccess(supplier_list) : enterFail();
 			});
@@ -111,7 +111,7 @@ const OrderDetail = (props) => {
 	const enterSuccess = (list) => {
 		props.setModal({ ...props.modal, return: '' });
 		setChecked([]);
-		setSupplier_list(list);
+		setSupplierList(list);
 	};
 	const enterFail = () => {
 		alert('운송장 입력에 실패했습니다.');
@@ -142,10 +142,10 @@ const OrderDetail = (props) => {
 		const data = {
 			payment: detail,
 			payment_product_list: checked,
-			del_refund: del_checked.length * 3000,
+			del_refund: delChecked.length * 3000,
 		};
-		_order.claimHandling(data).then((res) => {
-			setSupplier_list(res.data.supplier_list);
+		orderController.claimHandling(data).then((res) => {
+			setSupplierList(res.data.supplier_list);
 		});
 	};
 
@@ -169,8 +169,8 @@ const OrderDetail = (props) => {
 			payment: detail,
 			payment_product_list: checked,
 		};
-		_order.claimRefuse(data).then((res) => {
-			setSupplier_list(res.data.supplier_list);
+		orderController.claimRefuse(data).then((res) => {
+			setSupplierList(res.data.supplier_list);
 		});
 	};
 
@@ -241,7 +241,7 @@ const OrderDetail = (props) => {
 					</Table>
 				</Content>
 				<Content>
-					{supplier_list.map((supplier, index) => (
+					{supplierList.map((supplier, index) => (
 						<Supplier key={index}>
 							<SupplierTitle>
 								{supplier.info.supplier_name}
@@ -264,7 +264,7 @@ const OrderDetail = (props) => {
 										</HeaderItem>
 									))}
 								</ProductHeader>
-								{supplier_list[index].product.map((el, idx) => (
+								{supplierList[index].product.map((el, idx) => (
 									<ProductList key={idx}>
 										<ListItem
 											onClick={() => {
@@ -328,7 +328,7 @@ const OrderDetail = (props) => {
 												<CheckIcon
 													alt=''
 													src={
-														del_checked.includes(index)
+														delChecked.includes(index)
 															? check_icon
 															: uncheck_icon
 													}

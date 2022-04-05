@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import * as _product_img from '../../controller/product_img';
+import * as productImgController from '../../controller/product_img';
 import styled from 'styled-components';
 
 const DetailImgCreate = (props) => {
@@ -30,7 +30,7 @@ const DetailImgCreate = (props) => {
 		formData.append('image', img);
 		formData.append('title', title);
 		formData.append('share', share);
-		_product_img.create(formData).then((res) => {
+		productImgController.create(formData).then((res) => {
 			if (res.data.success) {
 				history.push({ state: res.data.product_image_id });
 				props.setModal({

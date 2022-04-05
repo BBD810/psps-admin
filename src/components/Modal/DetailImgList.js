@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import * as _product_img from '../../controller/product_img';
+import * as productImgController from '../../controller/product_img';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
 
@@ -17,7 +17,7 @@ const DetailImgListModal = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		_product_img
+		productImgController
 			.getShareList(true)
 			.then((res) => {
 				isSubscribed &&
@@ -25,7 +25,7 @@ const DetailImgListModal = (props) => {
 					setShareList(res.data.product_image_list);
 			})
 			.then(
-				_product_img.getUnusedSingleList(false).then((res) => {
+				productImgController.getUnusedSingleList(false).then((res) => {
 					isSubscribed &&
 						res.data.success &&
 						setSingleList(res.data.product_image_list);

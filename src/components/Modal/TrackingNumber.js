@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as _courier from '../../controller/courier';
+import * as courierController from '../../controller/courier';
 import styled from 'styled-components';
 import down from '../../images/angle-down.svg';
 
@@ -32,7 +32,7 @@ const TrackingNumberModal = (props) => {
 	useEffect(() => {
 		let isSubscribed = true;
 		if (list.length < 1) {
-			_courier.getList().then((res) => {
+			courierController.getList().then((res) => {
 				if (isSubscribed && res.data.success) {
 					setList(res.data.courier_list);
 				}

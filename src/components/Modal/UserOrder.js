@@ -3,7 +3,7 @@ import { dateObjToDate } from '../../functions/DateObjToDate';
 import { addrTransform } from '../../functions/StringTransform';
 import { phoneNumberTransform } from '../../functions/PhoneNumberTransform';
 import { priceToString } from '../../functions/PriceToString';
-import * as _payment from '../../controller/payment';
+import * as orderController from '../../controller/payment';
 import styled from 'styled-components';
 import PageSelector from '../PageSelector';
 
@@ -14,33 +14,33 @@ const UserOrderModal = (props) => {
 	const [detail, setDetail] = useState({});
 	const [list, setList] = useState([]);
 
-	const [order_page, setOrder_page] = useState(1);
-	const [order_total, setOrder_total] = useState(1);
-	const order_onePage = 10;
+	const [orderPage, setOrderPage] = useState(1);
+	const [orderTotal, setOrderTotal] = useState(1);
+	const orderOnePage = 10;
 
 	useEffect(() => {
 		let isSubscribed = true;
 		if (props.modal.data) {
 			setDetail(props.modal.data);
-			_payment
-				.getUserOrderList(props.modal.data.user_id, order_page)
+			orderController
+				.getUserOrderList(props.modal.data.user_id, orderPage)
 				.then((res) => {
 					if (isSubscribed && res.data.success) {
 						setList(res.data.payment_list);
-						setOrder_total(res.data.total);
+						setOrderTotal(res.data.total);
 					}
 				});
 		}
 		return () => {
 			isSubscribed = false;
 		};
-	}, [props.modal.data, order_page]);
+	}, [props.modal.data, orderPage]);
 
 	const onClick = () => {
 		props.setModal({ type: '' });
 	};
 	const onClickPage = (e) => {
-		e !== order_page && setOrder_page(e);
+		e !== orderPage && setOrderPage(e);
 	};
 
 	return (
@@ -89,9 +89,9 @@ const UserOrderModal = (props) => {
 				</Content>
 				{list.length > 0 && (
 					<PageSelector
-						page={order_page}
-						total={order_total}
-						onePage={order_onePage}
+						page={orderPage}
+						total={orderTotal}
+						onePage={orderOnePage}
 						onClickPage={onClickPage}
 						style={{ marginTop: '2rem' }}
 					/>
