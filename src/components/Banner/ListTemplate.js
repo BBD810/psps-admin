@@ -54,7 +54,7 @@ const ListTemplate = (props) => {
 	}, [list]);
 
 	const goDetail = (el) => {
-		history.push({ state: el.bannerId });
+		history.push({ state: el.banner_id });
 		props.setMode('detail');
 	};
 	const menuOpenController = (idx) => {
@@ -71,12 +71,12 @@ const ListTemplate = (props) => {
 		} else if (menu === '링크확인') {
 			selectLink(el);
 		}
-		setBannerId(el.bannerId);
+		setBannerId(el.banner_id);
 		setDetail(el);
 		setMenuOpen('close');
 	};
 	const selectEdit = (el) => {
-		history.push({ state: el.bannerId });
+		history.push({ state: el.banner_id });
 		props.setMode('edit');
 	};
 	const selectDisplay = (detail) => {
