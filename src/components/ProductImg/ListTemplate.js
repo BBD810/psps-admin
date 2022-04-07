@@ -171,8 +171,8 @@ const ListTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		let _modal = props.modal;
-		if (_modal.act === 'share' && _modal.return) {
+		let modal = props.modal;
+		if (modal.act === 'share' && modal.return) {
 			productImgController
 				.changeShare(detail.product_image_id)
 				.then((res) => {
@@ -180,7 +180,7 @@ const ListTemplate = (props) => {
 						res.data.success &&
 						success(res.data.product_image_list);
 				});
-		} else if (_modal.act === 'delete' && _modal.return) {
+		} else if (modal.act === 'delete' && modal.return) {
 			productImgController.remove(detail.product_image_id).then((res) => {
 				isSubscribed &&
 					res.data.success &&

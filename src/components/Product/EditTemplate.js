@@ -180,10 +180,10 @@ const EditTemplate = (props) => {
 	};
 
 	useEffect(() => {
-		const _modal = props.modal;
-		if (_modal.act === 'add' && _modal.return) {
+		let modal = props.modal;
+		if (modal.act === 'add' && modal.return) {
 			productOptionController
-				.create(_modal.return, productId)
+				.create(props.modal.return, productId)
 				.then((res) => {
 					if (res.data.success) {
 						setOptionList(res.data.product_option_list);
@@ -193,9 +193,9 @@ const EditTemplate = (props) => {
 						});
 					}
 				});
-		} else if (_modal.act === 'edit' && _modal.return) {
+		} else if (modal.act === 'edit' && modal.return) {
 			productOptionController
-				.edit(_modal.return, _modal.data.product_option_id)
+				.edit(modal.return, modal.data.product_option_id)
 				.then((res) => {
 					setOptionList(res.data.product_option_list);
 					props.setModal({
@@ -203,8 +203,8 @@ const EditTemplate = (props) => {
 						text: '옵션이 수정되었습니다.',
 					});
 				});
-		} else if (_modal.act === 'delete' && _modal.return) {
-			productOptionController.remove(_modal.target).then((res) => {
+		} else if (modal.act === 'delete' && modal.return) {
+			productOptionController.remove(modal.target).then((res) => {
 				if (res.data.success) {
 					setOptionList(res.data.product_option_list);
 					props.setModal({

@@ -19,14 +19,14 @@ const DetailTemplate = (props) => {
 		let isSubscribed = true;
 		setIsLoading(true);
 		if (history.location.state) {
-			const _state = history.location.state;
-			let _product_id;
-			if (_state.from) {
-				_product_id = _state.product_id;
+			const locationState = history.location.state;
+			let productId;
+			if (locationState.from) {
+				productId = locationState.product_id;
 			} else {
-				_product_id = _state;
+				productId = locationState;
 			}
-			productController.getDetail(_product_id).then((res) => {
+			productController.getDetail(productId).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setDetail(res.data.product);
 					setOptionList(res.data.product_option_list);
@@ -65,8 +65,7 @@ const DetailTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		const _modal = props.modal;
-		if (_modal.act === 'delete' && _modal.return) {
+		if (props.modal.act === 'delete' && props.modal.return) {
 			productController.remove(detail.product_id).then((res) => {
 				isSubscribed && res.data.success && success();
 			});

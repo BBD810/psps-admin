@@ -5,15 +5,15 @@ const OrderClaimModal = (props) => {
 	const selectClose = () => {
 		props.setModal({ ...props.modal, act: '', return: false });
 	};
-	const _data = props.modal.data;
+	const modalData = props.modal.data;
 
 	return (
 		<Container>
 			<Wrap>
-				<Text>{_data.process}</Text>
+				<Text>{modalData.process}</Text>
 				<Reason>
 					<Left>사유:</Left>
-					<Right>{_data.claim_reason}</Right>
+					<Right>{modalData.claim_reason}</Right>
 				</Reason>
 				<Button filled onClick={selectClose}>
 					확인

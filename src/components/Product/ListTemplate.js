@@ -175,9 +175,9 @@ const ListTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		let _modal = props.modal;
-		if (_modal.act === 'display' && _modal.return) {
-		} else if (_modal.act === 'delete' && _modal.return) {
+		let modal = props.modal;
+		if (modal.act === 'display' && modal.return) {
+		} else if (modal.act === 'delete' && modal.return) {
 			productController.remove(detail.product_id).then((res) => {
 				isSubscribed && res.data.success && success(res.data.product_list);
 			});

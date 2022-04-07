@@ -133,8 +133,8 @@ const ListTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		let _modal = props.modal;
-		if (_modal.act === 'delete' && _modal.return) {
+		let modal = props.modal;
+		if (modal.act === 'delete' && modal.return) {
 			supplierController.remove(detail.supplier_id, page).then((res) => {
 				if (isSubscribed && res.data.success) {
 					props.setModal({ type: '' });

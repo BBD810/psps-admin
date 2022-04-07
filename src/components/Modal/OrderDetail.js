@@ -37,19 +37,19 @@ const OrderDetail = (props) => {
 
 	const allCheckItem = (supplier) => {
 		let arr = [...checked];
-		let _switch = false;
+		let checkSwitch = false;
 		for (let i = 0; i < supplier.product.length; i++) {
 			if (!checked.includes(supplier.product[i])) {
-				_switch = true;
+				checkSwitch = true;
 				arr.push(supplier.product[i]);
 			}
 		}
-		if (!_switch) {
+		if (!checkSwitch) {
 			for (let i = 0; i < supplier.product.length; i++) {
 				arr = arr.filter((el) => el !== supplier.product[i]);
 			}
 		}
-		_switch = false;
+		checkSwitch = false;
 		setChecked([...new Set(arr)]);
 	};
 	const checkItem = (el) => {
@@ -93,12 +93,12 @@ const OrderDetail = (props) => {
 	};
 
 	useEffect(() => {
-		let _modal = props.modal;
-		if (_modal.return) {
+		let modal = props.modal;
+		if (modal.return) {
 			const data = {
 				payment_product_list: checked,
-				cou_id: _modal.return.id,
-				cou_num: _modal.return.num,
+				cou_id: modal.return.id,
+				cou_num: modal.return.num,
 			};
 			orderController.enterTrackingNumber(data).then((res) => {
 				const { success, supplier_list } = res.data;

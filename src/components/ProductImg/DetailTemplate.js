@@ -107,19 +107,19 @@ const DetailTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		let _modal = props.modal;
-		if (_modal.act === 'delete' && _modal.return) {
+		let modal = props.modal;
+		if (modal.act === 'delete' && modal.return) {
 			productImgController.remove(detail.product_image_id).then((res) => {
 				isSubscribed && res.data.success && success();
 			});
-		} else if (_modal.act === 'share' && _modal.return) {
+		} else if (modal.act === 'share' && modal.return) {
 			productImgController
 				.changeShare(detail.product_image_id)
 				.then((res) => {
 					isSubscribed && res.data.success && success();
 				});
-		} else if (_modal.act === 'replace' && _modal.return) {
-			let arr = [detail, shareImgList[_modal.return]];
+		} else if (modal.act === 'replace' && modal.return) {
+			let arr = [detail, shareImgList[modal.return]];
 			productImgController.replaceShare(arr).then((res) => {
 				isSubscribed && res.data.success && success();
 			});

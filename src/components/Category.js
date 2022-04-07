@@ -39,20 +39,20 @@ const Category = (props) => {
 	}, [arr]);
 
 	useEffect(() => {
-		let _title;
-		let _desc;
+		let title;
+		let desc;
 		if (props.mode === 'list') {
-			_title = info.list_main;
-			_desc = info.list_sub;
+			title = info.list_main;
+			desc = info.list_sub;
 		} else if (props.mode === 'detail') {
-			_title = info.detail_main;
-			_desc = info.detail_sub;
+			title = info.detail_main;
+			desc = info.detail_sub;
 		} else if (props.mode === 'edit') {
-			_title = info.edit_main;
-			_desc = info.edit_sub;
+			title = info.edit_main;
+			desc = info.edit_sub;
 		}
-		setMain(_title);
-		setSub(_desc);
+		setMain(title);
+		setSub(desc);
 	}, [props.mode, props.category, info]);
 
 	const onChangeCategory = (e) => {

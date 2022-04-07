@@ -176,17 +176,17 @@ const ListTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		let _modal = props.modal;
-		if (_modal.act === 'display' && _modal.return) {
+		let modal = props.modal;
+		if (modal.act === 'display' && modal.return) {
 			bannerController.changeDisplay(bannerId).then((res) => {
 				isSubscribed && res.data.success && success(res.data.banner_list);
 			});
-		} else if (_modal.act === 'delete' && _modal.return) {
+		} else if (modal.act === 'delete' && modal.return) {
 			bannerController.remove(bannerId).then((res) => {
 				isSubscribed && res.data.success && success(res.data.banner_list);
 			});
-		} else if (_modal.act === 'replace' && _modal.return) {
-			const arr = [detail, displayList[_modal.return]];
+		} else if (modal.act === 'replace' && modal.return) {
+			const arr = [detail, displayList[modal.return]];
 			bannerController.replaceDisplay(arr).then((res) => {
 				isSubscribed && res.data.success && success(res.data.banner_list);
 			});

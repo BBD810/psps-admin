@@ -20,10 +20,10 @@ const FaqInputModal = (props) => {
 
 	useEffect(() => {
 		if (props.modal.data) {
-			const _data = props.modal.data;
-			setType(_data.qu_type_id);
-			setQuestion(_data.qu_title);
-			setAnswer(_data.qu_text);
+			const modalData = props.modal.data;
+			setType(modalData.qu_type_id);
+			setQuestion(modalData.qu_title);
+			setAnswer(modalData.qu_text);
 		}
 	}, [props.modal.data]);
 
