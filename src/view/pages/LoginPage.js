@@ -1,14 +1,11 @@
-import React, { lazy, Suspense, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { admin_login } from '../../modules/admin';
 import * as authController from '../../controller/auth';
 import styled from 'styled-components';
 import logo from '../../images/logo_cetus.svg';
-
-const ConfirmModal = lazy(() => {
-	return import('../../view/components/Modal/Confirm');
-});
+import ConfirmModal from '../../view/components/Modal/Confirm';
 
 const LoginPage = () => {
 	const dispatch = useDispatch();
@@ -88,9 +85,7 @@ const LoginPage = () => {
 					Show
 				</Text>
 				{modal.type === 'confirm' && (
-					<Suspense fallback={<div>Loading...</div>}>
-						<ConfirmModal modal={modal} setModal={setModal} />
-					</Suspense>
+					<ConfirmModal modal={modal} setModal={setModal} />
 				)}
 			</Login>
 		</div>

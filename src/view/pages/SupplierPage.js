@@ -1,16 +1,11 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import SideBar from '../../view/components/Common/SideBar';
 import Category from '../../view/components/Common/Category';
 import Footer from '../../view/components/Common/Footer';
 import ListTemplate from '../../view/components/Supplier/ListTemplate';
-
-const ConfirmModal = lazy(() => {
-	return import('../../view/components/Modal/Confirm');
-});
-const SelectModal = lazy(() => {
-	return import('../../view/components/Modal/Select');
-});
+import ConfirmModal from '../../view/components/Modal/Confirm';
+import SelectModal from '../../view/components/Modal/Select';
 
 const SupplierPage = () => {
 	const [mode, setMode] = useState('list');
@@ -38,14 +33,10 @@ const SupplierPage = () => {
 					/>
 					<ListTemplate modal={modal} setModal={setModal} />
 					{modal.type === 'confirm' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<ConfirmModal modal={modal} setModal={setModal} />
-						</Suspense>
+						<ConfirmModal modal={modal} setModal={setModal} />
 					)}
 					{modal.type === 'select' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<SelectModal modal={modal} setModal={setModal} />
-						</Suspense>
+						<SelectModal modal={modal} setModal={setModal} />
 					)}
 					<Footer />
 				</Contents>

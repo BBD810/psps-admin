@@ -1,27 +1,14 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import SideBar from '../../view/components/Common/SideBar';
 import Category from '../../view/components/Common/Category';
 import Footer from '../../view/components/Common/Footer';
-
-const ListTemplate = lazy(() => {
-	return import('../../view/components/Banner/ListTemplate');
-});
-const CreateTemplate = lazy(() => {
-	return import('../../view/components/Banner/CreateTemplate');
-});
-const DetailTemplate = lazy(() => {
-	return import('../../view/components/Banner/DetailTemplate');
-});
-const ConfirmModal = lazy(() => {
-	return import('../../view/components/Modal/Confirm');
-});
-const SelectModal = lazy(() => {
-	return import('../../view/components/Modal/Select');
-});
-const ListModal = lazy(() => {
-	return import('../../view/components/Modal/BannerList');
-});
+import ListTemplate from '../../view/components/Banner/ListTemplate';
+import CreateTemplate from '../../view/components/Banner/CreateTemplate';
+import DetailTemplate from '../../view/components/Banner/DetailTemplate';
+import ConfirmModal from '../../view/components/Modal/Confirm';
+import SelectModal from '../../view/components/Modal/Select';
+import ListModal from '../../view/components/Modal/BannerList';
 
 const BannerPage = () => {
 	const [mode, setMode] = useState('list');
@@ -47,62 +34,48 @@ const BannerPage = () => {
 						menu={menu}
 					/>
 					{!createMode && mode === 'list' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<ListTemplate
-								category={category}
-								mode={mode}
-								modal={modal}
-								setMode={setMode}
-								setModal={setModal}
-							/>
-						</Suspense>
+						<ListTemplate
+							category={category}
+							mode={mode}
+							modal={modal}
+							setMode={setMode}
+							setModal={setModal}
+						/>
 					)}
 					{!createMode && mode === 'detail' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<DetailTemplate
-								category={category}
-								mode={mode}
-								modal={modal}
-								setMode={setMode}
-								setModal={setModal}
-							/>
-						</Suspense>
+						<DetailTemplate
+							category={category}
+							mode={mode}
+							modal={modal}
+							setMode={setMode}
+							setModal={setModal}
+						/>
 					)}
 					{!createMode && mode === 'edit' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<CreateTemplate
-								category={category}
-								mode={mode}
-								modal={modal}
-								setMode={setMode}
-								setModal={setModal}
-							/>
-						</Suspense>
+						<CreateTemplate
+							category={category}
+							mode={mode}
+							modal={modal}
+							setMode={setMode}
+							setModal={setModal}
+						/>
 					)}
 					{createMode && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<CreateTemplate
-								category={category}
-								getCategory={getCategory}
-								modal={modal}
-								setModal={setModal}
-							/>
-						</Suspense>
+						<CreateTemplate
+							category={category}
+							getCategory={getCategory}
+							modal={modal}
+							setModal={setModal}
+						/>
 					)}
 					{modal.type === 'confirm' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<ConfirmModal modal={modal} setModal={setModal} />
-						</Suspense>
+						<ConfirmModal modal={modal} setModal={setModal} />
 					)}
 					{modal.type === 'select' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<SelectModal modal={modal} setModal={setModal} />
-						</Suspense>
+						<SelectModal modal={modal} setModal={setModal} />
 					)}
 					{modal.type === 'list' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<ListModal modal={modal} setModal={setModal} />
-						</Suspense>
+						<ListModal modal={modal} setModal={setModal} />
 					)}
 					<Footer />
 				</Contents>

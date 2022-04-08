@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	faqTypeTransform,
 	faqTypeTransform2,
@@ -9,13 +9,8 @@ import SideBar from '../../view/components/Common/SideBar';
 import Category from '../../view/components/Common/Category';
 import Footer from '../../view/components/Common/Footer';
 import ListTemplate from '../../view/components/Faq/ListTemplate';
-
-const FaqInputModal = lazy(() => {
-	return import('../../view/components/Modal/FaqInput');
-});
-const SelectModal = lazy(() => {
-	return import('../../view/components/Modal/Select');
-});
+import FaqInputModal from '../../view/components/Modal/FaqInput';
+import SelectModal from '../../view/components/Modal/Select';
 
 const FaqPage = () => {
 	const mode = 'list';
@@ -79,14 +74,10 @@ const FaqPage = () => {
 					setModal={setModal}
 				/>
 				{(modal.act === 'create' || modal.act === 'edit') && (
-					<Suspense fallback={<div>Loading...</div>}>
-						<FaqInputModal modal={modal} setModal={setModal} />
-					</Suspense>
+					<FaqInputModal modal={modal} setModal={setModal} />
 				)}
 				{modal.type === 'select' && (
-					<Suspense fallback={<div>Loading...</div>}>
-						<SelectModal modal={modal} setModal={setModal} />
-					</Suspense>
+					<SelectModal modal={modal} setModal={setModal} />
 				)}
 				<Footer />
 			</Contents>

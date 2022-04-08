@@ -1,37 +1,18 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import SideBar from '../../view/components/Common/SideBar';
 import Category from '../../view/components/Common/Category';
 import Footer from '../../view/components/Common/Footer';
-
-const ListTemplate = lazy(() => {
-	return import('../../view/components/Product/ListTemplate');
-});
-const CreateTemplate = lazy(() => {
-	return import('../../view/components/Product/CreateTemplate');
-});
-const DetailTemplate = lazy(() => {
-	return import('../../view/components/Product/DetailTemplate');
-});
-const EditTemplate = lazy(() => {
-	return import('../../view/components/Product/EditTemplate');
-});
-const ConfirmModal = lazy(() => {
-	return import('../../view/components/Modal/Confirm');
-});
-const SelectModal = lazy(() => {
-	return import('../../view/components/Modal/Select');
-});
-const OptionModal = lazy(() => {
-	return import('../../view/components/Modal/ProductOption');
-});
-const DetailImgListModal = lazy(() => {
-	return import('../../view/components/Modal/DetailImgList');
-});
-const DetailImgCreateModal = lazy(() => {
-	return import('../../view/components/Modal/DetailImgCreate');
-});
+import ListTemplate from '../../view/components/Product/ListTemplate';
+import CreateTemplate from '../../view/components/Product/CreateTemplate';
+import DetailTemplate from '../../view/components/Product/DetailTemplate';
+import EditTemplate from '../../view/components/Product/EditTemplate';
+import ConfirmModal from '../../view/components/Modal/Confirm';
+import SelectModal from '../../view/components/Modal/Select';
+import OptionModal from '../../view/components/Modal/ProductOption';
+import DetailImgListModal from '../../view/components/Modal/DetailImgList';
+import DetailImgCreateModal from '../../view/components/Modal/DetailImgCreate';
 
 const ProductPage = () => {
 	const history = useHistory();
@@ -62,72 +43,54 @@ const ProductPage = () => {
 						setModal={setModal}
 					/>
 					{!createMode && mode === 'list' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<ListTemplate
-								category={category}
-								mode={mode}
-								modal={modal}
-								setMode={setMode}
-								setModal={setModal}
-							/>
-						</Suspense>
+						<ListTemplate
+							category={category}
+							mode={mode}
+							modal={modal}
+							setMode={setMode}
+							setModal={setModal}
+						/>
 					)}
 					{!createMode && mode === 'detail' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<DetailTemplate
-								mode={mode}
-								modal={modal}
-								setMode={setMode}
-								setModal={setModal}
-							/>
-						</Suspense>
+						<DetailTemplate
+							mode={mode}
+							modal={modal}
+							setMode={setMode}
+							setModal={setModal}
+						/>
 					)}
 					{!createMode && mode === 'edit' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<EditTemplate
-								mode={mode}
-								setMode={setMode}
-								modal={modal}
-								setModal={setModal}
-							/>
-						</Suspense>
+						<EditTemplate
+							mode={mode}
+							setMode={setMode}
+							modal={modal}
+							setModal={setModal}
+						/>
 					)}
 					{createMode && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<CreateTemplate
-								category={category}
-								getCategory={getCategory}
-								mode={mode}
-								modal={modal}
-								setMode={setMode}
-								setModal={setModal}
-							/>
-						</Suspense>
+						<CreateTemplate
+							category={category}
+							getCategory={getCategory}
+							mode={mode}
+							modal={modal}
+							setMode={setMode}
+							setModal={setModal}
+						/>
 					)}
 					{modal.type === 'confirm' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<ConfirmModal modal={modal} setModal={setModal} />
-						</Suspense>
+						<ConfirmModal modal={modal} setModal={setModal} />
 					)}
 					{modal.type === 'select' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<SelectModal modal={modal} setModal={setModal} />
-						</Suspense>
+						<SelectModal modal={modal} setModal={setModal} />
 					)}
 					{modal.type === 'option' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<OptionModal modal={modal} setModal={setModal} />
-						</Suspense>
+						<OptionModal modal={modal} setModal={setModal} />
 					)}
 					{modal.type === 'img_list' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<DetailImgListModal modal={modal} setModal={setModal} />
-						</Suspense>
+						<DetailImgListModal modal={modal} setModal={setModal} />
 					)}
 					{modal.type === 'img_create' && (
-						<Suspense fallback={<div>Loading...</div>}>
-							<DetailImgCreateModal modal={modal} setModal={setModal} />
-						</Suspense>
+						<DetailImgCreateModal modal={modal} setModal={setModal} />
 					)}
 					<Footer />
 				</Contents>
