@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { admin_login } from '../modules/admin';
+import { adminLogin } from '../modules/admin';
 import * as auth from '../controller/auth';
 
 const Auth = (SpecificComponent, option, adminRoute = null) => {
@@ -9,7 +9,7 @@ const Auth = (SpecificComponent, option, adminRoute = null) => {
 	const AuthenticationCheck = ({ history }) => {
 		useEffect(() => {
 			auth.authCheck().then((res) => {
-				res.data.success ? dispatch(admin_login()) : history.push('/login');
+				res.data.success ? dispatch(adminLogin()) : history.push('/login');
 			});
 			// eslint-disable-next-line
 		}, []);

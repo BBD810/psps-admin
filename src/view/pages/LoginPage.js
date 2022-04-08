@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { admin_login } from '../../modules/admin';
+import { adminLogin } from '../../modules/admin';
 import * as authController from '../../controller/auth';
 import styled from 'styled-components';
 import logo from '../../images/logo_cetus.svg';
@@ -44,7 +44,7 @@ const LoginPage = () => {
 			const data = { username, password };
 			authController.login(data).then((res) => {
 				if (res.data.success) {
-					dispatch(admin_login());
+					dispatch(adminLogin());
 					setModal({ type: 'confirm', text: '로그인 되었습니다.' });
 					history.push('/');
 				} else {

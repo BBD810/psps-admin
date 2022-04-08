@@ -1,8 +1,8 @@
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
 
-export const admin_login = () => ({ type: LOGIN });
-export const admin_logout = () => ({ type: LOGOUT });
+export const adminLogin = () => ({ type: LOGIN });
+export const adminLogout = () => ({ type: LOGOUT });
 
 const loginInitialState = { login: false, name: '' };
 

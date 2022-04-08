@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { admin_logout } from '../../../modules/admin';
+import { adminLogout } from '../../../modules/admin';
 import * as request from '../../../controller/auth';
 import styled from 'styled-components';
 import logo from '../../../images/logo_psps.svg';
@@ -56,7 +56,7 @@ const SideBar = (props) => {
 	const goLogout = () => {
 		request.logout().then((res) => {
 			if (res.data.success) {
-				dispatch(admin_logout());
+				dispatch(adminLogout());
 				history.push('/login');
 			}
 		});
