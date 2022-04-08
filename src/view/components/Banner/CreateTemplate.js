@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { extension } from '../../../model/extension';
 import { IMG_ADDRESS } from '../../../config';
 import * as link from '../../../model/link';
 import * as bannerController from '../../../controller/banner';
+import extension from '../../../model/extension';
 import styled from 'styled-components';
 import down from '../../../images/angle_down.svg';
 

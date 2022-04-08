@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { extension } from '../../../model/extension';
 import { IMG_ADDRESS } from '../../../config';
 import * as productImgController from '../../../controller/product_img';
+import extension from '../../../model/extension';
 import styled from 'styled-components';
 
 const CreateTemplate = (props) => {
