@@ -7,7 +7,7 @@ import * as orderController from '../../../controller/payment';
 import styled from 'styled-components';
 import PageSelector from '../Common/PageSelector';
 
-const UserOrderModal = (props) => {
+const UserOrder = (props) => {
 	const info = ['이름/이메일', '등록일', '주소', '연락처', '등록계좌'];
 	const header = ['주문일', '주문상품', '결제금액'];
 
@@ -103,7 +103,7 @@ const UserOrderModal = (props) => {
 	);
 };
 
-export default UserOrderModal;
+export default UserOrder;
 
 const Container = styled.div`
 	width: 100vw;

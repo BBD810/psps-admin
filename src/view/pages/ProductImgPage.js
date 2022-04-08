@@ -8,7 +8,7 @@ import CreateTemplate from '../../view/components/ProductImg/CreateTemplate';
 import DetailTemplate from '../../view/components/ProductImg/DetailTemplate';
 import ConfirmModal from '../../view/components/Modal/Confirm';
 import SelectModal from '../../view/components/Modal/Select';
-import ReplaceModal from '../../view/components/Modal/DetailImgReplace';
+import DetailImgReplaceModal from '../../view/components/Modal/DetailImgReplace';
 
 const ProductImgPage = () => {
 	const [mode, setMode] = useState('list');
@@ -76,7 +76,7 @@ const ProductImgPage = () => {
 						<SelectModal modal={modal} setModal={setModal} />
 					)}
 					{modal.type === 'list' && (
-						<ReplaceModal modal={modal} setModal={setModal} />
+						<DetailImgReplaceModal modal={modal} setModal={setModal} />
 					)}
 					<Footer />
 				</Contents>

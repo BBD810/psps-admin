@@ -3,7 +3,7 @@ import { faqCategory } from '../../../model/category';
 import styled from 'styled-components';
 import down from '../../../images/angle_down.svg';
 
-const FaqInputModal = (props) => {
+const FaqInput = (props) => {
 	const typeBox = useRef();
 	const [typeOpen, setTypeOpen] = useState(false);
 	const [type, setType] = useState(1);
@@ -129,7 +129,7 @@ const FaqInputModal = (props) => {
 	);
 };
 
-export default FaqInputModal;
+export default FaqInput;
 
 const Container = styled.div`
 	width: 100vw;

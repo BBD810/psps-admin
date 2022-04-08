@@ -10,7 +10,7 @@ import DetailTemplate from '../../view/components/Product/DetailTemplate';
 import EditTemplate from '../../view/components/Product/EditTemplate';
 import ConfirmModal from '../../view/components/Modal/Confirm';
 import SelectModal from '../../view/components/Modal/Select';
-import OptionModal from '../../view/components/Modal/ProductOption';
+import ProductOptionModal from '../../view/components/Modal/ProductOption';
 import DetailImgListModal from '../../view/components/Modal/DetailImgList';
 import DetailImgCreateModal from '../../view/components/Modal/DetailImgCreate';
 
@@ -84,7 +84,7 @@ const ProductPage = () => {
 						<SelectModal modal={modal} setModal={setModal} />
 					)}
 					{modal.type === 'option' && (
-						<OptionModal modal={modal} setModal={setModal} />
+						<ProductOptionModal modal={modal} setModal={setModal} />
 					)}
 					{modal.type === 'img_list' && (
 						<DetailImgListModal modal={modal} setModal={setModal} />

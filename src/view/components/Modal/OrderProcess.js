@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { dateObjToTimer } from '../../../utils/DateObjToDate';
 import styled from 'styled-components';
 
-const OrderProcessModal = (props) => {
+const OrderProcess = (props) => {
 	const process = [
 		'주문일',
 		'결제일',
@@ -71,7 +71,7 @@ const OrderProcessModal = (props) => {
 	);
 };
 
-export default OrderProcessModal;
+export default OrderProcess;
 
 const Container = styled.div`
 	width: 100vw;

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 
-const ConfirmModal = (props) => {
+const Confirm = (props) => {
 	const modalBox = useRef();
 	const onClick = () => {
 		props.setModal({ type: '' });
@@ -22,7 +22,7 @@ const ConfirmModal = (props) => {
 	);
 };
 
-export default ConfirmModal;
+export default Confirm;
 
 const Container = styled.div`
 	width: 100vw;

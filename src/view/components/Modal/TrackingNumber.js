@@ -3,7 +3,7 @@ import * as courierController from '../../../controller/courier';
 import styled from 'styled-components';
 import down from '../../../images/angle_down.svg';
 
-const TrackingNumberModal = (props) => {
+const TrackingNumber = (props) => {
 	const companyBox = useRef();
 	const [listOpen, setListOpen] = useState(false);
 	const [list, setList] = useState([]);
@@ -97,7 +97,7 @@ const TrackingNumberModal = (props) => {
 	);
 };
 
-export default TrackingNumberModal;
+export default TrackingNumber;
 
 const Container = styled.div`
 	width: 100vw;

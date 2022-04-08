@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { priceToString } from '../../../utils/PriceToString';
 import styled from 'styled-components';
 
-const OptionModal = (props) => {
+const ProductOption = (props) => {
 	const [title, setTitle] = useState('');
 	const [name, setName] = useState(null);
 	const [weight, setWeight] = useState(null);
@@ -125,7 +125,7 @@ const OptionModal = (props) => {
 	);
 };
 
-export default OptionModal;
+export default ProductOption;
 
 const Container = styled.div`
 	width: 100vw;

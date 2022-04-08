@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 
-const SelectModal = (props) => {
+const Select = (props) => {
 	const modalBox = useRef();
 
 	const selectYes = () => {
@@ -33,7 +33,7 @@ const SelectModal = (props) => {
 	);
 };
 
-export default SelectModal;
+export default Select;
 
 const Container = styled.div`
 	width: 100vw;

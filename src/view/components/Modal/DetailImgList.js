@@ -4,7 +4,7 @@ import * as productImgController from '../../../controller/product_img';
 import styled from 'styled-components';
 import down from '../../../images/angle_down.svg';
 
-const DetailImgListModal = (props) => {
+const DetailImgList = (props) => {
 	const history = useHistory();
 	const modalBox = useRef();
 	const shareBox = useRef();
@@ -166,7 +166,7 @@ const DetailImgListModal = (props) => {
 	);
 };
 
-export default DetailImgListModal;
+export default DetailImgList;
 
 const Container = styled.div`
 	width: 100vw;

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-const ListModal = (props) => {
+const BannerList = (props) => {
 	const modalBox = useRef();
 	const [list, setList] = useState([]);
 	const [selected, setSelected] = useState(false);
@@ -60,7 +60,7 @@ const ListModal = (props) => {
 	);
 };
 
-export default ListModal;
+export default BannerList;
 
 const Container = styled.div`
 	width: 100vw;

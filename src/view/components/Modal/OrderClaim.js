@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const OrderClaimModal = (props) => {
+const OrderClaim = (props) => {
 	const selectClose = () => {
 		props.setModal({ ...props.modal, act: '', return: false });
 	};
@@ -23,7 +23,7 @@ const OrderClaimModal = (props) => {
 	);
 };
 
-export default OrderClaimModal;
+export default OrderClaim;
 
 const Container = styled.div`
 	width: 100vw;

@@ -8,7 +8,7 @@ import CreateTemplate from '../../view/components/Banner/CreateTemplate';
 import DetailTemplate from '../../view/components/Banner/DetailTemplate';
 import ConfirmModal from '../../view/components/Modal/Confirm';
 import SelectModal from '../../view/components/Modal/Select';
-import ListModal from '../../view/components/Modal/BannerList';
+import BannerListModal from '../../view/components/Modal/BannerList';
 
 const BannerPage = () => {
 	const [mode, setMode] = useState('list');
@@ -75,7 +75,7 @@ const BannerPage = () => {
 						<SelectModal modal={modal} setModal={setModal} />
 					)}
 					{modal.type === 'list' && (
-						<ListModal modal={modal} setModal={setModal} />
+						<BannerListModal modal={modal} setModal={setModal} />
 					)}
 					<Footer />
 				</Contents>
