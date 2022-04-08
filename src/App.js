@@ -1,15 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Background from './components/Background';
+import Background from './view/components/Common/Background';
 import Auth from './hoc/auth';
-import LoginPage from './pages/LoginPage';
-import BannerPage from './pages/BannerPage';
-import SupplierPage from './pages/SupplierPage';
-import ProductPage from './pages/ProductPage';
-import ProductImgPage from './pages/ProductImgPage';
-import OrderPage from './pages/OrderPage';
-import UserPage from './pages/UserPage';
-import FaqPage from './pages/FaqPage';
+import LoginPage from './view/pages/LoginPage';
+import BannerPage from './view/pages/BannerPage';
+import SupplierPage from './view/pages/SupplierPage';
+import ProductPage from './view/pages/ProductPage';
+import ProductImgPage from './view/pages/ProductImgPage';
+import OrderPage from './view/pages/OrderPage';
+import UserPage from './view/pages/UserPage';
+import FaqPage from './view/pages/FaqPage';
 
 const App = () => {
 	return (
