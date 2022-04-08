@@ -8,7 +8,7 @@ import * as productController from '../../../controller/product';
 import * as supplierController from '../../../controller/supplier';
 import * as category from '../../../model/link';
 import styled from 'styled-components';
-import down from '../../../images/angle-down.svg';
+import down from '../../../images/angle_down.svg';
 import order_icon from '../../../images/order_icon.svg';
 import empty_icon from '../../../images/empty_icon.svg';
 import check_icon from '../../../images/check_icon.svg';

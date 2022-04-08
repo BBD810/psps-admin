@@ -5,7 +5,7 @@ import { IMG_ADDRESS } from '../../../config';
 import * as link from '../../../model/link';
 import * as bannerController from '../../../controller/banner';
 import styled from 'styled-components';
-import down from '../../../images/angle-down.svg';
+import down from '../../../images/angle_down.svg';
 
 const CreateTemplate = (props) => {
 	const history = useHistory();

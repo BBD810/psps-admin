@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import down from '../../../images/angle-down.svg';
+import down from '../../../images/angle_down.svg';
 
 const ReplaceModal = (props) => {
 	const modalBox = useRef();

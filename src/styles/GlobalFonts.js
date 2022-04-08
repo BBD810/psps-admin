@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
-import KR_Regular from '../fonts/Noto_Sans_KR_woff/NotoSansKR-Regular.woff';
-import KR_Black from '../fonts/Noto_Sans_KR_woff/NotoSansKR-Black.woff';
+import KR_Regular from '../fonts/NotoSansKR-Regular.woff';
+import KR_Black from '../fonts/NotoSansKR-Black.woff';
 
 const GlobalFonts = createGlobalStyle`
 	@font-face {

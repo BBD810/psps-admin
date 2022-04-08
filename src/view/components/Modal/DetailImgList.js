@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import * as productImgController from '../../../controller/product_img';
 import styled from 'styled-components';
-import down from '../../../images/angle-down.svg';
+import down from '../../../images/angle_down.svg';
 
 const DetailImgListModal = (props) => {
 	const history = useHistory();

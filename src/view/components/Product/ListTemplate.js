@@ -5,7 +5,7 @@ import * as productController from '../../../controller/product';
 import * as category from '../../../model/link';
 import * as toggleMenu from '../../../model/toggle';
 import styled from 'styled-components';
-import down from '../../../images/angle-down.svg';
+import down from '../../../images/angle_down.svg';
 import left from '../../../images/left.svg';
 import right from '../../../images/right.svg';
 import toggle from '../../../images/toggle.svg';

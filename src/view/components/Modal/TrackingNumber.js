@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as courierController from '../../../controller/courier';
 import styled from 'styled-components';
-import down from '../../../images/angle-down.svg';
+import down from '../../../images/angle_down.svg';
 
 const TrackingNumberModal = (props) => {
 	const companyBox = useRef();

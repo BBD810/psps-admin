@@ -4,7 +4,7 @@ import { IMG_ADDRESS } from '../../../config';
 import * as toggleMenu from '../../../model/toggle';
 import * as productImgController from '../../../controller/product_img';
 import styled from 'styled-components';
-import down from '../../../images/angle-down.svg';
+import down from '../../../images/angle_down.svg';
 import left from '../../../images/left.svg';
 import right from '../../../images/right.svg';
 import toggle from '../../../images/toggle.svg';

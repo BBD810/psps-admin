@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { faqCategory } from '../../../model/category';
 import styled from 'styled-components';
-import down from '../../../images/angle-down.svg';
+import down from '../../../images/angle_down.svg';
 
 const FaqInputModal = (props) => {
 	const typeBox = useRef();

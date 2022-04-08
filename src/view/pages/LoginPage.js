@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { admin_login } from '../../modules/admin';
 import * as authController from '../../controller/auth';
 import styled from 'styled-components';
-import logo from '../../images/cetus-logo.svg';
+import logo from '../../images/logo_cetus.svg';
 
 const ConfirmModal = lazy(() => {
 	return import('../../view/components/Modal/Confirm');

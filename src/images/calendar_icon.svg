@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="21" height="24" viewBox="0 0 21 24">
-  <g id="그룹_89" data-name="그룹 89" transform="translate(-1138 -310)">
-    <g id="사각형_143" data-name="사각형 143" transform="translate(1138 310)" fill="#f5f5f5" stroke="#2a3349" stroke-width="1" opacity="0.003">
-      <rect width="21" height="24" stroke="none"/>
-      <rect x="0.5" y="0.5" width="20" height="23" fill="none"/>
-    </g>
-    <path id="Icon_material-date-range" data-name="Icon material-date-range" d="M9.633,10.56H7.922v1.68H9.633Zm3.422,0H11.344v1.68h1.711Zm3.422,0H14.767v1.68h1.711Zm1.711-5.88h-.856V3H15.622V4.68H8.778V3H7.067V4.68H6.211a1.688,1.688,0,0,0-1.7,1.68L4.5,18.12A1.7,1.7,0,0,0,6.211,19.8H18.189A1.7,1.7,0,0,0,19.9,18.12V6.36A1.7,1.7,0,0,0,18.189,4.68Zm0,13.44H6.211V8.88H18.189Z" transform="translate(1136.3 311.2)" fill="#2a3349"/>
-  </g>
-</svg>

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { admin_logout } from '../../../modules/admin';
 import * as request from '../../../controller/auth';
 import styled from 'styled-components';
-import logo from '../../../images/psps-logo.svg';
+import logo from '../../../images/logo_psps.svg';
 
 const SideBar = (props) => {
 	const dispatch = useDispatch();
