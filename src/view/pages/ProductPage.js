@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import SideBar from '../../view/components/Common/SideBar';
 import Category from '../../view/components/Common/Category';
@@ -15,14 +15,14 @@ import DetailImgListModal from '../../view/components/Modal/DetailImgList';
 import DetailImgCreateModal from '../../view/components/Modal/DetailImgCreate';
 
 const ProductPage = () => {
-	const history = useHistory();
+	const location = useLocation();
 	const [mode, setMode] = useState('list');
 	const [menu, setMenu] = useState('상품');
 	const [category, setCategory] = useState('상품 목록');
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
 
 	const getCategory = (category) => {
-		const data = history.location.state;
+		const data = location.state;
 		setCategory(category);
 		data && data.from ? setMode('detail') : setMode('list');
 	};

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { priceToString } from '../../../utils/PriceToString';
 import { IMG_ADDRESS } from '../../../config';
 import * as productOptionController from '../../../controller/product_option';
@@ -18,7 +18,8 @@ import StateInfo from './StateInfo';
 import Spinner from '../Common/Spinner';
 
 const EditTemplate = (props) => {
-	const history = useHistory();
+	const navigate = useNavigate();
+	const location = useLocation();
 	const partBox = useRef();
 	const subPartBox = useRef();
 	const supplierBox = useRef();
@@ -50,7 +51,7 @@ const EditTemplate = (props) => {
 			}
 		});
 		return () => {
-			history.replace();
+			navigate('', { replace: true });
 			isSubscribed = false;
 		};
 		// eslint-disable-next-line
@@ -59,8 +60,8 @@ const EditTemplate = (props) => {
 	useEffect(() => {
 		setIsLoading(true);
 		let isSubscribed = true;
-		if (history.location.state) {
-			productController.getDetail(history.location.state).then((res) => {
+		if (location.state) {
+			productController.getDetail(location.state).then((res) => {
 				if (isSubscribed && res.data.success) {
 					let product = res.data.product;
 					setProductId(product.product_id);
@@ -81,7 +82,7 @@ const EditTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
-	}, [props.mode, history.location.state]);
+	}, [props.mode, location.state]);
 
 	const onChangeTitle = (e) => {
 		setTitle(e.target.value);
@@ -301,17 +302,17 @@ const EditTemplate = (props) => {
 	};
 
 	useEffect(() => {
-		if (history.location.state) {
-			setDetailImgId(history.location.state);
-			productImgController.getDetail(history.location.state).then((res) => {
+		if (location.state) {
+			setDetailImgId(location.state);
+			productImgController.getDetail(location.state).then((res) => {
 				if (res.data.success) {
 					setDetailPrevImg(res.data.product_image.image);
-					history.replace();
+					navigate('', { replace: true });
 				}
 			});
 		}
 		// eslint-disable-next-line
-	}, [history.location.state]);
+	}, [location.state]);
 
 	useEffect(() => {
 		title &&

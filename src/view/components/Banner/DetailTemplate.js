@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { IMG_ADDRESS } from '../../../config';
 import { numberToString } from '../../../utils/NumberToString';
 import { getLinkKr } from '../../../utils/GetLink';
@@ -7,12 +7,15 @@ import * as bannerController from '../../../controller/banner';
 import styled from 'styled-components';
 
 const DetailTemplate = (props) => {
-	const history = useHistory();
+	const navigate = useNavigate();
+	const location = useLocation();
 	const [bannerId, setBannerId] = useState('');
 	const [imgHeight, setImgHeight] = useState({});
 	const [displayList, setDisplayList] = useState(false);
 	const [detail, setDetail] = useState({});
 	const [displayState, setDisplayState] = useState('');
+
+	console.log('location', location.state);
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -22,10 +25,10 @@ const DetailTemplate = (props) => {
 		} else if (props.category === '광고 배너') {
 			setImgHeight({ height: '34.9rem' });
 		}
-		bannerController.getDetail(history.location.state).then((res) => {
+		bannerController.getDetail(location.state).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setDetail(res.data.banner);
-				setBannerId(history.location.state);
+				setBannerId(location.state);
 			}
 		});
 		bannerController.getDisplayList(type, true).then((res) => {
@@ -36,10 +39,10 @@ const DetailTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
-	}, [history.location.state, props.category]);
+	}, [location.state, props.category]);
 
 	const selectEdit = () => {
-		history.push({ state: bannerId });
+		navigate('', { state: bannerId });
 		props.setMode('edit');
 	};
 	const selectDisplay = () => {

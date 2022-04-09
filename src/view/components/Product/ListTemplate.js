@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { IMG_ADDRESS, CLIENT_ADDRESS } from '../../../config';
 import * as productController from '../../../controller/product';
 import * as category from '../../../model/link';
@@ -12,7 +12,7 @@ import toggle from '../../../images/toggle.svg';
 import Spinner from '../Common/Spinner';
 
 const ListTemplate = (props) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const menuBox = useRef();
 	const partBox = useRef();
 	const subPartBox = useRef();
@@ -58,7 +58,7 @@ const ListTemplate = (props) => {
 	}, [part]);
 
 	const goDetail = (el) => {
-		history.push({ state: el.product_id });
+		navigate('', { state: el.product_id });
 		props.setMode('detail');
 	};
 	const menuOpenController = (idx) => {
@@ -78,7 +78,7 @@ const ListTemplate = (props) => {
 		setMenuOpen('close');
 	};
 	const selectEdit = (el) => {
-		history.push({ state: el.product_id });
+		navigate('', { state: el.product_id });
 		props.setMode('edit');
 	};
 	const selectDisplay = (el) => {

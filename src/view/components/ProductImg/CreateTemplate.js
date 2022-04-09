@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { IMG_ADDRESS } from '../../../config';
 import * as productImgController from '../../../controller/product_img';
 import extension from '../../../model/extension';
 import styled from 'styled-components';
 
 const CreateTemplate = (props) => {
-	const history = useHistory();
+	const location = useLocation();
 	const typeItems = ['단일', '공유'];
 	const [productImgId, setProductImgId] = useState('');
 	const [title, setTitle] = useState('');
@@ -19,7 +19,7 @@ const CreateTemplate = (props) => {
 
 	useEffect(() => {
 		if (editMode) {
-			productImgController.getDetail(history.location.state).then((res) => {
+			productImgController.getDetail(location.state).then((res) => {
 				if (res.data.success) {
 					let product_image = res.data.product_image;
 					setProductImgId(product_image.product_image_id);

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { IMG_ADDRESS } from '../../../config';
 import * as toggleMenu from '../../../model/toggle';
 import * as productImgController from '../../../controller/product_img';
@@ -11,7 +11,7 @@ import toggle from '../../../images/toggle.svg';
 import Spinner from '../Common/Spinner';
 
 const ListTemplate = (props) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const menuSelect = useRef();
 	const viewListBox = useRef();
 	const viewList = ['전체보기', '단일 이미지', '공유 이미지'];
@@ -69,7 +69,7 @@ const ListTemplate = (props) => {
 	}, [view]);
 
 	const goDetail = (el) => {
-		history.push({ state: el.product_image_id });
+		navigate('', { state: el.product_image_id });
 		props.setMode('detail');
 	};
 	const menuOpenController = (idx) => {
@@ -87,7 +87,7 @@ const ListTemplate = (props) => {
 		setMenuOpen('close');
 	};
 	const selectEdit = (el) => {
-		history.push({ state: el.product_image_id });
+		navigate('', { state: el.product_image_id });
 		props.setMode('edit');
 	};
 	const selectShare = (detail) => {

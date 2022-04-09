@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { IMG_ADDRESS } from '../../../config';
 import * as productImgController from '../../../controller/product_img';
 import styled from 'styled-components';
 
 const DetailTemplate = (props) => {
-	const history = useHistory();
+	const navigate = useNavigate();
+	const location = useLocation();
 	const typeItems = ['단일', '공유'];
 	const [detail, setDetail] = useState({});
 	const [shareImgList, setShareImgList] = useState([]);
@@ -13,7 +14,7 @@ const DetailTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		productImgController.getDetail(history.location.state).then((res) => {
+		productImgController.getDetail(location.state).then((res) => {
 			if (isSubscribed && res.data.success) {
 				setDetail(res.data.product_image);
 				setShareList(res.data.product_list);
@@ -22,7 +23,7 @@ const DetailTemplate = (props) => {
 		return () => {
 			isSubscribed = false;
 		};
-	}, [history.location.state]);
+	}, [location.state]);
 	useEffect(() => {
 		let isSubscribed = true;
 		productImgController.getShareList(true).then((res) => {
@@ -95,11 +96,11 @@ const DetailTemplate = (props) => {
 		}
 	};
 	const selectEdit = () => {
-		history.push({ state: detail.product_image_id });
+		navigate('', { state: detail.product_image_id });
 		props.setMode('edit');
 	};
 	const checkLink = (product_id) => {
-		history.push({
+		navigate({
 			pathname: '/product',
 			state: { from: 'img', product_id },
 		});

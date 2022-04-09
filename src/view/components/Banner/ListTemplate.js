@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { IMG_ADDRESS, CLIENT_ADDRESS } from '../../../config';
 import { getLink } from '../../../utils/GetLink';
 import * as toggleMenu from '../../../model/toggle';
@@ -11,9 +11,9 @@ import toggle from '../../../images/toggle.svg';
 import Spinner from '../Common/Spinner';
 
 const ListTemplate = (props) => {
-	const [isLoading, setIsLoading] = useState(false);
-	const history = useHistory();
+	const navigate = useNavigate();
 	const menuSelect = useRef();
+	const [isLoading, setIsLoading] = useState(false);
 	const [menuOpen, setMenuOpen] = useState('close');
 	const [imgHeight, setImgHeight] = useState({});
 	const [bannerId, setBannerId] = useState('');
@@ -54,7 +54,7 @@ const ListTemplate = (props) => {
 	}, [list]);
 
 	const goDetail = (el) => {
-		history.push({ state: el.banner_id });
+		navigate('', { state: el.banner_id });
 		props.setMode('detail');
 	};
 	const menuOpenController = (idx) => {
@@ -76,7 +76,7 @@ const ListTemplate = (props) => {
 		setMenuOpen('close');
 	};
 	const selectEdit = (el) => {
-		history.push({ state: el.banner_id });
+		navigate('', { state: el.banner_id });
 		props.setMode('edit');
 	};
 	const selectDisplay = (detail) => {

@@ -1,7 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Background from './view/components/Common/Background';
-import Auth from './hoc/auth';
+// import Auth from './hoc/auth';
 import LoginPage from './view/pages/LoginPage';
 import BannerPage from './view/pages/BannerPage';
 import SupplierPage from './view/pages/SupplierPage';
@@ -13,33 +13,21 @@ import FaqPage from './view/pages/FaqPage';
 
 const App = () => {
 	return (
-		<Router>
+		<BrowserRouter>
 			<div id='App'>
 				<Background />
-				<Switch>
-					<Route exact path='/' component={Auth(BannerPage, true)} />
-					<Route exact path='/login' component={Auth(LoginPage, false)} />
-					<Route
-						exact
-						path='/supplier'
-						component={Auth(SupplierPage, true)}
-					/>
-					<Route
-						exact
-						path='/product'
-						component={Auth(ProductPage, true)}
-					/>
-					<Route
-						exact
-						path='/product-img'
-						component={Auth(ProductImgPage, true)}
-					/>
-					<Route exact path='/order' component={Auth(OrderPage, true)} />
-					<Route exact path='/user' component={Auth(UserPage, true)} />
-					<Route exact path='/faq' component={Auth(FaqPage, null)} />
-				</Switch>
+				<Routes>
+					{<Route path='/' element={<BannerPage />} />}
+					<Route path='/login' element={<LoginPage />} />
+					<Route path='/supplier' element={<SupplierPage />} />
+					<Route path='/product' element={<ProductPage />} />
+					<Route path='/product-img' element={<ProductImgPage />} />
+					<Route path='/order' element={<OrderPage />} />
+					<Route path='/user' element={<UserPage />} />
+					<Route path='/faq' element={<FaqPage />} />
+				</Routes>
 			</div>
-		</Router>
+		</BrowserRouter>
 	);
 };
 

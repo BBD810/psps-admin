@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as productImgController from '../../../controller/product_img';
 import styled from 'styled-components';
 
 const DetailImgCreate = (props) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const [title, setTitle] = useState('');
 	const [type, setType] = useState('단일');
 	const [img, setImg] = useState(false);
@@ -32,7 +32,7 @@ const DetailImgCreate = (props) => {
 		formData.append('share', share);
 		productImgController.create(formData).then((res) => {
 			if (res.data.success) {
-				history.push({ state: res.data.product_image_id });
+				navigate('', { state: res.data.product_image_id });
 				props.setModal({
 					type: 'confirm',
 					text: '이미지가 생성되었습니다.',

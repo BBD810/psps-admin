@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { adminLogin } from '../../modules/admin';
 import * as authController from '../../controller/auth';
@@ -9,7 +9,7 @@ import ConfirmModal from '../../view/components/Modal/Confirm';
 
 const LoginPage = () => {
 	const dispatch = useDispatch();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const showButton = useRef();
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
@@ -46,7 +46,7 @@ const LoginPage = () => {
 				if (res.data.success) {
 					dispatch(adminLogin());
 					setModal({ type: 'confirm', text: '로그인 되었습니다.' });
-					history.push('/');
+					navigate('/');
 				} else {
 					setModal({
 						type: 'confirm',

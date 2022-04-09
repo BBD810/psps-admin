@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { priceToString } from '../../../utils/PriceToString';
 import { IMG_ADDRESS } from '../../../config';
 import * as productController from '../../../controller/product';
@@ -10,7 +10,8 @@ import StateInfo from '../Product/StateInfo';
 import Spinner from '../Common/Spinner';
 
 const DetailTemplate = (props) => {
-	const history = useHistory();
+	const navigate = useNavigate();
+	const location = useLocation();
 	const [isLoading, setIsLoading] = useState(false);
 	const [detail, setDetail] = useState({});
 	const [optionList, setOptionList] = useState([]);
@@ -18,19 +19,18 @@ const DetailTemplate = (props) => {
 	useEffect(() => {
 		let isSubscribed = true;
 		setIsLoading(true);
-		if (history.location.state) {
-			const locationState = history.location.state;
+		if (location.state) {
 			let productId;
-			if (locationState.from) {
-				productId = locationState.product_id;
+			if (location.state.from) {
+				productId = location.state.product_id;
 			} else {
-				productId = locationState;
+				productId = location.state;
 			}
 			productController.getDetail(productId).then((res) => {
 				if (isSubscribed && res.data.success) {
 					setDetail(res.data.product);
 					setOptionList(res.data.product_option_list);
-					history.replace();
+					navigate('', { replace: true });
 				}
 			});
 		}
@@ -39,7 +39,7 @@ const DetailTemplate = (props) => {
 			isSubscribed = false;
 		};
 		// eslint-disable-next-line
-	}, [history.location.state]);
+	}, [location.state]);
 
 	const selectList = () => {
 		props.setMode('list');
@@ -59,7 +59,7 @@ const DetailTemplate = (props) => {
 		}
 	};
 	const selectEdit = () => {
-		history.push({ state: detail.product_id });
+		navigate('', { state: detail.product_id });
 		props.setMode('edit');
 	};
 

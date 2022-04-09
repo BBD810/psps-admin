@@ -5,7 +5,7 @@ import Spinner from '../Common/Spinner';
 
 const StateInfo = (props) => {
 	const [isLoading, setIsLoading] = useState(false);
-	const [detail, setDetail] = useState({ state: 'F', recommend: 0 });
+	const [detail, setDetail] = useState('', { state: 'F', recommend: 0 });
 	const [optionList, setOptionList] = useState([]);
 	const [recommendList, setRecommendList] = useState([]);
 

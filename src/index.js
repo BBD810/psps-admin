@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { rootReducer } from './modules';
@@ -15,11 +14,9 @@ const store = createStore(rootReducer);
 ReactDOM.render(
 	<ThemeProvider theme={theme}>
 		<Provider store={store}>
-			<BrowserRouter>
-				<GlobalStyle />
-				<GlobalFonts />
-				<App />
-			</BrowserRouter>
+			<GlobalStyle />
+			<GlobalFonts />
+			<App />
 		</Provider>
 	</ThemeProvider>,
 	document.getElementById('root')

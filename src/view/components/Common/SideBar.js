@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { adminLogout } from '../../../modules/admin';
 import * as request from '../../../controller/auth';
@@ -8,7 +8,7 @@ import logo from '../../../images/logo_psps.svg';
 
 const SideBar = (props) => {
 	const dispatch = useDispatch();
-	const history = useHistory();
+	const navigate = useNavigate();
 	const [pull, setPull] = useState(false);
 
 	const menus = [
@@ -29,35 +29,35 @@ const SideBar = (props) => {
 		props.setMenu(innerText);
 		switch (innerText) {
 			case '배너':
-				history.push('/');
+				navigate('/');
 				break;
 			case '공급원':
-				history.push('/supplier');
+				navigate('/supplier');
 				break;
 			case '상품':
-				history.push('/product');
+				navigate('/product');
 				break;
 			case '상품 이미지':
-				history.push('/product-img');
+				navigate('/product-img');
 				break;
 			case '주문':
-				history.push('/order');
+				navigate('/order');
 				break;
 			case '고객':
-				history.push('/user');
+				navigate('/user');
 				break;
 			case 'FAQ':
-				history.push('/faq');
+				navigate('/faq');
 				break;
 			default:
-				history.push('/');
+				navigate('/');
 		}
 	};
 	const goLogout = () => {
 		request.logout().then((res) => {
 			if (res.data.success) {
 				dispatch(adminLogout());
-				history.push('/login');
+				navigate('/login');
 			}
 		});
 	};

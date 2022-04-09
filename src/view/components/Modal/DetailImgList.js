@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as productImgController from '../../../controller/product_img';
 import styled from 'styled-components';
 import down from '../../../images/angle_down.svg';
 
 const DetailImgList = (props) => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const modalBox = useRef();
 	const shareBox = useRef();
 	const singleBox = useRef();
@@ -55,7 +55,7 @@ const DetailImgList = (props) => {
 				? (value = shareSelected.product_image_id)
 				: (value = singleSelected.product_image_id);
 		}
-		history.push({ state: value });
+		navigate('', { state: value });
 		props.setModal({ type: '' });
 	};
 	const selectNo = () => {

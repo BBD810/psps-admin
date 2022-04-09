@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { IMG_ADDRESS } from '../../../config';
 import * as link from '../../../model/link';
 import * as bannerController from '../../../controller/banner';
@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import down from '../../../images/angle_down.svg';
 
 const CreateTemplate = (props) => {
-	const history = useHistory();
+	const location = useLocation();
 	const pageSelect = useRef();
 	const partSelect = useRef();
 	const subPartSelect = useRef();
@@ -40,8 +40,8 @@ const CreateTemplate = (props) => {
 
 	useEffect(() => {
 		let isSubscribed = true;
-		if (editMode && history.location.state) {
-			bannerController.getDetail(history.location.state).then((res) => {
+		if (editMode && location.state) {
+			bannerController.getDetail(location.state).then((res) => {
 				if (isSubscribed && res.data.success) {
 					let banner = res.data.banner;
 					setBannerId(banner.banner_id);
