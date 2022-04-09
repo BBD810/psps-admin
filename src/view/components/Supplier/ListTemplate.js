@@ -46,7 +46,6 @@ const ListTemplate = (props) => {
 	};
 	const inputController = (e, item) => {
 		const value = e.target.value;
-		console.log(item);
 		switch (item) {
 			case '상호명':
 				return setInput({ ...input, name: value });

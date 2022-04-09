@@ -15,8 +15,6 @@ const DetailTemplate = (props) => {
 	const [detail, setDetail] = useState({});
 	const [displayState, setDisplayState] = useState('');
 
-	console.log('location', location.state);
-
 	useEffect(() => {
 		let isSubscribed = true;
 		let type = props.category.substr(0, 2);
