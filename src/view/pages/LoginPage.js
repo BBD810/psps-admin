@@ -45,7 +45,6 @@ const LoginPage = () => {
 			authController.login(data).then((res) => {
 				if (res.data.success) {
 					dispatch(adminLogin());
-					setModal({ type: 'confirm', text: '로그인 되었습니다.' });
 					navigate('/');
 				} else {
 					setModal({
@@ -61,34 +60,32 @@ const LoginPage = () => {
 	};
 
 	return (
-		<div id='container'>
-			<Login>
-				<LogoImg alt='logo img' src={logo} />
-				<Input
-					type='text'
-					value={username ? username : ''}
-					placeholder='ID'
-					onFocus={onNotShow}
-					onChange={onChangeUsername}
-					onKeyDown={onEnter}
-				/>
-				<Input
-					type={show ? 'text' : 'password'}
-					value={password ? password : ''}
-					placeholder='Password'
-					onFocus={onShow}
-					onChange={onChangePassword}
-					onKeyDown={onEnter}
-				/>
-				<Button onClick={onSubmit}>Log in</Button>
-				<Text ref={showButton} onClick={showController}>
-					Show
-				</Text>
-				{modal.type === 'confirm' && (
-					<ConfirmModal modal={modal} setModal={setModal} />
-				)}
-			</Login>
-		</div>
+		<Login>
+			<LogoImg alt='logo img' src={logo} />
+			<Input
+				type='text'
+				value={username ? username : ''}
+				placeholder='ID'
+				onFocus={onNotShow}
+				onChange={onChangeUsername}
+				onKeyDown={onEnter}
+			/>
+			<Input
+				type={show ? 'text' : 'password'}
+				value={password ? password : ''}
+				placeholder='Password'
+				onFocus={onShow}
+				onChange={onChangePassword}
+				onKeyDown={onEnter}
+			/>
+			<Button onClick={onSubmit}>Log in</Button>
+			<Text ref={showButton} onClick={showController}>
+				Show
+			</Text>
+			{modal.type === 'confirm' && (
+				<ConfirmModal modal={modal} setModal={setModal} />
+			)}
+		</Login>
 	);
 };
 

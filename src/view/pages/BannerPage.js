@@ -23,64 +23,62 @@ const BannerPage = () => {
 	const createMode = category !== '메인 배너' && category !== '광고 배너';
 
 	return (
-		<div id='container'>
-			<Container>
-				<SideBar menu={menu} setMenu={setMenu} />
-				<Contents>
-					<Category
+		<Container>
+			<SideBar menu={menu} setMenu={setMenu} />
+			<Contents>
+				<Category
+					category={category}
+					getCategory={getCategory}
+					mode={mode}
+					menu={menu}
+				/>
+				{!createMode && mode === 'list' && (
+					<ListTemplate
+						category={category}
+						mode={mode}
+						modal={modal}
+						setMode={setMode}
+						setModal={setModal}
+					/>
+				)}
+				{!createMode && mode === 'detail' && (
+					<DetailTemplate
+						category={category}
+						mode={mode}
+						modal={modal}
+						setMode={setMode}
+						setModal={setModal}
+					/>
+				)}
+				{!createMode && mode === 'edit' && (
+					<CreateTemplate
+						category={category}
+						mode={mode}
+						modal={modal}
+						setMode={setMode}
+						setModal={setModal}
+					/>
+				)}
+				{createMode && (
+					<CreateTemplate
 						category={category}
 						getCategory={getCategory}
-						mode={mode}
-						menu={menu}
+						modal={modal}
+						setModal={setModal}
 					/>
-					{!createMode && mode === 'list' && (
-						<ListTemplate
-							category={category}
-							mode={mode}
-							modal={modal}
-							setMode={setMode}
-							setModal={setModal}
-						/>
-					)}
-					{!createMode && mode === 'detail' && (
-						<DetailTemplate
-							category={category}
-							mode={mode}
-							modal={modal}
-							setMode={setMode}
-							setModal={setModal}
-						/>
-					)}
-					{!createMode && mode === 'edit' && (
-						<CreateTemplate
-							category={category}
-							mode={mode}
-							modal={modal}
-							setMode={setMode}
-							setModal={setModal}
-						/>
-					)}
-					{createMode && (
-						<CreateTemplate
-							category={category}
-							getCategory={getCategory}
-							modal={modal}
-							setModal={setModal}
-						/>
-					)}
-					{modal.type === 'confirm' && (
-						<ConfirmModal modal={modal} setModal={setModal} />
-					)}
-					{modal.type === 'select' && (
-						<SelectModal modal={modal} setModal={setModal} />
-					)}
-					{modal.type === 'list' && (
-						<BannerListModal modal={modal} setModal={setModal} />
-					)}
-					<Footer />
-				</Contents>
-			</Container>
-		</div>
+				)}
+				{modal.type === 'confirm' && (
+					<ConfirmModal modal={modal} setModal={setModal} />
+				)}
+				{modal.type === 'select' && (
+					<SelectModal modal={modal} setModal={setModal} />
+				)}
+				{modal.type === 'list' && (
+					<BannerListModal modal={modal} setModal={setModal} />
+				)}
+				<Footer />
+			</Contents>
+		</Container>
 	);
 };
 

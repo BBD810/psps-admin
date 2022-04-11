@@ -18,42 +18,40 @@ const UserPage = () => {
 	const onePage = 10;
 
 	return (
-		<div id='container'>
-			<Container>
-				<SideBar menu={menu} setMenu={setMenu} />
-				<Contents>
-					<Category
-						category={category}
-						getCategory={setCategory}
-						mode={mode}
-						menu={menu}
-						modal={modal}
-						setModal={setModal}
-					/>
-					<UserFilter page={page} setList={setList} setTotal={setTotal} />
-					<UserList
-						list={list}
-						setList={setList}
+		<Container>
+			<SideBar menu={menu} setMenu={setMenu} />
+			<Contents>
+				<Category
+					category={category}
+					getCategory={setCategory}
+					mode={mode}
+					menu={menu}
+					modal={modal}
+					setModal={setModal}
+				/>
+				<UserFilter page={page} setList={setList} setTotal={setTotal} />
+				<UserList
+					list={list}
+					setList={setList}
+					page={page}
+					total={total}
+					onePage={onePage}
+					onClickPage={setPage}
+					modal={modal}
+					setModal={setModal}
+				/>
+				{modal.type === 'order' && (
+					<UserOrderModal
 						page={page}
+						setPage={setPage}
 						total={total}
-						onePage={onePage}
-						onClickPage={setPage}
 						modal={modal}
 						setModal={setModal}
 					/>
-					{modal.type === 'order' && (
-						<UserOrderModal
-							page={page}
-							setPage={setPage}
-							total={total}
-							modal={modal}
-							setModal={setModal}
-						/>
-					)}
-					<Footer />
-				</Contents>
-			</Container>
-		</div>
+				)}
+				<Footer />
+			</Contents>
+		</Container>
 	);
 };
 

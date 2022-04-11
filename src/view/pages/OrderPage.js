@@ -12,25 +12,23 @@ const OrderPage = () => {
 	const [modal, setModal] = useState({ type: '', test: '', return: '' });
 
 	return (
-		<div id='container'>
-			<Container>
-				<SideBar menu={menu} setMenu={setMenu} />
-				<Contents>
-					<Category
-						category={category}
-						getCategory={setCategory}
-						mode={mode}
-						menu={menu}
-						modal={modal}
-						setModal={setModal}
-					/>
-					{category === '주문 목록' && (
-						<Order modal={modal} setModal={setModal} />
-					)}
-					<Footer />
-				</Contents>
-			</Container>
-		</div>
+		<Container>
+			<SideBar menu={menu} setMenu={setMenu} />
+			<Contents>
+				<Category
+					category={category}
+					getCategory={setCategory}
+					mode={mode}
+					menu={menu}
+					modal={modal}
+					setModal={setModal}
+				/>
+				{category === '주문 목록' && (
+					<Order modal={modal} setModal={setModal} />
+				)}
+				<Footer />
+			</Contents>
+		</Container>
 	);
 };
 
