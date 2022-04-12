@@ -11,7 +11,7 @@ const SupplierPage = () => {
 	const [mode, setMode] = useState('list');
 	const [menu, setMenu] = useState('공급원');
 	const [category, setCategory] = useState('공급원 목록');
-	const [modal, setModal] = useState({ type: '' });
+	const [modal, setModal] = useState({});
 
 	const getCategory = (category) => {
 		setCategory(category);

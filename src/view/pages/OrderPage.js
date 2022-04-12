@@ -9,7 +9,7 @@ const OrderPage = () => {
 	const mode = 'list';
 	const [menu, setMenu] = useState('주문');
 	const [category, setCategory] = useState('주문 목록');
-	const [modal, setModal] = useState({ type: '', test: '', return: '' });
+	const [modal, setModal] = useState({});
 
 	return (
 		<Container>

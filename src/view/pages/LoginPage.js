@@ -14,7 +14,7 @@ const LoginPage = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [show, setShow] = useState(false);
-	const [modal, setModal] = useState({ type: '' });
+	const [modal, setModal] = useState({});
 
 	const onChangeUsername = (e) => {
 		return setUsername(e.target.value);

@@ -16,7 +16,7 @@ const FaqPage = () => {
 	const mode = 'list';
 	const [menu, setMenu] = useState('FAQ');
 	const [category, setCategory] = useState('상품관련');
-	const [modal, setModal] = useState({ type: '' });
+	const [modal, setModal] = useState({});
 	const [list, setList] = useState([]);
 
 	useEffect(() => {

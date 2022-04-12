@@ -11,7 +11,7 @@ const UserPage = () => {
 	const mode = 'list';
 	const [menu, setMenu] = useState('고객');
 	const [category, setCategory] = useState('고객 목록');
-	const [modal, setModal] = useState({ type: '' });
+	const [modal, setModal] = useState({});
 	const [page, setPage] = useState(1);
 	const [total, setTotal] = useState(0);
 	const [list, setList] = useState([]);

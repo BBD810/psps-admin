@@ -14,7 +14,7 @@ const BannerPage = () => {
 	const [mode, setMode] = useState('list');
 	const [menu, setMenu] = useState('배너');
 	const [category, setCategory] = useState('메인 배너');
-	const [modal, setModal] = useState({ type: '', text: '', return: '' });
+	const [modal, setModal] = useState({});
 
 	const getCategory = (category) => {
 		setCategory(category);

@@ -19,7 +19,7 @@ const ProductPage = () => {
 	const [mode, setMode] = useState('list');
 	const [menu, setMenu] = useState('상품');
 	const [category, setCategory] = useState('상품 목록');
-	const [modal, setModal] = useState({ type: '', test: '', return: '' });
+	const [modal, setModal] = useState({});
 
 	const getCategory = (category) => {
 		const data = location.state;

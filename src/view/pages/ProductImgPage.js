@@ -14,7 +14,7 @@ const ProductImgPage = () => {
 	const [mode, setMode] = useState('list');
 	const [menu, setMenu] = useState('상품 이미지');
 	const [category, setCategory] = useState('이미지 목록');
-	const [modal, setModal] = useState({ type: '' });
+	const [modal, setModal] = useState({});
 
 	const getCategory = (category) => {
 		setCategory(category);
