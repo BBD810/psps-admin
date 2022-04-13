@@ -19,27 +19,29 @@ const SupplierPage = () => {
 	};
 
 	return (
-		<Container>
-			<SideBar menu={menu} setMenu={setMenu} />
-			<Contents>
-				<Category
-					category={category}
-					getCategory={getCategory}
-					mode={mode}
-					menu={menu}
-					modal={modal}
-					setModal={setModal}
-				/>
-				<ListTemplate modal={modal} setModal={setModal} />
-				{modal.type === 'confirm' && (
-					<ConfirmModal modal={modal} setModal={setModal} />
-				)}
-				{modal.type === 'select' && (
-					<SelectModal modal={modal} setModal={setModal} />
-				)}
-				<Footer />
-			</Contents>
-		</Container>
+		<div id='container'>
+			<Container>
+				<SideBar menu={menu} setMenu={setMenu} />
+				<Contents>
+					<Category
+						category={category}
+						getCategory={getCategory}
+						mode={mode}
+						menu={menu}
+						modal={modal}
+						setModal={setModal}
+					/>
+					<ListTemplate modal={modal} setModal={setModal} />
+					{modal.type === 'confirm' && (
+						<ConfirmModal modal={modal} setModal={setModal} />
+					)}
+					{modal.type === 'select' && (
+						<SelectModal modal={modal} setModal={setModal} />
+					)}
+					<Footer />
+				</Contents>
+			</Container>
+		</div>
 	);
 };
 

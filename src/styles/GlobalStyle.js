@@ -21,10 +21,17 @@ body {
 }
 #App {
 	width:1920px;
-	min-height:995px;
+	height:995px;
 	display: flex;
 	justify-content: center;
 	position:relative;
+}
+#container {
+	width:100%;
+	height:100%;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
 }
 h1,
 h2,
@@ -113,7 +120,7 @@ input[type='date'] {
 	}
 	#App {
 		width:1280px;
-		min-height:720px;
+		height:720px;
 	}
 }
 `;

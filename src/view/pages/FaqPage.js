@@ -58,30 +58,32 @@ const FaqPage = () => {
 	};
 
 	return (
-		<Container>
-			<SideBar menu={menu} setMenu={setMenu} />
-			<Contents>
-				<Category
-					category={category}
-					getCategory={setCategory}
-					mode={mode}
-					menu={menu}
-				/>
-				<ListTemplate
-					list={list}
-					setList={setList}
-					modal={modal}
-					setModal={setModal}
-				/>
-				{(modal.act === 'create' || modal.act === 'edit') && (
-					<FaqInputModal modal={modal} setModal={setModal} />
-				)}
-				{modal.type === 'select' && (
-					<SelectModal modal={modal} setModal={setModal} />
-				)}
-				<Footer />
-			</Contents>
-		</Container>
+		<div id='container'>
+			<Container>
+				<SideBar menu={menu} setMenu={setMenu} />
+				<Contents>
+					<Category
+						category={category}
+						getCategory={setCategory}
+						mode={mode}
+						menu={menu}
+					/>
+					<ListTemplate
+						list={list}
+						setList={setList}
+						modal={modal}
+						setModal={setModal}
+					/>
+					{(modal.act === 'create' || modal.act === 'edit') && (
+						<FaqInputModal modal={modal} setModal={setModal} />
+					)}
+					{modal.type === 'select' && (
+						<SelectModal modal={modal} setModal={setModal} />
+					)}
+					<Footer />
+				</Contents>
+			</Container>
+		</div>
 	);
 };
 

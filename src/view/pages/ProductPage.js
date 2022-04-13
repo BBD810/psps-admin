@@ -30,70 +30,72 @@ const ProductPage = () => {
 	const createMode = category === '상품 추가';
 
 	return (
-		<Container>
-			<SideBar menu={menu} setMenu={setMenu} />
-			<Contents>
-				<Category
-					category={category}
-					getCategory={getCategory}
-					mode={mode}
-					menu={menu}
-					modal={modal}
-					setModal={setModal}
-				/>
-				{!createMode && mode === 'list' && (
-					<ListTemplate
-						category={category}
-						mode={mode}
-						modal={modal}
-						setMode={setMode}
-						setModal={setModal}
-					/>
-				)}
-				{!createMode && mode === 'detail' && (
-					<DetailTemplate
-						mode={mode}
-						modal={modal}
-						setMode={setMode}
-						setModal={setModal}
-					/>
-				)}
-				{!createMode && mode === 'edit' && (
-					<EditTemplate
-						mode={mode}
-						setMode={setMode}
-						modal={modal}
-						setModal={setModal}
-					/>
-				)}
-				{createMode && (
-					<CreateTemplate
+		<div id='container'>
+			<Container>
+				<SideBar menu={menu} setMenu={setMenu} />
+				<Contents>
+					<Category
 						category={category}
 						getCategory={getCategory}
 						mode={mode}
+						menu={menu}
 						modal={modal}
-						setMode={setMode}
 						setModal={setModal}
 					/>
-				)}
-				{modal.type === 'confirm' && (
-					<ConfirmModal modal={modal} setModal={setModal} />
-				)}
-				{modal.type === 'select' && (
-					<SelectModal modal={modal} setModal={setModal} />
-				)}
-				{modal.type === 'option' && (
-					<ProductOptionModal modal={modal} setModal={setModal} />
-				)}
-				{modal.type === 'img_list' && (
-					<DetailImgListModal modal={modal} setModal={setModal} />
-				)}
-				{modal.type === 'img_create' && (
-					<DetailImgCreateModal modal={modal} setModal={setModal} />
-				)}
-				<Footer />
-			</Contents>
-		</Container>
+					{!createMode && mode === 'list' && (
+						<ListTemplate
+							category={category}
+							mode={mode}
+							modal={modal}
+							setMode={setMode}
+							setModal={setModal}
+						/>
+					)}
+					{!createMode && mode === 'detail' && (
+						<DetailTemplate
+							mode={mode}
+							modal={modal}
+							setMode={setMode}
+							setModal={setModal}
+						/>
+					)}
+					{!createMode && mode === 'edit' && (
+						<EditTemplate
+							mode={mode}
+							setMode={setMode}
+							modal={modal}
+							setModal={setModal}
+						/>
+					)}
+					{createMode && (
+						<CreateTemplate
+							category={category}
+							getCategory={getCategory}
+							mode={mode}
+							modal={modal}
+							setMode={setMode}
+							setModal={setModal}
+						/>
+					)}
+					{modal.type === 'confirm' && (
+						<ConfirmModal modal={modal} setModal={setModal} />
+					)}
+					{modal.type === 'select' && (
+						<SelectModal modal={modal} setModal={setModal} />
+					)}
+					{modal.type === 'option' && (
+						<ProductOptionModal modal={modal} setModal={setModal} />
+					)}
+					{modal.type === 'img_list' && (
+						<DetailImgListModal modal={modal} setModal={setModal} />
+					)}
+					{modal.type === 'img_create' && (
+						<DetailImgCreateModal modal={modal} setModal={setModal} />
+					)}
+					<Footer />
+				</Contents>
+			</Container>
+		</div>
 	);
 };
 
