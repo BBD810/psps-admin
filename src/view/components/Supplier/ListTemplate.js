@@ -31,6 +31,19 @@ const ListTemplate = (props) => {
 		};
 	}, [page]);
 
+	useEffect(() => {
+		if (page !== 1 && list.length === 0) {
+			supplierController.getList(page - 1).then((res) => {
+				if (res.data.success) {
+					setPage(page - 1);
+					setTotal(res.data.total);
+					setList(res.data.supplier_list);
+				}
+			});
+		}
+		// eslint-disable-next-line
+	}, [list]);
+
 	const headerArr = [
 		'상호명',
 		'대표',
