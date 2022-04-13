@@ -76,7 +76,7 @@ const ListTemplate = (props) => {
 		) {
 			return props.setModal({
 				type: 'confirm',
-				text: '담당자 정보를 제외한\n모든 정보를 입력해주셔야 합니다.',
+				text: '담당자 정보를 제외한\n모든 정보를 입력해야 합니다.',
 			});
 		} else {
 			supplierController.create(input, page).then((res) => {
@@ -88,6 +88,11 @@ const ListTemplate = (props) => {
 					setCreateMode(false);
 					setTotal(res.data.total);
 					setList(res.data.supplier_list);
+				} else {
+					props.setModal({
+						type: 'confirm',
+						text: `각 항목을 형식에 맞게 입력해주세요.`,
+					});
 				}
 			});
 		}
