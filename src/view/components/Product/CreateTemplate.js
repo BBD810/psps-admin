@@ -277,6 +277,7 @@ const CreateTemplate = (props) => {
 			{isLoading && <Spinner />}
 			<StateInfo
 				active={false}
+				createMode={true}
 				modal={props.modal}
 				setModal={props.setModal}
 			/>

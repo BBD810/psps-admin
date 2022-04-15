@@ -157,7 +157,9 @@ const StateInfo = (props) => {
 										key={idx}
 										active={props.active}
 										selected={
-											idx === 0
+											props.createMode
+												? idx === 1
+												: idx === 0
 												? detail.state === 'O'
 												: detail.state === 'F'
 										}
