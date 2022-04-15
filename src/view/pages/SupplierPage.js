@@ -20,7 +20,7 @@ const SupplierPage = () => {
 				<Contents>
 					<Category
 						category={category}
-						setCategory={setCategory}
+						getCategory={setCategory}
 						mode={mode}
 						menu={menu}
 						modal={modal}

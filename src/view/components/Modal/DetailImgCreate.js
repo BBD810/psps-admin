@@ -10,12 +10,6 @@ const DetailImgCreate = (props) => {
 	const [img, setImg] = useState(false);
 	const [check, setCheck] = useState(false);
 
-	const onChangeTitle = (e) => {
-		setTitle(e.target.value);
-	};
-	const onChangeType = (e) => {
-		setType(e.target.innerText);
-	};
 	const fileUpload = (e) => {
 		const file = e.target.files;
 		if (file[0]) {
@@ -58,7 +52,9 @@ const DetailImgCreate = (props) => {
 						<Desc>명확한 제목으로 등록 바랍니다.</Desc>
 						<Input
 							placeholder='제목을 입력해주세요. (최대 45자)'
-							onChange={onChangeTitle}
+							onChange={(e) => {
+								setTitle(e.target.value);
+							}}
 						/>
 					</Item>
 					<Item>
@@ -72,7 +68,9 @@ const DetailImgCreate = (props) => {
 								<TypeItem
 									key={idx}
 									active={el === type}
-									onClick={onChangeType}>
+									onClick={(e) => {
+										setType(e.target.innerText);
+									}}>
 									{el}
 								</TypeItem>
 							))}

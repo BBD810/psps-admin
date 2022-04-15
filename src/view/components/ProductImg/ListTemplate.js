@@ -72,9 +72,6 @@ const ListTemplate = (props) => {
 		navigate('', { state: el.product_image_id });
 		props.setMode('detail');
 	};
-	const menuOpenController = (idx) => {
-		setMenuOpen(idx);
-	};
 	const selectMenuController = (menu, el) => {
 		if (menu === '수정하기') {
 			selectEdit(el);
@@ -244,7 +241,7 @@ const ListTemplate = (props) => {
 									alt='button'
 									src={toggle}
 									onClick={() => {
-										menuOpenController(idx);
+										setMenuOpen(idx);
 									}}
 								/>
 								{menuOpen === idx && (

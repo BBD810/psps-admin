@@ -28,10 +28,6 @@ const DetailImgReplace = (props) => {
 		props.setModal({ ...props.modal, type: '' });
 	};
 
-	const onClick = () => {
-		setOpenSelect(0);
-	};
-
 	const onMouseDown = (e) => {
 		props.modal.type !== '' &&
 			(!modalBox.current || !modalBox.current.contains(e.target)) &&
@@ -61,7 +57,10 @@ const DetailImgReplace = (props) => {
 						</ItemSelected>
 					) : (
 						<ItemSelectWrap ref={listBox}>
-							<ItemSelectList onClick={onClick}>
+							<ItemSelectList
+								onClick={() => {
+									setOpenSelect(0);
+								}}>
 								{selected === ''
 									? '선택해주세요.'
 									: list[selected].title}

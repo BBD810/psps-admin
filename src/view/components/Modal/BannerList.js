@@ -10,9 +10,6 @@ const BannerList = (props) => {
 		setList(props.modal.list);
 	}, [props.modal.list]);
 
-	const selectItem = (e) => {
-		setSelected(e);
-	};
 	const selectYes = () => {
 		props.setModal({
 			...props.modal,
@@ -41,7 +38,7 @@ const BannerList = (props) => {
 							key={idx}
 							selected={selected === idx}
 							onClick={() => {
-								selectItem(idx);
+								setSelected(idx);
 							}}>
 							{el.title}
 						</Item>

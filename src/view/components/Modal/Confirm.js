@@ -3,9 +3,7 @@ import styled from 'styled-components';
 
 const Confirm = (props) => {
 	const modalBox = useRef();
-	const onClick = () => {
-		props.setModal({ type: '' });
-	};
+
 	const onMouseDown = (e) => {
 		props.modal.type !== '' &&
 			(!modalBox.current || !modalBox.current.contains(e.target)) &&
@@ -16,7 +14,12 @@ const Confirm = (props) => {
 		<Container onMouseDown={onMouseDown}>
 			<Wrap ref={modalBox}>
 				<Text>{props.modal.text}</Text>
-				<Button onClick={onClick}>확인</Button>
+				<Button
+					onClick={() => {
+						props.setModal({ type: '' });
+					}}>
+					확인
+				</Button>
 			</Wrap>
 		</Container>
 	);
