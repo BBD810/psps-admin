@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { adminLogin } from '../../modules/admin';
 import * as authController from '../../controller/auth';
 import styled from 'styled-components';
-import logo from '../../images/logo_cetus.svg';
 import ConfirmModal from '../../view/components/Modal/Confirm';
 
 const LoginPage = () => {
@@ -61,7 +60,7 @@ const LoginPage = () => {
 
 	return (
 		<Login>
-			<LogoImg alt='logo img' src={logo} />
+			<LogoText>품생품사 관리자 페이지</LogoText>
 			<Input
 				type='text'
 				value={username ? username : ''}
@@ -105,9 +104,14 @@ const Login = styled.div`
 	align-items: center;
 	position: relative;
 `;
-const LogoImg = styled.img`
-	width: 38.3rem;
+const LogoText = styled.h1`
+	width: 100%;
 	height: 9.6rem;
+	line-height: 9.6rem;
+	text-align: center;
+	font-size: 4.5rem;
+	font-family: 'kr-b';
+	letter-spacing: -1px;
 	margin-bottom: 4.9rem;
 `;
 const Input = styled.input`
